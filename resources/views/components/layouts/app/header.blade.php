@@ -12,8 +12,14 @@
             </a>
 
             <flux:navbar class="-mb-px max-lg:hidden">
+                <flux:navbar.item icon="megaphone" :href="route('announcement')" :current="request()->routeIs('announcement')" wire:navigate>
+                    {{ __('Announcement') }}
+                </flux:navbar.item>
                 <flux:navbar.item icon="layout-grid" :href="route('dashboard')" :current="request()->routeIs('dashboard')" wire:navigate>
-                    {{ __('Dashboard') }}
+                    {{ __('News Page') }}
+                </flux:navbar.item>
+                <flux:navbar.item icon="calendar-date-range" :href="route('event')" :current="request()->routeIs('event')">
+                    {{ __('Events') }}
                 </flux:navbar.item>
             </flux:navbar>
 
@@ -23,7 +29,7 @@
                 <flux:tooltip :content="__('Search')" position="bottom">
                     <flux:navbar.item class="!h-10 [&>div>svg]:size-5" icon="magnifying-glass" href="#" :label="__('Search')" />
                 </flux:tooltip>
-                <flux:tooltip :content="__('Repository')" position="bottom">
+                {{-- <flux:tooltip :content="__('Repository')" position="bottom">
                     <flux:navbar.item
                         class="h-10 max-lg:hidden [&>div>svg]:size-5"
                         icon="folder-git-2"
@@ -31,8 +37,8 @@
                         target="_blank"
                         :label="__('Repository')"
                     />
-                </flux:tooltip>
-                <flux:tooltip :content="__('Documentation')" position="bottom">
+                </flux:tooltip> --}}
+                {{-- <flux:tooltip :content="__('Documentation')" position="bottom">
                     <flux:navbar.item
                         class="h-10 max-lg:hidden [&>div>svg]:size-5"
                         icon="book-open-text"
@@ -40,7 +46,7 @@
                         target="_blank"
                         label="Documentation"
                     />
-                </flux:tooltip>
+                </flux:tooltip> --}}
             </flux:navbar>
 
             <!-- Desktop User Menu -->
@@ -98,8 +104,16 @@
 
             <flux:navlist variant="outline">
                 <flux:navlist.group :heading="__('Platform')">
+                    <flux:navlist.item icon="megaphone" :href="route('announcement')" :current="request()->routeIs('announcement')" wire:navigate>
+                    {{ __('Announcement') }}
+                    </flux:navlist.item>
+                    
                     <flux:navlist.item icon="layout-grid" :href="route('dashboard')" :current="request()->routeIs('dashboard')" wire:navigate>
                     {{ __('Dashboard') }}
+                    </flux:navlist.item>
+                    
+                    <flux:navlist.item icon="calendar-date-range" :href="route('event')" :current="request()->routeIs('event')" wire:navigate>
+                    {{ __('Events') }}
                     </flux:navlist.item>
                 </flux:navlist.group>
             </flux:navlist>

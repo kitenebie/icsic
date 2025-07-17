@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Str;
+use App\Models\student;
 
 class User extends Authenticatable
 {
@@ -19,13 +20,25 @@ class User extends Authenticatable
      * @var list<string>
      */
     protected $fillable = [
-        'name',
+        'FirstName',
+        'LastName',
+        'MiddleName',
+        'extension_name',
+        'contact',
         'email',
         'password',
         'lrn',
-        'year_graduated'
+        'role',
+        'year_graduated',
+        'user_group',
+        'status',
+        'grade',
+        'section',
+        'profile_picture'
     ];
-
+    protected $casts = [
+        'user_group' => 'array',
+    ];
     /**
      * The attributes that should be hidden for serialization.
      *
@@ -56,7 +69,15 @@ class User extends Authenticatable
     {
         return Str::of($this->name)
             ->explode(' ')
-            ->map(fn (string $name) => Str::of($name)->substr(0, 1))
+            ->map(fn(string $name) => Str::of($name)->substr(0, 1))
             ->implode('');
+    }
+    public function groups()
+    {
+        return $this->belongsToMany(\App\Models\Group::class, 'user_group');
+    }
+    public function fullname()
+    {
+        return "{$this->LastName} {$this->extension_name}, {$this->FirstName} {$this->MiddleName}";
     }
 }
