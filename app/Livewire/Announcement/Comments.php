@@ -125,7 +125,11 @@ class Comments extends Component
     {
         if ($this->CommentType == "reply") {
             if (!$this->comment_input == null) {
-                $this->checkWithAi();
+                $isValid = $this->checkWithAi();
+                if (!$isValid) {
+                    $this->comment_input = null;
+                    return;
+                }
                 $data = [
                     'post_id' => $this->commentPostId,
                     'commentatorId' => Auth::user()->id,
@@ -142,6 +146,11 @@ class Comments extends Component
         } else {
             if (!$this->comment_input == null) {
                 $this->checkWithAi();
+                $isValid = $this->checkWithAi();
+                if (!$isValid) {
+                    $this->comment_input = null;
+                    return;
+                }
                 $data = [
                     'post_id' => $this->id,
                     'commentatorId' => Auth::user()->id,
@@ -166,10 +175,12 @@ class Comments extends Component
         $aiReply = $openRouterService->ask($rawComment);
         preg_match_all('/\*(.*?)\*/', $aiReply, $matches);
         $offensiveWords = $matches[1] ?? [];
+        // dd($offensiveWords);
         if (!empty($offensiveWords)) {
             $this->voilateWords = $offensiveWords;
-            return;
+            return false;
         }
+        return true;
     }
 
 

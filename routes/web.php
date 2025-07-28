@@ -64,3 +64,4 @@ Route::post('/ask', [OpenRouteController::class, 'ask']);
 require __DIR__ . '/auth.php';
 require __DIR__ . '/parent/web.php';
 require __DIR__ . '/firebase/web.php';
+require __DIR__ . '/app/api.php';

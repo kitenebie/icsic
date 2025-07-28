@@ -234,6 +234,11 @@
             <button wire:click='submit_comment()' onclick="focusAndAddLetter()"
                 class="text-gray-400 ml-1 hover:text-gray-700">
                 <i class="fas fa-paper-plane text-lg"></i>
+
+                <div id="loading" class=" flex justify-center items-center h-32">
+                    <div class="animate-spin rounded-full h-8 w-8 border-t-4 border-blue-500 border-solid">
+                    </div>
+                </div>
             </button>
 
         </div>
@@ -241,7 +246,6 @@
         {{-- end large screen --}}
         {{-- mobile --}}
         <div class="fixed inset-0 lg:hidden flex items-center justify-center bg-black bg-opacity-50 px-4 z-50">
-
             <div class="pt-8 mt-16 bg-white absolute sticky bottom-0 left-0 right-0 border px-4 max-w-lg h-screen">
                 <div class="min-w-[400px] overflow-y-auto min-h-[480px] p-0 m-0 relative flex flex-col">
                     <div class="border p-2 ">
@@ -477,7 +481,9 @@
                         <button wire:click='submit_comment()' onclick="focusAndAddLetter()"
                             class="text-gray-500 hover:text-blue-600 transition">
                             <i class="fas fa-paper-plane text-lg"></i>
+
                         </button>
+
                     </div>
                 </div>
 
@@ -485,8 +491,10 @@
                 <script>
                     function focusAndAddLetter() {
                         const input = document.getElementById('hidden-comment1');
+                        const loading = document.getElementById('loading');
                         input.focus();
                         input.value += ' ';
+                        loading.classList.add('hidden');
                     }
 
                     function syncToHiddenInput() {
