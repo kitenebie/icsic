@@ -1,0 +1,368 @@
+<div>
+    {{-- @if($this->announcementID) --}}
+        {{-- mobile --}}
+        <div class="fixed inset-0 lg:hidden flex items-center justify-center bg-black bg-opacity-50 px-4 z-50">
+
+            <div class="pt-8 bg-white absolute sticky bottom-0 left-0 right-0 border px-4 max-w-lg h-screen">
+                <div class="min-w-[400px] overflow-y-auto h-full p-0 m-0 relative flex flex-col">
+                    @for ($i = 1; $i <= 5; $i++)
+                        <div
+                            class="bg-white relative flex flex-col dark:bg-gray-800 text-black dark:text-gray-200 p-4 antialiased flex max-w-lg">
+                            <!-- Comment -->
+                            <div class="flex mb-4">
+                                <img class="rounded-full h-8 w-8 mr-2 mt-1" src="https://picsum.photos/id/1027/200/200" />
+                                <div>
+                                    <div class="bg-gray-100 dark:bg-gray-700 rounded-3xl px-4 pt-2 pb-2.5">
+                                        <div class="font-semibold text-sm leading-relaxed">Jon Doe</div>
+                                        <div class="text-normal min-w-[200px] leading-snug md:leading-normal">This is a
+                                            placeholder
+                                            comment.</div>
+                                    </div>
+                                    <div
+                                        class="flex mt-2 min-w-[120px] justify-between text-sm ml-4 text-gray-500 dark:text-gray-400">
+                                        <p>2h ago</p>
+                                        <button class="flex items-center gap-1 hover:text-gray-800 relative"
+                                            id="like-button-footer" aria-haspopup="true" aria-expanded="false"
+                                            aria-controls="reaction-popup-footer"
+                                            aria-label="Like button with reactions">
+                                            <i id="like-icon-post1" class="far fa-thumbs-up"> </i>
+                                            <img id="like-icon-post" src="" class="hidden size-[1rem]" />
+
+                                            <!-- Reaction popup footer -->
+                                            <div class="reaction-popup reaction-popup2 flex" id="reaction-popup-footer"
+                                                role="list" aria-label="Reactions">
+                                                <img src="/build/img/like.png" class="size-[1.5rem]"
+                                                    wire:click='react("Like", 1, "post")' role="button"
+                                                    aria-label="Like" data-reaction="like" title="Like" />
+                                                <img src="/build/img/love.png" class="size-[1.5rem]"
+                                                    wire:click='react("Love", 1, "post")' role="button"
+                                                    aria-label="Love" data-reaction="love" title="Love" />
+                                                <img src="/build/img/haha.png" class="size-[1.5rem]"
+                                                    wire:click='react("Haha", 1, "post")' role="button"
+                                                    aria-label="Haha" data-reaction="haha" title="Haha" />
+                                                <img src="/build/img/care.png" class="size-[1.5rem]"
+                                                    wire:click='react("Care", 1, "post")' role="button"
+                                                    aria-label="Care" data-reaction="care" title="Care" />
+                                                <img src="/build/img/wow.png" class="size-[1.5rem]"
+                                                    wire:click='react("Wow", 1, "post")' role="button" aria-label="Wow"
+                                                    data-reaction="wow" title="Wow" />
+                                                <img src="/build/img/sad.png" class="size-[1.5rem]"
+                                                    wire:click='react("Sad", 1, "post")' role="button" aria-label="Sad"
+                                                    data-reaction="sad" title="Sad" />
+                                                <img src="/build/img/angry.png" class="size-[1.5rem]"
+                                                    wire:click='react("Angry", 1, "post")' role="button"
+                                                    aria-label="Angry" data-reaction="angry" title="Angry" />
+                                            </div>
+                                        </button>
+                                        <button>Reply</button>
+                                        <div></div>
+                                        <div></div>
+                                        <div></div>
+                                        <div></div>
+                                        <div></div>
+                                    </div>
+                                    <div
+                                        class="bg-white dark:bg-gray-700 border border-white dark:border-gray-700 rounded-full float-right -mt-8 mr-0.5 flex shadow items-center">
+                                        <img src="/build/img/like.png" class="size-[1rem]" />
+                                        <img src="/build/img/love.png" class="size-[1rem] -ml-2" />
+                                        <img src="/build/img/wow.png" class="size-[1rem] -ml-2" />
+                                        <span class="text-sm ml-1 pr-1.5 text-gray-500 dark:text-gray-300">3</span>
+                                    </div>
+
+                                    <!-- Reply -->
+                                    <div class="flex mt-4">
+                                        <img class="rounded-full h-8 w-8 mr-2 mt-1"
+                                            src="https://picsum.photos/id/1027/200/200" />
+                                        <div>
+                                            <div class="bg-gray-100 dark:bg-gray-700 rounded-3xl px-4 pt-2 pb-2.5">
+                                                <div class="font-semibold text-sm leading-relaxed">Jane Doe</div>
+                                                <div class="text-normal min-w-[180px] leading-snug md:leading-normal">
+                                                    This
+                                                    is a
+                                                    reply.</div>
+                                            </div>
+                                            <div
+                                                class="flex mt-2 justify-between min-w-[140px] text-sm ml-4 text-gray-500 dark:text-gray-400">
+                                                <p>1h ago</p>
+                                                <button class="flex items-center gap-1 hover:text-gray-800 relative"
+                                                    id="like-button-footer" aria-haspopup="true" aria-expanded="false"
+                                                    aria-controls="reaction-popup-footer"
+                                                    aria-label="Like button with reactions">
+                                                    <i id="like-icon-post1" class="far fa-thumbs-up"> </i>
+                                                    <img id="like-icon-post" src=""
+                                                        class="hidden size-[1rem]" />
+
+                                                    <!-- Reaction popup footer -->
+                                                    <div class="reaction-popup reaction-popup2 flex"
+                                                        id="reaction-popup-footer" role="list"
+                                                        aria-label="Reactions">
+                                                        <img src="/build/img/like.png" class="size-[1.5rem]"
+                                                            wire:click='react("Like", 1, "post")' role="button"
+                                                            aria-label="Like" data-reaction="like" title="Like" />
+                                                        <img src="/build/img/love.png" class="size-[1.5rem]"
+                                                            wire:click='react("Love", 1, "post")' role="button"
+                                                            aria-label="Love" data-reaction="love" title="Love" />
+                                                        <img src="/build/img/haha.png" class="size-[1.5rem]"
+                                                            wire:click='react("Haha", 1, "post")' role="button"
+                                                            aria-label="Haha" data-reaction="haha" title="Haha" />
+                                                        <img src="/build/img/care.png" class="size-[1.5rem]"
+                                                            wire:click='react("Care", 1, "post")' role="button"
+                                                            aria-label="Care" data-reaction="care" title="Care" />
+                                                        <img src="/build/img/wow.png" class="size-[1.5rem]"
+                                                            wire:click='react("Wow", 1, "post")' role="button"
+                                                            aria-label="Wow" data-reaction="wow" title="Wow" />
+                                                        <img src="/build/img/sad.png" class="size-[1.5rem]"
+                                                            wire:click='react("Sad", 1, "post")' role="button"
+                                                            aria-label="Sad" data-reaction="sad" title="Sad" />
+                                                        <img src="/build/img/angry.png" class="size-[1.5rem]"
+                                                            wire:click='react("Angry", 1, "post")' role="button"
+                                                            aria-label="Angry" data-reaction="angry"
+                                                            title="Angry" />
+                                                    </div>
+                                                </button>
+                                                <button>Reply</button>
+                                                <div></div>
+                                                <div></div>
+                                                <div></div>
+                                                <div></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div
+                                        class="bg-white dark:bg-gray-700 border border-white dark:border-gray-700 rounded-full float-right -mt-8 mr-0.5 flex shadow items-center">
+                                        <img src="/build/img/love.png" class="size-[1rem] -ml-2" />
+                                        <img src="/build/img/wow.png" class="size-[1rem] -ml-2" />
+                                        <span class="text-sm ml-1 pr-1.5 text-gray-500 dark:text-gray-300">2</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    @endfor
+                    <!-- Floating input -->
+                    <div
+                        class="absolute sticky h-auto flex bottom-0 left-0 right-0 bg-white border-t border-gray-300 px-4 sm:px-6 py-8 z-50">
+                        <div class="w-full flex">
+                            <div id="rich-comment-box" contenteditable="true"
+                                class="w-full bg-gray-100 pb-[2rem] rounded-md px-4 py-3 text-[15px] sm:text-[16px] text-gray-500 outline-none overflow-hidden resize-none min-h-[3em]"
+                                style="line-height: 1.5em; font-weight: normal !important">
+                                Comment as KE N K EN
+                            </div>
+                            <input type="hidden" name="comment" id="hidden-comment">
+
+                            <script>
+                                const richBox = document.getElementById('rich-comment-box');
+                                const hiddenInput = document.getElementById('hidden-comment');
+                                var active = true;
+                                richBox.addEventListener('input', () => {
+                                    const html = richBox.innerHTML;
+                                    if (richBox.innerText.length == 1) {
+                                        hiddenInput.value = richBox.innerText;
+                                        active = false;
+                                    }
+                                    if (!html.includes('&nbsp;') && !html.includes('\u00A0') && active) {
+                                        richBox.innerText = "";
+                                    }
+                                    hiddenInput.value = richBox.innerText;
+                                    hiddenInput.dispatchEvent(new Event('input', {
+                                        bubbles: true
+                                    }));
+                                });
+                            </script>
+                        </div>
+
+                        <button onclick="focusAndAddLetter()" class="text-gray-400 ml-2 hover:text-gray-700">
+                            <i class="fas fa-paper-plane text-lg"></i>
+                        </button>
+
+                        <script>
+                            function focusAndAddLetter() {
+                                const input = document.getElementById('hidden-comment');
+                                input.focus();
+                                input.value += ' ';
+                            }
+                        </script>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {{-- ?large screen --}}
+        <div class="bg-white fixed inset-0 absolute sticky hidden lg:block bottom-0 left-0 right-0 border px-4 max-w-lg h-screen">
+            <div class="min-w-[400px] overflow-y-auto h-full p-0 m-0 relative flex flex-col">
+                @for ($i = 1; $i <= 5; $i++)
+                    <div
+                        class="bg-white relative flex flex-col dark:bg-gray-800 text-black dark:text-gray-200 p-4 antialiased flex max-w-lg">
+                        <!-- Comment -->
+                        <div class="flex mb-4">
+                            <img class="rounded-full h-8 w-8 mr-2 mt-1" src="https://picsum.photos/id/1027/200/200" />
+                            <div>
+                                <div class="bg-gray-100 dark:bg-gray-700 rounded-3xl px-4 pt-2 pb-2.5">
+                                    <div class="font-semibold text-sm leading-relaxed">Jon Doe</div>
+                                    <div class="text-normal min-w-[200px] leading-snug md:leading-normal">This is a
+                                        placeholder
+                                        comment. 
+                                        {{ $this->announcementID  }}</div>
+                                </div>
+                                <div
+                                    class="flex mt-2 min-w-[120px] justify-between text-sm ml-4 text-gray-500 dark:text-gray-400">
+                                    <p>2h ago</p>
+                                    <button class="flex items-center gap-1 hover:text-gray-800 relative"
+                                        id="like-button-footer" aria-haspopup="true" aria-expanded="false"
+                                        aria-controls="reaction-popup-footer" aria-label="Like button with reactions">
+                                        <i id="like-icon-post1" class="far fa-thumbs-up"> </i>
+                                        <img id="like-icon-post" src="" class="hidden size-[1rem]" />
+
+                                        <!-- Reaction popup footer -->
+                                        <div class="reaction-popup reaction-popup2 flex" id="reaction-popup-footer"
+                                            role="list" aria-label="Reactions">
+                                            <img src="/build/img/like.png" class="size-[1.5rem]"
+                                                wire:click='react("Like", 1, "post")' role="button"
+                                                aria-label="Like" data-reaction="like" title="Like" />
+                                            <img src="/build/img/love.png" class="size-[1.5rem]"
+                                                wire:click='react("Love", 1, "post")' role="button"
+                                                aria-label="Love" data-reaction="love" title="Love" />
+                                            <img src="/build/img/haha.png" class="size-[1.5rem]"
+                                                wire:click='react("Haha", 1, "post")' role="button"
+                                                aria-label="Haha" data-reaction="haha" title="Haha" />
+                                            <img src="/build/img/care.png" class="size-[1.5rem]"
+                                                wire:click='react("Care", 1, "post")' role="button"
+                                                aria-label="Care" data-reaction="care" title="Care" />
+                                            <img src="/build/img/wow.png" class="size-[1.5rem]"
+                                                wire:click='react("Wow", 1, "post")' role="button" aria-label="Wow"
+                                                data-reaction="wow" title="Wow" />
+                                            <img src="/build/img/sad.png" class="size-[1.5rem]"
+                                                wire:click='react("Sad", 1, "post")' role="button" aria-label="Sad"
+                                                data-reaction="sad" title="Sad" />
+                                            <img src="/build/img/angry.png" class="size-[1.5rem]"
+                                                wire:click='react("Angry", 1, "post")' role="button"
+                                                aria-label="Angry" data-reaction="angry" title="Angry" />
+                                        </div>
+                                    </button>
+                                    <button>Reply</button>
+                                    <div></div>
+                                    <div></div>
+                                    <div></div>
+                                    <div></div>
+                                    <div></div>
+                                </div>
+                                <div
+                                    class="bg-white dark:bg-gray-700 border border-white dark:border-gray-700 rounded-full float-right -mt-8 mr-0.5 flex shadow items-center">
+                                    <img src="/build/img/like.png" class="size-[1rem]" />
+                                    <img src="/build/img/love.png" class="size-[1rem] -ml-2" />
+                                    <img src="/build/img/wow.png" class="size-[1rem] -ml-2" />
+                                    <span class="text-sm ml-1 pr-1.5 text-gray-500 dark:text-gray-300">3</span>
+                                </div>
+
+                                <!-- Reply -->
+                                <div class="flex mt-4">
+                                    <img class="rounded-full h-8 w-8 mr-2 mt-1"
+                                        src="https://picsum.photos/id/1027/200/200" />
+                                    <div>
+                                        <div class="bg-gray-100 dark:bg-gray-700 rounded-3xl px-4 pt-2 pb-2.5">
+                                            <div class="font-semibold text-sm leading-relaxed">Jane Doe</div>
+                                            <div class="text-normal min-w-[180px] leading-snug md:leading-normal">
+                                                This
+                                                is a
+                                                reply.</div>
+                                        </div>
+                                        <div
+                                            class="flex mt-2 justify-between min-w-[140px] text-sm ml-4 text-gray-500 dark:text-gray-400">
+                                            <p>1h ago</p>
+                                            <button class="flex items-center gap-1 hover:text-gray-800 relative"
+                                                id="like-button-footer" aria-haspopup="true" aria-expanded="false"
+                                                aria-controls="reaction-popup-footer"
+                                                aria-label="Like button with reactions">
+                                                <i id="like-icon-post1" class="far fa-thumbs-up"> </i>
+                                                <img id="like-icon-post" src="" class="hidden size-[1rem]" />
+
+                                                <!-- Reaction popup footer -->
+                                                <div class="reaction-popup reaction-popup2 flex"
+                                                    id="reaction-popup-footer" role="list" aria-label="Reactions">
+                                                    <img src="/build/img/like.png" class="size-[1.5rem]"
+                                                        wire:click='react("Like", 1, "post")' role="button"
+                                                        aria-label="Like" data-reaction="like" title="Like" />
+                                                    <img src="/build/img/love.png" class="size-[1.5rem]"
+                                                        wire:click='react("Love", 1, "post")' role="button"
+                                                        aria-label="Love" data-reaction="love" title="Love" />
+                                                    <img src="/build/img/haha.png" class="size-[1.5rem]"
+                                                        wire:click='react("Haha", 1, "post")' role="button"
+                                                        aria-label="Haha" data-reaction="haha" title="Haha" />
+                                                    <img src="/build/img/care.png" class="size-[1.5rem]"
+                                                        wire:click='react("Care", 1, "post")' role="button"
+                                                        aria-label="Care" data-reaction="care" title="Care" />
+                                                    <img src="/build/img/wow.png" class="size-[1.5rem]"
+                                                        wire:click='react("Wow", 1, "post")' role="button"
+                                                        aria-label="Wow" data-reaction="wow" title="Wow" />
+                                                    <img src="/build/img/sad.png" class="size-[1.5rem]"
+                                                        wire:click='react("Sad", 1, "post")' role="button"
+                                                        aria-label="Sad" data-reaction="sad" title="Sad" />
+                                                    <img src="/build/img/angry.png" class="size-[1.5rem]"
+                                                        wire:click='react("Angry", 1, "post")' role="button"
+                                                        aria-label="Angry" data-reaction="angry" title="Angry" />
+                                                </div>
+                                            </button>
+                                            <button>Reply</button>
+                                            <div></div>
+                                            <div></div>
+                                            <div></div>
+                                            <div></div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div
+                                    class="bg-white dark:bg-gray-700 border border-white dark:border-gray-700 rounded-full float-right -mt-8 mr-0.5 flex shadow items-center">
+                                    <img src="/build/img/love.png" class="size-[1rem] -ml-2" />
+                                    <img src="/build/img/wow.png" class="size-[1rem] -ml-2" />
+                                    <span class="text-sm ml-1 pr-1.5 text-gray-500 dark:text-gray-300">2</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                @endfor
+                <!-- Floating input -->
+                <div
+                    class="absolute sticky h-auto flex bottom-0 left-0 right-0 bg-white border-t border-gray-300 px-4 sm:px-6 py-8 z-50">
+                    <div class="w-full flex">
+                        <div id="rich-comment-box" contenteditable="true"
+                            class="w-full bg-gray-100 pb-[2rem] rounded-md px-4 py-3 text-[15px] sm:text-[16px] text-gray-500 outline-none overflow-hidden resize-none min-h-[3em]"
+                            style="line-height: 1.5em; font-weight: normal !important">
+                            Comment as KE N K EN
+                        </div>
+                        <input type="hidden" name="comment" id="hidden-comment">
+
+                        <script>
+                            const richBox = document.getElementById('rich-comment-box');
+                            const hiddenInput = document.getElementById('hidden-comment');
+                            var active = true;
+                            richBox.addEventListener('input', () => {
+                                const html = richBox.innerHTML;
+                                if (richBox.innerText.length == 1) {
+                                    hiddenInput.value = richBox.innerText;
+                                    active = false;
+                                }
+                                if (!html.includes('&nbsp;') && !html.includes('\u00A0') && active) {
+                                    richBox.innerText = "";
+                                }
+                                hiddenInput.value = richBox.innerText;
+                                hiddenInput.dispatchEvent(new Event('input', {
+                                    bubbles: true
+                                }));
+                            });
+                        </script>
+                    </div>
+
+                    <button onclick="focusAndAddLetter()" class="text-gray-400 ml-2 hover:text-gray-700">
+                        <i class="fas fa-paper-plane text-lg"></i>
+                    </button>
+
+                    <script>
+                        function focusAndAddLetter() {
+                            const input = document.getElementById('hidden-comment');
+                            input.focus();
+                            input.value += ' ';
+                        }
+                    </script>
+                </div>
+            </div>
+        </div>
+    {{-- @endif --}}
+</div>

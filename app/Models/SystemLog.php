@@ -1,0 +1,27 @@
+<?php
+
+namespace App\Models;
+
+use Illuminate\Database\Eloquent\Model;
+
+class SystemLog extends Model
+{
+    
+    protected $fillable = [
+        'user_id',
+        'action',
+        'model_type',
+        'model_id',
+        'changes',
+    ];
+
+protected $casts = [
+    'changes' => 'array',
+];
+    // Optionally: Relationship to user
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
+    
+}
