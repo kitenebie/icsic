@@ -25,7 +25,6 @@ new #[Layout('components.layouts.auth')] class extends Component {
     public function login(): void
     {
         $this->validate();
-
         $this->ensureIsNotRateLimited();
 
         if (!Auth::attempt(['email' => $this->email, 'password' => $this->password], $this->remember)) {
@@ -38,14 +37,29 @@ new #[Layout('components.layouts.auth')] class extends Component {
 
         RateLimiter::clear($this->throttleKey());
         Session::regenerate();
-        if (Auth::user()->role == 'admin' || Auth::user()->role == 'teacher') {
-            $this->redirect('/administrator');
-        }else if (Auth::user()->role == 'rejected') {
-            //redirect to rejected page
-            $this->redirect('/rejected');
+
+        $user = Auth::user();
+
+        // Check if email is verified
+        if ($user instanceof MustVerifyEmail && !$user->hasVerifiedEmail()) {
+            // Send verification email
+            $user->sendEmailVerificationNotification();
+
+            // Log the user out again
+            Auth::logout();
+
+            // Throw error or redirect as needed
+            throw ValidationException::withMessages([
+                'email' => 'Your email is not verified. A verification link has been sent to your email address.',
+            ]);
         }
-        
-        else {
+
+        // Redirect based on role
+        if ($user->role == 'admin' || $user->role == 'teacher') {
+            $this->redirect('/administrator');
+        } elseif ($user->role == 'rejected') {
+            $this->redirect('/rejected');
+        } else {
             $this->redirect('/');
         }
     }
@@ -87,7 +101,7 @@ new #[Layout('components.layouts.auth')] class extends Component {
     <x-auth-session-status class="text-center" :status="session('status')" />
 
     <form class="flex flex-col gap-6" method="POST" action="{{ route('login') }}">
-    @csrf
+        @csrf
         <!-- Email Address -->
         <flux:input wire:model="email" :label="__('Email address')" type="email" required autofocus autocomplete="email"
             placeholder="email@example.com" />
