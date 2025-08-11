@@ -12,10 +12,11 @@
 
   <style>
     .otp-input {
-      @apply border border-gray-200 focus:border-emerald-400 focus:ring-0 rounded-lg text-center font-medium;
+      @apply border-2 border-gray-300 focus:border-emerald-400 focus:ring-0 rounded-lg text-center font-medium;
       width: 3.5rem; /* ~56px */
       height: 3.5rem;
       font-size: 1.25rem;
+      transition: border-color 0.2s ease;
     }
     @media (max-width: 640px) {
       .otp-input {
