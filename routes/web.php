@@ -47,7 +47,7 @@ Route::get('/announcements-comment/{id}', function ($id) {
     return redirect('/announcements#' . $id)->with('comment', $id);
 })->name('comment_section')
     ->middleware(['auth', 'verified']);
-
+  
 Route::view('NewsPage', 'dashboard')
     ->middleware(['auth', 'verified'])
     ->name('dashboard');
