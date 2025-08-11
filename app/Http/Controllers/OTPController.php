@@ -139,16 +139,34 @@ class OTPController extends Controller
     {
         try {
             $users = User::whereNull('email_verified_at')->get();
+            $limitHit = false;
 
             foreach ($users as $user) {
+                if ($limitHit) {
+                    break; // stop sending for the rest of the run
+                }
+
                 $exists = Email::where('email', $user->email)->exists();
 
                 if (!$exists) {
-                    if ($this->sendEmail($user->email)) {
-                        Email::updateOrCreate(
-                            ['email' => $user->email],
-                            ['updated_at' => now()]
-                        );
+                    try {
+                        $sent = $this->sendEmail($user->email);
+
+                        if ($sent) {
+                            Email::updateOrCreate(
+                                ['email' => $user->email],
+                                ['updated_at' => now()]
+                            );
+                        }
+                    } catch (\Exception $e) {
+                        $msg = strtolower($e->getMessage());
+
+                        if (str_contains($msg, 'daily user sending limit exceeded')) {
+                            Log::warning("Daily sending limit hit. Stopping email loop.");
+                            $limitHit = true;
+                        } else {
+                            Log::error("Failed to send to {$user->email}: " . $e->getMessage());
+                        }
                     }
                 }
             }
@@ -156,6 +174,7 @@ class OTPController extends Controller
             Log::error("SendNewEmailsContinuesly error: " . $e->getMessage());
         }
     }
+
 
 
     public function createNewPassword($token, $email)
