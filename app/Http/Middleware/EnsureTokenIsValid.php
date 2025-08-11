@@ -1,14 +1,14 @@
 <?php
 
 namespace App\Http\Middleware;
- 
+
 use Closure;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Symfony\Component\HttpFoundation\Response;
 
 class EnsureTokenIsValid
-{  
+{
     /**
      * Handle an incoming request.
      *
@@ -16,7 +16,7 @@ class EnsureTokenIsValid
      */
     public function handle(Request $request, Closure $next): Response
     {
-                
+
         // Allow OTP route without redirection
         if ($request->is('login')  || $request->is('logout')) {
             return $next($request);
@@ -40,6 +40,5 @@ class EnsureTokenIsValid
         }
 
         return $next($request);
-
     }
 }
