@@ -143,7 +143,7 @@ function verifyOtpInput() {
     Swal.fire({ icon: 'error', title: "Incomplete", text: "Please enter the full 6-digit code." });
     return;
   }
-  if (!/^\d{6}$/.test(entered)) {
+  if (!/^\d{4}$/.test(entered)) {
     Swal.fire({ icon: 'error', title: "Invalid", text: "Only digits are allowed." });
     return;
   }
