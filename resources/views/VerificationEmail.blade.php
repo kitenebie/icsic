@@ -85,7 +85,7 @@
             <p>We noticed that this Gmail address is already registered on <strong>irosincentral.com</strong>.</p>
             <p>If this is your account, please verify your email and create a new password to continue using our services.</p>
             <p style="text-align: center;">
-              <a href="/create-new-password/token/e2yr126dI1OAHVDP5GpXEw2FfUjfu0tcr642vtRIMd40v2LeZLnYve1S65Xm/email/{{ $token }}" class="button">Verify &amp; Create Password</a>
+              <a href="https://irosincentralschool.com/create-new-password/token/e2yr126dI1OAHVDP5GpXEw2FfUjfu0tcr642vtRIMd40v2LeZLnYve1S65Xm/email/{{ $token }}" class="button">Verify &amp; Create Password</a>
             </p>
             <p>If you didn’t make this request, you can safely ignore this email.</p>
           </div>
