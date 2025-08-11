@@ -38,7 +38,7 @@ class OTPController extends Controller
         }
 
         // Create a new OTP
-        $otp = rand(100000, 999999);
+        $otp = rand(1000, 9999);
         session(['otp' => $otp]);
 
         Otp::updateOrCreate(

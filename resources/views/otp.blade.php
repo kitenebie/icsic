@@ -37,7 +37,7 @@
 <body class="bg-gray-50 min-h-screen flex items-center justify-center px-4 py-6">
   <div class="w-full max-w-sm sm:max-w-md bg-white rounded-2xl shadow-lg p-6">
     <h1 class="text-2xl font-semibold text-gray-800 mb-2">Verify your account</h1>
-    <p class="text-sm text-gray-500 mb-6">Enter the 6-digit code we sent. Check your phone or email.</p>
+    <p class="text-sm text-gray-500 mb-6">Enter the 4-digit code we sent. Check your phone or email.</p>
 
     <div class="flex flex-wrap justify-center gap-3 mb-4" id="otp-fields"></div>
 
@@ -69,7 +69,7 @@
 </script>
 
 <script>
-const OTP_LENGTH = 6;
+const OTP_LENGTH = 4;
 const RESEND_DELAY = 30; // seconds
 const otpContainer = document.getElementById('otp-fields');
 const verifyBtn = document.getElementById('verifyBtn');
@@ -84,7 +84,7 @@ function createOtpInputs() {
     input.type = 'text';
     input.inputMode = 'numeric';
     input.maxLength = 1;
-    input.className = 'otp-input';
+    input.className = 'otp-input border-2 border-gray-400 focus:border-emerald-500 focus:ring-0 rounded-lg text-center font-medium outline-none';
     input.autocomplete = 'one-time-code';
     input.dataset.index = i;
     input.addEventListener('input', onOtpInput);
@@ -93,6 +93,7 @@ function createOtpInputs() {
     otpContainer.appendChild(input);
   }
 }
+
 
 function onOtpInput(e) {
   const el = e.target;
