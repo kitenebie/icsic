@@ -7,7 +7,7 @@ use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\RegisterController;
 
 
-Route::middleware('guest')->group(function () {
+// Route::middleware('guest')->group(function () {
     Volt::route('login', 'auth.login')
         ->name('login');
 
@@ -23,7 +23,7 @@ Route::middleware('guest')->group(function () {
         ->name('password.reset');
 
     Route::post('login', [LoginController::class, 'login']);
-});
+// });
 
 Route::middleware('auth')->group(function () {
     Volt::route('verify-email', 'auth.verify-email')
