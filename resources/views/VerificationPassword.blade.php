@@ -17,6 +17,7 @@
       border-radius: 999px;
       background: #e6e6e6;
       overflow: hidden; 
+      border: 1px #00A15EFF solid;
     }
     .meter > span {
       display: block;
