@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>6-Digit OTP (Tailwind + SweetAlert)</title>
+  <title>Irosin Central School @ One-Time Password</title>
 
   <!-- Tailwind CDN -->
   <script src="https://cdn.tailwindcss.com"></script>
@@ -12,34 +12,48 @@
 
   <style>
     .otp-input {
-      width: 56px;
-      height: 56px;
-      text-align: center;
+      @apply border border-gray-200 focus:border-emerald-400 focus:ring-0 rounded-lg text-center font-medium;
+      width: 3.5rem; /* ~56px */
+      height: 3.5rem;
       font-size: 1.25rem;
-      border-radius: 0.5rem;
-    } 
+    }
+    @media (max-width: 640px) {
+      .otp-input {
+        width: 2.75rem;
+        height: 2.75rem;
+        font-size: 1.125rem;
+      }
+    }
+    @media (min-width: 1024px) {
+      .otp-input {
+        width: 4rem;
+        height: 4rem;
+        font-size: 1.5rem;
+      }
+    }
   </style>
 </head>
-<body class="bg-gray-50 min-h-screen flex items-center justify-center p-6">
-  <div class="w-full max-w-md bg-white rounded-2xl shadow-lg p-6">
+<body class="bg-gray-50 min-h-screen flex items-center justify-center px-4 py-6">
+  <div class="w-full max-w-sm sm:max-w-md bg-white rounded-2xl shadow-lg p-6">
     <h1 class="text-2xl font-semibold text-gray-800 mb-2">Verify your account</h1>
     <p class="text-sm text-gray-500 mb-6">Enter the 6-digit code we sent. Check your phone or email.</p>
 
-    <div class="flex justify-center gap-3 mb-4" id="otp-fields"></div>
+    <div class="flex flex-wrap justify-center gap-3 mb-4" id="otp-fields"></div>
 
-    <div class="flex gap-3 justify-center mb-2">
-      <button id="verifyBtn" class="px-4 py-2 bg-emerald-500 text-white rounded-lg shadow hover:brightness-95">Verify</button>
-      <button id="resendBtn" class="px-4 py-2 bg-yellow-400 text-gray-800 rounded-lg shadow hover:brightness-95">Resend</button>
+    <div class="flex flex-col sm:flex-row gap-3 justify-center mb-2">
+      <button id="verifyBtn" class="flex-1 px-4 py-2 bg-emerald-500 text-white rounded-lg shadow hover:brightness-95">Verify</button>
+      <button id="resendBtn" class="flex-1 px-4 py-2 bg-yellow-400 text-gray-800 rounded-lg shadow hover:brightness-95">Resend</button>
     </div>
 
     <p class="text-xs text-gray-400 text-center" id="timerText"></p>
   </div>
+
 <script>
-  // Show loading when the DOM starts loading
+  // Show loading when DOM starts loading
   document.addEventListener('DOMContentLoaded', () => {
     Swal.fire({
       title: 'Loading...',
-      text: 'Please wait while we sending the OTP',
+      text: 'Please wait while we send the OTP',
       allowOutsideClick: false,
       didOpen: () => {
         Swal.showLoading();
@@ -69,7 +83,7 @@ function createOtpInputs() {
     input.type = 'text';
     input.inputMode = 'numeric';
     input.maxLength = 1;
-    input.className = 'otp-input border border-gray-200 focus:border-emerald-400 focus:ring-0';
+    input.className = 'otp-input';
     input.autocomplete = 'one-time-code';
     input.dataset.index = i;
     input.addEventListener('input', onOtpInput);
@@ -132,17 +146,17 @@ function verifyOtpInput() {
     return;
   }
   
-    fetch(`/verify/otp/${entered}`, {
-      method: 'GET',
-      headers: { 'Accept': 'application/json' }
-    })
+  fetch(`/verify/otp/${entered}`, {
+    method: 'GET',
+    headers: { 'Accept': 'application/json' }
+  })
   .then(data => {
     Swal.fire({
       title: 'Validating...',
-      text: 'Please wait while we sending the OTP',
+      text: 'Please wait while we check the OTP',
       allowOutsideClick: false,
     });
-    return location.href="/login";
+    location.href="/login";
   })
   .catch(err => {
     Swal.fire({ icon: 'error', title: "Error", text: err.message || "Something went wrong." });
