@@ -90,6 +90,7 @@ function createOtpInputs() {
     input.addEventListener('input', onOtpInput);
     input.addEventListener('keydown', onOtpKeyDown);
     input.addEventListener('paste', onOtpPaste);
+    input.classList.add("border-1");
     otpContainer.appendChild(input);
   }
 }
