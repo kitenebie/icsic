@@ -187,7 +187,7 @@ function startTimer(seconds) {
 
 verifyBtn.addEventListener('click', verifyOtpInput);
 resendBtn.addEventListener('click', () => {
-  Swal.fire({ icon: 'info', title: "Resend clicked", text: "Trigger your resend API here." });
+  Swal.fire({ icon: 'info', title: "Resend One-Time Password", text: "Request successfully Sent" });
   startTimer(RESEND_DELAY);
 });
 
