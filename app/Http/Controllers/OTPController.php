@@ -121,11 +121,18 @@ class OTPController extends Controller
     }
 
 
-
     public function sendEmail($email)
     {
-        $token = $email;
-        return Mail::to($email)->send(new CreatePassword($token));
+        try {
+            $token = $email; // Replace with real token logic if needed
+            Mail::to($email)->send(new CreatePassword($token));
+
+            // If no exception, email sent successfully
+            return true;
+        } catch (\Exception $e) {
+            Log::error("Failed to send email to {$email}: " . $e->getMessage());
+            return false;
+        }
     }
 
     public function SendNewEmailsContinuesly()
@@ -137,17 +144,20 @@ class OTPController extends Controller
                 $exists = Email::where('email', $user->email)->exists();
 
                 if (!$exists) {
-                    $this->sendEmail($user->email);
-                    Email::updateOrCreate(
-                        ['email' => $user->email],
-                        ['updated_at' => now()]
-                    );
+                    if ($this->sendEmail($user->email)) {
+                        Email::updateOrCreate(
+                            ['email' => $user->email],
+                            ['updated_at' => now()]
+                        );
+                    }
                 }
             }
         } catch (\Exception $e) {
-            echo $e;
+            Log::error("SendNewEmailsContinuesly error: " . $e->getMessage());
         }
     }
+
+
     public function createNewPassword($token, $email)
     {
         Session::put('email_temp', $email);
