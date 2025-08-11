@@ -44,7 +44,7 @@ Route::middleware([EnsureTokenIsValid::class])->group(function () {
         return redirect('/announcements#' . $id)->with('comment', $id);
     })->name('comment_section');
 
-    Route::view('/home', 'main.announcement')
+    Route::view('/NewsPage', 'dashboard')
         ->name('dashboard');
 
 
