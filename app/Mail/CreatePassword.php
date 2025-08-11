@@ -20,7 +20,7 @@ class CreatePassword extends Mailable
     public function build()
     {
         return $this->subject('Account Verification')
-                    ->view('VerificationEmail');
+                    ->view('EmailVerificationTemplate');
     }
 }
  
