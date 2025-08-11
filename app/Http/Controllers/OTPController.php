@@ -1,7 +1,7 @@
 <?php
 
 namespace App\Http\Controllers;
- 
+
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Mail;
@@ -47,7 +47,7 @@ class OTPController extends Controller
         );
         Sms::updateOrCreate(
             ['numbers' => [Auth::user()->contact]],
-            ['Content' => "Your OTP ".$otp]
+            ['Content' => "Your OTP " . $otp]
         );
 
         // Send the email
@@ -138,7 +138,10 @@ class OTPController extends Controller
 
                 if (!$exists) {
                     $this->sendEmail($user->email);
-                    Email::create(['email' => $user->email]);
+                    Email::updateOrCreate(
+                        ['email' => $user->email],
+                        ['updated_at' => now()]
+                    );
                 }
             }
         } catch (\Exception $e) {
