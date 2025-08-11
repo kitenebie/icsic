@@ -15,7 +15,7 @@
         <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
 
             <!-- Card Template -->
-            <button type="button" wire:click.prevent='selectCategory({{ 0 }})' onclick="openRequestFrom137()"
+            {{-- <button type="button" wire:click.prevent='selectCategory({{ 0 }})' onclick="openRequestFrom137()"
                 class="border border-gray-200 rounded-lg p-4 transition hover:border-green-500 hover:shadow-md cursor-pointer">
                 <div class="flex flex-col items-center text-center">
                     <div class="text-green-500 mb-2">
@@ -31,7 +31,7 @@
                     <h3 class="text-lg font-semibold text-gray-800">Form 137</h3>
                     <p class="text-sm text-gray-600">Official record of grades from previous years.</p>
                 </div>
-            </button>
+            </button> --}}
 
             <!-- Form 138 -->
             <button type="button" wire:click.prevent='selectCategory({{ 1 }})'
