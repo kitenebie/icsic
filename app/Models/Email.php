@@ -8,3 +8,4 @@ class Email extends Model
 {
     protected $guarded =[];
 }
+  

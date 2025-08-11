@@ -8,3 +8,4 @@ class Otp extends Model
 {
     protected $guarded =[];
 }
+  

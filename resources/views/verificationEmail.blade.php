@@ -31,7 +31,7 @@
       font-size: 20px;
       font-weight: bold;
     }
-    .content {
+    .content { 
       padding: 20px;
       color: #333333;
       font-size: 16px;

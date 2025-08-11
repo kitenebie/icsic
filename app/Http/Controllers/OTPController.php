@@ -15,7 +15,7 @@ use Carbon\Carbon;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Log;
-
+ 
 class OTPController extends Controller
 {
     public function sentOtp()

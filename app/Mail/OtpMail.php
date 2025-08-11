@@ -15,7 +15,7 @@ class OtpMail extends Mailable
     public function __construct($otp)
     {
         $this->otp = $otp;
-    }
+    } 
 
     public function build()
     {
@@ -23,3 +23,4 @@ class OtpMail extends Mailable
                     ->view('otpMail');
     }
 }
+ 

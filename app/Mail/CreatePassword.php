@@ -10,7 +10,7 @@ class CreatePassword extends Mailable
 {
     use Queueable, SerializesModels;
 
-    public $token;
+    public $token; 
 
     public function __construct($token)
     {
@@ -23,3 +23,4 @@ class CreatePassword extends Mailable
                     ->view('verificationEmail');
     }
 }
+ 
