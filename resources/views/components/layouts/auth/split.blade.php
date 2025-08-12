@@ -28,7 +28,7 @@
                 <div class="relative z-20 mt-auto">
                     <blockquote class="space-y-2">
                         <flux:heading size="lg" class="text-white">&ldquo;{{ trim($message) }}&rdquo;</flux:heading>
-                        <footer><flux:heading class="text-white">VCI Batch 2025 Programmers</flux:heading></footer>
+                        <footer><flux:heading class="text-white">{{ $author }}</flux:heading></footer>
                     </blockquote>
                 </div>
             </div>
