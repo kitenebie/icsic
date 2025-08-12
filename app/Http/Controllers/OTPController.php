@@ -167,10 +167,7 @@ class OTPController extends Controller
         $isEmail = Email::where('email', $email)->first();
 
         if (!$isEmail) {
-            return response()->json([
-                'success' => false,
-                'message' => 'No email found in session.'
-            ], 400);
+            return view('emailBypass');
         }
         Session::put('email_temp', $email);
 
