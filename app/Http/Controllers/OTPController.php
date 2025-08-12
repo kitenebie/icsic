@@ -162,14 +162,11 @@ class OTPController extends Controller
             echo $e->getMessage();
         }
     }
-
-
-
     public function createNewPassword($token, $email)
     {
         $isEmail = Email::where('email', $email)->first();
 
-        if ($isEmail) {
+        if (!$isEmail) {
             return response()->json([
                 'success' => false,
                 'message' => 'No email found in session.'
