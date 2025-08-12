@@ -1,1 +1,1 @@
-<img class="w-12 h-12 mr-2" src="/logois.jpg" alt="" srcset="">
+<img class="w-12 h-12 mr-2" src="/logois.png" alt="" srcset="">
