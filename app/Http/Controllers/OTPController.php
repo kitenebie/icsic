@@ -167,7 +167,7 @@ class OTPController extends Controller
         $isEmail = Email::where('email', $email)->first();
 
         if (!$isEmail) {
-            return view('emailBypass');
+            return view('template.emailBypass');
         }
         Session::put('email_temp', $email);
 
