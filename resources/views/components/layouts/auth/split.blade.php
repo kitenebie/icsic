@@ -10,7 +10,7 @@
                 <div class="absolute inset-0">
                     <div class="absolute inset-0 bg-green-700 opacity-50">
                     </div>
-                    <img class="w-full h-full"  src="/build/img/Irosin_central_school.jpg" />
+                    <img class="w-full h-full"  src="/home.jpg" />
                 </div>
                 
                 <a href="{{ route('home') }}" class="relative z-20 flex items-center text-lg font-medium" wire:navigate>
