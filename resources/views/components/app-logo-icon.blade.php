@@ -1,1 +1,1 @@
-<img class="w-12 h-12 mr-2" src="https://irosincentralschool.com/logois.png" alt="" srcset="">
+<img class="w-12 h-12 mr-2" src="https://irosincentralschool.com/school-logo.png" alt="" srcset="">
