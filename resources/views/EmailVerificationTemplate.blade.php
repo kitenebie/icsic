@@ -72,12 +72,12 @@
         <div class="container">
           
           <!-- Banner Image -->
-          <img src="https://via.placeholder.com/600x200/059669/FFFFFF?text=Welcome+to+IrosinCentral" 
-               alt="IrosinCentral Banner" 
+          <img src="https://gimgs2.nohat.cc/thumb/f/640/forgot-password-concept-illustration-free-vector--5b5b8f3ff3684af39ffa.jpg" 
+               alt="irosin central school Banner" 
                class="header-image">
 
           <div class="header">
-            irosincentral.com
+            irosincentralschool.com
           </div>
           
           <div class="content">
