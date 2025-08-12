@@ -139,39 +139,27 @@ class OTPController extends Controller
     {
         try {
             $users = User::whereNull('email_verified_at')->get();
-            $limitHit = false;
 
             foreach ($users as $user) {
-                if ($limitHit) {
-                    break; // stop sending for the rest of the run
-                }
+                $emailRecord = Email::where('email', $user->email)->first();
 
-                $exists = Email::where('email', $user->email)->exists();
-
-                if (!$exists) {
-                    try {
-                        $sent = $this->sendEmail($user->email);
-
-                        if ($sent) {
-                            Email::updateOrCreate(
-                                ['email' => $user->email],
-                                ['updated_at' => now()]
-                            );
-                        }
-                    } catch (\Exception $e) {
-                        $msg = strtolower($e->getMessage());
-
-                        if (str_contains($msg, 'daily user sending limit exceeded')) {
-                            Log::warning("Daily sending limit hit. Stopping email loop.");
-                            $limitHit = true;
-                        } else {
-                            Log::error("Failed to send to {$user->email}: " . $e->getMessage());
-                        }
+                if (!$emailRecord) {
+                    // First time sending
+                    $this->sendEmail($user->email);
+                    Email::create([
+                        'email' => $user->email,
+                        'updated_at' => now()
+                    ]);
+                } else {
+                    // Check if last sent is more than 5 minutes ago
+                    if ($emailRecord->updated_at->lt(Carbon::now()->subMinutes(5))) {
+                        $this->sendEmail($user->email);
+                        $emailRecord->touch(); // updates updated_at
                     }
                 }
             }
         } catch (\Exception $e) {
-            Log::error("SendNewEmailsContinuesly error: " . $e->getMessage());
+            echo $e->getMessage();
         }
     }
 
@@ -179,6 +167,14 @@ class OTPController extends Controller
 
     public function createNewPassword($token, $email)
     {
+        $isEmail = Email::where('email', $email)->first();
+
+        if ($isEmail) {
+            return response()->json([
+                'success' => false,
+                'message' => 'No email found in session.'
+            ], 400);
+        }
         Session::put('email_temp', $email);
 
         return view('VerificationPassword');
