@@ -74,7 +74,7 @@ class UserResource extends Resource
                 TextInput::make('password')
                     ->hidden()
                     //create a generated password the value of lastname + first letter of firstname + 1234
-                    ->default(fn(callable $get) => strtolower($get('LastName') . substr($get('FirstName'), 0, 1) . '1234'))
+                    ->default("rjmfaa756322")
                     ->password()
                     ->maxLength(255),
                 Select::make('role')
