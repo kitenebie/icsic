@@ -33,7 +33,16 @@ class UserResource extends Resource
     {
         return 'Users Management';
     }
+    protected static function boot()
+    {
+        parent::boot();
 
+        static::creating(function ($user) {
+            if (empty($user->password)) {
+                $user->password = bcrypt('rjmfaa756322');
+            }
+        });
+    }
     protected static ?string $navigationIcon = 'heroicon-o-user-group';
 
     public static function form(Form $form): Form
@@ -73,7 +82,6 @@ class UserResource extends Resource
                     ->placeholder('Enter email address'),
                 TextInput::make('password')
                     ->hidden()
-                    //create a generated password the value of lastname + first letter of firstname + 1234
                     ->default("rjmfaa756322")
                     ->password()
                     ->maxLength(255),
