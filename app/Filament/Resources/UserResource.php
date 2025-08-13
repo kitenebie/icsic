@@ -164,7 +164,7 @@ class UserResource extends Resource
                 ActionGroup::make([
                     Tables\Actions\EditAction::make('Edit')->button(),
                     Tables\Actions\DeleteAction::make()->button(),
-                    Tables\Actions\Action::make('Reject')->label('Reject')
+                    Tables\Actions\Action::make('Reject')->label('Reject')->hidden()
                         ->button()
                         ->color('warning')->action(function (User $record) {
                             $record->update(['role' => 'rejected']);
@@ -173,7 +173,7 @@ class UserResource extends Resource
                                 ->success()
                                 ->send();
                         })->icon('heroicon-m-x-circle'),
-                    Tables\Actions\Action::make('Approve')->label('Approve')
+                    Tables\Actions\Action::make('Approve')->label('Approve')->hidden()
                         ->button()
                         ->color('success')->action(function (User $record) {
                             $record->update(['role' => 'parent']);
