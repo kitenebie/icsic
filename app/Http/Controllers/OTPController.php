@@ -35,9 +35,9 @@ class OTPController extends Controller
 
         try {
             Mail::to($request->email)->send(new CreatePassword($request->email));
-            return back()->with('status', 'A reset link has been sent to your email.');
+            return redirect('/forgot-password')->with('status', 'A reset link has been sent to your email.');
         } catch (\Exception $e) {
-            session()->flash('status', "Failed to send email to {$request->email}: " . 'We’ve reached the email sending limit for today. Please try again in 24 hours.');
+            return redirect('/forgot-password')->withErrors('status', "Failed to send email to {$request->email}: " . 'We’ve reached the email sending limit for today. Please try again in 24 hours.');
         }
     }
     public function sentOtp()
