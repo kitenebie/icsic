@@ -15,7 +15,10 @@ Route::post('/notifications/{id}/mark-as-read', [NotificationController::class, 
 Route::get('/reject', function () {
     return view('unable');
 })->name('rejected');
-
+// waiting
+Route::get('/waiting', function () {
+    return view('pendding');
+})->name('waiting');
 Route::middleware([EnsureTokenIsValid::class])->group(function () {
     Route::get('/', function () {
         return view('main.main');
