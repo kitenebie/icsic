@@ -1,4 +1,5 @@
 <?php
+
 use Illuminate\Support\Facades\Password;
 use Livewire\Attributes\Layout;
 use Livewire\Volt\Component;
@@ -6,37 +7,36 @@ use Illuminate\Support\Facades\Mail;
 use App\Mail\CreatePassword;
 use App\Models\User;
 
-#[Layout('components.layouts.auth')]
-class ForgotPassword extends Component
-{
+new #[Layout('components.layouts.auth')] class extends Component {
     public string $email = '';
 
+    /**
+     * Send a password reset link to the provided email address.
+     */
     public function sendPasswordResetLink(): void
-    {
-        $this->validate([
-            'email' => ['required', 'string', 'email'],
-        ]);
+{
+    $this->validate([
+        'email' => ['required', 'string', 'email'],
+    ]);
 
-        $isTrue = User::where('email', $this->email)
-            ->whereNotNull('email_verified_at')
-            ->exists();
+    $isTrue = User::where('email', $this->email)
+        ->whereNotNull('email_verified_at')
+        ->first();
 
-        if (!$isTrue) {
-            session()->flash('status', __('Your email does not exist.'));
-            return;
-        }
+    if (!$isTrue) {
+        session()->flash('status', __('Your email does not exist.'));
+        return;
+    }
 
-        try {
-            // You should send a real reset token here
-            Mail::to($this->email)->send(new CreatePassword($this->email));
-
-            session()->flash('status', __('A reset link will be sent if the account exists.'));
-        } catch (\Exception $e) {
-            session()->flash('status', "Failed to send email to {$this->email}: " . $e->getMessage());
-        }
+    try {
+        Password::sendResetLink(['email' => $this->email]); // Laravel built-in reset
+        session()->flash('status', __('A reset link will be sent if the account exists.'));
+    } catch (\Exception $e) {
+        session()->flash('status', "Failed to send email to {$this->email}: " . $e->getMessage());
     }
 }
- ?>
+
+}; ?>
 
 <div class="flex flex-col gap-6">
     <x-auth-header :title="__('Forgot password')" :description="__('Enter your email to receive a password reset link')" />
