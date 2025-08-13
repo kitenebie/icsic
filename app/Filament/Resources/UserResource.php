@@ -158,13 +158,7 @@ class UserResource extends Resource
             ->filters([
                 SelectFilter::make('role')
                     ->label('Filter by Role')
-                    ->options([
-                        'admin' => 'Admin',
-                        'parent' => 'Parent',
-                        'pending' => 'Pending',
-                        'staff' => 'Staff',
-                        'teacher' => 'Teacher',
-                    ])
+                    ->options(['admin', 'staff', 'student', 'parent', 'graduate', 'pending'])
             ], layout: FiltersLayout::AboveContent)
             ->actions(
                 ActionGroup::make([
@@ -182,7 +176,7 @@ class UserResource extends Resource
                     Tables\Actions\Action::make('Approve')->label('Approve')
                         ->button()
                         ->color('success')->action(function (User $record) {
-                            $record->update(['status' => true]);
+                            $record->update(['role' => 'parent']);
                             Notification::make()
                                 ->title('Successfully approved user')
                                 ->success()
