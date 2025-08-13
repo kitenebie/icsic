@@ -56,8 +56,7 @@ class StudentResource extends Resource
 
                 TextInput::make('lrn')
                     ->required()
-                    ->unique(ignoreRecord: true) // Allow same value when editing
-                    ->hidden(fn($record) => $record !== null), // Hide on edit
+                    ->unique(ignoreRecord: true)->hidden(fn($record) => $record !== null), // Hide on edit
 
                 TextInput::make('firstname')->required(),
                 TextInput::make('lastname')->required(),
@@ -74,8 +73,7 @@ class StudentResource extends Resource
 
                 TextInput::make('email')
                     ->email()
-                    ->unique(ignoreRecord: true) // Allow same value when editing
-                    ->hidden(fn($record) => $record !== null), // Hide on edit
+                    ->unique(ignoreRecord: true)->hidden(fn($record) => $record !== null), // Hide on edit
 
                 TextInput::make('guardian_name')->required(),
                 TextInput::make('relationship')->required(),
