@@ -16,7 +16,7 @@
     <h1 class="text-2xl font-bold text-red-600 mb-4">Waiting For verification</h1>
     <p class="text-gray-700 mb-6">
       Your account is currently pending verification. Please check your email for further 
-      instructions or wait for an administrator to approve your account.
+      instructions. Thank you!
     </p>
   </div>
 </body>
