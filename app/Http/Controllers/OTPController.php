@@ -30,14 +30,14 @@ class OTPController extends Controller
             ->exists();
 
         if (!$exists) {
-            return back()->withErrors(['email' => 'Your email does not exist or is not verified.']);
+            return back()->withErrors(['status' => 'Your email does not exist or is not verified.']);
         }
 
         try {
             Mail::to($request->email)->send(new CreatePassword($request->email));
             return redirect('/forgot-password')->with('status', 'A reset link has been sent to your email.');
         } catch (\Exception $e) {
-            return redirect('/forgot-password')->withErrors('status', "Failed to send email to {$request->email}: " . 'We’ve reached the email sending limit for today. Please try again in 24 hours.');
+            return redirect('/forgot-password')->with('status', "Failed to send email to {$request->email}: " . 'We’ve reached the email sending limit for today. Please try again in 24 hours.');
         }
     }
     public function sentOtp()
