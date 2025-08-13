@@ -18,7 +18,7 @@ new #[Layout('components.layouts.auth')] class extends Component {
     $this->validate([
         'email' => ['required', 'string', 'email'],
     ]);
-
+    dd($this->validate);
     $isTrue = User::where('email', $this->email)
         ->whereNotNull('email_verified_at')
         ->first();
