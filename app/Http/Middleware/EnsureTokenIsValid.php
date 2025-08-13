@@ -33,7 +33,7 @@ class EnsureTokenIsValid
             return redirect('/login');
         }
 
-        if($request->is('pendding')){
+        if($request->is('waiting')){
             return $next($request);
         }
 
