@@ -580,7 +580,7 @@ class StudentResource extends Resource
                             ->columns(4),
                     ])
                     ->fillForm(fn(Student $record): array => [
-                        'lrn' => $record->lrn,
+                        // 'lrn' => $record->lrn,
                         'profile' => $record->profile,
                         'firstname' => $record->firstname,
                         'lastname' => $record->lastname,
@@ -589,7 +589,7 @@ class StudentResource extends Resource
                         'birthday' => $record->birthday,
                         'gender' => $record->gender,
                         'permanent_address' => $record->permanent_address,
-                        'email' => $record->user_email,
+                        // 'email' => $record->user_email,
                         'guardian_name' => $record->guardian_name,
                         'relationship' => $record->relationship,
                         'guardian_contact_number' => $record->guardian_contact_number,
