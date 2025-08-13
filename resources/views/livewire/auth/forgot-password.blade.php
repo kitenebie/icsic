@@ -3,6 +3,9 @@
 use Illuminate\Support\Facades\Password;
 use Livewire\Attributes\Layout;
 use Livewire\Volt\Component;
+use Illuminate\Support\Facades\Mail;
+use App\Mail\CreatePassword;
+use App\Models\User;
 
 new #[Layout('components.layouts.auth')] class extends Component {
     public string $email = '';
@@ -15,10 +18,20 @@ new #[Layout('components.layouts.auth')] class extends Component {
         $this->validate([
             'email' => ['required', 'string', 'email'],
         ]);
+        $isTrue = User::whereNotNull('email_verified_at')->first();
+        if(!$isTrue){
+            return session()->flash('status', __('Your email is not exist.'));
+        }
+        // Password::sendResetLink($this->only('email'))
+        try {
+            $token = $this->only('email'); // Replace with real token logic if needed
+            Mail::to($token)->send(new CreatePassword($token));
 
-        Password::sendResetLink($this->only('email'));
-
-        session()->flash('status', __('A reset link will be sent if the account exists.'));
+            // If no exception, email sent successfully
+            return session()->flash('status', __('A reset link will be sent if the account exists.'));
+        } catch (\Exception $e) {
+            return session()->flash("Failed to send email to {$this->only('email')}: " . $e->getMessage());
+        }
     }
 }; ?>
 
@@ -30,14 +43,8 @@ new #[Layout('components.layouts.auth')] class extends Component {
 
     <form wire:submit="sendPasswordResetLink" class="flex flex-col gap-6">
         <!-- Email Address -->
-        <flux:input
-            wire:model="email"
-            :label="__('Email Address')"
-            type="email"
-            required
-            autofocus
-            placeholder="email@example.com"
-        />
+        <flux:input wire:model="email" :label="__('Email Address')" type="email" required autofocus
+            placeholder="email@example.com" />
 
         <flux:button variant="primary" type="submit" class="w-full">{{ __('Email password reset link') }}</flux:button>
     </form>
