@@ -72,7 +72,7 @@ class UserResource extends Resource
                     ->columnSpanFull()
                     ->placeholder('Enter email address'),
                 TextInput::make('password')
-                    // ->hidden()
+                    ->hidden()
                     //create a generated password the value of lastname + first letter of firstname + 1234
                     ->default(fn(callable $get) => strtolower($get('LastName') . substr($get('FirstName'), 0, 1) . '1234'))
                     ->password()
