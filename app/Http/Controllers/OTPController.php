@@ -150,12 +150,6 @@ class OTPController extends Controller
                         'email' => $user->email,
                         'updated_at' => now()
                     ]);
-                } else {
-                    // Check if last sent is more than 5 minutes ago
-                    if ($emailRecord->updated_at->lt(Carbon::now()->subMinutes(5))) {
-                        $this->sendEmail($user->email);
-                        $emailRecord->touch(); // updates updated_at
-                    }
                 }
             }
         } catch (\Exception $e) {
