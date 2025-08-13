@@ -18,7 +18,7 @@ class EnsureTokenIsValid
     {
 
         // Allow OTP route without redirection
-        if ($request->is('login')  || $request->is('logout') || $request->is('pendding')) {
+        if ($request->is('login')  || $request->is('logout')) {
             return $next($request);
         }
         // Allow OTP route without redirection
