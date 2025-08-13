@@ -432,18 +432,18 @@ class StudentResource extends Resource
                     ->modalWidth(MaxWidth::FiveExtraLarge)
                     ->slideOver()
                     ->form([
-                        Section::make('Learner’s Reference Number')
-                            ->description('The Learner’s Reference Number (LRN) must be a 12-digit number.')
-                            ->schema([
-                                TextInput::make('lrn')
-                                    ->label('LRN')
-                                    ->prefixIcon('heroicon-m-user-circle')
-                                    ->columnSpan(3)
-                                    ->unique()->unique(ignoreRecord: true)
-                                    ->required(true)
-                                    ->readOnly() // Disable if LRN should not be edited
-                            ])
-                            ->columns(4),
+                        // Section::make('Learner’s Reference Number')
+                        //     ->description('The Learner’s Reference Number (LRN) must be a 12-digit number.')
+                        //     ->schema([
+                        //         TextInput::make('lrn')
+                        //             ->label('LRN')
+                        //             ->prefixIcon('heroicon-m-user-circle')
+                        //             ->columnSpan(3)
+                        //             ->unique()->unique(ignoreRecord: true)
+                        //             ->required(true)
+                        //             ->readOnly() // Disable if LRN should not be edited
+                        //     ])
+                        //     ->columns(4),
 
                         Section::make('Personal Information')
                             ->description('Basic personal details of the learner.')
@@ -505,12 +505,12 @@ class StudentResource extends Resource
                                             })
                                     ),
 
-                                TextInput::make('email')
-                                    ->email()
-                                    ->label('Email')
-                                    ->unique()->unique(ignoreRecord: true)
-                                    ->prefixIcon('heroicon-m-envelope')
-                                    ->required(true),
+                                // TextInput::make('email')
+                                //     ->email()
+                                //     ->label('Email')
+                                //     ->unique()->unique(ignoreRecord: true)
+                                //     ->prefixIcon('heroicon-m-envelope')
+                                //     ->required(true),
                             ])
                             ->columns(4),
 
