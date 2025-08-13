@@ -439,7 +439,7 @@ class StudentResource extends Resource
                                     ->label('LRN')
                                     ->prefixIcon('heroicon-m-user-circle')
                                     ->columnSpan(3)
-                                    ->unique()
+                                    ->unique()->unique(ignoreRecord: true)
                                     ->required(true)
                                     ->readOnly() // Disable if LRN should not be edited
                             ])
@@ -508,7 +508,7 @@ class StudentResource extends Resource
                                 TextInput::make('email')
                                     ->email()
                                     ->label('Email')
-                                    ->unique()
+                                    ->unique()->unique(ignoreRecord: true)
                                     ->prefixIcon('heroicon-m-envelope')
                                     ->required(true),
                             ])
@@ -670,7 +670,7 @@ class StudentResource extends Resource
         return [
             'index' => Pages\ListStudents::route('/'),
             // 'create' => Pages\CreateStudent::route('/create'),
-            'edit' => Pages\EditStudent::route('/{record}/edit'),
+            // 'edit' => Pages\EditStudent::route('/{record}/edit'),
         ];
     }
 }
