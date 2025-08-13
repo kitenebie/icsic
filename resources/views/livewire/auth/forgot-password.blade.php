@@ -14,25 +14,28 @@ new #[Layout('components.layouts.auth')] class extends Component {
      * Send a password reset link to the provided email address.
      */
     public function sendPasswordResetLink(): void
-    {
-        $this->validate([
-            'email' => ['required', 'string', 'email'],
-        ]);
-        $isTrue = User::whereNotNull('email_verified_at')->first();
-        if(!$isTrue){
-             session()->flash('status', __('Your email is not exist.'));
-        }
-        // Password::sendResetLink($this->only('email'))
-        try {
-            $token = $this->only('email'); // Replace with real token logic if needed
-            Mail::to($token)->send(new CreatePassword($token));
+{
+    $this->validate([
+        'email' => ['required', 'string', 'email'],
+    ]);
 
-            // If no exception, email sent successfully
-             session()->flash('status', __('A reset link will be sent if the account exists.'));
-        } catch (\Exception $e) {
-             session()->flash("Failed to send email to {$this->only('email')}: " . $e->getMessage());
-        }
+    $isTrue = User::where('email', $this->email)
+        ->whereNotNull('email_verified_at')
+        ->first();
+
+    if (!$isTrue) {
+        session()->flash('status', __('Your email does not exist.'));
+        return;
     }
+
+    try {
+        Password::sendResetLink(['email' => $this->email]); // Laravel built-in reset
+        session()->flash('status', __('A reset link will be sent if the account exists.'));
+    } catch (\Exception $e) {
+        session()->flash('status', "Failed to send email to {$this->email}: " . $e->getMessage());
+    }
+}
+
 }; ?>
 
 <div class="flex flex-col gap-6">
