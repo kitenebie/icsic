@@ -145,11 +145,13 @@ class OTPController extends Controller
 
                 if (!$emailRecord) {
                     // First time sending
-                    $this->sendEmail($user->email);
-                    Email::create([
-                        'email' => $user->email,
-                        'updated_at' => now()
-                    ]);
+                    $isTrue = $this->sendEmail($user->email);
+                    if ($isTrue) {
+                        Email::create([
+                            'email' => $user->email,
+                            'updated_at' => now()
+                        ]);
+                    }
                 }
             }
         } catch (\Exception $e) {
