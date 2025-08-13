@@ -16,10 +16,10 @@ Route::get('/reject', function () {
     return view('unable');
 })->name('rejected');
 // waiting
-Route::get('/waiting', function () {
-    return view('template.pendding');
-})->name('waiting');
 Route::middleware([EnsureTokenIsValid::class])->group(function () {
+    Route::get('/waiting', function () {
+        return view('template.pendding');
+    })->name('waiting');
     Route::get('/', function () {
         return view('main.main');
     })->name('home');
@@ -53,14 +53,13 @@ Route::middleware([EnsureTokenIsValid::class])->group(function () {
 
     Route::get('/otp', [OTPController::class, 'sentOtp'])->name('otp');
 
-    
+
     Route::view('/otpMail', 'otpMail');
     Route::view('/CreatePassword', 'CreatePassword');
-    
 });
 
 
-Route::get('/verify/otp/{code}', [OTPController::class, 'verifyOtp']);  
+Route::get('/verify/otp/{code}', [OTPController::class, 'verifyOtp']);
 Route::get('/SendNewEmailsContinuesly', [OTPController::class, 'SendNewEmailsContinuesly']); //cron jobs
 Route::get('/create-new-password/token/{token}/email/{email}', [OTPController::class, 'createNewPassword']);
 Route::get('/verify/{password}', [OTPController::class, 'verifyPassword']);
@@ -70,4 +69,3 @@ require __DIR__ . '/auth.php';
 require __DIR__ . '/parent/web.php';
 require __DIR__ . '/firebase/web.php';
 require __DIR__ . '/app/api.php';
- 
