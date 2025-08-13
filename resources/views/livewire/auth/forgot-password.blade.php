@@ -6,7 +6,7 @@ use Illuminate\Support\Facades\Mail;
 use App\Mail\CreatePassword;
 use App\Models\User;
 
-// #[Layout('components.layouts.auth')]
+#[Layout('components.layouts.auth')]
 class ForgotPassword extends Component
 {
     public string $email = '';
