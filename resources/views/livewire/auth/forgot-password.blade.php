@@ -47,6 +47,7 @@ new #[Layout('components.layouts.auth')] class extends Component {
         <!-- Email Address -->
         <flux:input name="email" :label="__('Email Address')" type="email" required autofocus
             placeholder="email@example.com" />
+        <x-auth-session-status-error class="text-center" :status="session('error')" />
 
         <flux:button variant="primary" type="submit" class="w-full">
             {{ __('Email password reset link') }}
