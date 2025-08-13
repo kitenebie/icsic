@@ -319,7 +319,7 @@ class News extends Component implements HasForms, HasTable
                 Tables\Columns\TextColumn::make('content')->label('Content')->limit(100),
             ])
             ->filters([
-                Tables\Filters\SelectFilter::make('categories')->options($this->categories),
+                Tables\Filters\SelectFilter::make('topic_category')->options($this->categories),
             ])
             ->actions([
                 Tables\Actions\Action::make('edit')
