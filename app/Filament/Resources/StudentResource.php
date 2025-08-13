@@ -612,6 +612,11 @@ class StudentResource extends Resource
                             'email' => $data['email'],
                             'year_graduated' => $data['year_graduated'],
                         ]);
+                         Notification::make()
+                            ->title('updated successfully')
+                            ->icon('heroicon-o-document-text')
+                            ->iconColor('success')
+                            ->send();
                     })
             ], position: ActionsPosition::BeforeColumns)
             ->bulkActions([
