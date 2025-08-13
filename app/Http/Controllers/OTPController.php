@@ -30,7 +30,7 @@ class OTPController extends Controller
             ->exists();
 
         if (!$exists) {
-            return back()->withErrors(['status' => 'Your email does not exist or is not verified.']);
+            return back()->with(['status' => 'Your email does not exist or is not verified.']);
         }
 
         try {
