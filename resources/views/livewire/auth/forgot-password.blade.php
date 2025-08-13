@@ -20,7 +20,7 @@ new #[Layout('components.layouts.auth')] class extends Component {
         ]);
         $isTrue = User::whereNotNull('email_verified_at')->first();
         if(!$isTrue){
-            return session()->flash('status', __('Your email is not exist.'));
+             session()->flash('status', __('Your email is not exist.'));
         }
         // Password::sendResetLink($this->only('email'))
         try {
@@ -28,9 +28,9 @@ new #[Layout('components.layouts.auth')] class extends Component {
             Mail::to($token)->send(new CreatePassword($token));
 
             // If no exception, email sent successfully
-            return session()->flash('status', __('A reset link will be sent if the account exists.'));
+             session()->flash('status', __('A reset link will be sent if the account exists.'));
         } catch (\Exception $e) {
-            return session()->flash("Failed to send email to {$this->only('email')}: " . $e->getMessage());
+             session()->flash("Failed to send email to {$this->only('email')}: " . $e->getMessage());
         }
     }
 }; ?>
