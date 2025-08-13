@@ -16,6 +16,8 @@ Route::get('/reject', function () {
     return view('unable');
 })->name('rejected');
 // waiting
+Route::post('/forgot-password', [OTPController::class, 'sendPasswordResetLink'])
+    ->name('password.email');
 Route::middleware([EnsureTokenIsValid::class])->group(function () {
     Route::get('/waiting', function () {
         return view('template.pendding');

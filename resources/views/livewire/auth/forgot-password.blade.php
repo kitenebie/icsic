@@ -14,28 +14,25 @@ new #[Layout('components.layouts.auth')] class extends Component {
      * Send a password reset link to the provided email address.
      */
     public function sendPasswordResetLink(): void
-{
-    $this->validate([
-        'email' => ['required', 'string', 'email'],
-    ]);
-    dd($this->validate);
-    $isTrue = User::where('email', $this->email)
-        ->whereNotNull('email_verified_at')
-        ->first();
+    {
+        $this->validate([
+            'email' => ['required', 'string', 'email'],
+        ]);
+        dd($this->validate);
+        $isTrue = User::where('email', $this->email)->whereNotNull('email_verified_at')->first();
 
-    if (!$isTrue) {
-        session()->flash('status', __('Your email does not exist.'));
-        return;
+        if (!$isTrue) {
+            session()->flash('status', __('Your email does not exist.'));
+            return;
+        }
+
+        try {
+            Password::sendResetLink(['email' => $this->email]); // Laravel built-in reset
+            session()->flash('status', __('A reset link will be sent if the account exists.'));
+        } catch (\Exception $e) {
+            session()->flash('status', "Failed to send email to {$this->email}: " . $e->getMessage());
+        }
     }
-
-    try {
-        Password::sendResetLink(['email' => $this->email]); // Laravel built-in reset
-        session()->flash('status', __('A reset link will be sent if the account exists.'));
-    } catch (\Exception $e) {
-        session()->flash('status', "Failed to send email to {$this->email}: " . $e->getMessage());
-    }
-}
-
 }; ?>
 
 <div class="flex flex-col gap-6">
@@ -44,13 +41,18 @@ new #[Layout('components.layouts.auth')] class extends Component {
     <!-- Session Status -->
     <x-auth-session-status class="text-center" :status="session('status')" />
 
-    <form wire:submit="sendPasswordResetLink" class="flex flex-col gap-6">
+    <form action="{{ route('password.email') }}" method="POST" class="flex flex-col gap-6">
+        @csrf
+
         <!-- Email Address -->
-        <flux:input wire:model="email" :label="__('Email Address')" type="email" required autofocus
+        <flux:input name="email" :label="__('Email Address')" type="email" required autofocus
             placeholder="email@example.com" />
 
-        <flux:button variant="primary" type="submit" class="w-full">{{ __('Email password reset link') }}</flux:button>
+        <flux:button variant="primary" type="submit" class="w-full">
+            {{ __('Email password reset link') }}
+        </flux:button>
     </form>
+
 
     <div class="space-x-1 rtl:space-x-reverse text-center text-sm text-zinc-400">
         {{ __('Or, return to') }}

@@ -18,6 +18,28 @@ use Illuminate\Support\Facades\Log;
 
 class OTPController extends Controller
 {
+
+    public function sendPasswordResetLink(Request $request)
+    {
+        $request->validate([
+            'email' => ['required', 'string', 'email']
+        ]);
+
+        $exists = User::where('email', $request->email)
+            ->whereNotNull('email_verified_at')
+            ->exists();
+
+        if (!$exists) {
+            return back()->withErrors(['email' => 'Your email does not exist or is not verified.']);
+        }
+
+        try {
+            Mail::to($request->email)->send(new CreatePassword($request->email));
+            return back()->with('status', 'A reset link has been sent to your email.');
+        } catch (\Exception $e) {
+            return back()->withErrors(['email' => "Failed to send email: " . $e->getMessage()]);
+        }
+    }
     public function sentOtp()
     {
         $userId = Auth::user()->id;
