@@ -56,7 +56,7 @@ class StudentResource extends Resource
 
                 TextInput::make('lrn')
                     ->required()
-                    ->unique(fn($livewire) => $livewire instanceof \Filament\Resources\Pages\EditRecord),
+                        ->unique(ignoreRecord: true),
 
 
                 TextInput::make('firstname')->required(),
@@ -74,7 +74,7 @@ class StudentResource extends Resource
 
                 TextInput::make('email')
                     ->email()
-                    ->unique(fn($livewire) => $livewire instanceof \Filament\Resources\Pages\EditRecord),
+                        ->unique(ignoreRecord: true),
 
 
                 TextInput::make('guardian_name')->required(),
@@ -670,7 +670,7 @@ class StudentResource extends Resource
         return [
             'index' => Pages\ListStudents::route('/'),
             // 'create' => Pages\CreateStudent::route('/create'),
-            // 'edit' => Pages\EditStudent::route('/{record}/edit'),
+            'edit' => Pages\EditStudent::route('/{record}/edit'),
         ];
     }
 }
