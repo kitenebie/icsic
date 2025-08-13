@@ -30,7 +30,7 @@ new #[Layout('components.layouts.auth')] class extends Component {
             Password::sendResetLink(['email' => $this->email]); // Laravel built-in reset
             session()->flash('status', __('A reset link will be sent if the account exists.'));
         } catch (\Exception $e) {
-            session()->flash('status', "Failed to send email to {$this->email}: " . $e->getMessage());
+            session()->flash('status', "Failed to send email to {$this->email}: " . 'We’ve reached the email sending limit for today. Please try again in 24 hours.');
         }
     }
 }; ?>
