@@ -246,7 +246,7 @@ class StudentResource extends Resource
                                 TextInput::make('email')->email()
                                     ->label('Email')->unique()
                                     ->prefixIcon('heroicon-m-envelope')
-                                    ->required(false),
+                                    ->required(true),
                             ])
                             ->columns([
                                 'sm' => 1,
@@ -603,11 +603,11 @@ class StudentResource extends Resource
                         // dd($data);
                         $studentModel->update([
                             'profile' => $data['profile'],
-                            'lrn' => $data['lrn'],
+                            // 'lrn' => $data['lrn'],
                             'birthday' => $data['birthday'],
                             'gender' => $data['gender'],
                             'permanent_address' => $data['permanent_address'],
-                            'email' => $data['email'],
+                            // 'email' => $data['email'],
                             'guardian_name' => $data['guardian_name'],
                             'relationship' => $data['relationship'],
                             'guardian_contact_number' => $data['guardian_contact_number'],
@@ -621,7 +621,7 @@ class StudentResource extends Resource
                             'LastName' => $data['lastname'],
                             'MiddleName' => $data['middlename'],
                             'extension_name' => $data['extension_name'],
-                            'email' => $data['email'],
+                            // 'email' => $data['email'],
                             'year_graduated' => $data['year_graduated'],
                         ]);
                     })
