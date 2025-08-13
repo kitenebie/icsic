@@ -34,7 +34,7 @@ class EnsureTokenIsValid
             return redirect('/login');
         }
 
-        if($request->is('pendding') && Auth::check() && Auth::user()->email_verified_at === null){
+        if($request->is('pendding') && !Auth::check() && Auth::user()->email_verified_at === null){
             return $next($request);
         }
         // If logged in but not verified
