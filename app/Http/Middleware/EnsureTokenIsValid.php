@@ -28,13 +28,13 @@ class EnsureTokenIsValid
             }
             return $next($request);
         }
-
-        if($request->is('pendding') && !Auth::check() && Auth::user()->email_verified_at === null){
-            return $next($request);
-        }
         // If not logged in
         if (!Auth::check()) {
             return redirect('/login');
+        }
+
+        if($request->is('pendding') && Auth::check() && Auth::user()->email_verified_at === null){
+            return $next($request);
         }
 
         // If logged in but not verified
