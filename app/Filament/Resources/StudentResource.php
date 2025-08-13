@@ -56,7 +56,8 @@ class StudentResource extends Resource
 
                 TextInput::make('lrn')
                     ->required()
-                    ->unique(ignoreRecord: true)->hidden(fn($record) => $record !== null), // Hide on edit
+                    ->unique(ignoreRecord: true)->hidden(fn($livewire) => $livewire instanceof \Filament\Resources\Pages\EditRecord),
+
 
                 TextInput::make('firstname')->required(),
                 TextInput::make('lastname')->required(),
@@ -73,7 +74,8 @@ class StudentResource extends Resource
 
                 TextInput::make('email')
                     ->email()
-                    ->unique(ignoreRecord: true)->hidden(fn($record) => $record !== null), // Hide on edit
+                    ->unique(ignoreRecord: true)->hidden(fn($livewire) => $livewire instanceof \Filament\Resources\Pages\EditRecord),
+
 
                 TextInput::make('guardian_name')->required(),
                 TextInput::make('relationship')->required(),
