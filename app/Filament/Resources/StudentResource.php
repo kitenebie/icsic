@@ -54,19 +54,29 @@ class StudentResource extends Resource
                     ->columnSpanFull()
                     ->required(),
 
-                TextInput::make('lrn')->required()->unique(),
+                TextInput::make('lrn')
+                    ->required()
+                    ->unique(ignoreRecord: true) // Allow same value when editing
+                    ->hidden(fn($record) => $record !== null), // Hide on edit
+
                 TextInput::make('firstname')->required(),
                 TextInput::make('lastname')->required(),
                 TextInput::make('middlename'),
                 TextInput::make('extension_name'),
                 DatePicker::make('birthday')->required(),
                 TextInput::make('permanent_address')->required(),
+
                 Select::make('gender')->options([
                     'Male' => 'Male',
                     'Female' => 'Female',
                     'Other' => 'Other',
                 ])->required(),
-                TextInput::make('email')->email()->unique(),
+
+                TextInput::make('email')
+                    ->email()
+                    ->unique(ignoreRecord: true) // Allow same value when editing
+                    ->hidden(fn($record) => $record !== null), // Hide on edit
+
                 TextInput::make('guardian_name')->required(),
                 TextInput::make('relationship')->required(),
                 TextInput::make('guardian_contact_number')->tel()->required(),
