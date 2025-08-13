@@ -54,29 +54,19 @@ class StudentResource extends Resource
                     ->columnSpanFull()
                     ->required(),
 
-                TextInput::make('lrn')
-                    ->required()
-                        ->unique(ignoreRecord: true),
-
-
+                TextInput::make('lrn')->required()->unique(),
                 TextInput::make('firstname')->required(),
                 TextInput::make('lastname')->required(),
                 TextInput::make('middlename'),
                 TextInput::make('extension_name'),
                 DatePicker::make('birthday')->required(),
                 TextInput::make('permanent_address')->required(),
-
                 Select::make('gender')->options([
                     'Male' => 'Male',
                     'Female' => 'Female',
                     'Other' => 'Other',
                 ])->required(),
-
-                TextInput::make('email')
-                    ->email()
-                        ->unique(ignoreRecord: true),
-
-
+                TextInput::make('email')->email()->unique(),
                 TextInput::make('guardian_name')->required(),
                 TextInput::make('relationship')->required(),
                 TextInput::make('guardian_contact_number')->tel()->required(),
@@ -246,7 +236,7 @@ class StudentResource extends Resource
                                 TextInput::make('email')->email()
                                     ->label('Email')->unique()
                                     ->prefixIcon('heroicon-m-envelope')
-                                    ->required(true),
+                                    ->required(false),
                             ])
                             ->columns([
                                 'sm' => 1,
@@ -432,18 +422,17 @@ class StudentResource extends Resource
                     ->modalWidth(MaxWidth::FiveExtraLarge)
                     ->slideOver()
                     ->form([
-                        // Section::make('Learner’s Reference Number')
-                        //     ->description('The Learner’s Reference Number (LRN) must be a 12-digit number.')
-                        //     ->schema([
-                        //         TextInput::make('lrn')
-                        //             ->label('LRN')
-                        //             ->prefixIcon('heroicon-m-user-circle')
-                        //             ->columnSpan(3)
-                        //             ->unique()->unique(ignoreRecord: true)
-                        //             ->required(true)
-                        //             ->readOnly() // Disable if LRN should not be edited
-                        //     ])
-                        //     ->columns(4),
+                        Section::make('Learner’s Reference Number')
+                            ->description('The Learner’s Reference Number (LRN) must be a 12-digit number.')
+                            ->schema([
+                                TextInput::make('lrn')
+                                    ->label('LRN')
+                                    ->prefixIcon('heroicon-m-user-circle')
+                                    ->columnSpan(3)
+                                    ->required(true)
+                                    ->readOnly() // Disable if LRN should not be edited
+                            ])
+                            ->columns(4),
 
                         Section::make('Personal Information')
                             ->description('Basic personal details of the learner.')
@@ -505,12 +494,11 @@ class StudentResource extends Resource
                                             })
                                     ),
 
-                                // TextInput::make('email')
-                                //     ->email()
-                                //     ->label('Email')
-                                //     ->unique()->unique(ignoreRecord: true)
-                                //     ->prefixIcon('heroicon-m-envelope')
-                                //     ->required(true),
+                                TextInput::make('email')
+                                    ->email()
+                                    ->label('Email')
+                                    ->prefixIcon('heroicon-m-envelope')
+                                    ->required(true),
                             ])
                             ->columns(4),
 
@@ -580,7 +568,7 @@ class StudentResource extends Resource
                             ->columns(4),
                     ])
                     ->fillForm(fn(Student $record): array => [
-                        // 'lrn' => $record->lrn,
+                        'lrn' => $record->lrn,
                         'profile' => $record->profile,
                         'firstname' => $record->firstname,
                         'lastname' => $record->lastname,
@@ -589,7 +577,7 @@ class StudentResource extends Resource
                         'birthday' => $record->birthday,
                         'gender' => $record->gender,
                         'permanent_address' => $record->permanent_address,
-                        // 'email' => $record->user_email,
+                        'email' => $record->user_email,
                         'guardian_name' => $record->guardian_name,
                         'relationship' => $record->relationship,
                         'guardian_contact_number' => $record->guardian_contact_number,
@@ -603,11 +591,11 @@ class StudentResource extends Resource
                         // dd($data);
                         $studentModel->update([
                             'profile' => $data['profile'],
-                            // 'lrn' => $data['lrn'],
+                            'lrn' => $data['lrn'],
                             'birthday' => $data['birthday'],
                             'gender' => $data['gender'],
                             'permanent_address' => $data['permanent_address'],
-                            // 'email' => $data['email'],
+                            'email' => $data['email'],
                             'guardian_name' => $data['guardian_name'],
                             'relationship' => $data['relationship'],
                             'guardian_contact_number' => $data['guardian_contact_number'],
@@ -621,7 +609,7 @@ class StudentResource extends Resource
                             'LastName' => $data['lastname'],
                             'MiddleName' => $data['middlename'],
                             'extension_name' => $data['extension_name'],
-                            // 'email' => $data['email'],
+                            'email' => $data['email'],
                             'year_graduated' => $data['year_graduated'],
                         ]);
                     })
