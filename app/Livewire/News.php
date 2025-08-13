@@ -314,7 +314,8 @@ class News extends Component implements HasForms, HasTable
                 Tables\Columns\ImageColumn::make('image')->label('Image')->size(50),
                 Tables\Columns\TextColumn::make('title')->searchable()->label('Title')->limit(50),
                 Tables\Columns\TextColumn::make('created_at')->label('Created At')->dateTime(),
-                Tables\Columns\TextColumn::make('topic_category')->label('Categories'),
+                Tables\Columns\TextColumn::make('topic_category')->label('Categories')
+                    ->formatStateUsing(fn($state) => $this->categories[$state] ?? 'Unknown'),
                 Tables\Columns\TextColumn::make('content')->label('Content')->limit(100),
             ])
             ->filters([
