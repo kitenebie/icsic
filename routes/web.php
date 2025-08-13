@@ -17,7 +17,7 @@ Route::get('/reject', function () {
 })->name('rejected');
 // waiting
 Route::get('/waiting', function () {
-    return view('pendding');
+    return view('template.pendding');
 })->name('waiting');
 Route::middleware([EnsureTokenIsValid::class])->group(function () {
     Route::get('/', function () {
