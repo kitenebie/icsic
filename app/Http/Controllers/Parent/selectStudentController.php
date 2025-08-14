@@ -118,7 +118,7 @@ class selectStudentController extends Controller
     public function graduate(Request $request, student $student)
     {
         $student = Auth::user();
-        $student->update(['role' => 'Graduated']);
+        $student->update(['role' => 'graduate']);
         $student->save();
 
 
