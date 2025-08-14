@@ -202,7 +202,7 @@ class View extends Component
     public function save_comment()
     {
         // dd($this->commentInput);
-        $this->validate();
+        $this->validate(); 
 
         $rawComment = $this->mentionedUser . ' ' . $this->commentInput;
         $openRouterService = new OpenRouterService();

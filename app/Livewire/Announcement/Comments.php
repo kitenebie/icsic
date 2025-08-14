@@ -169,7 +169,7 @@ class Comments extends Component
     public $voilateWords = null, $mentionedUser;
     public function checkWithAi()
     {
-
+ 
         $rawComment = $this->mentionedUser . ' ' . $this->comment_input;
         $openRouterService = new OpenRouterService();
         $aiReply = $openRouterService->ask($rawComment);
@@ -178,6 +178,7 @@ class Comments extends Component
         // dd($offensiveWords);
         if (!empty($offensiveWords)) {
             $this->voilateWords = $offensiveWords;
+            $this->comment_input = null;
             return false;
         }
         return true;
