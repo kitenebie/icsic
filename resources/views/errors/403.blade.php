@@ -21,7 +21,7 @@
         <hr>
         <div class='_1'>THE PAGE</div>
         <div class='_2'>WAS NOT FOUND</div>
-        <a class='btn' href='#'>BACK TO MARS</a>
+        <a class='btn' href='/'>BACK TO HOME</a>
     </div>
     <style>
         @import url(https://fonts.googleapis.com/css?family=opensans:500);
