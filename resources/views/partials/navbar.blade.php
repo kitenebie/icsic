@@ -36,9 +36,6 @@
                 <li><a href="/gallery"
                         class="{{ request()->routeIs('gallery') ? 'font-semibold text-gray-900' : 'hover:text-gray-900' }}">Gallery</a>
                 </li>
-                <li><a href="/about"
-                        class="{{ request()->routeIs('about') ? 'font-semibold text-gray-900' : 'hover:text-gray-900' }}">About
-                        Us</a></li>
 
                 <li x-data="{ open: false }" class="relative">
                     <button @click="open = !open"
@@ -73,6 +70,9 @@
                     </ul>
                 </li>
             @endif
+                <li><a href="/about"
+                        class="{{ request()->routeIs('about') ? 'font-semibold text-gray-900' : 'hover:text-gray-900' }}">About
+                        Us</a></li>
 
             @if (!auth()->check())
                 <a class="hidden md:inline-block bg-green-800 text-white text-xs sm:text-sm font-semibold px-4 py-2 rounded-md hover:bg-green-900"
