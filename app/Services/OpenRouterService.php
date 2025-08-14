@@ -38,7 +38,20 @@ class OpenRouterService
                     - Words with toxic meaning even if harmless in isolation
                     4. Never include explanations, extra words, punctuation, or formatting beyond the specified output.
                     5. Forbidden words list (non-exhaustive):
-                    - *[Insert your bad words list here]*
+                    - Naying
+                    - Monyo
+                    - Kupal
+                    - Parot
+                    - Pashnea
+                    - Nahagol
+                    - Nahasap
+                    - Kasta
+                    - Kastag
+                    - Kapay
+                    - deputa
+                    - Na hayop
+                    - Boang
+                    - Bwesit
 
                     OUTPUT FORMAT (strict):
                     - If offensive words exist: yes *word1* *word2* ...
