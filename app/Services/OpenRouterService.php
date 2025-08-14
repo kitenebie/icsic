@@ -20,7 +20,7 @@ class OpenRouterService
             'Content-Type' => 'application/json',
             'Authorization' => 'Bearer ' . $this->apiKey,
         ])->post($this->apiUrl, [
-            'model' => 'deepseek/deepseek-chat:free',
+            'model' => 'deepseek/deepseek-r1-0528:free',
             'messages' => [
                 ['role' => 'user', 'content' => <<<EOT
                     I will give you a comment. Your task is to analyze whether it contains rude or offensive language in **any language** (English, Tagalog, etc.).
