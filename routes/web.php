@@ -66,6 +66,12 @@ Route::get('/SendNewEmailsContinuesly', [OTPController::class, 'SendNewEmailsCon
 Route::get('/create-new-password/token/{token}/email/{email}', [OTPController::class, 'createNewPassword']);
 Route::get('/verify/{password}', [OTPController::class, 'verifyPassword']);
 Route::post('/ask', [OpenRouteController::class, 'ask']);
+Route::get('/fonts/instrument-sans.css', function () {
+    $css = file_get_contents('https://fonts.bunny.net/css?family=instrument-sans:400,500,600');
+    return response($css)
+        ->header('Content-Type', 'text/css')
+        ->header('Cross-Origin-Resource-Policy', 'same-origin'); // makes COEP happy
+});
 
 require __DIR__ . '/auth.php';
 require __DIR__ . '/parent/web.php';
