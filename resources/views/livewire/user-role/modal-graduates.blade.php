@@ -2,7 +2,7 @@
 <div id="graduateModal"
     class="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50 opacity-0 pointer-events-none transition-opacity duration-300">
     <form id="graduateForm"
-        action="{{ route('graduate') }}"  <!-- Replace with your actual route -->
+        action="{{ route('graduate') }}"
         method="POST"
         class="bg-white rounded-lg p-6 max-w-md w-full transform scale-95 transition-all duration-300">
         @csrf
