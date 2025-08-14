@@ -70,10 +70,10 @@
                     </ul>
                 </li>
             @endif
+
                 <li><a href="/about"
                         class="{{ request()->routeIs('about') ? 'font-semibold text-gray-900' : 'hover:text-gray-900' }}">About
                         Us</a></li>
-
             @if (!auth()->check())
                 <a class="hidden md:inline-block bg-green-800 text-white text-xs sm:text-sm font-semibold px-4 py-2 rounded-md hover:bg-green-900"
                     href="/">Login</a>
@@ -103,9 +103,7 @@
                 class="{{ request()->routeIs('events') ? 'font-semibold text-gray-900 block' : 'hover:text-gray-900 block' }}">Events</a>
             <a href="/gallery"
                 class="{{ request()->routeIs('gallery') ? 'font-semibold text-gray-900 block' : 'hover:text-gray-900 block' }}">Gallery</a>
-            <a href="/about"
-                class="{{ request()->routeIs('about') ? 'font-semibold text-gray-900 block' : 'hover:text-gray-900 block' }}">About
-                Us</a>
+            
 
             <div class="border-t border-gray-200 pt-2 mt-2">
                 <p class="text-gray-500 text-xs uppercase tracking-wide">More</p>
@@ -124,7 +122,9 @@
 
             </div>
         @endif
-
+<a href="/about"
+                class="{{ request()->routeIs('about') ? 'font-semibold text-gray-900 block' : 'hover:text-gray-900 block' }}">About
+                Us</a>
         @if (!auth()->check())
             <div class="flex mt-4">
                 <a href="/" class="bg-green-800 text-white font-semibold px-4 py-2 rounded-md">Login</a>
