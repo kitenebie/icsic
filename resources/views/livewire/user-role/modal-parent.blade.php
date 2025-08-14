@@ -42,7 +42,7 @@
 
 
         <div class="flex justify-between">
-            <button type="button" onclick="goBackToUserType()"
+            <button type="button" onclick="reloadPage()"
                 class="px-4 py-2 bg-yellow-400 text-white rounded hover:bg-yellow-500">Back</button>
             <button type="submit"
                 class="px-4 py-2 bg-green-600 text-white rounded hover:bg-green-700">Continue</button>
