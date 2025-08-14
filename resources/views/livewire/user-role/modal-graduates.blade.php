@@ -6,8 +6,8 @@
         method="POST" id="graduateContent"
         class="bg-white rounded-lg p-6 max-w-md w-full transform scale-95 transition-all duration-300">
         @csrf
-        <h2 class="text-xl font-semibold mb-4">Select Graduation Year</h2>
-        <select class="w-full hover:border-2 hover:border-blue-400 border rounded px-4 py-2 mb-4">
+        <h2 class="text-xl font-semibold mb-4">Select Graduation Year <span class="text-red-500">*</span></h2>
+        <select required class="w-full hover:border-2 hover:border-blue-400 border rounded px-4 py-2 mb-4">
             <option value="">Choose a year</option>
             <option>2025</option>
             <option>2024</option>
