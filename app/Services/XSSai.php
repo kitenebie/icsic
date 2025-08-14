@@ -39,7 +39,7 @@ class XSSai
             'Content-Type'  => 'application/json',
             'Authorization' => 'Bearer ' . $this->apiKey,
         ])->post($this->apiUrl, [
-            'model' => 'deepseek/deepseek-chat-v3-0324:free',
+            'model' => 'deepseek/deepseek-r1-0528:free',
             'messages' => [
                 ['role' => 'user', 'content' => $prompt],
             ],
