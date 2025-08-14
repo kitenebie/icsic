@@ -1,5 +1,5 @@
 <!-- Modal 2b: Parent -->
-<div id="parentModalQA" onclick="handleModalOverlayClick(event)"
+<div id="parentModal" onclick="handleModalOverlayClick(event)"
     class="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50 opacity-0 pointer-events-none transition-opacity duration-300">
 
     <form method="POST" action="{{ route('selectStudentController') }}" id="parentContent"
@@ -65,7 +65,7 @@
         }
 
         function closeAllModals() {
-            const modal = document.getElementById('parentModalQA');
+            const modal = document.getElementById('parentModal');
             modal.classList.add('opacity-0', 'pointer-events-none');
         }
 

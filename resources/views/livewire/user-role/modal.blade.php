@@ -24,7 +24,7 @@
                         <h3 class="text-lg font-bold">Parent</h3>
                     </div>
                     <p class="text-gray-600 mb-4">Monitor your child's classroom updates and school announcements.</p>
-                    <button onclick="openModal('parentModal')"
+                    <button onclick="openModal('parentModalDOC')"
                         class="px-4 py-2 bg-green-600 text-white rounded hover:bg-green-700">Select Parent</button>
                 </div>
 
@@ -61,8 +61,8 @@
                 wrapper: document.getElementById('graduateModal'),
                 content: document.getElementById('graduateContent')
             },
-            parentModal: {
-                wrapper: document.getElementById('parentModal'),
+            parentModalDOC: {
+                wrapper: document.getElementById('parentModalDOC'),
                 content: document.getElementById('parentContent')
             }
         };
@@ -95,10 +95,10 @@
             Object.keys(modals).forEach(key => hideModal(key));
         }
 
-        // New function for Back buttons in graduateModal and parentModal
+        // New function for Back buttons in graduateModal and parentModalDOC
         function goBackToUserType() {
             hideModal('graduateModal');
-            hideModal('parentModal');
+            hideModal('parentModalDOC');
             showModal('userTypeModal');
         }
 
