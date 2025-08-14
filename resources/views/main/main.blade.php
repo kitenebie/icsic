@@ -28,7 +28,7 @@
                 <div class="bg-gray-300 rounded-md p-6">
                     <img alt="Green and white stylized school icon graphic on gray background"
                         class="w-full h-auto rounded" height="180"
-                        src="https://storage.googleapis.com/a1aa/image/e1fce618-5246-45d1-e9ee-dcfa7139ace0.jpg"
+                        src="/school-logo.png"
                         width="320" />
                 </div>
             </div>
