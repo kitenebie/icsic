@@ -54,18 +54,39 @@
                                 class="bg-white-700 border flex justify-center items-center relative text-white font-bold text-sm w-full h-64">
 
                                 <img alt="{{ $image }}" src="{{ asset('storage/' . $image) }}"
-                                    wire:click='showMore({{ $announcement->id }})' role="button"
-                                    class="w-full h-full object-cover" />
+                                    onclick="openModal('{{ asset('storage/' . $image) }}')"
+                                    class="w-full h-full object-cover cursor-pointer" />
 
                                 @if ($index == 4)
-                                    <span wire:click='showMore({{ $announcement->id }})' role="button"
-                                        class="absolute text-3xl p-4 bg-gray-900 bg-opacity-50 inset-0 flex justify-center items-center">
+                                    <span onclick="openModal('{{ asset('storage/' . $image) }}')"
+                                        class="absolute text-3xl p-4 bg-gray-900 bg-opacity-50 inset-0 flex justify-center items-center cursor-pointer">
                                         {{ count($announcement->images) - 4 }}+
                                     </span>
                                 @endif
                             </div>
                         @empty
                         @endforelse
+
+                        <!-- Modal -->
+                        <div id="imageModal"
+                            class="fixed inset-0 hidden items-center justify-center bg-black bg-opacity-90 z-50">
+                            <button onclick="closeModal()"
+                                class="absolute top-4 right-4 text-white text-3xl font-bold hover:text-gray-400">&times;</button>
+                            <img id="modalImage" src="" class="max-w-full max-h-full rounded-lg shadow-lg" />
+                        </div>
+
+                        <script>
+                            function openModal(imageSrc) {
+                                document.getElementById('modalImage').src = imageSrc;
+                                document.getElementById('imageModal').classList.remove('hidden');
+                                document.getElementById('imageModal').classList.add('flex');
+                            }
+
+                            function closeModal() {
+                                document.getElementById('imageModal').classList.add('hidden');
+                                document.getElementById('imageModal').classList.remove('flex');
+                            }
+                        </script>
                     </div>
                     <!-- Project Timeline -->
                     {{-- <div class="bg-green-100 p-2 rounded text-[11px] text-green-900 leading-tight">
