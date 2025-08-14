@@ -1,12 +1,12 @@
 <x-layouts.custome.header>
-    <section class="relative bg-green-700 text-white px-6 py-12 sm:py-16 md:py-20 lg:py-24 bg-cover bg-center"
-        style="background-image: url('/home.jpg');">
+    <section class="relative bg-green-700 text-white px-6 py-20 sm:py-28 md:py-32 lg:py-40 bg-cover bg-center"
+        style="background-image: url('/home.jpg'); min-height: 600px;">
 
         <!-- Dark overlay -->
         <div class="absolute inset-0 bg-black/40"></div>
 
         <!-- Bottom fade -->
-        <div class="absolute inset-x-0 bottom-0 h-32 bg-gradient-to-t from-black/50 to-transparent"></div>
+        <div class="absolute inset-x-0 bottom-0 h-48 bg-gradient-to-t from-black/50 to-transparent"></div>
 
         <div
             class="relative max-w-7xl mx-auto flex flex-col-reverse md:flex-row items-center justify-between gap-10 md:gap-20">
