@@ -1,6 +1,6 @@
 <x-layouts.custome.header>
     <!-- Hero Section -->
-    <section class="bg-green-700 text-white px-6 py-12 sm:py-16 md:py-20 lg:py-24 bg-cover bg-center"
+    <section class="bg-green-700 text-white h-64 px-6 py-12 sm:py-16 md:py-20 lg:py-24 bg-cover bg-center"
         style="background-image: url('/home.jpg');">
         <div class="max-w-7xl mx-auto flex flex-col-reverse md:flex-row items-center justify-between gap-10 md:gap-20">
             <div class="max-w-xl">
