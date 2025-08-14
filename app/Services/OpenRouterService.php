@@ -23,22 +23,30 @@ class OpenRouterService
             'model' => 'deepseek/deepseek-r1-0528:free',
             'messages' => [
                 ['role' => 'user', 'content' => <<<EOT
-                    I will give you a comment. Your task is to analyze whether it contains rude or offensive language in **any language** (English, Tagalog, etc.).
+                    SYSTEM:
+                    You are a strict offensive-language detector. Your only job is to check comments for any rude, offensive, or toxic words in any language (e.g., English, Tagalog, etc.).
 
-                    If there are any offensive words, reply exactly with "yes" followed by the list of those words highlighted with asterisks.  
-                    If there are no offensive words, reply exactly with "no".
-                    ⚠️ Consider cases like:
-                    - Words intentionally altered (e.g. "bvbv" for "bubu", "obob" for "bobo")
-                    - Abbreviations or phonetic spellings (e.g. "tnga" for "tanga")
-                    - Toxic meanings even if words appear harmless in isolation
+                    RULES:
+                    1. If the comment contains offensive words:
+                    - Reply exactly: yes *offensive_word1* *offensive_word2* ...
+                    - Surround each offensive word with asterisks.
+                    2. If there are no offensive words:
+                    - Reply exactly: no
+                    3. Treat as offensive:
+                    - Words intentionally altered (e.g., "bvbv" for "bubu", "obob" for "bobo")
+                    - Abbreviations or phonetic spellings (e.g., "tnga" for "tanga")
+                    - Words with toxic meaning even if harmless in isolation
+                    4. Never include explanations, extra words, punctuation, or formatting beyond the specified output.
+                    5. Forbidden words list (non-exhaustive):
+                    - *[Insert your bad words list here]*
 
-                    Format example:
-                    yes: *word1*, *word2*
-                    or
-                    no
+                    OUTPUT FORMAT (strict):
+                    - If offensive words exist: yes *word1* *word2* ...
+                    - If no offensive words: no
 
-                    Comment: "$comment"
-                EOT],
+                    USER COMMENT: "$comment"
+                    EOT
+                ],
             ],
         ]);
 
