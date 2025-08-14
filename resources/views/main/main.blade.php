@@ -1,6 +1,7 @@
 <x-layouts.custome.header>
     <!-- Hero Section -->
-    <section class="bg-green-700 text-white px-6 py-12 sm:py-16 md:py-20 lg:py-24">
+    <section class="bg-green-700 text-white px-6 py-12 sm:py-16 md:py-20 lg:py-24 bg-cover bg-center"
+        style="background-image: url('/home.jpg');">
         <div class="max-w-7xl mx-auto flex flex-col-reverse md:flex-row items-center justify-between gap-10 md:gap-20">
             <div class="max-w-xl">
                 <h1 class="text-2xl sm:text-3xl md:text-4xl font-extrabold leading-tight">
@@ -24,19 +25,18 @@
                     </div>
                 @endif
             </div>
-            <div class="bg-white rounded-lg p-6 shadow-lg max-w-[320px] sm:max-w-[360px] md:max-w-[400px] w-full">
-                <div class="bg-gray-300 rounded-md p-6">
-                    <img alt="Green and white stylized school icon graphic on gray background"
-                        class="w-full h-auto rounded" height="180"
-                        src="/school-logo.png"
-                        width="320" />
-                </div>
-            </div>
         </div>
     </section>
+    <style>
+        .hero-section {
+            background-image: url('/home.jpg');
+            background-size: cover;
+            background-position: center;
+        }
+    </style>
 
     @livewire('main.news')
-    @if(auth()->check() && auth()->user()->role != 'pending')
+    @if (auth()->check() && auth()->user()->role != 'pending')
         @livewire('main.event')
     @endif
 </x-layouts.custome.header>
