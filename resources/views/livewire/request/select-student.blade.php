@@ -42,7 +42,7 @@
 
 
         <div class="flex justify-between">
-            <button type="button" onclick="goBackToUserType()"
+            <button type="button" onclick="goBackToUserTypeSL()"
                 class="px-4 py-2 bg-yellow-400 text-white rounded hover:bg-yellow-500">Back</button>
             <button type="submit" id="submit" class="px-4 py-2 text-white rounded">Continue</button>
         </div>
@@ -97,7 +97,7 @@
             toggleFormModal(true)
         }
 
-        function goBackToUserType() {
+        function goBackToUserTypeSL() {
             // Custom logic to go back
             closeAllselectStudentModals(); // Only closes if clicked intentionally
         }
