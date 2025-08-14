@@ -5,4 +5,5 @@ use App\Http\Controllers\Parent\selectStudentController;
 
 Route::post("/submitSelectedStudent", [selectStudentController::class, 'selectStudentController'])->name("selectStudentController");
 Route::post("/selectedRequestForm", [selectStudentController::class, 'selectedRequestForm'])->name("selectedRequestForm");
+Route::post("/graduate", [selectStudentController::class, 'graduate'])->name("graduate");
 // 

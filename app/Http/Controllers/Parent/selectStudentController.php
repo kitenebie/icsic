@@ -114,4 +114,15 @@ class selectStudentController extends Controller
         }
         return redirect()->back()->with(['success' => 'All request Documents are successfully submitted']);
     }
+
+    public function graduate(Request $request, student $student)
+    {
+        $student = Auth::user();
+        $student->update(['role' => 'Graduated']);
+        $student->save();
+
+
+
+        return redirect()->back()->with('success', 'Selected students have been marked as graduated.');
+    }
 }
