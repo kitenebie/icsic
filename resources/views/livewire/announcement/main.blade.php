@@ -49,16 +49,20 @@
                             @else
                                 <div class="grid grid-cols gap-1 mb-3">
                         @endif
+                        @php
+                            $imagesArray = array_map(fn($img) => asset('storage/' . $img), $announcement->images);
+                        @endphp
+
                         @forelse (array_slice($announcement->images, 0, 4) as $index => $image)
                             <div
                                 class="bg-white-700 border flex justify-center items-center relative text-white font-bold text-sm w-full h-64">
 
                                 <img alt="{{ $image }}" src="{{ asset('storage/' . $image) }}"
-                                    onclick="openModal('{{ asset('storage/' . $image) }}')"
+                                    onclick="openModal({{ json_encode($imagesArray) }}, {{ $index }})"
                                     class="w-full h-full object-cover cursor-pointer" />
 
                                 @if ($index == 4)
-                                    <span onclick="openModal('{{ asset('storage/' . $image) }}')"
+                                    <span onclick="openModal({{ json_encode($imagesArray) }}, {{ $index }})"
                                         class="absolute text-3xl p-4 bg-gray-900 bg-opacity-50 inset-0 flex justify-center items-center cursor-pointer">
                                         {{ count($announcement->images) - 4 }}+
                                     </span>
@@ -72,12 +76,31 @@
                             class="fixed inset-0 hidden items-center justify-center bg-black bg-opacity-90 z-50">
                             <button onclick="closeModal()"
                                 class="absolute top-4 right-4 text-white text-3xl font-bold hover:text-gray-400">&times;</button>
+
+                            <!-- Prev Button -->
+                            <button id="prevBtn" onclick="changeImage(-1)"
+                                class="absolute left-4 text-white text-4xl font-bold px-3 py-1 bg-gray-800 bg-opacity-50 rounded-full hover:bg-opacity-80">
+                                &#10094;
+                            </button>
+
+                            <!-- Image -->
                             <img id="modalImage" src="" class="max-w-full max-h-full rounded-lg shadow-lg" />
+
+                            <!-- Next Button -->
+                            <button id="nextBtn" onclick="changeImage(1)"
+                                class="absolute right-4 text-white text-4xl font-bold px-3 py-1 bg-gray-800 bg-opacity-50 rounded-full hover:bg-opacity-80">
+                                &#10095;
+                            </button>
                         </div>
 
                         <script>
-                            function openModal(imageSrc) {
-                                document.getElementById('modalImage').src = imageSrc;
+                            let modalImages = [];
+                            let currentIndex = 0;
+
+                            function openModal(images, index) {
+                                modalImages = images;
+                                currentIndex = index;
+                                document.getElementById('modalImage').src = modalImages[currentIndex];
                                 document.getElementById('imageModal').classList.remove('hidden');
                                 document.getElementById('imageModal').classList.add('flex');
                             }
@@ -86,7 +109,15 @@
                                 document.getElementById('imageModal').classList.add('hidden');
                                 document.getElementById('imageModal').classList.remove('flex');
                             }
+
+                            function changeImage(direction) {
+                                currentIndex += direction;
+                                if (currentIndex < 0) currentIndex = modalImages.length - 1;
+                                if (currentIndex >= modalImages.length) currentIndex = 0;
+                                document.getElementById('modalImage').src = modalImages[currentIndex];
+                            }
                         </script>
+
                     </div>
                     <!-- Project Timeline -->
                     {{-- <div class="bg-green-100 p-2 rounded text-[11px] text-green-900 leading-tight">
