@@ -235,10 +235,10 @@
                 class="text-gray-400 ml-1 hover:text-gray-700">
                 <i class="fas fa-paper-plane text-lg"></i>
 
-                <div id="loading" class=" flex justify-center items-center h-32">
+                {{-- <div id="loading" class=" flex justify-center items-center h-32">
                     <div class="animate-spin rounded-full h-8 w-8 border-t-4 border-blue-500 border-solid">
                     </div>
-                </div>
+                </div> --}}
             </button>
 
         </div>

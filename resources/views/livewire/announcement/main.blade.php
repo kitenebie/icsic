@@ -57,7 +57,7 @@
                                     wire:click='showMore({{ $announcement->id }})' role="button"
                                     class="w-full h-full object-cover" />
 
-                                @if ($index == 3)
+                                @if ($index == 4)
                                     <span wire:click='showMore({{ $announcement->id }})' role="button"
                                         class="absolute text-3xl p-4 bg-gray-900 bg-opacity-50 inset-0 flex justify-center items-center">
                                         {{ count($announcement->images) - 4 }}+
