@@ -36,6 +36,7 @@
     </section>
 
     @livewire('main.news')
-
-    @livewire('main.event')
+    @if(auth()->check() && auth()->user()->role != 'pending')
+        @livewire('main.event')
+    @endif
 </x-layouts.custome.header>
