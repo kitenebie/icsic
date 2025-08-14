@@ -129,7 +129,8 @@ class Comments extends Component
                 if (!$isValid) {
                     $this->comment_input = null;
                     return;
-                }
+                }else{
+
                 $data = [
                     'post_id' => $this->commentPostId,
                     'commentatorId' => Auth::user()->id,
@@ -142,6 +143,7 @@ class Comments extends Component
 
                 CommentDB::create($data);
                 return redirect()->route('comment_section', ['id' => $this->id]);
+                }
             }
         } else {
             if (!$this->comment_input == null) {
@@ -150,7 +152,8 @@ class Comments extends Component
                 if (!$isValid) {
                     $this->comment_input = null;
                     return;
-                }
+                }else{
+                    
                 $data = [
                     'post_id' => $this->id,
                     'commentatorId' => Auth::user()->id,
@@ -162,6 +165,7 @@ class Comments extends Component
 
                 CommentDB::create($data);
                 return redirect()->route('comment_section', ['id' => $this->id]);
+                }
             }
         }
     }

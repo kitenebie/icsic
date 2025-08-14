@@ -581,5 +581,11 @@
             });
         </script>
     @endscript
-
+    <script>
+        let alertModal = @js($this->voilateWords);
+        if (alertModal.length &&
+            alertModal != '[]' && alertModal != null && alertModal != undefined) {
+            alert(alertModal + " contains words that are not allowed. Please remove them and try again.");
+        }
+    </script>
 </div>
