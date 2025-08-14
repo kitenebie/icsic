@@ -126,7 +126,7 @@ class Comments extends Component
         if ($this->CommentType == "reply") {
             if (!$this->comment_input == null) {
                 $isValid = $this->checkWithAi();
-                if (!$isValid) {
+                if ($isValid) {
                     $this->comment_input = null;
                     return;
                 }else{
@@ -149,7 +149,7 @@ class Comments extends Component
             if (!$this->comment_input == null) {
                 $this->checkWithAi();
                 $isValid = $this->checkWithAi();
-                if (!$isValid) {
+                if ($isValid) {
                     $this->comment_input = null;
                     return;
                 }else{
@@ -183,9 +183,9 @@ class Comments extends Component
         if (!empty($offensiveWords)) {
             $this->voilateWords = $offensiveWords;
             $this->comment_input = null;
-            return false;
+            return true;
         }
-        return true;
+        return false;
     }
 
 
