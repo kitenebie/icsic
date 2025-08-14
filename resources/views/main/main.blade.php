@@ -11,11 +11,11 @@
         <div
             class="relative max-w-7xl mx-auto flex flex-col-reverse md:flex-row items-center justify-between gap-10 md:gap-20">
             <div class="max-w-xl">
-                <h1 class="text-2xl sm:text-3xl md:text-4xl font-extrabold leading-tight">
+                <h1 class="text-4xl sm:text-3xl md:text-4xl font-extrabold leading-tight">
                     Welcome to
                     <span class="font-extrabold"> Irosin Central School </span>
                 </h1>
-                <p class="mt-3 text-sm sm:text-base max-w-md">
+                <p class="mt-3 text-lg sm:text-base max-w-md">
                     Nurturing minds, building character, and shaping the future leaders
                     of tomorrow.
                 </p>
