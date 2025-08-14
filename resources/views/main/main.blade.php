@@ -1,8 +1,15 @@
 <x-layouts.custome.header>
-    <!-- Hero Section -->
-    <section class="bg-green-700 text-white h-[40rem] px-6 py-12 sm:py-16 md:py-20 lg:py-24 bg-cover bg-center"
+    <section class="relative bg-green-700 text-white px-6 py-12 sm:py-16 md:py-20 lg:py-24 bg-cover bg-center"
         style="background-image: url('/home.jpg');">
-        <div class="max-w-7xl mx-auto flex flex-col-reverse md:flex-row items-center justify-between gap-10 md:gap-20">
+
+        <!-- Dark overlay -->
+        <div class="absolute inset-0 bg-black/40"></div>
+
+        <!-- Bottom fade -->
+        <div class="absolute inset-x-0 bottom-0 h-32 bg-gradient-to-t from-black/50 to-transparent"></div>
+
+        <div
+            class="relative max-w-7xl mx-auto flex flex-col-reverse md:flex-row items-center justify-between gap-10 md:gap-20">
             <div class="max-w-xl">
                 <h1 class="text-2xl sm:text-3xl md:text-4xl font-extrabold leading-tight">
                     Welcome to
@@ -27,6 +34,7 @@
             </div>
         </div>
     </section>
+
     <style>
         .hero-section {
             background-image: url('/home.jpg');
