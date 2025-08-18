@@ -15,8 +15,8 @@ new #[Layout('components.layouts.auth')] class extends Component {
     public string $extension_name = '';
     public string $contact = '';
     public string $email = '';
-    public string $password = '';
-    public string $password_confirmation = '';
+    // public string $password = '';
+    // public string $password_confirmation = '';
 
     /**
      * Handle an incoming registration request.
@@ -30,7 +30,7 @@ new #[Layout('components.layouts.auth')] class extends Component {
             'extension_name' =>['string', 'max:255'],
             'contact' =>[ 'min:11','max:11'],
             'email' => ['required', 'string', 'lowercase', 'email', 'max:255', 'unique:' . User::class],
-            'password' => ['required', 'string', 'confirmed', Rules\Password::defaults()],
+            // 'password' => ['required', 'string', 'confirmed', Rules\Password::defaults()],
         ]);
 
         $validated['password'] = Hash::make($validated['password']);
