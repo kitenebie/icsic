@@ -33,11 +33,11 @@ public function store(Request $request)
             'email'          => $validated['email'],
             'password'       => Hash::make(str()->random(16)),
         ]);
-
         if ($user) {
             event(new Registered($user));
             Auth::login($user);
-
+            
+            dd($user);
             return redirect('/waiting')->with('status', '✅ Account created successfully!');
         }
 
