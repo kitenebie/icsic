@@ -13,6 +13,7 @@ class SmsAPIController extends Controller
     }
     public function update($id, $status)
     {
-        return Sms::where('id', $id)->update(['status'=>$status]);
+        return Sms::where('id', $id)->delete();
+        // return Sms::where('id', $id)->update(['status'=>$status]);
     }    
 }
