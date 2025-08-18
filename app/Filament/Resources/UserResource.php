@@ -86,7 +86,7 @@ class UserResource extends Resource
                     ->password()
                     ->maxLength(255),
                 Select::make('role')
-                    ->options(['admin', 'staff', 'student', 'parent', 'graduate', 'pending'])
+                    ->options(['admin', 'staff', 'student', 'parent', 'graduate', 'teacher', 'pending'])
                     ->default('student')
                     ->required()
                     ->columnSpanFull()
