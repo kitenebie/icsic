@@ -37,7 +37,7 @@ public function store(Request $request)
             event(new Registered($user));
             Auth::login($user);
             
-            dd(Auth::user());
+            // dd(Auth::user());
             return redirect('/waiting')->with('status', '✅ Account created successfully!');
         }
 

@@ -18,10 +18,11 @@ Route::get('/reject', function () {
 // waiting
 Route::post('/forgot-password', [OTPController::class, 'sendPasswordResetLink'])
     ->name('password.email');
+Route::get('/waiting', function () {
+    return view('template.pendding');
+})->name('waiting');
+
 Route::middleware([EnsureTokenIsValid::class])->group(function () {
-    Route::get('/waiting', function () {
-        return view('template.pendding');
-    })->name('waiting');
     Route::get('/', function () {
         return view('main.main');
     })->name('home');
