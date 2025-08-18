@@ -12,26 +12,31 @@ use Illuminate\Validation\Rules;
 
 class RegisterController extends Controller
 {
-
-    public function register(Request $request)
+    public function store(Request $request)
     {
         $validated = $request->validate([
-            'FirstName' => ['required', 'string', 'max:255'],
-            'LastName' => ['required', 'string', 'max:255'],
-            'MiddleName' => ['nullable', 'string', 'max:255'],
-            'extension_name' => ['nullable', 'string', 'max:255'],
-            'contact' => ['nullable', 'digits:11'],
-            'email' => ['required', 'string', 'lowercase', 'email', 'max:255', 'unique:users,email'],
-            'password' => ['required', 'confirmed', Rules\Password::defaults()],
+            'FirstName'       => ['required', 'string', 'max:255'],
+            'LastName'        => ['required', 'string', 'max:255'],
+            'MiddleName'      => ['nullable', 'string', 'max:255'],
+            'extension_name'  => ['nullable', 'string', 'max:255'],
+            'contact'         => ['nullable','digits:11'],
+            'email'           => ['required', 'string', 'lowercase', 'email', 'max:255', 'unique:' . User::class],
+            'password'        => ['required', 'confirmed', Rules\Password::defaults()],
         ]);
 
-        $validated['password'] = Hash::make($validated['password']);
-
-        $user = User::create($validated);
+        $user = User::create([
+            'FirstName'      => $validated['FirstName'],
+            'LastName'       => $validated['LastName'],
+            'MiddleName'     => $validated['MiddleName'] ?? null,
+            'extension_name' => $validated['extension_name'] ?? null,
+            'contact'        => $validated['contact'] ?? null,
+            'email'          => $validated['email'],
+            'password'       => Hash::make($validated['password']),
+        ]);
 
         event(new Registered($user));
         Auth::login($user);
 
         return redirect('/waiting');
-    }
+    } 
 }

@@ -54,7 +54,7 @@ public function register(): void
     @csrf
         <!-- First Name -->
         <flux:input
-            wire:model="FirstName"
+            name="FirstName"
             :label="__('First Name')"
             type="text"
             required
@@ -64,7 +64,7 @@ public function register(): void
         />
         <!-- Last Name -->
         <flux:input
-            wire:model="LastName"
+            name="LastName"
             :label="__('Last Name')"
             type="text"
             required
@@ -73,7 +73,7 @@ public function register(): void
         />
         <!-- Last Name -->
         <flux:input
-            wire:model="MiddleName"
+            name="MiddleName"
             :label="__('Middle Name')"
             type="text"
             autocomplete="MiddleName"
@@ -81,7 +81,7 @@ public function register(): void
         />
         <!-- Ext Name -->
         <flux:input
-            wire:model="extension_name"
+            name="extension_name"
             :label="__('Ext Name')"
             type="text"
             autocomplete="extension_name"
@@ -89,7 +89,7 @@ public function register(): void
         />
         <!-- conact -->
         <flux:input
-            wire:model="contact"
+            name="contact"
             :label="__('Contact Number')"
             type="number"
             autocomplete="contact"
@@ -97,7 +97,7 @@ public function register(): void
         />
         <!-- Email Address -->
         <flux:input
-            wire:model="email"
+            name="email"
             :label="__('Email address')"
             type="email"
             required
