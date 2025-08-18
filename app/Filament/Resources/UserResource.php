@@ -166,7 +166,7 @@ class UserResource extends Resource
             ->filters([
                 SelectFilter::make('role')
                     ->label('Filter by Role')
-                    ->options(['admin', 'staff', 'student', 'parent', 'graduate', 'pending'])
+                    ->options(['admin', 'staff', 'student', 'parent', 'graduate', 'teacher', 'pending'])
             ], layout: FiltersLayout::AboveContent)
             ->actions(
                 ActionGroup::make([

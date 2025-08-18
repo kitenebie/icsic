@@ -23,7 +23,7 @@ return new class extends Migration
             $table->string('lrn')->nullable();
             $table->string('year_graduated')->nullable();
             $table->jason('user_group')->nullable();
-            $table->enum('role', ['admin', 'staff', 'student', 'parent', 'graduate', 'pending'])->default('pending');
+            $table->enum('role', ['admin', 'staff', 'teacher', 'student', 'parent', 'graduate', 'pending'])->default('pending');
             $table->rememberToken();
             $table->timestamps();
         });
