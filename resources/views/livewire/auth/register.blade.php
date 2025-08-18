@@ -9,38 +9,6 @@ use Livewire\Attributes\Layout;
 use Livewire\Volt\Component;
 
 new #[Layout('components.layouts.auth')] class extends Component {
-    public string $FirstName = '';
-    public string $LastName = '';
-    public string $MiddleName = '';
-    public string $extension_name = '';
-    public string $contact = '';
-    public string $email = '';
-public function register(): void
-{
-    $validated = $this->validate([
-        'FirstName'       => ['required', 'string', 'max:255'],
-        'LastName'        => ['required', 'string', 'max:255'],
-        'MiddleName'      => ['nullable', 'string', 'max:255'],
-        'extension_name'  => ['nullable', 'string', 'max:255'],
-        'contact'         => ['nullable','digits:11'], // enforces exactly 11 digits
-        'email'           => ['required', 'string', 'lowercase', 'email', 'max:255', 'unique:' . User::class],
-        'password'        => ['required', 'confirmed', Rules\Password::defaults()],
-    ]);
-
-    // Hash password
-    $validated['password'] = Hash::make($validated['password']);
-
-    // Create user
-    $user = User::create($validated);
-
-    event(new Registered($user));
-
-    // Log in the newly created user
-    Auth::login($user);
-
-    // Redirect to waiting page
-    $this->redirect('/waiting');
-}
 
 }; ?>
 
