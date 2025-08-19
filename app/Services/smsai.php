@@ -24,7 +24,7 @@ class smsai
 
 
         $response = Http::withHeaders([
-            'Content-Type' => 'application/json',
+            'Content-Type'  => 'application/json',
             'Authorization' => 'Bearer ' . $this->apiKey,
         ])->post($this->apiUrl, [
             'model' => 'deepseek/deepseek-r1-0528:free',
