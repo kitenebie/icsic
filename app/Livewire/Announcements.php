@@ -123,19 +123,19 @@ class Announcements extends Component implements HasForms, HasTable, HasActions
                 MarkdownEditor::make('content')
                     ->toolbarButtons([]),
                 Checkbox::make('is_sms')
-                    ->label(fn($state): string => $state ? 'SMS is Enabled with AI generated text 🤖' : 'Enable SMS Notification')
+                    ->label(fn($state): string => $state ? 'SMS is Enabled' : 'Enable SMS Notification')
                     ->reactive()
-                    ->live()
-                    ->afterStateUpdated(function ($state, callable $get, callable $set) use ($smsai) {
-                        if ($state) { 
-                            // Only generate if content is non-empty and changed
-                            $content = $get('content');
-                            if (!empty($content)) {
-                                $this->smsMessage = $smsai->ask($content);
-                                $set('sms_message', $this->smsMessage);
-                            }
-                        } 
-                    }),
+                    ->live(),
+                    // ->afterStateUpdated(function ($state, callable $get, callable $set) use ($smsai) {
+                    //     if ($state) { 
+                    //         // Only generate if content is non-empty and changed
+                    //         // $content = $get('content');
+                    //         // // if (!empty($content)) {
+                    //         // //     $this->smsMessage = $smsai->ask($content);
+                    //         // //     $set('sms_message', $this->smsMessage);
+                    //         // // }
+                    //     } 
+                    // }),
 
                 // Checkbox::make('is_web')
                 //     ->label(fn($state): string => $state ? 'Web is Enabled with AI generated text 🤖' : 'Enable Web Notification')
