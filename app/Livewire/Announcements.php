@@ -127,29 +127,29 @@ class Announcements extends Component implements HasForms, HasTable, HasActions
                     ->reactive()
                     ->live()
                     ->afterStateUpdated(function ($state, callable $get, callable $set) use ($smsai) {
-                        if ($state) {
+                        if ($state) { 
                             // Only generate if content is non-empty and changed
                             $content = $get('content');
                             if (!empty($content)) {
                                 $this->smsMessage = $smsai->ask($content);
                                 $set('sms_message', $this->smsMessage);
                             }
-                        }
+                        } 
                     }),
 
-                Checkbox::make('is_web')
-                    ->label(fn($state): string => $state ? 'Web is Enabled with AI generated text 🤖' : 'Enable Web Notification')
-                    ->reactive()
-                    ->live()
-                    ->afterStateUpdated(function ($state, callable $get) use ($smsai) {
-                        if ($state && empty($this->smsMessage)) {
-                            $content = $get('content');
-                            if (!empty($content)) {
-                                $this->smsMessage = $smsai->ask($content);
-                            }
-                        }
-                    })
-                    ->default(false),
+                // Checkbox::make('is_web')
+                //     ->label(fn($state): string => $state ? 'Web is Enabled with AI generated text 🤖' : 'Enable Web Notification')
+                //     ->reactive()
+                //     ->live()
+                //     ->afterStateUpdated(function ($state, callable $get) use ($smsai) {
+                //         if ($state && empty($this->smsMessage)) {
+                //             $content = $get('content');
+                //             if (!empty($content)) {
+                //                 $this->smsMessage = $smsai->ask($content);
+                //             }
+                //         }
+                //     })
+                //     ->default(false),
 
                 Textarea::make('sms_message')
                     ->label('SMS Message Content (Ai Generated)')
