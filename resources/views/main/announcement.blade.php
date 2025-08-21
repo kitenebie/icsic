@@ -803,6 +803,8 @@
         }
 
         .reaction-option-btn {
+            width: 20px;
+            height: 27px;
             padding: 2px;
             transition: all 0.15s ease;
             cursor: pointer;
@@ -1337,6 +1339,7 @@
                 box-shadow: -2px 0 8px rgba(0, 0, 0, 0.15);
             }
         }
+
         .comments-header {
             display: flex;
             align-items: center;
