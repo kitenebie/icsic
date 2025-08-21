@@ -1297,16 +1297,47 @@
             box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
         }
 
+        /* Desktop behavior */
         @media (min-width: 1024px) {
+            .comments-modal {
+                position: fixed;
+                /* keep it floating */
+                inset: auto;
+                /* remove full overlay */
+                top: 0;
+                right: 0;
+                /* stick to the right */
+                height: 100vh;
+                width: auto;
+                z-index: 9999;
+                background: none;
+                backdrop-filter: none;
+            }
+
+            .modal-overlay {
+                display: none;
+                /* no dark overlay on desktop */
+            }
+
             .comments-container {
-                position: relative;
-                max-width: 500px;
-                height: 90vh;
-                max-height: 100vh;
-                border-radius: 8px;
+                position: fixed;
+                /* pin container */
+                right: 0;
+                /* right side */
+                top: 0;
+                /* from top */
+                height: 100vh;
+                /* full height */
+                width: 400px;
+                /* adjust width */
+                max-width: 400px;
+                border-radius: 0;
+                /* remove rounded corners if you want full side */
                 overflow: hidden;
+                box-shadow: -2px 0 8px rgba(0, 0, 0, 0.15);
             }
         }
+
 
         .comments-header {
             display: flex;
