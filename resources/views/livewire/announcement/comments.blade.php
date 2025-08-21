@@ -1,7 +1,7 @@
 <div class="comments-modal absolute {{ $this->closeCommentModal ? 'hidden' : 'flex' }}" role="dialog" aria-modal="true"
     aria-labelledby="comments-title">
 
-    <!-- Modal Overlay (Mobile) --> 
+    <!-- Modal Overlay (Mobile) -->
     <div class="modal-overlay lg:hidden" wire:click="closeComment"></div>
 
     <!-- Comments Container -->
@@ -210,4 +210,41 @@
             }
         };
     </script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Attach to all reaction trigger buttons
+            document.querySelectorAll('.reaction-trigger-btn').forEach(btn => {
+                btn.addEventListener('click', function(e) {
+                    e.preventDefault();
+
+                    const itemId = this.getAttribute('data-item-id');
+                    const type = this.getAttribute('data-type');
+
+                    // Close any other open popups first
+                    document.querySelectorAll('.reaction-popup-menu').forEach(menu => {
+                        menu.classList.add('hidden');
+                    });
+
+                    // Find the popup menu belonging to this item
+                    const popup = document.querySelector(
+                        `.reaction-popup-menu[data-item-id="${itemId}"]`
+                    );
+
+                    if (popup) {
+                        popup.classList.toggle('hidden');
+                    }
+                });
+            });
+
+            // Optional: close menu when clicking outside
+            document.addEventListener('click', function(e) {
+                if (!e.target.closest('.reaction-button-wrapper')) {
+                    document.querySelectorAll('.reaction-popup-menu').forEach(menu => {
+                        menu.classList.add('hidden');
+                    });
+                }
+            });
+        });
+    </script>
+
 </div>
