@@ -157,9 +157,52 @@
     </div>
 </div>
 
-@push('styles')
-<link href="{{ asset('css/announcement.css') }}" rel="stylesheet">
-@endpush
+<style>
+/* Comments component styles using standard CSS */
+.comments-modal { position: fixed; inset: 0; z-index: 50; }
+.modal-overlay { position: absolute; inset: 0; background-color: rgba(0, 0, 0, 0.5); }
+.comments-container { background-color: white; display: flex; flex-direction: column; height: 100%; width: 100%; max-width: 28rem; margin-left: auto; }
+@media (min-width: 1024px) {
+    .comments-container { position: relative; max-width: 32rem; border: 1px solid #e5e7eb; box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1); height: 100vh; max-height: 100vh; }
+}
+.comments-header { display: flex; align-items: center; gap: 0.75rem; padding: 1rem; border-bottom: 1px solid #e5e7eb; background-color: white; position: sticky; top: 0; z-index: 10; }
+.back-button { padding: 0.5rem; border-radius: 50%; transition: background-color 0.2s; }
+.back-button:hover { background-color: #f3f4f6; }
+.comments-title { font-size: 1.125rem; font-weight: 600; color: #111827; }
+.comments-list { flex: 1; overflow-y: auto; padding: 1rem; display: flex; flex-direction: column; gap: 1rem; }
+.comment-thread { display: flex; flex-direction: column; gap: 0.75rem; }
+.comment { display: flex; gap: 0.75rem; }
+.reply-comment { margin-left: 3rem; }
+.comment-avatar { width: 2.5rem; height: 2.5rem; border-radius: 50%; object-fit: cover; flex-shrink: 0; }
+.comment-content { flex: 1; min-width: 0; }
+.comment-bubble { background-color: #f3f4f6; border-radius: 1rem; padding: 0.75rem 1rem; display: inline-block; max-width: 100%; transition: background-color 0.2s; }
+.comment-bubble:hover { background-color: #f9fafb; }
+.comment-author { font-weight: 600; font-size: 0.875rem; color: #111827; margin-bottom: 0.25rem; }
+.comment-text { color: #374151; font-size: 0.875rem; line-height: 1.5; word-break: break-words; }
+.comment-actions { display: flex; align-items: center; gap: 1rem; margin-top: 0.5rem; margin-left: 1rem; font-size: 0.75rem; color: #6b7280; }
+.reply-button { font-weight: 500; cursor: pointer; transition: color 0.2s; }
+.reply-button:hover { color: #374151; }
+.comment-input-container { position: sticky; bottom: 0; background-color: white; border-top: 1px solid #e5e7eb; padding: 1rem; }
+.comment-input-wrapper { display: flex; align-items: flex-end; gap: 0.75rem; }
+.comment-input { flex: 1; background-color: #f3f4f6; border-radius: 1rem; padding: 0.75rem 1rem; font-size: 0.875rem; outline: none; resize: none; max-height: 8rem; overflow-y: auto; transition: all 0.2s; min-height: 2.5rem; }
+.comment-input:focus { ring: 2px; ring-color: rgba(59, 130, 246, 0.5); background-color: white; }
+.comment-input:empty:before { content: attr(placeholder); color: #6b7280; }
+.comment-input:focus:before { content: ''; }
+.mention { font-weight: 600; color: #2563eb; }
+.placeholder-text { color: #6b7280; }
+.send-button { color: #2563eb; padding: 0.5rem; transition: all 0.2s; border-radius: 50%; }
+.send-button:hover { color: #1d4ed8; background-color: #dbeafe; transform: scale(1.1); }
+.send-button:active { transform: scale(0.95); }
+.empty-state { display: flex; align-items: center; justify-content: center; height: 16rem; }
+.empty-message { color: #6b7280; font-size: 0.875rem; font-style: italic; }
+@media (max-width: 1024px) {
+    .comments-container { position: fixed; inset: 0; max-width: none; }
+}
+@media (min-width: 1024px) {
+    .comments-modal { position: relative; inset: auto; z-index: auto; }
+    .modal-overlay { display: none; }
+}
+</style>
 
 <script>
 document.addEventListener('DOMContentLoaded', function() {

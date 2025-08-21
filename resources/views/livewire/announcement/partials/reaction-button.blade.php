@@ -57,41 +57,17 @@
 </div>
 
 <style>
-.reaction-button-wrapper {
-    @apply relative inline-block;
-}
-
-.reaction-trigger-btn {
-    @apply flex items-center gap-1 hover:text-gray-800 cursor-pointer bg-none border-none p-1 rounded transition-colors;
-}
-
-.reaction-trigger-btn:hover {
-    @apply bg-gray-100;
-}
-
-.current-reaction {
-    @apply object-contain;
-}
-
-.reaction-popup-menu {
-    @apply absolute bottom-full mb-2 left-1/2 transform -translate-x-1/2 bg-white border rounded-full shadow-lg p-2 flex gap-1 z-50;
-    @apply before:content-[''] before:absolute before:top-full before:left-1/2 before:transform before:-translate-x-1/2 before:w-0 before:h-0;
-    @apply before:border-l-4 before:border-r-4 before:border-t-4 before:border-transparent before:border-t-white;
-}
-
-.reaction-option-btn {
-    @apply p-1 hover:scale-110 transition-transform cursor-pointer bg-none border-none rounded;
-}
-
-.reaction-option-btn:hover {
-    @apply bg-gray-50;
-}
-
+.reaction-button-wrapper { position: relative; display: inline-block; }
+.reaction-trigger-btn { display: flex; align-items: center; gap: 0.25rem; cursor: pointer; background: none; border: none; padding: 0.25rem; border-radius: 0.25rem; transition: all 0.2s; color: #6b7280; }
+.reaction-trigger-btn:hover { color: #374151; background-color: #f3f4f6; }
+.current-reaction { object-fit: contain; }
+.reaction-popup-menu { position: absolute; bottom: 100%; margin-bottom: 0.5rem; left: 50%; transform: translateX(-50%); background-color: white; border: 1px solid #e5e7eb; border-radius: 9999px; box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1); padding: 0.5rem; display: flex; gap: 0.25rem; z-index: 50; }
+.reaction-popup-menu::after { content: ''; position: absolute; top: 100%; left: 50%; transform: translateX(-50%); width: 0; height: 0; border-left: 4px solid transparent; border-right: 4px solid transparent; border-top: 4px solid white; }
+.reaction-option-btn { padding: 0.25rem; transition: transform 0.2s; cursor: pointer; background: none; border: none; border-radius: 0.25rem; }
+.reaction-option-btn:hover { transform: scale(1.1); background-color: #f9fafb; }
 @media (max-width: 768px) {
-    .reaction-popup-menu {
-        @apply bottom-auto top-full mt-2 mb-0;
-        @apply before:top-auto before:bottom-full before:border-t-0 before:border-b-4 before:border-b-white;
-    }
+    .reaction-popup-menu { bottom: auto; top: 100%; margin-bottom: 0; margin-top: 0.5rem; }
+    .reaction-popup-menu::after { top: auto; bottom: 100%; border-top: 0; border-bottom: 4px solid white; }
 }
 </style>
 

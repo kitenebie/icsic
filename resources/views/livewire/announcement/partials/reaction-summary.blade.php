@@ -29,38 +29,14 @@
 @endif
 
 <style>
-.reaction-summary-container {
-    @apply bg-white border border-gray-200 rounded-full px-2 py-1 flex items-center gap-1 shadow-sm float-right -mt-6 mr-1 relative z-10;
-}
-
-.reaction-emojis {
-    @apply flex items-center;
-}
-
-.reaction-emoji {
-    @apply w-4 h-4 rounded-full border border-white;
-}
-
-.reaction-emoji.overlapped {
-    @apply -ml-1;
-}
-
-.reaction-count {
-    @apply text-xs text-gray-600 font-medium min-w-[1rem] text-center;
-}
-
-/* Dark mode support */
+.reaction-summary-container { background-color: white; border: 1px solid #e5e7eb; border-radius: 9999px; padding: 0.25rem 0.5rem; display: flex; align-items: center; gap: 0.25rem; box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05); float: right; margin-top: -1.5rem; margin-right: 0.25rem; position: relative; z-index: 10; }
+.reaction-emojis { display: flex; align-items: center; }
+.reaction-emoji { width: 1rem; height: 1rem; border-radius: 50%; border: 1px solid white; }
+.reaction-emoji.overlapped { margin-left: -0.25rem; }
+.reaction-count { font-size: 0.75rem; color: #4b5563; font-weight: 500; min-width: 1rem; text-align: center; }
 @media (prefers-color-scheme: dark) {
-    .reaction-summary-container {
-        @apply bg-gray-700 border-gray-600;
-    }
-    
-    .reaction-count {
-        @apply text-gray-300;
-    }
-    
-    .reaction-emoji {
-        @apply border-gray-700;
-    }
+    .reaction-summary-container { background-color: #374151; border-color: #4b5563; }
+    .reaction-count { color: #d1d5db; }
+    .reaction-emoji { border-color: #374151; }
 }
 </style>
