@@ -794,7 +794,6 @@
             border-right: 6px solid transparent;
             border-top: 6px solid #ffffff;
             filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.1));
-            z-index: 9999;
         }
 
         .reaction-option-btn {
@@ -827,7 +826,7 @@
         }
 
         /* Responsive adjustments for reaction buttons */
-        @media (max-width: 768px) {
+        /* @media (max-width: 768px) {
             .reaction-popup-menu {
                 bottom: auto;
                 top: calc(100% + 8px);
@@ -849,7 +848,7 @@
             .reaction-option-btn:hover {
                 transform: scale(1.2);
             }
-        }
+        } */
 
         /* Dark mode support for reaction buttons */
         @media (prefers-color-scheme: dark) {
