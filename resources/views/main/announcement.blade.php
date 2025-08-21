@@ -1300,7 +1300,7 @@
             .comments-container {
                 position: relative;
                 max-width: 500px;
-                height: 100vh;
+                height: 90vh;
                 max-height: 100vh;
                 border-radius: 8px;
                 overflow: hidden;
