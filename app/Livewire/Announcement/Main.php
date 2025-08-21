@@ -43,8 +43,7 @@ class Main extends Component
     }
     public function total_reacts($post_id, $type)
     {
-        $reactNum = React::where('post_id', $post_id)->where('type', $type)->count();
-        return  $reactNum < 1 ? "" : ($reactNum > 1 ? $reactNum . " reacts" : $reactNum . " react");
+        return React::where('post_id', $post_id)->where('type', $type)->count();
     }
     public function current_react($post_id, $type)
     {
