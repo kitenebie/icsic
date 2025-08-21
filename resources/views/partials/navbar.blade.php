@@ -19,7 +19,7 @@
         </button>
 
         <!-- Desktop Nav Links -->
-        <ul class="sm:hidden md:hidden space-x-6 text-sm text-gray-600 items-center">
+        <ul class="sm:hidden md:flex space-x-6 text-sm text-gray-600 items-center">
             <li>
                 <a href="/"
                     class="{{ request()->routeIs('home') ? 'font-semibold text-gray-900' : 'hover:text-gray-900' }}">
