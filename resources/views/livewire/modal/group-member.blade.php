@@ -1,4 +1,4 @@
-<div class="absolute w-full h-screen">
+<div class="absolute hidden w-full h-screen">
     <!-- Modal -->
     <div id="myModal"
         class="fixed inset-0 pointer-events-none opacity-0 flex items-center justify-center bg-black bg-opacity-50 transition-opacity duration-300">
@@ -36,7 +36,7 @@
         const modalContent = modal.querySelector('div.bg-white');
 
         openBtn.addEventListener('click', () => {
-            modal.classList.remove('pointer-events-none', 'opacity-0');
+            modal.classList.remove('pointer-events-none','hidden', 'opacity-0');
             modal.classList.add('pointer-events-auto', 'opacity-100');
 
             modalContent.classList.remove('scale-95', 'opacity-0');
