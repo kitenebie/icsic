@@ -1,7 +1,4 @@
-{{-- 
-    Reusable reaction summary component
-    Props: $itemId, $type
---}}
+
 @php
     $reactions = $this->emojies_react($itemId, $type);
     $totalReacts = $this->total_reacts($itemId, $type);

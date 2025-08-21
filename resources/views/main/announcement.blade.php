@@ -1,8 +1,8 @@
 <x-layouts.custome.header>
-        @livewire('announcement.main')
-        <script src="/build/js/announcement.js"></script>
-        {{-- @livewire('announcement.comments') --}}
-            <style>
+    @livewire('announcement.main')
+    <script src="/build/js/announcement.js"></script>
+    {{-- @livewire('announcement.comments') --}}
+    <style>
         body {
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
             background-color: #f0f2f5;
