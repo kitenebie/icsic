@@ -1,4 +1,5 @@
 <x-layouts.custome.header>
+    <x-modal />
     @livewire('announcement.main')
     <script src="/build/js/announcement.js"></script>
     {{-- @livewire('announcement.comments') --}}
@@ -1263,7 +1264,6 @@
             });
         });
     </script>
-
 
     <style>
         .comments-modal {

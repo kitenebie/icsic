@@ -115,9 +115,15 @@
 
                 <input type="hidden" wire:model.defer="comment_input" name="comment" id="hidden-comment" />
 
-                <button wire:click="submit_comment()" class="send-button" aria-label="Send comment">
+                <!-- Submit button -->
+                <button wire:click="submit_comment" class="send-button" aria-label="Send comment">
                     <i class="fas fa-paper-plane"></i>
                 </button>
+            </div>
+
+            <!-- Sending indicator -->
+            <div class="sending-indicator" wire:loading wire:target="submit_comment">
+                <span>Sending...</span>
             </div>
         </div>
     </div>
