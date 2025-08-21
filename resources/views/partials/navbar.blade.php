@@ -64,8 +64,10 @@
         function handleResize() {
             if (window.innerWidth < 768) {
                 if (desktopMenu) desktopMenu.style.display = 'none';
+                desktopMenu.classList.add('hidden');
             } else {
                 if (desktopMenu) desktopMenu.style.display = 'flex';
+                desktopMenu.classList.remove('hidden');
             }
         }
 
