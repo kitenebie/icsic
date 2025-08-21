@@ -76,8 +76,7 @@ class Main extends Component
 
     public function commentCount($id)
     {
-        $commentNum = CommentDB::where('post_id', $id)->count();
-        return $commentNum > 1 ? $commentNum . " comments" : $commentNum . " comment";
+        return CommentDB::where('post_id', $id)->count();
     }
     public function reply_comments($id)
     {
