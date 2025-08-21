@@ -145,19 +145,19 @@
 
         <!-- Image Modal -->
         <div id="imageModal" class="image-modal hidden" role="dialog" aria-modal="true" aria-labelledby="modal-title">
-            <div class="modal-overlay" onclick="closeImageModal()"></div>
+            <div class="modal-overlay"></div>
+            <button class="modal-close" onclick="closeImageModal()" aria-label="Close modal">
+                <i class="fas fa-times"></i>
+            </button>
+            <button class="modal-nav modal-prev" onclick="changeModalImage(-1)" aria-label="Previous image">
+                <i class="fas fa-chevron-left"></i>
+            </button>
             <div class="modal-content">
-                <button class="modal-close" onclick="closeImageModal()" aria-label="Close modal">
-                    <i class="fas fa-times"></i>
-                </button>
-                <button class="modal-nav modal-prev" onclick="changeModalImage(-1)" aria-label="Previous image">
-                    <i class="fas fa-chevron-left"></i>
-                </button>
                 <img id="modalImage" src="" alt="Announcement image" class="modal-image" />
-                <button class="modal-nav modal-next" onclick="changeModalImage(1)" aria-label="Next image">
-                    <i class="fas fa-chevron-right"></i>
-                </button>
             </div>
+            <button class="modal-nav modal-next" onclick="changeModalImage(1)" aria-label="Next image">
+                <i class="fas fa-chevron-right"></i>
+            </button>
         </div>
     </div>
     @if (session('comment'))
