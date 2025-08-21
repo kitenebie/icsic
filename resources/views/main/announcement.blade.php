@@ -1272,18 +1272,18 @@
 
     <style>
         .comments-modal {
-            position: fixed;
+            position: sticky;
             inset: 0;
             z-index: 1000;
             height: 100vh;
-            background-color: rgba(0, 0, 0, 0.171);
+            background-color: transparent;
             backdrop-filter: blur(4px);
         }
 
         .modal-overlay {
             position: absolute;
             inset: 0;
-            background-color: rgba(0, 0, 0, 0.6);
+            background-color: transparent;
         }
 
         .comments-container {
