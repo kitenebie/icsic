@@ -1,20 +1,18 @@
-{{-- 
-    Reusable reaction button component
-    Props: $itemId, $type, $size (optional, defaults to 'medium')
---}}
 @php
     $currentReaction = $this->current_react($itemId, $type);
-    $sizeClasses = match($size ?? 'medium') {
-        'small' => 'w-4 h-4',
-        'medium' => 'w-5 h-5',
-        'large' => 'w-6 h-6',
-        default => 'w-5 h-5'
+
+    $sizeStyles = match($size ?? 'medium') {
+        'small' => 'width: 16px; height: 16px;',   // w-4 h-4
+        'medium' => 'width: 20px; height: 20px;',  // w-5 h-5
+        'large' => 'width: 24px; height: 24px;',   // w-6 h-6
+        default => 'width: 20px; height: 20px;'
     };
-    $popupSizeClasses = match($size ?? 'medium') {
-        'small' => 'w-6 h-6',
-        'medium' => 'w-8 h-8',
-        'large' => 'w-10 h-10',
-        default => 'w-8 h-8'
+
+    $popupSizeStyles = match($size ?? 'medium') {
+        'small' => 'width: 24px; height: 24px;',   // w-6 h-6
+        'medium' => 'width: 32px; height: 32px;',  // w-8 h-8
+        'large' => 'width: 40px; height: 40px;',   // w-10 h-10
+        default => 'width: 32px; height: 32px;'
     };
 @endphp
 
@@ -29,10 +27,10 @@
             <img
                 src="{{ $currentReaction }}"
                 alt="Current reaction"
-                class="current-reaction {{ $sizeClasses }}"
+                style="{{ $sizeStyles }}"
             />
         @else
-            <i class="far fa-thumbs-up {{ $sizeClasses }}"></i>
+            <i class="far fa-thumbs-up" style="{{ $sizeStyles }}"></i>
         @endif
     </button>
 
@@ -49,7 +47,7 @@
                 <img
                     src="/build/img/{{ strtolower($reaction) }}.png"
                     alt="{{ $reaction }}"
-                    class="{{ $popupSizeClasses }}"
+                    style="{{ $popupSizeStyles }}"
                 />
             </button>
         @endforeach

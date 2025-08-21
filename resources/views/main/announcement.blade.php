@@ -822,8 +822,6 @@
 
         .reaction-option-btn img {
             transition: all 0.15s ease;
-            width: 100px;
-            height: 100px;
             filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.2));
         }
 
