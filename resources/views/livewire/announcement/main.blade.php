@@ -1,7 +1,4 @@
 <div class="relative">
-    @if (session('comment'))
-        @livewire('announcement.comments', ['comment', 5])
-    @endif
     <div class="facebook-newsfeed">
         <!-- News Feed Posts -->
         <div class="posts-container">
@@ -163,4 +160,7 @@
             </div>
         </div>
     </div>
+    @if (session('comment'))
+        @livewire('announcement.comments', ['comment', 5])
+    @endif
 </div>
