@@ -1,7 +1,7 @@
-<div class="comments-modal {{ $this->closeCommentModal ? 'hidden' : 'flex' }}" role="dialog" aria-modal="true"
+<div class="comments-modal absolute {{ $this->closeCommentModal ? 'hidden' : 'flex' }}" role="dialog" aria-modal="true"
     aria-labelledby="comments-title">
 
-    <!-- Modal Overlay (Mobile) -->
+    <!-- Modal Overlay (Mobile) --> 
     <div class="modal-overlay lg:hidden" wire:click="closeComment"></div>
 
     <!-- Comments Container -->
