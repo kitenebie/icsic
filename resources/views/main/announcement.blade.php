@@ -828,8 +828,7 @@
         /* Responsive adjustments for reaction buttons */
         @media (max-width: 768px) {
             .reaction-popup-menu {
-                bottom: auto;
-                /* top: calc(100% + 8px); */
+                top: calc(100% + 8px);
                 padding: 10px 14px;
                 gap: 6px;
             }
