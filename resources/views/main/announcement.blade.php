@@ -4,7 +4,6 @@
     <script src="/build/js/announcement.js"></script>
     {{-- @livewire('announcement.comments') --}}
     <style>
-
         .facebook-newsfeed {
             min-height: 100vh;
             background-color: #f0f2f5;
@@ -826,29 +825,21 @@
         }
 
         /* Responsive adjustments for reaction buttons */
-        /* @media (max-width: 768px) {
-            .reaction-popup-menu {
-                bottom: auto;
-                top: calc(100% + 8px);
-                padding: 10px 14px;
-                gap: 6px;
-            }
-
+        @media (max-width: 768px) {
             .reaction-popup-menu::after {
-                top: auto;
-                bottom: 100%;
-                border-top: 0;
-                border-bottom: 6px solid #ffffff;
+                content: '';
+                position: absolute;
+                top: 100%;
+                left: 60%;
+                transform: translateX(-50%);
+                width: 0;
+                height: 0;
+                border-left: 6px solid transparent;
+                border-right: 6px solid transparent;
+                border-top: 6px solid #ffffff;
+                filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.1));
             }
-
-            .reaction-option-btn {
-                padding: 8px;
-            }
-
-            .reaction-option-btn:hover {
-                transform: scale(1.2);
-            }
-        } */
+        }
 
         /* Dark mode support for reaction buttons */
         @media (prefers-color-scheme: dark) {
