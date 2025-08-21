@@ -826,18 +826,20 @@
 
         /* Responsive adjustments for reaction buttons */
         @media (max-width: 768px) {
-            .reaction-popup-menu::after {
-                content: '';
+            .reaction-popup-menu {
                 position: absolute;
-                top: 100%;
-                left: 60%;
-                transform: translateX(-50%);
-                width: 0;
-                height: 0;
-                border-left: 6px solid transparent;
-                border-right: 6px solid transparent;
-                border-top: 6px solid #ffffff;
-                filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.1));
+                bottom: calc(100% + 8px);
+                left: 80%;
+                transform: translateX(-30%);
+                background: #ffffff;
+                border-radius: 25px;
+                box-shadow: 0 8px 16px rgba(0, 0, 0, 0.15), 0 0 0 1px rgba(0, 0, 0, 0.05);
+                padding: 8px 12px;
+                display: flex;
+                gap: 4px;
+                z-index: 100;
+                animation: reactionPopupIn 0.15s ease-out;
+                transform-origin: bottom center;
             }
         }
 
