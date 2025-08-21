@@ -1,4 +1,4 @@
-<div class="">
+<div class="relative">
     @if (session('comment'))
         @livewire('announcement.comments', ['comment', 5])
     @endif

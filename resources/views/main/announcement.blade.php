@@ -1275,7 +1275,8 @@
             position: fixed;
             inset: 0;
             z-index: 1000;
-            background-color: rgba(0, 0, 0, 0.6);
+            height: 100vh;
+            background-color: rgba(0, 0, 0, 0.171);
             backdrop-filter: blur(4px);
         }
 
@@ -1286,7 +1287,7 @@
         }
 
         .comments-container {
-            background-color: #ffffff;
+            background-color: #FFFFFF2F;
             display: flex;
             flex-direction: column;
             height: 90%;
