@@ -1289,7 +1289,7 @@
             background-color: #ffffff;
             display: flex;
             flex-direction: column;
-            height: 100%;
+            height: 90%;
             width: 100%;
             max-width: 500px;
             margin-left: auto;
