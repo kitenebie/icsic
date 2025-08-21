@@ -54,6 +54,7 @@
             </button>
         @endforeach
     </div>
+    
     <style>
     /* Facebook-style reaction button */
     .reaction-button-wrapper {
