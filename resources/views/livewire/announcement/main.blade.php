@@ -89,7 +89,7 @@
                                 wire:click='openComment({{ $announcement->id }})'
                                 aria-label="View {{ $this->commentCount($announcement->id) }} comments"
                             >
-                                {{-- {{ $this->commentCount($announcement->id) }} {{ Str::plural('comment', $this->commentCount($announcement->id)) }} --}}
+                                {{ $this->commentCount($announcement->id) }} {{ Str::plural('comment', $this->commentCount($announcement->id)) }}
                             </button>
                         @endif
                     </footer>
