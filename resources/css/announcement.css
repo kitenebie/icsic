@@ -1,0 +1,440 @@
+/* Announcement Components Styles */
+
+/* Main Container */
+.announcement-container {
+    @apply flex relative h-full mt-18;
+}
+
+.announcement-feed {
+    @apply flex flex-col lg:mr-8 gap-6 items-center justify-center w-full transition-opacity opacity-100 duration-750 lg:grow;
+}
+
+.announcement-section {
+    @apply max-w-2xl mt-2 mx-auto px-1 lg:px-6 pb-12;
+}
+
+/* Announcement Card */
+.announcement-card {
+    @apply mb-6 lg:min-w-[650px] bg-white border rounded-lg shadow-sm overflow-hidden;
+    transition: box-shadow 0.2s ease-in-out;
+}
+
+.announcement-card:hover {
+    @apply shadow-md;
+}
+
+/* Header */
+.announcement-header {
+    @apply border-b border-gray-200;
+}
+
+.school-info {
+    @apply flex items-center gap-3 p-4;
+}
+
+.school-avatar {
+    @apply w-12 h-12 rounded-full object-cover ring-2 ring-gray-100;
+}
+
+.school-details {
+    @apply flex flex-col;
+}
+
+.school-name {
+    @apply font-bold text-lg text-gray-900;
+}
+
+.post-meta {
+    @apply flex items-center gap-2 text-sm text-gray-500;
+}
+
+.separator {
+    @apply text-gray-400;
+}
+
+/* Content */
+.announcement-content {
+    @apply p-4;
+}
+
+.announcement-title {
+    @apply font-semibold text-xl mb-3 text-gray-900 leading-tight;
+}
+
+.announcement-text {
+    @apply text-gray-700 text-base mb-4 leading-relaxed;
+}
+
+.see-more-btn,
+.see-less-btn {
+    @apply text-blue-600 hover:text-blue-800 font-medium cursor-pointer bg-none border-none p-0 ml-1 transition-colors;
+}
+
+/* Image Gallery */
+.image-gallery {
+    @apply mb-4;
+}
+
+.gallery-grid {
+    @apply grid grid-cols-2 gap-2;
+}
+
+.gallery-single {
+    @apply grid gap-2;
+}
+
+.gallery-item {
+    @apply relative aspect-square bg-gray-100 rounded-lg overflow-hidden;
+}
+
+.gallery-image {
+    @apply w-full h-full object-cover transition-transform hover:scale-105 cursor-pointer;
+}
+
+.image-overlay {
+    @apply absolute inset-0 bg-black bg-opacity-60 flex items-center justify-center cursor-pointer transition-opacity hover:bg-opacity-70;
+}
+
+.image-count {
+    @apply text-white text-3xl font-bold;
+}
+
+/* Footer */
+.announcement-footer {
+    @apply flex justify-between items-center px-4 py-2 border-t border-gray-100 text-sm;
+}
+
+.comment-count-btn {
+    @apply text-gray-600 hover:text-gray-800 cursor-pointer bg-none border-none transition-colors;
+}
+
+/* Action Buttons */
+.action-buttons {
+    @apply flex justify-around border-t border-gray-100 py-2;
+}
+
+.action-button-group {
+    @apply relative flex items-center gap-2;
+}
+
+.action-button {
+    @apply flex items-center gap-2 px-4 py-2 text-gray-600 hover:text-gray-800 hover:bg-gray-50 rounded-lg transition-all cursor-pointer bg-none border-none;
+}
+
+.action-button:hover {
+    transform: translateY(-1px);
+}
+
+.action-label {
+    @apply text-sm text-gray-600;
+}
+
+/* Image Modal */
+.image-modal {
+    @apply fixed inset-0 z-50 flex items-center justify-center;
+    backdrop-filter: blur(2px);
+}
+
+.modal-overlay {
+    @apply absolute inset-0 bg-black bg-opacity-90;
+}
+
+.modal-content {
+    @apply relative max-w-4xl max-h-full p-4;
+}
+
+.modal-close {
+    @apply absolute top-4 right-4 text-white text-2xl hover:text-gray-300 z-10 cursor-pointer bg-none border-none transition-colors p-2 rounded-full;
+}
+
+.modal-close:hover {
+    @apply bg-black bg-opacity-50;
+}
+
+.modal-nav {
+    @apply absolute top-1/2 transform -translate-y-1/2 text-white text-2xl hover:text-gray-300 cursor-pointer bg-none border-none p-4 transition-all rounded-full;
+}
+
+.modal-nav:hover {
+    @apply bg-black bg-opacity-50 scale-110;
+}
+
+.modal-prev {
+    @apply left-4;
+}
+
+.modal-next {
+    @apply right-4;
+}
+
+.modal-image {
+    @apply max-w-full max-h-full object-contain rounded-lg shadow-2xl;
+}
+
+/* Comments Modal */
+.comments-modal {
+    @apply fixed inset-0 z-50;
+}
+
+.modal-overlay {
+    @apply absolute inset-0 bg-black bg-opacity-50;
+}
+
+.comments-container {
+    @apply bg-white flex flex-col h-full w-full max-w-md ml-auto;
+    @apply lg:relative lg:max-w-lg lg:border lg:shadow-lg lg:rounded-lg;
+}
+
+.comments-header {
+    @apply flex items-center gap-3 p-4 border-b border-gray-200 bg-white sticky top-0 z-10;
+}
+
+.back-button {
+    @apply p-2 hover:bg-gray-100 rounded-full transition-colors;
+}
+
+.comments-title {
+    @apply text-lg font-semibold text-gray-900;
+}
+
+.comments-list {
+    @apply flex-1 overflow-y-auto p-4 space-y-4;
+}
+
+.comment-thread {
+    @apply space-y-3;
+}
+
+.comment {
+    @apply flex gap-3;
+}
+
+.reply-comment {
+    @apply ml-12;
+}
+
+.comment-avatar {
+    @apply w-10 h-10 rounded-full object-cover flex-shrink-0 ring-2 ring-gray-100;
+}
+
+.comment-content {
+    @apply flex-1 min-w-0;
+}
+
+.comment-bubble {
+    @apply bg-gray-100 rounded-2xl px-4 py-3 inline-block max-w-full transition-colors;
+}
+
+.comment-bubble:hover {
+    @apply bg-gray-50;
+}
+
+.comment-author {
+    @apply font-semibold text-sm text-gray-900 mb-1;
+}
+
+.comment-text {
+    @apply text-gray-800 text-sm leading-relaxed break-words;
+}
+
+.comment-actions {
+    @apply flex items-center gap-4 mt-2 ml-4 text-xs text-gray-500;
+}
+
+.reply-button {
+    @apply hover:text-gray-700 font-medium cursor-pointer transition-colors;
+}
+
+/* Comment Input */
+.comment-input-container {
+    @apply sticky bottom-0 bg-white border-t border-gray-200 p-4;
+}
+
+.comment-input-wrapper {
+    @apply flex items-end gap-3;
+}
+
+.comment-input {
+    @apply flex-1 bg-gray-100 rounded-2xl px-4 py-3 text-sm outline-none resize-none max-h-32 overflow-y-auto transition-all;
+    min-height: 2.5rem;
+}
+
+.comment-input:focus {
+    @apply ring-2 ring-blue-500 ring-opacity-50 bg-white;
+}
+
+.comment-input:empty:before {
+    content: attr(placeholder);
+    @apply text-gray-500;
+}
+
+.comment-input:focus:before {
+    content: '';
+}
+
+.mention {
+    @apply font-semibold text-blue-600;
+}
+
+.placeholder-text {
+    @apply text-gray-500;
+}
+
+.send-button {
+    @apply text-blue-600 hover:text-blue-800 p-2 transition-all rounded-full;
+}
+
+.send-button:hover {
+    @apply bg-blue-50 scale-110;
+}
+
+.send-button:active {
+    @apply scale-95;
+}
+
+/* Empty State */
+.empty-state {
+    @apply flex items-center justify-center h-64;
+}
+
+.empty-message {
+    @apply text-gray-500 text-sm italic;
+}
+
+/* Utility Classes */
+.hidden {
+    @apply !hidden;
+}
+
+/* Loading States */
+.loading {
+    @apply opacity-50 pointer-events-none;
+}
+
+.loading::after {
+    content: '';
+    @apply absolute inset-0 bg-white bg-opacity-50;
+}
+
+/* Animations */
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes slideUp {
+    from { transform: translateY(100%); }
+    to { transform: translateY(0); }
+}
+
+@keyframes pulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.5; }
+}
+
+.fade-in {
+    animation: fadeIn 0.3s ease-out;
+}
+
+.slide-up {
+    animation: slideUp 0.3s ease-out;
+}
+
+.pulse {
+    animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+
+/* Responsive Design */
+@media (max-width: 640px) {
+    .announcement-card {
+        @apply min-w-full mx-2 rounded-none;
+    }
+    
+    .announcement-section {
+        @apply px-0;
+    }
+    
+    .gallery-grid {
+        @apply grid-cols-1;
+    }
+    
+    .modal-content {
+        @apply mx-4;
+    }
+    
+    .school-info {
+        @apply p-3;
+    }
+    
+    .announcement-content {
+        @apply p-3;
+    }
+}
+
+@media (min-width: 641px) and (max-width: 1024px) {
+    .announcement-card {
+        @apply min-w-full;
+    }
+    
+    .gallery-grid {
+        @apply grid-cols-2;
+    }
+}
+
+@media (min-width: 1024px) {
+    .comments-modal {
+        @apply relative inset-auto z-auto;
+    }
+    
+    .comments-modal .modal-overlay {
+        @apply hidden;
+    }
+    
+    .comments-container {
+        @apply h-screen max-h-screen;
+    }
+}
+
+/* Dark mode support */
+@media (prefers-color-scheme: dark) {
+    .announcement-card {
+        @apply bg-gray-800 border-gray-700;
+    }
+    
+    .school-name {
+        @apply text-white;
+    }
+    
+    .announcement-title {
+        @apply text-white;
+    }
+    
+    .announcement-text {
+        @apply text-gray-300;
+    }
+    
+    .comment-bubble {
+        @apply bg-gray-700 text-white;
+    }
+    
+    .comment-input {
+        @apply bg-gray-700 text-white;
+    }
+    
+    .comments-container {
+        @apply bg-gray-800;
+    }
+}
+
+/* Print styles */
+@media print {
+    .action-buttons,
+    .comments-modal,
+    .image-modal {
+        @apply hidden;
+    }
+    
+    .announcement-card {
+        @apply shadow-none border border-gray-300;
+    }
+}

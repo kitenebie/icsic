@@ -1,208 +1,212 @@
-<div class="flex relative h-full mt-18">
-    <div
-        class="flex flex-col lg:mr-8 gap-6 items-center justify-center w-full transition-opacity opacity-100 duration-750 lg:grow starting:opacity-0">
-        <section class="max-w-2xl mt-2 mx-auto px-1 lg-px-6 pb-12">
-            @forelse ($announcements  as $arryKey => $announcement)
-                <!-- Facebook-like Post Section -->
-                <!-- 4 -->
-                <div id="{{ $announcement->id }}"
-                    class="mb-2 lg:min-w-[650px] bg-white border border lg-p-4 rounded-md shadow-sm text-gray-800 text-xs sm:text-sm"
-                    style="font-family: Arial, sans-serif">
+<div class="announcement-container">
+    <div class="announcement-feed">
+        <section class="announcement-section">
+            @forelse ($announcements as $announcement)
+                <article id="announcement-{{ $announcement->id }}" class="announcement-card">
                     <!-- Header -->
-                    <div class="flex items-center gap-2 p-3 border-b border-gray-200">
-                        <img alt="Irosin Central School logo green circle with ICS text" class="w-11 h-11 rounded-full"
-                            height="24"
-                            src="https://storage.googleapis.com/a1aa/image/10e94bdc-c408-4a4f-44e0-cc6af4a3b589.jpg"
-                            width="24" />
-                        <div class="ml-2 flex flex-col leading-tight">
-                            <span class="font-bold text-lg">
-                                Irosin Central School
-                            </span>
-                            <span class="text-gray-500 text-md">
-                                {{ $this->formatDateHumanReadable($announcement->created_at) }} ·
-                                @if ($announcement->tags)
-                                    <i class="fas fa-users"> </i>
-                                @else
-                                    <i class="fas fa-globe-americas"> </i>
-                                @endif
-                            </span>
+                    <header class="announcement-header">
+                        <div class="school-info">
+                            <img 
+                                src="https://storage.googleapis.com/a1aa/image/10e94bdc-c408-4a4f-44e0-cc6af4a3b589.jpg" 
+                                alt="Irosin Central School logo" 
+                                class="school-avatar"
+                            />
+                            <div class="school-details">
+                                <h3 class="school-name">Irosin Central School</h3>
+                                <div class="post-meta">
+                                    <time datetime="{{ $announcement->created_at }}">
+                                        {{ $this->formatDateHumanReadable($announcement->created_at) }}
+                                    </time>
+                                    <span class="separator">·</span>
+                                    @if ($announcement->tags)
+                                        <i class="fas fa-users" aria-label="Group post" title="Group post"></i>
+                                    @else
+                                        <i class="fas fa-globe-americas" aria-label="Public post" title="Public post"></i>
+                                    @endif
+                                </div>
+                            </div>
                         </div>
-                    </div>
-                    <!-- Post Content -->
-                    <div class="p-3">
-                        <p class="font-semibold text-lg mb-1 leading-snug">
-                            {{ $announcement->title }}
-                        </p>
-                        <p class="text-gray-700 text-lg mb-3 leading-relaxed">
-                            <span class="announcement-preview">{!! \Illuminate\Support\Str::limit(
-                                $announcement->content,
-                                218,
-                                ' <button class="see-more-btn text-gray-500 ml-2"> See more...</button> ',
-                            ) !!}</span>
-                            <span class="announcement-full" style="display: none;">{!! $announcement->content !!}</span>
+                    </header>
 
-                            <button class="hide-btn ml-2 text-gray-500" style="display: none;"> See less...</button>
-                        </p>
-                        <!-- Image Grid -->
-                        @if (count($announcement->images) >= 4)
-                            <div class="grid grid-cols-2 grid-rows-2 gap-1 mb-3">
-                            @else
-                                <div class="grid grid-cols gap-1 mb-3">
-                        @endif
-                        @php
-                            $imagesArray = array_map(fn($img) => asset('storage/' . $img), $announcement->images);
-                        @endphp
-
-                        @forelse (array_slice($announcement->images, 0, 4) as $index => $image)
-                            <div
-                                class="bg-white-700 border flex justify-center items-center relative text-white font-bold text-sm w-full h-64">
-
-                                <img alt="{{ $image }}" src="{{ asset('storage/' . $image) }}"
-                                    onclick="openModal({{ json_encode($imagesArray) }}, {{ $index }})"
-                                    class="w-full h-full object-cover cursor-pointer" />
-
-                                @if ($index == 4)
-                                    <span onclick="openModal({{ json_encode($imagesArray) }}, {{ $index }})"
-                                        class="absolute text-3xl p-4 bg-gray-900 bg-opacity-50 inset-0 flex justify-center items-center cursor-pointer">
-                                        {{ count($announcement->images) - 4 }}+
-                                    </span>
+                    <!-- Content -->
+                    <div class="announcement-content">
+                        <h4 class="announcement-title">{{ $announcement->title }}</h4>
+                        <div class="announcement-text">
+                            <div class="content-preview">
+                                {!! \Illuminate\Support\Str::limit($announcement->content, 218, '') !!}
+                                @if (strlen($announcement->content) > 218)
+                                    <button class="see-more-btn" onclick="toggleContent({{ $announcement->id }})">
+                                        See more...
+                                    </button>
                                 @endif
                             </div>
-                        @empty
-                        @endforelse
-
-                        <!-- Modal -->
-                        <div id="imageModal"
-                            class="fixed inset-0 hidden items-center justify-center bg-black bg-opacity-90 z-50">
-                            <button onclick="closeModal()"
-                                class="absolute top-4 right-4 text-white text-3xl font-bold hover:text-gray-400">&times;</button>
-
-                            <!-- Prev Button -->
-                            <button id="prevBtn" onclick="changeImage(-1)"
-                                class="absolute left-4 text-white text-4xl font-bold px-3 py-1 bg-gray-800 bg-opacity-50 rounded-full hover:bg-opacity-80">
-                                &#10094;
-                            </button>
-
-                            <!-- Image -->
-                            <img id="modalImage" src="" class="max-w-full max-h-full rounded-lg shadow-lg" />
-
-                            <!-- Next Button -->
-                            <button id="nextBtn" onclick="changeImage(1)"
-                                class="absolute right-4 text-white text-4xl font-bold px-3 py-1 bg-gray-800 bg-opacity-50 rounded-full hover:bg-opacity-80">
-                                &#10095;
-                            </button>
+                            @if (strlen($announcement->content) > 218)
+                                <div class="content-full hidden">
+                                    {!! $announcement->content !!}
+                                    <button class="see-less-btn" onclick="toggleContent({{ $announcement->id }})">
+                                        See less...
+                                    </button>
+                                </div>
+                            @endif
                         </div>
 
-                        <script>
-                            let modalImages = [];
-                            let currentIndex = 0;
+                        <!-- Image Gallery -->
+                        @if (count($announcement->images) > 0)
+                            <div class="image-gallery {{ count($announcement->images) >= 4 ? 'gallery-grid' : 'gallery-single' }}">
+                                @php
+                                    $imagesArray = array_map(fn($img) => asset('storage/' . $img), $announcement->images);
+                                @endphp
 
-                            function openModal(images, index) {
-                                modalImages = images;
-                                currentIndex = index;
-                                document.getElementById('modalImage').src = modalImages[currentIndex];
-                                document.getElementById('imageModal').classList.remove('hidden');
-                                document.getElementById('imageModal').classList.add('flex');
-                            }
-
-                            function closeModal() {
-                                document.getElementById('imageModal').classList.add('hidden');
-                                document.getElementById('imageModal').classList.remove('flex');
-                            }
-
-                            function changeImage(direction) {
-                                currentIndex += direction;
-                                if (currentIndex < 0) currentIndex = modalImages.length - 1;
-                                if (currentIndex >= modalImages.length) currentIndex = 0;
-                                document.getElementById('modalImage').src = modalImages[currentIndex];
-                            }
-                        </script>
-
+                                @foreach (array_slice($announcement->images, 0, 4) as $index => $image)
+                                    <div class="gallery-item">
+                                        <img 
+                                            src="{{ asset('storage/' . $image) }}" 
+                                            alt="Announcement image {{ $index + 1 }}"
+                                            class="gallery-image cursor-pointer"
+                                            onclick="openImageModal({{ json_encode($imagesArray) }}, {{ $index }})"
+                                        />
+                                        @if ($index === 3 && count($announcement->images) > 4)
+                                            <div class="image-overlay" onclick="openImageModal({{ json_encode($imagesArray) }}, {{ $index }})">
+                                                <span class="image-count">+{{ count($announcement->images) - 4 }}</span>
+                                            </div>
+                                        @endif
+                                    </div>
+                                @endforeach
+                            </div>
+                        @endif
                     </div>
-                    <!-- Project Timeline -->
-                    {{-- <div class="bg-green-100 p-2 rounded text-[11px] text-green-900 leading-tight">
-                        <p class="flex items-center gap-1 mb-1 font-semibold">
-                            <i class="fas fa-info-circle"> </i>
-                            Project Timeline
-                        </p>
-                        <ul class="list-disc list-inside space-y-0.5">
-                            <li>Phase 1 (Completed): Classroom renovations</li>
-                            <li>Phase 2 (In Progress): Library expansion</li>
-                            <li>Phase 3 (Starting June): Playground installation</li>
-                            <li>Project Completion: July 2023</li>
-                        </ul>
-                    </div> --}}
-                </div>
-                <!-- Footer -->
-                <div
-                    class="border-t border-gray-200 flex justify-between items-center px-3 py-2 text-gray-500 text-[11px] relative">
-                    <div class="flex relative items-center justify-start gap-0 relative">
-                        @forelse ($this->emojies_react($announcement->id, "post") as $emoji)
-                            <img src="/build/img/{{ strtolower($emoji->react) }}.png" class="size-[1.2rem] -ml-2"
-                                role="button" aria-label="{{ $emoji }}" data-reaction="{{ $emoji }}"
-                                title="{{ $emoji }}" />
-                        @empty
-                        @endforelse
-                        <span id="reaction-summary" class="text-gray-700 text-[12px] ml-2 select-none cursor-default">
-                            {{ $this->total_reacts($announcement->id, 'post') }}
-                        </span>
-                    </div>
-                    <a href="/announcements-comment/({{ $announcement->id }}">
-                        {{ $this->commentCount($announcement->id) }} </a>
-                </div>
-                <div class="border-t border-gray-200 flex justify-around text-gray-600 text-[11px] py-2">
-                    <button class="flex items-center gap-1 hover:text-gray-800 relative" id="like-button-footer"
-                        aria-haspopup="true" aria-expanded="false" aria-controls="reaction-popup-footer"
-                        aria-label="Like button with reactions">
-                        <i {{ $this->current_react($announcement->id, 'post') == '' ? '' : 'hidden' }}
-                            id="like-icon-post1" class="far fa-thumbs-up text-2xl"> </i>
-                        <img id="like-icon-post" src="{{ $this->current_react($announcement->id, 'post') }}"
-                            class="{{ $this->current_react($announcement->id, 'post') == '' ? 'hidden' : '' }} size-[1.6rem]" />
 
-                        <!-- Reaction popup footer -->
-                        <div class="reaction-popup flex" id="reaction-popup-footer" role="list"
-                            aria-label="Reactions">
-                            <img src="/build/img/like.png" class="size-[2rem]"
-                                wire:click='react("Like", {{ $announcement->id }}, "post")' role="button"
-                                aria-label="Like" data-reaction="like" title="Like" />
-                            <img src="/build/img/love.png" class="size-[2rem]"
-                                wire:click='react("Love", {{ $announcement->id }}, "post")' role="button"
-                                aria-label="Love" data-reaction="love" title="Love" />
-                            <img src="/build/img/haha.png" class="size-[2rem]"
-                                wire:click='react("Haha", {{ $announcement->id }}, "post")' role="button"
-                                aria-label="Haha" data-reaction="haha" title="Haha" />
-                            <img src="/build/img/care.png" class="size-[2rem]"
-                                wire:click='react("Care", {{ $announcement->id }}, "post")' role="button"
-                                aria-label="Care" data-reaction="care" title="Care" />
-                            <img src="/build/img/wow.png" class="size-[2rem]"
-                                wire:click='react("Wow", {{ $announcement->id }}, "post")' role="button"
-                                aria-label="Wow" data-reaction="wow" title="Wow" />
-                            <img src="/build/img/sad.png" class="size-[2rem]"
-                                wire:click='react("Sad", {{ $announcement->id }}, "post")' role="button"
-                                aria-label="Sad" data-reaction="sad" title="Sad" />
-                            <img src="/build/img/angry.png" class="size-[2rem]"
-                                wire:click='react("Angry", {{ $announcement->id }}, "post")' role="button"
-                                aria-label="Angry" data-reaction="angry" title="Angry" />
+                    <!-- Footer Stats -->
+                    <footer class="announcement-footer">
+                        @include('livewire.announcement.partials.reaction-summary', [
+                            'itemId' => $announcement->id,
+                            'type' => 'post'
+                        ])
+                        
+                        @if ($this->commentCount($announcement->id))
+                            <button 
+                                class="comment-count-btn"
+                                wire:click='openComment({{ $announcement->id }})'
+                                aria-label="View {{ $this->commentCount($announcement->id) }} comments"
+                            >
+                                {{ $this->commentCount($announcement->id) }} {{ Str::plural('comment', $this->commentCount($announcement->id)) }}
+                            </button>
+                        @endif
+                    </footer>
+
+                    <!-- Action Buttons -->
+                    <div class="action-buttons">
+                        <div class="action-button-group">
+                            @include('livewire.announcement.partials.reaction-button', [
+                                'itemId' => $announcement->id,
+                                'type' => 'post',
+                                'size' => 'medium'
+                            ])
+                            <span class="action-label">Like</span>
                         </div>
-                    </button>
-                    <button wire:click='openComment({{ $announcement->id }})'
-                        class="flex items-center gap-1 hover:text-gray-800" id="comment-toggle-button"
-                        aria-expanded="false" aria-controls="comments-section">
-                        <i class="far fa-comment text-2xl"> </i>
-                        Comment
-                    </button>
-                    <button class="flex items-center gap-1 hover:text-gray-800">
-                        <i class="fas fa-share text-2xl"> </i>
-                        Share
-                    </button>
-                </div>
+
+                        <button 
+                            class="action-button"
+                            wire:click='openComment({{ $announcement->id }})'
+                            aria-label="Comment on post"
+                        >
+                            <i class="far fa-comment"></i>
+                            <span>Comment</span>
+                        </button>
+
+                        <button class="action-button" aria-label="Share post">
+                            <i class="fas fa-share"></i>
+                            <span>Share</span>
+                        </button>
+                    </div>
+                </article>
+            @empty
+                @livewire('announcement.not-found')
+            @endforelse
+        </section>
     </div>
-@empty
-    @livewire('announcement.not-found')
-    @endforelse
-    </section>
+
+    <!-- Image Modal -->
+    <div id="imageModal" class="image-modal hidden" role="dialog" aria-modal="true" aria-labelledby="modal-title">
+        <div class="modal-overlay" onclick="closeImageModal()"></div>
+        <div class="modal-content">
+            <button class="modal-close" onclick="closeImageModal()" aria-label="Close modal">
+                <i class="fas fa-times"></i>
+            </button>
+            <button class="modal-nav modal-prev" onclick="changeModalImage(-1)" aria-label="Previous image">
+                <i class="fas fa-chevron-left"></i>
+            </button>
+            <img id="modalImage" src="" alt="Announcement image" class="modal-image" />
+            <button class="modal-nav modal-next" onclick="changeModalImage(1)" aria-label="Next image">
+                <i class="fas fa-chevron-right"></i>
+            </button>
+        </div>
+    </div>
+
+    @if (session('comment'))
+        @livewire('announcement.comments', ['comment', 5])
+    @endif
 </div>
-@if (session('comment'))
-    @livewire('announcement.comments', ['comment', 5])
-@endif
-</div>
+
+@push('styles')
+<link href="{{ asset('css/announcement.css') }}" rel="stylesheet">
+@endpush
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Content toggle functionality
+    window.toggleContent = function(announcementId) {
+        const card = document.querySelector(`#announcement-${announcementId}`);
+        const preview = card.querySelector('.content-preview');
+        const full = card.querySelector('.content-full');
+        
+        if (preview && full) {
+            preview.classList.toggle('hidden');
+            full.classList.toggle('hidden');
+        }
+    };
+
+    // Image modal functionality
+    let currentImages = [];
+    let currentIndex = 0;
+
+    window.openImageModal = function(images, index) {
+        currentImages = images;
+        currentIndex = index;
+        document.getElementById('modalImage').src = currentImages[currentIndex];
+        document.getElementById('imageModal').classList.remove('hidden');
+        document.body.classList.add('overflow-hidden');
+    };
+
+    window.closeImageModal = function() {
+        document.getElementById('imageModal').classList.add('hidden');
+        document.body.classList.remove('overflow-hidden');
+    };
+
+    window.changeModalImage = function(direction) {
+        currentIndex += direction;
+        if (currentIndex < 0) currentIndex = currentImages.length - 1;
+        if (currentIndex >= currentImages.length) currentIndex = 0;
+        document.getElementById('modalImage').src = currentImages[currentIndex];
+    };
+
+    // Keyboard navigation for modal
+    document.addEventListener('keydown', function(e) {
+        const modal = document.getElementById('imageModal');
+        if (!modal.classList.contains('hidden')) {
+            switch(e.key) {
+                case 'Escape':
+                    closeImageModal();
+                    break;
+                case 'ArrowLeft':
+                    changeModalImage(-1);
+                    break;
+                case 'ArrowRight':
+                    changeModalImage(1);
+                    break;
+            }
+        }
+    });
+
+});
+</script>
