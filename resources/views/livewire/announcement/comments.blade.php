@@ -122,6 +122,7 @@
         </div>
     </div>
 
+    {{-- Comment box behavior --}}
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             const richBox = document.getElementById('rich-comment-box');
@@ -132,27 +133,18 @@
 
                 richBox.addEventListener('input', function() {
                     const content = richBox.innerText.trim();
-
-                    // Handle first character input
                     if (content.length === 1 && isActive) {
                         hiddenInput.value = content;
                         isActive = false;
                     }
-
-                    // Clear placeholder behavior
                     const html = richBox.innerHTML;
                     if (!html.includes('&nbsp;') && !html.includes('\u00A0') && isActive) {
                         richBox.innerText = '';
                     }
-
-                    // Sync with hidden input
                     hiddenInput.value = content;
-                    hiddenInput.dispatchEvent(new Event('input', {
-                        bubbles: true
-                    }));
+                    hiddenInput.dispatchEvent(new Event('input', { bubbles: true }));
                 });
 
-                // Handle focus/blur for better UX
                 richBox.addEventListener('focus', function() {
                     const wrapper = this.closest('.comment-input-wrapper');
                     if (wrapper) {
@@ -169,7 +161,6 @@
                     }
                 });
 
-                // Handle Enter key for submission
                 richBox.addEventListener('keydown', function(e) {
                     if (e.key === 'Enter' && !e.shiftKey) {
                         e.preventDefault();
@@ -179,10 +170,8 @@
                 });
             }
 
-            // Screen size detection for responsive behavior
             function handleScreenSizeChange() {
                 const isSmallOrMedium = window.matchMedia('(max-width: 1023px)').matches;
-
                 if (window.Livewire) {
                     window.Livewire.dispatch('post-created', {
                         refreshPosts: !isSmallOrMedium
@@ -190,18 +179,15 @@
                 }
             }
 
-            // Initial check and resize listener
             handleScreenSizeChange();
             window.addEventListener('resize', handleScreenSizeChange);
 
-            // Handle violation words alert
             const violationWords = @json($this->voilateWords ?? []);
             if (violationWords && violationWords.length > 0 && violationWords !== '[]') {
                 alert(`${violationWords} contains words that are not allowed. Please remove them and try again.`);
             }
         });
 
-        // Global function for comment submission
         window.submitComment = function() {
             const input = document.getElementById('hidden-comment');
             if (input) {
@@ -210,33 +196,29 @@
             }
         };
     </script>
+
+    {{-- Reaction button behavior --}}
     <script>
         document.addEventListener('DOMContentLoaded', function() {
-            // Attach to all reaction trigger buttons
             document.querySelectorAll('.reaction-trigger-btn').forEach(btn => {
                 btn.addEventListener('click', function(e) {
                     e.preventDefault();
 
-                    const itemId = this.getAttribute('data-item-id');
-                    const type = this.getAttribute('data-type');
-
-                    // Close any other open popups first
+                    // close all open menus first
                     document.querySelectorAll('.reaction-popup-menu').forEach(menu => {
                         menu.classList.add('hidden');
                     });
 
-                    // Find the popup menu belonging to this item
-                    const popup = document.querySelector(
-                        `.reaction-popup-menu[data-item-id="${itemId}"]`
-                    );
-
+                    // open only the popup inside THIS wrapper
+                    const wrapper = this.closest('.reaction-button-wrapper');
+                    const popup = wrapper.querySelector('.reaction-popup-menu');
                     if (popup) {
                         popup.classList.toggle('hidden');
                     }
                 });
             });
 
-            // Optional: close menu when clicking outside
+            // close menus if clicking outside
             document.addEventListener('click', function(e) {
                 if (!e.target.closest('.reaction-button-wrapper')) {
                     document.querySelectorAll('.reaction-popup-menu').forEach(menu => {
@@ -246,5 +228,4 @@
             });
         });
     </script>
-
 </div>
