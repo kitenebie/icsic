@@ -18,7 +18,7 @@
         </button>
 
         <!-- Desktop Nav Links -->
-        <ul class="hidden md:flex space-x-6 text-sm text-gray-600">
+        <ul class="md:flex sm:hidden space-x-6 text-sm text-gray-600">
             <li><a href="/"
                     class="{{ request()->routeIs('home') ? 'font-semibold text-gray-900' : 'hover:text-gray-900' }}">Home</a>
             </li>
