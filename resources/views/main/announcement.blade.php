@@ -794,6 +794,7 @@
             border-right: 6px solid transparent;
             border-top: 6px solid #ffffff;
             filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.1));
+            z-index: 9999;
         }
 
         .reaction-option-btn {
