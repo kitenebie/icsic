@@ -18,7 +18,7 @@
         </button>
 
         <!-- Desktop Nav Links -->
-        <ul class="hidden md:flex space-x-6 text-sm text-gray-600">
+        <ul class="flex md:hidden space-x-6 text-sm text-gray-600">
             <li><a href="/"
                     class="{{ request()->routeIs('home') ? 'font-semibold text-gray-900' : 'hover:text-gray-900' }}">Home</a>
             </li>
@@ -71,9 +71,9 @@
                 </li>
             @endif
 
-                <li><a href="/about"
-                        class="{{ request()->routeIs('about') ? 'font-semibold text-gray-900' : 'hover:text-gray-900' }}">About
-                        Us</a></li>
+            <li><a href="/about"
+                    class="{{ request()->routeIs('about') ? 'font-semibold text-gray-900' : 'hover:text-gray-900' }}">About
+                    Us</a></li>
             @if (!auth()->check())
                 <a class="hidden md:inline-block bg-green-800 text-white text-xs sm:text-sm font-semibold px-4 py-2 rounded-md hover:bg-green-900"
                     href="/">Login</a>
@@ -90,7 +90,7 @@
     </div>
 
     <!-- Mobile Menu -->
-    <div id="mobile-menu" class="md:hidden hidden px-6 pb-4 space-y-2 text-sm text-gray-600">
+    <div id="mobile-menu" class="md:flex hidden px-6 pb-4 space-y-2 text-sm text-gray-600">
         <a href="/"
             class="{{ request()->routeIs('home') ? 'font-semibold text-gray-900 block' : 'hover:text-gray-900 block' }}">Home</a>
         <a href="/news"
@@ -103,7 +103,7 @@
                 class="{{ request()->routeIs('events') ? 'font-semibold text-gray-900 block' : 'hover:text-gray-900 block' }}">Events</a>
             <a href="/gallery"
                 class="{{ request()->routeIs('gallery') ? 'font-semibold text-gray-900 block' : 'hover:text-gray-900 block' }}">Gallery</a>
-            
+
 
             <div class="border-t border-gray-200 pt-2 mt-2">
                 <p class="text-gray-500 text-xs uppercase tracking-wide">More</p>
@@ -114,7 +114,8 @@
                         Documents</button>
                 @endif
                 <button href="#" id="open_users_groupModal"
-                    class="block px-2 py-1 text-sm text-gray-700 hover:bg-gray-100 hover:text-gray-900">My Groups</button>
+                    class="block px-2 py-1 text-sm text-gray-700 hover:bg-gray-100 hover:text-gray-900">My
+                    Groups</button>
                 <button onclick="modalNotify()" href="#" id="open_users_Notification1"
                     class="block px-2 py-1 text-sm text-gray-700 hover:bg-gray-100 hover:text-gray-900">Notification</button>
                 <button onclick="modalProfile()" href="#" id="open_users_Profile"
@@ -122,9 +123,9 @@
 
             </div>
         @endif
-<a href="/about"
-                class="{{ request()->routeIs('about') ? 'font-semibold text-gray-900 block' : 'hover:text-gray-900 block' }}">About
-                Us</a>
+        <a href="/about"
+            class="{{ request()->routeIs('about') ? 'font-semibold text-gray-900 block' : 'hover:text-gray-900 block' }}">About
+            Us</a>
         @if (!auth()->check())
             <div class="flex mt-4">
                 <a href="/" class="bg-green-800 text-white font-semibold px-4 py-2 rounded-md">Login</a>
@@ -143,7 +144,7 @@
         // Select all <a> elements
         const links = document.querySelectorAll('a');
         const loadingIndicator = document.getElementById('loadingIndicator');
-        
+
         // Add click listener to each link
         links.forEach(link => {
             link.addEventListener('click', function(event) {
