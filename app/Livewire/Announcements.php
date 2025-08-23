@@ -60,7 +60,30 @@ class Announcements extends Component implements HasForms, HasTable, HasActions
     {
         $audienceService = app(AudienceService::class);
         $smsai = app(smsai::class);
+
         return $form
+            ->extraAttributes([
+                'x-data' => '{}',
+                'x-init' => "
+                let saved = JSON.parse(localStorage.getItem('post_form') ?? '{}');
+                
+                if (Object.keys(saved).length > 0) {
+                    if (confirm('A saved draft was found. Do you want to restore it?')) {
+                        for (let key in saved) {
+                            if (saved[key] !== null && saved[key] !== undefined) {
+                                \$wire.set('data.' + key, saved[key]);
+                            }
+                        }
+                    } else {
+                        localStorage.removeItem('post_form');
+                    }
+                }
+
+                \$watch('\$wire.data', value => {
+                    localStorage.setItem('post_form', JSON.stringify(value));
+                });
+            ",
+            ])
             ->schema([
                 Section::make('Audience Visibility')
                     ->description('Control who can view this post by tagging specific users or groups')
@@ -92,7 +115,6 @@ class Announcements extends Component implements HasForms, HasTable, HasActions
                                     ->noSearchResultsMessage('No groups match your search.')
                                     ->options(fn() => $audienceService->getVisibleGroups()),
                             ])
-
                     ]),
                 TextInput::make('title')
                     ->required(),
@@ -126,31 +148,6 @@ class Announcements extends Component implements HasForms, HasTable, HasActions
                     ->label(fn($state): string => $state ? 'SMS is Enabled' : 'Enable SMS Notification')
                     ->reactive()
                     ->live(),
-                    // ->afterStateUpdated(function ($state, callable $get, callable $set) use ($smsai) {
-                    //     if ($state) { 
-                    //         // Only generate if content is non-empty and changed
-                    //         // $content = $get('content');
-                    //         // // if (!empty($content)) {
-                    //         // //     $this->smsMessage = $smsai->ask($content);
-                    //         // //     $set('sms_message', $this->smsMessage);
-                    //         // // }
-                    //     } 
-                    // }),
-
-                // Checkbox::make('is_web')
-                //     ->label(fn($state): string => $state ? 'Web is Enabled with AI generated text 🤖' : 'Enable Web Notification')
-                //     ->reactive()
-                //     ->live()
-                //     ->afterStateUpdated(function ($state, callable $get) use ($smsai) {
-                //         if ($state && empty($this->smsMessage)) {
-                //             $content = $get('content');
-                //             if (!empty($content)) {
-                //                 $this->smsMessage = $smsai->ask($content);
-                //             }
-                //         }
-                //     })
-                //     ->default(false),
-
                 Textarea::make('sms_message')
                     ->label('SMS Message Content (Ai Generated)')
                     ->rows(3)
@@ -160,6 +157,7 @@ class Announcements extends Component implements HasForms, HasTable, HasActions
             ])
             ->statePath('data');
     }
+
     public bool $isLoading = false;
 
     public function create(): void
