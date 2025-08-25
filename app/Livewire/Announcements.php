@@ -65,7 +65,7 @@ class Announcements extends Component implements HasForms, HasTable, HasActions
             ->extraAttributes([
                 'x-data' => '{}',
                 'x-init' => "
-                let saved = JSON.parse(localStorage.getItem('post_form') ?? '{}');
+                let saved = JSON.parse(localStorage.getItem('announcementDraft') ?? '{}');
                 
                 if (Object.keys(saved).length > 0) {
                     if (confirm('A saved draft was found. Do you want to restore it?')) {
@@ -75,12 +75,12 @@ class Announcements extends Component implements HasForms, HasTable, HasActions
                             }
                         }
                     } else {
-                        localStorage.removeItem('post_form');
+                        localStorage.removeItem('announcementDraft');
                     }
                 }
 
                 \$watch('\$wire.data', value => {
-                    localStorage.setItem('post_form', JSON.stringify(value));
+                    localStorage.setItem('announcementDraft', JSON.stringify(value));
                 });
             ",
             ])
