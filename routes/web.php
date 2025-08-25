@@ -59,6 +59,10 @@ Route::middleware([EnsureTokenIsValid::class])->group(function () {
 
     Route::view('/otpMail', 'otpMail');
     Route::view('/CreatePassword', 'CreatePassword');
+require __DIR__ . '/auth.php';
+require __DIR__ . '/parent/web.php';
+require __DIR__ . '/firebase/web.php';
+require __DIR__ . '/app/api.php';
 });
 
 
@@ -74,7 +78,3 @@ Route::get('/fonts/instrument-sans.css', function () {
         ->header('Cross-Origin-Resource-Policy', 'same-origin'); // makes COEP happy
 });
 
-require __DIR__ . '/auth.php';
-require __DIR__ . '/parent/web.php';
-require __DIR__ . '/firebase/web.php';
-require __DIR__ . '/app/api.php';
