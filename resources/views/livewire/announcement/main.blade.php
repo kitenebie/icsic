@@ -3,7 +3,7 @@
         <!-- News Feed Posts -->
         <div class="posts-container">
             @forelse ($announcements as $announcement)
-                <article id="announcement-{{ $announcement->id }}" class="facebook-post">
+                <article id="announcement-{{ $announcement->id }}" class="facebook-post mt-12">
                     <!-- Post Header -->
                     <header id="{{ $announcement->id }}" class="post-header">
                         <div class="post-author-info">
