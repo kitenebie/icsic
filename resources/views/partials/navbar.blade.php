@@ -63,9 +63,9 @@
                                     Documents</button>
                             </li>
                         @endif
-                        <li><button id="open_users_groupModal"
+                        {{-- <li><button id="open_users_groupModal"
                                 class="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">My
-                                Groups</button></li>
+                                Groups</button></li> --}}
                         <li><button onclick="modalNotify()" id="open_users_Notification"
                                 class="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Notification</button>
                         </li>
@@ -120,8 +120,8 @@
                         class="block w-full text-left px-2 py-1 text-sm text-gray-700 hover:bg-gray-100">Request
                         Documents</button>
                 @endif
-                <button id="open_users_groupModal"
-                    class="block w-full text-left px-2 py-1 text-sm text-gray-700 hover:bg-gray-100">My Groups</button>
+                {{-- <button id="open_users_groupModal"
+                    class="block w-full text-left px-2 py-1 text-sm text-gray-700 hover:bg-gray-100">My Groups</button> --}}
                 <button onclick="modalNotify()" id="open_users_Notification1"
                     class="block w-full text-left px-2 py-1 text-sm text-gray-700 hover:bg-gray-100">Notification</button>
                 <button onclick="modalProfile()" id="open_users_Profile"
