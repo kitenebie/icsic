@@ -26,9 +26,9 @@
                                 </div>
                             </div>
                         </div>
-                        <button class="post-options-btn" aria-label="Post options">
+                        {{-- <button class="post-options-btn" aria-label="Post options">
                             <i class="fas fa-ellipsis-h"></i>
-                        </button>
+                        </button> --}}
                     </header>
 
                     <!-- Post Content -->
