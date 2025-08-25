@@ -4,6 +4,13 @@
         <div class="posts-container">
             @forelse ($announcements as $announcement)
                 <article id="announcement-{{ $announcement->id }}" class="facebook-post mt-12">
+                    @section('meta')
+                        <meta property="og:title" content="{{ $announcement->title }}" />
+                        <meta property="og:description" content="{{ Str::limit(strip_tags($announcement->content), 150) }}" />
+                        <meta property="og:image" content="{{ asset('storage/' . $announcement->image_path) }}" />
+                        <meta property="og:url" content="{{ url()->current() }}" />
+                        <meta property="og:type" content="article" />
+                    @endsection
                     <!-- Post Header -->
                     <header id="{{ $announcement->id }}" class="post-header">
                         <div class="post-author-info">
@@ -125,7 +132,7 @@
                         </button>
 
                         <button class="action-btn"
-                            onclick="sharePost({{ $announcement->id }}, '{{ addslashes($announcement->title) }}', '{{ addslashes(strip_tags($announcement->content)) }}')"
+                            onclick="sharePost('irosincentralschool.com/announcements#{{ $announcement->id }}', '{{ addslashes($announcement->title) }}', '{{ addslashes(strip_tags($announcement->content)) }}')"
                             aria-label="Share post">
                             <i class="fas fa-share"></i>
                             <span class="action-text">Share</span>

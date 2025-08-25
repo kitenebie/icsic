@@ -117,6 +117,7 @@
             border-radius: 10px;
         }
     </style>
+    @yield('meta')
     @fluxAppearance
     @livewireStyles()
 </head>
