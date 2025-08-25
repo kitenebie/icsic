@@ -107,7 +107,7 @@
             input.type = 'text';
             input.name = 'student_name[]';
             input.placeholder = "Enter another child's name";
-            input.className = 'w-full border px-4 py-2 rounded dark:text-white';
+            input.className = 'w-full border px-4 py-2 rounded bg-white';
             input.required = true;
 
             const removeBtn = document.createElement('button');
