@@ -232,14 +232,19 @@
                             <form wire:submit="save_comment" class="flex-1">
                                 <textarea wire:model='commentInput' id="commentInput"
                                     class="w-full border bg-white border-[#cbd5e1] rounded-md p-2 text-[13px] text-[#334155] focus:outline-none focus:ring-2 focus:ring-[#2CAC5B]"
-                                    rows="3" placeholder="Write your comment here...">{{ $this->ReplycommentInput }}</textarea>
+                                    rows="3" placeholder="Write your comment here..."></textarea>
+
                                 <div class="mt-2 flex justify-end">
-                                    <button id="submitComment" type="submit" onclick="sending()"
-                                        class="px-4 py-1.5 text-[13px] font-medium text-white bg-[#2CAC5B] rounded-md hover:bg-[#249c50] transition-colors">
-                                        Submit
+                                    <button id="submitComment" type="submit"
+                                        class="px-4 py-1.5 text-[13px] font-medium text-white bg-[#2CAC5B] rounded-md hover:bg-[#249c50] transition-colors"
+                                        wire:loading.attr="disabled">
+
+                                        <span wire:loading.remove wire:target="save_comment">Submit</span>
+                                        <span wire:loading wire:target="save_comment">Submitting...</span>
                                     </button>
                                 </div>
                             </form>
+
                         </div>
                     </div>
                 </section>
