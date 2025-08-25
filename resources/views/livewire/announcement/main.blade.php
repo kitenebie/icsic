@@ -1,4 +1,4 @@
-<div class="relative">
+<div class="relative w-full bg-[#f0f2f5]">
     <div class="facebook-newsfeed">
         <!-- News Feed Posts -->
         <div class="posts-container">
