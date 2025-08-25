@@ -922,241 +922,138 @@
                     }
                 }
             });
+window.sharePost = function (postId, title, content) {
+    const postUrl = `${window.location.origin}/read/${btoa(postId)}`;
+    const shareText = title + '\n\n' + content.substring(0, 200) + (content.length > 200 ? '...' : '');
 
-            window.sharePost = function(postId, title, content) {
-                const postUrl = `${window.location.origin}/read/${btoa(postId)}`;
-                const shareText = title + '\n\n' + content.substring(0, 200) + (content.length > 200 ? '...' :
-                    '');
+    if (navigator.share) {
+        navigator.share({
+            title: title,
+            text: shareText,
+            url: postUrl
+        }).catch(err => {
+            console.log('Error sharing:', err);
+            showShareModal(postUrl, title, shareText);
+        });
+    } else {
+        showShareModal(postUrl, title, shareText);
+    }
+};
 
-                if (navigator.share) {
-                    navigator.share({
-                        title: title,
-                        text: shareText,
-                        url: postUrl
-                    }).catch(err => {
-                        console.log('Error sharing:', err);
-                        showShareModal(postUrl, title, shareText);
-                    });
-                } else {
-                    showShareModal(postUrl, title, shareText);
-                }
-            };
-
-            function showShareModal(url, title, text) {
-                const modal = document.createElement('div');
-                modal.className = 'share-modal';
-                modal.innerHTML = `
-            <div class="share-modal-overlay" onclick="closeShareModal()"></div>
-            <div class="share-modal-content">
-                <div class="share-modal-header">
-                    <h3>Share this post</h3>
-                    <button onclick="closeShareModal()" class="share-modal-close">
-                        <i class="fas fa-times"></i>
-                    </button>
-                </div>
-                <div class="share-options">
-                    <button onclick="shareToFacebook('${url}', '${title.replace(/'/g, "\\'")}', '${text.replace(/'/g, "\\'")}')">
-                        <i class="fab fa-facebook-f"></i>
-                        <span>Facebook</span>
-                    </button>
-                    <button onclick="shareToTwitter('${url}', '${text.replace(/'/g, "\\'")}')">
-                        <i class="fab fa-twitter"></i>
-                        <span>Twitter</span>
-                    </button>
-                    <button onclick="shareToWhatsApp('${text.replace(/'/g, "\\'")}', '${url}')">
-                        <i class="fab fa-whatsapp"></i>
-                        <span>WhatsApp</span>
-                    </button>
-                    <button onclick="copyToClipboard('${url}')">
-                        <i class="fas fa-link"></i>
-                        <span>Copy Link</span>
-                    </button>
-                </div>
+function showShareModal(url, title, text) {
+    const modal = document.createElement('div');
+    modal.className = 'share-modal';
+    modal.innerHTML = `
+        <div class="share-modal-overlay" onclick="closeShareModal()"></div>
+        <div class="share-modal-content">
+            <div class="share-modal-header">
+                <h3>Share this post</h3>
+                <button onclick="closeShareModal()" class="share-modal-close">
+                    <i class="fas fa-times"></i>
+                </button>
             </div>
-        `;
+            <div class="share-options">
+                <button onclick="shareToFacebook('${url}', '${encodeURIComponent(title)}', '${encodeURIComponent(text)}')">
+                    <i class="fab fa-facebook-f"></i>
+                    <span>Facebook</span>
+                </button>
+                <button onclick="shareToTwitter('${url}', '${encodeURIComponent(text)}')">
+                    <i class="fab fa-twitter"></i>
+                    <span>Twitter</span>
+                </button>
+                <button onclick="shareToWhatsApp('${encodeURIComponent(text)}', '${url}')">
+                    <i class="fab fa-whatsapp"></i>
+                    <span>WhatsApp</span>
+                </button>
+                <button onclick="copyToClipboard(event, '${url}')">
+                    <i class="fas fa-link"></i>
+                    <span>Copy Link</span>
+                </button>
+            </div>
+        </div>
+    `;
 
-                document.body.appendChild(modal);
-                document.body.style.overflow = 'hidden';
+    document.body.appendChild(modal);
+    document.body.style.overflow = 'hidden';
+}
 
-                if (!document.getElementById('share-modal-styles')) {
-                    const styles = document.createElement('style');
-                    styles.id = 'share-modal-styles';
-                    styles.innerHTML = `
-                .share-modal {
-                    position: fixed;
-                    top: 0;
-                    left: 0;
-                    width: 100%;
-                    height: 100%;
-                    z-index: 1000;
-                    display: flex;
-                    align-items: center;
-                    justify-content: center;
-                }
-                .share-modal-overlay {
-                    position: absolute;
-                    top: 0;
-                    left: 0;
-                    width: 100%;
-                    height: 100%;
-                    background: rgba(0, 0, 0, 0.6);
-                }
-                .share-modal-content {
-                    background: white;
-                    border-radius: 8px;
-                    padding: 20px;
-                    max-width: 400px;
-                    width: 90%;
-                    position: relative;
-                    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-                }
-                .share-modal-header {
-                    display: flex;
-                    justify-content: space-between;
-                    align-items: center;
-                    margin-bottom: 20px;
-                }
-                .share-modal-header h3 {
-                    margin: 0;
-                    font-size: 20px;
-                    font-weight: 600;
-                    color: #050505;
-                }
-                .share-modal-close {
-                    background: none;
-                    border: none;
-                    font-size: 20px;
-                    cursor: pointer;
-                    color: #65676b;
-                    padding: 5px;
-                    border-radius: 50%;
-                    width: 36px;
-                    height: 36px;
-                    display: flex;
-                    align-items: center;
-                    justify-content: center;
-                }
-                .share-modal-close:hover {
-                    background-color: #f2f3f4;
-                }
-                .share-options {
-                    display: grid;
-                    grid-template-columns: repeat(2, 1fr);
-                    gap: 12px;
-                }
-                .share-options button {
-                    display: flex;
-                    flex-direction: column;
-                    align-items: center;
-                    gap: 8px;
-                    padding: 16px;
-                    background: #f0f2f5;
-                    border: none;
-                    border-radius: 8px;
-                    cursor: pointer;
-                    transition: background-color 0.2s;
-                    font-size: 14px;
-                    font-weight: 600;
-                    color: #050505;
-                }
-                .share-options button:hover {
-                    background: #e4e6ea;
-                }
-                .share-options button i {
-                    font-size: 24px;
-                }
-                .share-options button:nth-child(1) i { color: #1877f2; }
-                .share-options button:nth-child(2) i { color: #1da1f2; }
-                .share-options button:nth-child(3) i { color: #25d366; }
-                .share-options button:nth-child(4) i { color: #65676b; }
-            `;
-                    document.head.appendChild(styles);
-                }
-            }
+// 🟢 FIX: pass event
+window.copyToClipboard = function (event, url) {
+    if (navigator.clipboard) {
+        navigator.clipboard.writeText(url).then(() => {
+            const button = event.target.closest('button');
+            showCopiedState(button);
+        }).catch(() => {
+            fallbackCopyToClipboard(event, url);
+        });
+    } else {
+        fallbackCopyToClipboard(event, url);
+    }
+};
 
-            window.closeShareModal = function() {
-                const modal = document.querySelector('.share-modal');
-                if (modal) {
-                    modal.remove();
-                    document.body.style.overflow = 'auto';
-                }
-            };
+function fallbackCopyToClipboard(event, text) {
+    const textArea = document.createElement('textarea');
+    textArea.value = text;
+    textArea.style.position = 'fixed';
+    textArea.style.left = '-999999px';
+    textArea.style.top = '-999999px';
+    document.body.appendChild(textArea);
+    textArea.focus();
+    textArea.select();
 
-            window.shareToFacebook = function(url, title, text) {
-                const facebookUrl =
-                    `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(url)}&quote=${encodeURIComponent(text)}`;
-                window.open(facebookUrl, 'facebook-share', 'width=580,height=400,scrollbars=yes,resizable=yes');
-                closeShareModal();
-            };
+    try {
+        document.execCommand('copy');
+        const button = event.target.closest('button');
+        showCopiedState(button);
+    } catch (err) {
+        console.error('Could not copy text: ', err);
+        alert('Could not copy link. Please copy manually: ' + text);
+    }
 
-            window.shareToTwitter = function(url, text) {
-                const twitterUrl =
-                    `https://twitter.com/intent/tweet?text=${encodeURIComponent(text)}&url=${encodeURIComponent(url)}`;
-                window.open(twitterUrl, 'twitter-share', 'width=580,height=400,scrollbars=yes,resizable=yes');
-                closeShareModal();
-            };
+    document.body.removeChild(textArea);
+}
 
-            window.shareToWhatsApp = function(text, url) {
-                const whatsappText = `${text} ${url}`;
-                const whatsappUrl = `https://wa.me/?text=${encodeURIComponent(whatsappText)}`;
-                window.open(whatsappUrl, '_blank');
-                closeShareModal();
-            };
+// 🔥 extract copied state for reusability
+function showCopiedState(button) {
+    const originalText = button.innerHTML;
+    button.innerHTML = '<i class="fas fa-check"></i><span>Copied!</span>';
+    button.style.background = '#42b883';
+    button.style.color = 'white';
 
-            window.copyToClipboard = function(url) {
-                if (navigator.clipboard) {
-                    navigator.clipboard.writeText(url).then(() => {
-                        const button = event.target.closest('button');
-                        const originalText = button.innerHTML;
-                        button.innerHTML = '<i class="fas fa-check"></i><span>Copied!</span>';
-                        button.style.background = '#42b883';
-                        button.style.color = 'white';
+    setTimeout(() => {
+        button.innerHTML = originalText;
+        button.style.background = '';
+        button.style.color = '';
+        closeShareModal();
+    }, 1000);
+}
 
-                        setTimeout(() => {
-                            button.innerHTML = originalText;
-                            button.style.background = '';
-                            button.style.color = '';
-                            closeShareModal();
-                        }, 1000);
-                    }).catch(() => {
-                        fallbackCopyToClipboard(url);
-                    });
-                } else {
-                    fallbackCopyToClipboard(url);
-                }
-            };
+window.shareToFacebook = function (url, title, text) {
+    const facebookUrl = `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(url)}&quote=${decodeURIComponent(text)}`;
+    window.open(facebookUrl, 'facebook-share', 'width=580,height=400,scrollbars=yes,resizable=yes');
+    closeShareModal();
+};
 
-            function fallbackCopyToClipboard(text) {
-                const textArea = document.createElement('textarea');
-                textArea.value = text;
-                textArea.style.position = 'fixed';
-                textArea.style.left = '-999999px';
-                textArea.style.top = '-999999px';
-                document.body.appendChild(textArea);
-                textArea.focus();
-                textArea.select();
+window.shareToTwitter = function (url, text) {
+    const twitterUrl = `https://twitter.com/intent/tweet?text=${decodeURIComponent(text)}&url=${encodeURIComponent(url)}`;
+    window.open(twitterUrl, 'twitter-share', 'width=580,height=400,scrollbars=yes,resizable=yes');
+    closeShareModal();
+};
 
-                try {
-                    document.execCommand('copy');
-                    const button = event.target.closest('button');
-                    const originalText = button.innerHTML;
-                    button.innerHTML = '<i class="fas fa-check"></i><span>Copied!</span>';
-                    button.style.background = '#42b883';
-                    button.style.color = 'white';
+window.shareToWhatsApp = function (text, url) {
+    const whatsappText = `${decodeURIComponent(text)} ${url}`;
+    const whatsappUrl = `https://wa.me/?text=${encodeURIComponent(whatsappText)}`;
+    window.open(whatsappUrl, '_blank');
+    closeShareModal();
+};
 
-                    setTimeout(() => {
-                        button.innerHTML = originalText;
-                        button.style.background = '';
-                        button.style.color = '';
-                        closeShareModal();
-                    }, 1000);
-                } catch (err) {
-                    console.error('Could not copy text: ', err);
-                    alert('Could not copy link. Please copy manually: ' + text);
-                }
-
-                document.body.removeChild(textArea);
-            }
+window.closeShareModal = function () {
+    const modal = document.querySelector('.share-modal');
+    if (modal) {
+        modal.remove();
+        document.body.style.overflow = 'auto';
+    }
+};
 
             // Handle reaction popup visibility with improved Facebook-like behavior
             const triggers = document.querySelectorAll('.reaction-trigger-btn');

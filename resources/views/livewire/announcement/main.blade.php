@@ -163,25 +163,5 @@
     @if (session('comment'))
         @livewire('announcement.comments', ['comment', 5])
     @endif
-    <script>
-        function sharePost(postId, title, content) {
-            const postUrl = `${window.location.origin}/read/${btoa(postId)}`;
-            const shareText = title + '\n\n' + content.substring(0, 200) + (content.length > 200 ? '...' :
-                '');
-
-            if (navigator.share) {
-                navigator.share({
-                    title: title,
-                    text: shareText,
-                    url: postUrl
-                }).catch(err => {
-                    console.log('Error sharing:', err);
-                    showShareModal(postUrl, title, shareText);
-                });
-            } else {
-                showShareModal(postUrl, title, shareText);
-            }
-        };
-    </script>
 
 </div>
