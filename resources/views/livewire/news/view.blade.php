@@ -240,10 +240,13 @@
                                         wire:loading.attr="disabled" wire:target="save_comment">
 
                                         {{-- Default text --}}
-                                        <span wire:loading.remove wire:target="save_comment">Submit</span>
+                                        <span wire:loading.remove.delay.shortest wire:target="save_comment">
+                                            Submit
+                                        </span>
 
                                         {{-- Loading indicator --}}
-                                        <span wire:loading wire:target="save_comment" class="flex items-center gap-2">
+                                        <span wire:loading.inline wire:target="save_comment"
+                                            class="flex items-center gap-2">
                                             <svg class="animate-spin h-4 w-4 text-white"
                                                 xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
                                                 <circle class="opacity-25" cx="12" cy="12" r="10"
@@ -256,6 +259,7 @@
                                     </button>
                                 </div>
                             </form>
+
 
                         </div>
                     </div>
