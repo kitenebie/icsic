@@ -1570,7 +1570,7 @@
         }
 
         /* Dark mode support */
-        @media (prefers-color-scheme: dark) {
+        /* @media (prefers-color-scheme: dark) {
 
             .comments-container,
             .comment-bubble,
@@ -1617,7 +1617,7 @@
             .comment-input-container {
                 border-top-color: #3e4042;
             }
-        }
+        } */
     </style>
 
 </x-layouts.custome.header>
