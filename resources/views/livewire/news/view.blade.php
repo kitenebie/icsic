@@ -231,7 +231,7 @@
                             </span>
                             <form wire:submit="save_comment" class="flex-1">
                                 <textarea wire:model='commentInput'
-                                    class="w-full border border-[#cbd5e1] rounded-md p-2 text-[13px] text-[#334155] focus:outline-none focus:ring-2 focus:ring-[#2CAC5B]"
+                                    class="w-full border bg-white border-[#cbd5e1] rounded-md p-2 text-[13px] text-[#334155] focus:outline-none focus:ring-2 focus:ring-[#2CAC5B]"
                                     rows="3" placeholder="Write your comment here...">{{ $this->ReplycommentInput }}</textarea>
                                 <div class="mt-2 flex justify-end">
                                     <button type="submit"
