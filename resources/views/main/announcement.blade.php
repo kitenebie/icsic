@@ -636,7 +636,7 @@
         }
 
         /* Dark Mode Support */
-        @media (prefers-color-scheme: dark) {
+        /* @media (prefers-color-scheme: dark) {
             body {
                 background-color: #18191a;
                 color: #e4e6ea;
@@ -714,7 +714,7 @@
             .empty-text {
                 color: #b0b3b8;
             }
-        }
+        } */
 
         /* Reaction Button Styles */
         .reaction-button-wrapper {
