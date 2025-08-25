@@ -229,18 +229,30 @@
                                 class="inline-flex items-center justify-center w-8 h-8 rounded-full bg-[#EFF8F2] text-[#1D723C] mt-1">
                                 <i class="fas fa-user"></i>
                             </span>
-                            <form wire:submit="save_comment" class="flex-1">
+                            <form wire:submit.prevent="save_comment" class="flex-1">
                                 <textarea wire:model='commentInput' id="commentInput"
                                     class="w-full border bg-white border-[#cbd5e1] rounded-md p-2 text-[13px] text-[#334155] focus:outline-none focus:ring-2 focus:ring-[#2CAC5B]"
                                     rows="3" placeholder="Write your comment here..."></textarea>
 
                                 <div class="mt-2 flex justify-end">
                                     <button id="submitComment" type="submit"
-                                        class="px-4 py-1.5 text-[13px] font-medium text-white bg-[#2CAC5B] rounded-md hover:bg-[#249c50] transition-colors"
-                                        wire:loading.attr="disabled">
+                                        class="flex items-center gap-2 px-4 py-1.5 text-[13px] font-medium text-white bg-[#2CAC5B] rounded-md hover:bg-[#249c50] transition-colors"
+                                        wire:loading.attr="disabled" wire:target="save_comment">
 
+                                        {{-- Default text --}}
                                         <span wire:loading.remove wire:target="save_comment">Submit</span>
-                                        <span wire:loading wire:target="save_comment">Submitting...</span>
+
+                                        {{-- Loading indicator --}}
+                                        <span wire:loading wire:target="save_comment" class="flex items-center gap-2">
+                                            <svg class="animate-spin h-4 w-4 text-white"
+                                                xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                                                <circle class="opacity-25" cx="12" cy="12" r="10"
+                                                    stroke="currentColor" stroke-width="4"></circle>
+                                                <path class="opacity-75" fill="currentColor"
+                                                    d="M4 12a8 8 0 018-8v4a4 4 0 00-4 4H4z"></path>
+                                            </svg>
+                                            Submitting...
+                                        </span>
                                     </button>
                                 </div>
                             </form>
