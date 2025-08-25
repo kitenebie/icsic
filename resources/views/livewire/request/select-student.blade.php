@@ -31,10 +31,10 @@
         <div class="grid grid-col-12 p-4">
             <div class="px-4 py-2 rounded-md bg-gray-100 col-12">
 
-                <label for="message" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Your
+                <label for="message" class="block mb-2 text-sm font-medium text-gray-900 text-dark">Your
                     reason</label>
                 <textarea id="message" rows="4" name="message"
-                    class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                    class="block p-2.5 text-dark bg-gray-50 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500"
                     placeholder="Write your reason here..."></textarea>
 
             </div>
@@ -46,7 +46,7 @@
                 class="px-4 py-2 bg-yellow-400 text-white rounded hover:bg-yellow-500">Back</button>
             <button type="submit" id="submit" class="px-4 py-2 text-white rounded">Continue</button>
         </div>
-        <input type="hidden" name="formid" id="formid">
+        <input type="hidden" class="text-dark bg-gray-50" name="formid" id="formid">
         <!-- Optional Flash Messages -->
         @if (session()->has('message'))
             <div class="mt-4 text-green-600 font-medium">{{ session('message') }}</div>
