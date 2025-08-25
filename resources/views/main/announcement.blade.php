@@ -1,4 +1,4 @@
-<x-layouts.custome.header>
+<x-layouts.custome.header style="background-color: #f0f2f5">
     <x-modal />
     @livewire('announcement.main')
     <script src="/build/js/announcement.js"></script>
