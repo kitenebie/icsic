@@ -255,7 +255,8 @@
                     if (commentInput.value.length > 0) {
                         submitComment.disabled = true;
                         submitComment.innerText = "Submitting your comment..."
-
+                    } else {
+                        submitComment.innerText = "Submit"
                     }
                 }
             </script>
