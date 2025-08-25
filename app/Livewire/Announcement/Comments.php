@@ -203,7 +203,7 @@ class Comments extends Component
     public function Author($id)
     {
         $user = User::where('id', $id)->first();
-        return $user->FirstName . " " . $user->LastName . " " . $user->MiddleName . " " . $user->extension_name;
+        return $user?->FirstName . " " . $user?->LastName . " " . $user?->MiddleName . " " . $user?->extension_name;
     }
     public function render()
     {
