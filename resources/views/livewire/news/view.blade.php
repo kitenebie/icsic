@@ -234,9 +234,9 @@
                                     class="w-full border bg-white border-[#cbd5e1] rounded-md p-2 text-[13px] text-[#334155] focus:outline-none focus:ring-2 focus:ring-[#2CAC5B]"
                                     rows="3" placeholder="Write your comment here...">{{ $this->ReplycommentInput }}</textarea>
                                 <div class="mt-2 flex justify-end">
-                                    <button type="submit"
+                                    <button id="submitComment" type="submit" onclick="sending()"
                                         class="px-4 py-1.5 text-[13px] font-medium text-white bg-[#2CAC5B] rounded-md hover:bg-[#249c50] transition-colors">
-                                        Send
+
                                     </button>
                                 </div>
                             </form>
@@ -244,6 +244,16 @@
                     </div>
                 </section>
             </main>
+            <script>
+                const submitComment = document.getElementById('submitComment');
+                submitComment.innerText = "Submit"
+                submitComment.disabled = false;
+
+                function sending() {
+                    submitComment.disabled = true;
+                    submitComment.innerText = "Submitting your comment..."
+                }
+            </script>
             <!-- Right sidebar -->
             <aside class="hidden lg:flex flex-col w-[320px] flex-shrink-0 gap-6">
                 <div class="sticky top-6 space-y-6">
