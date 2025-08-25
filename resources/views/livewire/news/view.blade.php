@@ -236,7 +236,7 @@
                                 <div class="mt-2 flex justify-end">
                                     <button id="submitComment" type="submit" onclick="sending()"
                                         class="px-4 py-1.5 text-[13px] font-medium text-white bg-[#2CAC5B] rounded-md hover:bg-[#249c50] transition-colors">
-
+                                        Submit
                                     </button>
                                 </div>
                             </form>
