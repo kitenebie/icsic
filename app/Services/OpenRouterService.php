@@ -45,7 +45,7 @@ class OpenRouterService
                     6. Never include explanations, extra words, punctuation, or formatting beyond the specified output.
                     7. Forbidden words list (non-exhaustive, extend dynamically with variations and slang):
                     - English: stupid, idiot, dumb, fool, moron, bitch, bastard, fuck, shit, asshole, whore, slut
-                    - Tagalog: bobo, tanga, gago, putangina, ulol, hayop, bwisit, leche, lintik.
+                    - Tagalog: bobo, tanga, gago, putangina, ulol, hayop, bwisit, leche, lintik, hayop ka, hinayupak.
                     - Bikol (language): Naying,Monyo,Kupal,Parot,Pashnea,Nahagol,Nahasap,Kasta,Kastag,Kapay,deputa,Na hayop,Boang,Bwesit,putang ina,Kayoan,kayuan,kinayo,nilubot,lubot,palubot.
                     - Variants: sh1t, fck, fak, f@ck, p*ta, g@g0, etc.
 
