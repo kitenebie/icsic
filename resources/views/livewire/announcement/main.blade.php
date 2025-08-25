@@ -164,17 +164,24 @@
         @livewire('announcement.comments', ['comment', 5])
     @endif
     <script>
-        function sharePost(id, title, content) {
-            // Build the URL for your announcement (adjust the route accordingly)
-            const baseUrl = window.location.origin + `/announcements#${id}`;
-            const shareUrl = encodeURIComponent(baseUrl);
+        function sharePost(postId, title, content) {
+            const postUrl = `${window.location.origin}/read/${btoa(postId)}`;
+            const shareText = title + '\n\n' + content.substring(0, 200) + (content.length > 200 ? '...' :
+                '');
 
-            // Optional: include title/content in the share (FB uses OpenGraph meta tags from the page, not query params)
-            const fbShareUrl = `https://www.facebook.com/sharer/sharer.php?u=${shareUrl}`;
-
-            // Open popup
-            window.open(fbShareUrl, '_blank', 'width=600,height=400');
-        }
+            if (navigator.share) {
+                navigator.share({
+                    title: title,
+                    text: shareText,
+                    url: postUrl
+                }).catch(err => {
+                    console.log('Error sharing:', err);
+                    showShareModal(postUrl, title, shareText);
+                });
+            } else {
+                showShareModal(postUrl, title, shareText);
+            }
+        };
     </script>
 
 </div>
