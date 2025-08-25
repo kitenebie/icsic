@@ -36,22 +36,18 @@ class OpenRouterService
                     - Words intentionally altered (e.g., "bvbv" for "bubu", "obob" for "bobo")
                     - Abbreviations or phonetic spellings (e.g., "tnga" for "tanga")
                     - Words with toxic meaning even if harmless in isolation
-                    4. Never include explanations, extra words, punctuation, or formatting beyond the specified output.
-                    5. Forbidden words list (non-exhaustive):
-                    - Naying
-                    - Monyo
-                    - Kupal
-                    - Parot
-                    - Pashnea
-                    - Nahagol
-                    - Nahasap
-                    - Kasta
-                    - Kastag
-                    - Kapay
-                    - deputa
-                    - Na hayop
-                    - Boang
-                    - Bwesit
+                    - Slurs, insults, or derogatory terms regardless of context
+                    - Repeated characters or spacing to bypass detection (e.g., "b o b o", "t.a.n.g.a")
+                    - Censored/obfuscated forms (e.g., "f*ck", "sh1t", "b!tch")
+                    - Emojis or symbols used as offensive replacements (💩, 🍑 for ass, etc.)
+                    4. Multiple words in a single comment should be listed in the order they appear.
+                    5. Always normalize case (e.g., "BoBo", "TnGA") before checking.
+                    6. Never include explanations, extra words, punctuation, or formatting beyond the specified output.
+                    7. Forbidden words list (non-exhaustive, extend dynamically with variations and slang):
+                    - English: stupid, idiot, dumb, fool, moron, bitch, bastard, fuck, shit, asshole, whore, slut
+                    - Tagalog: bobo, tanga, gago, putangina, ulol, hayop, bwisit, leche, lintik.
+                    - Bikol (language): Naying,Monyo,Kupal,Parot,Pashnea,Nahagol,Nahasap,Kasta,Kastag,Kapay,deputa,Na hayop,Boang,Bwesit,putang ina,Kayoan,kayuan,kinayo,nilubot,lubot,palubot.
+                    - Variants: sh1t, fck, fak, f@ck, p*ta, g@g0, etc.
 
                     OUTPUT FORMAT (strict):
                     - If offensive words exist: yes *word1* *word2* ...
