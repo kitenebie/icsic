@@ -71,8 +71,8 @@
                                 @foreach (array_slice($announcement->images, 0, count($announcement->images) >= 5 ? 4 : count($announcement->images)) as $index => $image)
                                     <div
                                         class="image-wrapper {{ count($announcement->images) >= 3 && $index >= 2 ? 'small-image' : '' }}">
-                                        <img src="{{ asset('storage/' . $image) }}" alt="Post image {{ $index + 1 }}"
-                                            class="post-image"
+                                        <img src="{{ asset('storage/' . $image) }}"
+                                            alt="Post image {{ $index + 1 }}" class="post-image"
                                             onclick="openImageModal({{ json_encode($imagesArray) }}, {{ $index }})" />
                                         @if ($index === 3 && count($announcement->images) > 4)
                                             <div class="more-images-overlay"
@@ -101,9 +101,9 @@
                                     {{ Str::plural('comment', $this->commentCount($announcement->id)) }}
                                 </button>
                             @endif
-                            <button class="stats-button">
+                            {{-- <button class="stats-button"  >
                                 2 shares
-                            </button>
+                            </button> --}}
                         </div>
                     </div>
 
@@ -163,4 +163,18 @@
     @if (session('comment'))
         @livewire('announcement.comments', ['comment', 5])
     @endif
+    <script>
+        function sharePost(id, title, content) {
+            // Build the URL for your announcement (adjust the route accordingly)
+            const baseUrl = window.location.origin + `/announcements#${id}`;
+            const shareUrl = encodeURIComponent(baseUrl);
+
+            // Optional: include title/content in the share (FB uses OpenGraph meta tags from the page, not query params)
+            const fbShareUrl = `https://www.facebook.com/sharer/sharer.php?u=${shareUrl}`;
+
+            // Open popup
+            window.open(fbShareUrl, '_blank', 'width=600,height=400');
+        }
+    </script>
+
 </div>

@@ -923,24 +923,24 @@
                 }
             });
 
-            window.sharePost = function(postId, title, content) {
-                const postUrl = `${window.location.origin}/read/${btoa(postId)}`;
-                const shareText = title + '\n\n' + content.substring(0, 200) + (content.length > 200 ? '...' :
-                    '');
+            // window.sharePost = function(postId, title, content) {
+            //     const postUrl = `${window.location.origin}/read/${btoa(postId)}`;
+            //     const shareText = title + '\n\n' + content.substring(0, 200) + (content.length > 200 ? '...' :
+            //         '');
 
-                if (navigator.share) {
-                    navigator.share({
-                        title: title,
-                        text: shareText,
-                        url: postUrl
-                    }).catch(err => {
-                        console.log('Error sharing:', err);
-                        showShareModal(postUrl, title, shareText);
-                    });
-                } else {
-                    showShareModal(postUrl, title, shareText);
-                }
-            };
+            //     if (navigator.share) {
+            //         navigator.share({
+            //             title: title,
+            //             text: shareText,
+            //             url: postUrl
+            //         }).catch(err => {
+            //             console.log('Error sharing:', err);
+            //             showShareModal(postUrl, title, shareText);
+            //         });
+            //     } else {
+            //         showShareModal(postUrl, title, shareText);
+            //     }
+            // };
 
             function showShareModal(url, title, text) {
                 const modal = document.createElement('div');
