@@ -5,7 +5,7 @@
             @forelse ($announcements as $announcement)
                 <article id="announcement-{{ $announcement->id }}" class="facebook-post">
                     <!-- Post Header -->
-                    <header class="post-header">
+                    <header id="{{ $announcement->id }}" class="post-header">
                         <div class="post-author-info">
                             <img src="https://storage.googleapis.com/a1aa/image/10e94bdc-c408-4a4f-44e0-cc6af4a3b589.jpg"
                                 alt="Irosin Central School logo" class="post-avatar" />
