@@ -923,7 +923,7 @@
                 }
             });
 window.sharePost = function (postId, title, content) {
-    const postUrl = `${window.location.origin}/read/${btoa(postId)}`;
+    const postUrl = `irosincentralschool.com/announcements#${btoa(postId)}`;
     const shareText = title + '\n\n' + content.substring(0, 200) + (content.length > 200 ? '...' : '');
 
     if (navigator.share) {
