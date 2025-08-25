@@ -132,8 +132,7 @@
                         </button>
 
                         <button class="action-btn"
-                            onclick="sharePost({{ $announcement->id }}, '{{ addslashes($announcement->title) }}', 
-    {!! json_encode(strip_tags($announcement->content)) !!})"
+                            onclick='sharePost({{ json_encode($announcement->id) }}, {{ json_encode($announcement->title) }}, {{ json_encode(strip_tags($announcement->content)) }})'
                             aria-label="Share post">
                             <i class="fas fa-share"></i>
                             <span class="action-text">Share</span>
