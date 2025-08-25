@@ -844,7 +844,7 @@
         }
 
         /* Dark mode support for reaction buttons */
-        @media (prefers-color-scheme: dark) {
+        /* @media (prefers-color-scheme: dark) {
             .reaction-trigger-btn {
                 color: #b0b3b8;
             }
@@ -867,7 +867,7 @@
                     border-bottom-color: #3e4042;
                 }
             }
-        }
+        } */
     </style>
 
     <script>
