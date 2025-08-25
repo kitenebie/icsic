@@ -230,7 +230,7 @@
                                 <i class="fas fa-user"></i>
                             </span>
                             <form wire:submit="save_comment" class="flex-1">
-                                <textarea wire:model='commentInput'
+                                <textarea wire:model='commentInput' id="commentInput"
                                     class="w-full border bg-white border-[#cbd5e1] rounded-md p-2 text-[13px] text-[#334155] focus:outline-none focus:ring-2 focus:ring-[#2CAC5B]"
                                     rows="3" placeholder="Write your comment here...">{{ $this->ReplycommentInput }}</textarea>
                                 <div class="mt-2 flex justify-end">
@@ -246,12 +246,17 @@
             </main>
             <script>
                 const submitComment = document.getElementById('submitComment');
+                const commentInput = document.getElementById('commentInput');
+
                 submitComment.innerText = "Submit"
                 submitComment.disabled = false;
 
                 function sending() {
-                    submitComment.disabled = true;
-                    submitComment.innerText = "Submitting your comment..."
+                    if (commentInput.value.length > 0) {
+                        submitComment.disabled = true;
+                        submitComment.innerText = "Submitting your comment..."
+
+                    }
                 }
             </script>
             <!-- Right sidebar -->
