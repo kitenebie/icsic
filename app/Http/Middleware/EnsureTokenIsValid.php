@@ -18,6 +18,10 @@ class EnsureTokenIsValid
     {
 
         // Allow OTP route without redirection
+        if ($request->is('login')  || $request->is('logout') || $request->is('password.request')) {
+            return $next($request);
+        }
+        // Allow OTP route without redirection
         if ($request->is('events') ||  $request->is('announcements')) {
             if(!Auth::check()){
                 return redirect('/');
@@ -25,10 +29,6 @@ class EnsureTokenIsValid
             if (Auth::user()->role == 'pending') {
                 return redirect('/');
             }
-            return $next($request);
-        }
-        // Allow OTP route without redirection
-        if ($request->is('login')  || $request->is('logout') || $request->is('password.request')) {
             return $next($request);
         }
         // Allow OTP route without redirection
