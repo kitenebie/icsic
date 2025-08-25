@@ -19,7 +19,7 @@ class EnsureTokenIsValid
 
         // Allow OTP route without redirection
         if ($request->is('events') ||  $request->is('announcements')) {
-            if(!Auth::user()->role){
+            if(!Auth::check()){
                 return redirect('/');
             }
             if (Auth::user()->role == 'pending') {
