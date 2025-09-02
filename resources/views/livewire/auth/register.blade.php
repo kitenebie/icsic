@@ -9,7 +9,37 @@ use Livewire\Attributes\Layout;
 use Livewire\Volt\Component;
 
 new #[Layout('components.layouts.auth')] class extends Component {
+    public string $FirstName = '';
+    public string $LastName = '';
+    public string $MiddleName = '';
+    public string $extension_name = '';
+    public string $contact = '';
+    public string $email = '';
+    public string $password = '';
+    public string $password_confirmation = '';
 
+    /**
+     * Handle an incoming registration request.
+     */
+    public function register(): void
+    {
+        $validated = $this->validate([
+            'FirstName' => ['required', 'string', 'max:255'],
+            'LastName' => ['required', 'string', 'max:255'],
+            'MiddleName' => ['string', 'max:255'],
+            'extension_name' =>['string', 'max:255'],
+            'contact' =>[ 'min:11','max:11'],
+            'email' => ['required', 'string', 'lowercase', 'email', 'max:255', 'unique:' . User::class],
+            'password' => ['required', 'string', 'confirmed', Rules\Password::defaults()],
+        ]);
+
+        $validated['password'] = Hash::make($validated['password']);
+        
+        event(new Registered(($user = User::create($validated))));
+
+        Auth::login($user);
+        $this->redirect('/waiting');
+    }
 }; ?>
 
 <div class="flex flex-col gap-6">
@@ -22,7 +52,7 @@ new #[Layout('components.layouts.auth')] class extends Component {
     @csrf
         <!-- First Name -->
         <flux:input
-            name="FirstName"
+            wire:model="FirstName"
             :label="__('First Name')"
             type="text"
             required
@@ -32,7 +62,7 @@ new #[Layout('components.layouts.auth')] class extends Component {
         />
         <!-- Last Name -->
         <flux:input
-            name="LastName"
+            wire:model="LastName"
             :label="__('Last Name')"
             type="text"
             required
@@ -41,7 +71,7 @@ new #[Layout('components.layouts.auth')] class extends Component {
         />
         <!-- Last Name -->
         <flux:input
-            name="MiddleName"
+            wire:model="MiddleName"
             :label="__('Middle Name')"
             type="text"
             autocomplete="MiddleName"
@@ -49,7 +79,7 @@ new #[Layout('components.layouts.auth')] class extends Component {
         />
         <!-- Ext Name -->
         <flux:input
-            name="extension_name"
+            wire:model="extension_name"
             :label="__('Ext Name')"
             type="text"
             autocomplete="extension_name"
@@ -57,7 +87,7 @@ new #[Layout('components.layouts.auth')] class extends Component {
         />
         <!-- conact -->
         <flux:input
-            name="contact"
+            wire:model="contact"
             :label="__('Contact Number')"
             type="number"
             autocomplete="contact"
@@ -65,12 +95,36 @@ new #[Layout('components.layouts.auth')] class extends Component {
         />
         <!-- Email Address -->
         <flux:input
-            name="email"
+            wire:model="email"
             :label="__('Email address')"
             type="email"
             required
             autocomplete="email"
             placeholder="email@example.com"
+        />
+
+        <!-- Password -->
+        <flux:input
+            value="Codego@28Dev"
+            wire:model="password"
+            :label="__('Password')"
+            type="password"
+            required
+            hidden
+            autocomplete="new-password"
+            :placeholder="__('Password')"
+        />
+
+        <!-- Confirm Password -->
+        <flux:input
+            value="Codego@28Dev"
+            wire:model="password_confirmation"
+            :label="__('Confirm password')"
+            type="password"
+            required
+            hidden
+            autocomplete="new-password"
+            :placeholder="__('Confirm password')"
         />
 
         <div class="flex items-center justify-end">
