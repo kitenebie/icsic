@@ -43,9 +43,9 @@ class EnsureTokenIsValid
             return redirect('/login');
         }
 
-        if($request->is('waiting')){
-            return $next($request);
-        }
+        // if($request->is('waiting')){
+        //     return $next($request);
+        // }
 
         // If logged in but not verified
         if (Auth::user()->email_verified_at === null) {
