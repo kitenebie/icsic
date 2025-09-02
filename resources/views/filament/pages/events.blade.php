@@ -1,3 +1,3 @@
 <x-filament-panels::page>
-    @livewire('event.main')
+    @livewire('my-calendar-widget')
 </x-filament-panels::page>
