@@ -29,10 +29,12 @@ use Filament\Notifications\Notification;
 class UserResource extends Resource
 {
     protected static ?string $model = User::class;
+    
     public static function getNavigationGroup(): ?string
     {
         return 'Users Management';
     }
+    
     protected static function boot()
     {
         parent::boot();
@@ -43,6 +45,7 @@ class UserResource extends Resource
             }
         });
     }
+    
     protected static ?string $navigationIcon = 'heroicon-o-user-group';
 
     public static function form(Form $form): Form
@@ -86,7 +89,15 @@ class UserResource extends Resource
                     ->password()
                     ->maxLength(255),
                 Select::make('role')
-                    ->options(['admin', 'staff', 'student', 'parent', 'graduate', 'teacher', 'pending'])
+                    ->options([
+                        'admin' => 'Admin',
+                        'staff' => 'Staff', 
+                        'teacher' => 'Teacher',
+                        'student' => 'Student', 
+                        'parent' => 'Parent', 
+                        'graduate' => 'Graduate', 
+                        'pending' => 'Pending'
+                    ])
                     ->default('student')
                     ->required()
                     ->columnSpanFull()
@@ -136,7 +147,6 @@ class UserResource extends Resource
 
     public static function table(Table $table): Table
     {
-
         return $table
             ->query(User::query()->whereNot('role', 'student'))
             ->deferLoading()
@@ -166,7 +176,16 @@ class UserResource extends Resource
             ->filters([
                 SelectFilter::make('role')
                     ->label('Filter by Role')
-                    ->options(['admin', 'staff', 'student', 'parent', 'graduate', 'teacher', 'pending'])
+                    ->options([
+                        'admin' => 'Admin',
+                        'staff' => 'Staff',
+                        'teacher' => 'Teacher', 
+                        'student' => 'Student',
+                        'parent' => 'Parent',
+                        'graduate' => 'Graduate',
+                        'pending' => 'Pending'
+                    ])
+                    ->placeholder('All Roles')
             ], layout: FiltersLayout::AboveContent)
             ->actions(
                 ActionGroup::make([
