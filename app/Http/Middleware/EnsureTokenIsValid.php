@@ -16,64 +16,42 @@ class EnsureTokenIsValid
      */
     public function handle(Request $request, Closure $next): Response
     {
-        if(Auth::user()->email_verified_at ){
-            return $next($request);
-        }
-        // Allow public routes without any checks
-        if ($request->is('login') || $request->is('register') || $request->routeIs('password.request')) {
-            return $next($request);
-        }
 
-        // Handle logout - should work regardless of auth state
-        if ($request->is('logout')) {
+        // Allow OTP route without redirection
+        if ($request->is('login') || $request->is('register')  || $request->is('logout') || $request->routeIs('password.request')) {
             return $next($request);
         }
-
-        // Handle OTP routes
-        if ($request->is('otp') || in_array($request->route()?->getName(), ['otpVerify'])) {
-            // If not logged in, redirect to login
-            if (!Auth::check()) {
-                return redirect('/login');
-            }
-            
-            // If already verified, redirect away from OTP
-            if (Auth::user()->email_verified_at !== null) {
+        // Allow OTP route without redirection
+        if ($request->is('events') ||  $request->is('announcements')) {
+            if(!Auth::check()){
                 return redirect('/');
             }
-            
+            if (Auth::user()->role == 'pending') {
+                return redirect('/');
+            }
             return $next($request);
         }
-
-        // If not logged in, redirect to login
+        // Allow OTP route without redirection
+        if ($request->is('otp') ||  $request->is('logout') || in_array($request->route()->getName(), ['otpVerify'])) {
+            if ($request->is('otp') && Auth::user()->email_verified_at != null) {
+                return redirect('/login');
+            }
+            return $next($request);
+        }
+        // If not logged in
         if (!Auth::check()) {
             return redirect('/login');
         }
 
-        // From here on, user is authenticated
-        $user = Auth::user();
-
-        // Handle waiting page - allow pending users
-        if ($request->is('waiting')) {
+        if($request->is('waiting')){
             return $next($request);
         }
 
-        // Check for pending role first (before email verification)
-        if ($user->role === 'pending') {
-            return redirect('/waiting');
-        }
-
-        // If logged in but email not verified, redirect to OTP
-        if ($user->email_verified_at === null) {
+        // If logged in but not verified
+        if (Auth::user()->email_verified_at === null) {
             return redirect('/otp');
         }
 
-        // Handle protected routes that require full verification
-        if ($request->is('events') || $request->is('announcements')) {
-            // User is authenticated and verified at this point, allow access
-            return $next($request);
-        }
-
-        // Allow all other requests for verified users
         return $next($request);
     }
 }
