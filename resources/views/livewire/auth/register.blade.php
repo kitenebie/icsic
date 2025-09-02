@@ -31,7 +31,7 @@ new #[Layout('components.layouts.auth')] class extends Component {
             'contact' =>[ 'min:11','max:11'],
             'email' => ['required', 'string', 'lowercase', 'email', 'max:255', 'unique:' . User::class],
             'password' => ['required', 'string', 'confirmed', Rules\Password::defaults()],
-        ]);
+        ]); 
 
         $validated['password'] = Hash::make($validated['password']);
         
