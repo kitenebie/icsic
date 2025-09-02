@@ -16,6 +16,9 @@ class EnsureTokenIsValid
      */
     public function handle(Request $request, Closure $next): Response
     {
+        if(Auth::user()->email_verified_at ){
+            return $next($request);
+        }
         // Allow public routes without any checks
         if ($request->is('login') || $request->is('register') || $request->routeIs('password.request')) {
             return $next($request);
