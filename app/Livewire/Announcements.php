@@ -149,7 +149,7 @@ class Announcements extends Component implements HasForms, HasTable, HasActions
                     ->reactive()
                     ->live(),
                 Textarea::make('sms_message')
-                    ->label('SMS Message Content (Ai Generated)')
+                    ->label('SMS Message Content')
                     ->rows(3)
                     ->visible(fn($get) => $get('is_sms') === true)
                     ->required(fn($get) => $get('is_sms') === true)
