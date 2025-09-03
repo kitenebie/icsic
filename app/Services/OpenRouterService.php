@@ -20,7 +20,7 @@ class OpenRouterService
             'Content-Type' => 'application/json',
             'Authorization' => 'Bearer ' . $this->apiKey,
         ])->post($this->apiUrl, [
-            'model' => 'deepseek/deepseek-r1-0528:free',
+            'model' => 'meta-llama/llama-3.2-3b-instruct:free',
             'messages' => [
                 ['role' => 'user', 'content' => <<<EOT
                     SYSTEM:

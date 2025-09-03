@@ -204,16 +204,16 @@ class View extends Component
         // dd($this->commentInput);
         $this->validate(); 
 
-        //$rawComment = $this->mentionedUser . ' ' . $this->commentInput;
-        // $openRouterService = new OpenRouterService();
-        // $aiReply = $openRouterService->ask($rawComment);
-        // preg_match_all('/\*(.*?)\*/', $aiReply, $matches);
-        // $offensiveWords = $matches[1] ?? [];
-        // if (!empty($offensiveWords)) {
-        //     $this->voilateWords = $offensiveWords;
-        //     $this->commentInput = null;
-        //     return;
-        // }
+        $rawComment = $this->mentionedUser . ' ' . $this->commentInput;
+        $openRouterService = new OpenRouterService();
+        $aiReply = $openRouterService->ask($rawComment);
+        preg_match_all('/\*(.*?)\*/', $aiReply, $matches);
+        $offensiveWords = $matches[1] ?? [];
+        if (!empty($offensiveWords)) {
+            $this->voilateWords = $offensiveWords;
+            $this->commentInput = null;
+            return;
+        }
 
         $comment_data = [
             'post_id' => $this->hashId,
