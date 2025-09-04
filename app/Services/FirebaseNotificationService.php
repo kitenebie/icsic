@@ -12,7 +12,7 @@ class FirebaseNotificationService
 
     public function __construct()
     {
-        $this->credentialsPath = storage_path('app/firebase/firebase_credentials.json');
+        $this->credentialsPath = "https://irosincentralschool.com/firebase-messaging-sw.js";
     }
 
     protected function getAccessToken()
