@@ -230,12 +230,12 @@ class Announcements extends Component implements HasForms, HasTable, HasActions
             'link' => $announcement->id,
         ]);
 
-        $fcm->sendNotificationToAll(
-            json_encode($tags),
-            Str::limit($data['title'], 100),
-            Str::limit($this->smsMessage, 200),
-            $announcement
-        );
+        // $fcm->sendNotificationToAll(
+        //     json_encode($tags),
+        //     Str::limit($data['title'], 100),
+        //     Str::limit($this->smsMessage, 200),
+        //     $announcement
+        // );
 
         $this->form->fill([]);
         $this->isLoading = false;
