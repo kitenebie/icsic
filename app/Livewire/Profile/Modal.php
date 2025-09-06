@@ -6,6 +6,7 @@ use Livewire\Component;
 use Livewire\WithFileUploads;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Storage;
 
 class Modal extends Component
 {
@@ -28,6 +29,13 @@ class Modal extends Component
         $this->last_name = $user->LastName;
         $this->extension_name = $user->extension_name;
         $this->email = $user->email;
+    }
+
+    public function updatedProfile()
+    {
+        $this->validate([
+            'profile' => 'image|max:2048', // 2MB max
+        ]);
     }
 
     public function updateProfile()
@@ -66,6 +74,19 @@ class Modal extends Component
 
         session()->flash('success', 'Profile updated successfully!');
         $this->dispatch('profile-updated');
+    }
+
+    public function removeProfilePicture()
+    {
+        $user = Auth::user();
+        if ($user->profile_picture) {
+            // Delete the file from storage
+            Storage::disk('public')->delete($user->profile_picture);
+            $user->profile_picture = null;
+            $user->save();
+
+            session()->flash('success', 'Profile picture removed successfully!');
+        }
     }
 
     public function render()
