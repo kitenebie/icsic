@@ -61,7 +61,7 @@
             </div>
         </div>
 
-        <div id="modal" class="fixed inset-0 hidden bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
+        <div id="modal" class="fixed inset-0 hidden bg-black bg-opacity-50 flex items-center justify-center p-4" style="z-index: 99999;">
             <div class="bg-white rounded-2xl shadow-2xl w-full max-w-2xl max-h-[90vh] overflow-hidden">
                 <!-- Modal Header -->
                 <div class="flex items-center justify-between p-6 border-b border-gray-200">

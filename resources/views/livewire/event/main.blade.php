@@ -84,7 +84,7 @@
                         </div>
 
                         <!-- Create Event Button -->
-                        <x-filament::modal width="3xl">
+                        <x-filament::modal width="3xl" style="z-index: 99999;">
                             <x-slot name="trigger">
                                 <x-filament::button
                                     style="background-color: white; color: #16a34a; border: none; padding: 8px 16px; border-radius: 8px; font-weight: 500; cursor: pointer; display: flex; align-items: center; gap: 8px; transition: background-color 0.2s;"
