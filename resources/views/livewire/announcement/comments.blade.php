@@ -223,7 +223,7 @@
 <script>
 document.addEventListener('DOMContentLoaded', function() {
     function closeAll() {
-        document.querySelectorAll('.reaction-popup-menu').forEach(menu => menu.classList.remove('show'));
+        document.querySelectorAll('.reaction-popup-menu').forEach(menu => menu.classList.add('hidden'));
     }
 
     function bindEvents() {
@@ -244,21 +244,21 @@ document.addEventListener('DOMContentLoaded', function() {
             // Show on hover (mouseenter bubbles from child elements)
             btn.addEventListener('mouseenter', function() {
                 closeAll();
-                popup.classList.add('show');
+                popup.classList.remove('hidden');
             });
 
             // Hide when leaving the entire wrapper
             wrapper.addEventListener('mouseleave', function() {
-                popup.classList.remove('show');
+                popup.classList.add('hidden');
             });
 
             // Toggle on click for touch devices
             btn.addEventListener('click', function(e) {
                 e.preventDefault();
-                const isShown = popup.classList.contains('show');
+                const isHidden = popup.classList.contains('hidden');
                 closeAll();
-                if (!isShown) {
-                    popup.classList.add('show');
+                if (isHidden) {
+                    popup.classList.remove('hidden');
                 }
             });
         });

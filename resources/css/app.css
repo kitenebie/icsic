@@ -336,3 +336,45 @@ select:focus[data-flux-control] {
 /* \[:where(&)\]:size-4 {
     @apply size-4;
 } */
+
+/* Reaction Popup Styles */
+.reaction-popup-menu {
+    position: absolute;
+    bottom: 100%;
+    left: 50%;
+    transform: translateX(-50%);
+    background: white;
+    border: 1px solid #e5e7eb;
+    border-radius: 0.5rem;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+    padding: 0.5rem;
+    display: flex;
+    gap: 0.25rem;
+    z-index: 10;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.2s ease, visibility 0.2s ease;
+}
+
+.reaction-popup-menu.show {
+    opacity: 1;
+    visibility: visible;
+}
+
+.reaction-popup-menu.hidden {
+    opacity: 0;
+    visibility: hidden;
+}
+
+.reaction-option-btn {
+    background: none;
+    border: none;
+    padding: 0.25rem;
+    border-radius: 0.25rem;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+}
+
+.reaction-option-btn:hover {
+    background: #f3f4f6;
+}
