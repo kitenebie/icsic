@@ -17,6 +17,12 @@ class event extends Model
         'event_time',
         'event_duration',
         'event_discription',
-        'event_image'
+        'event_images'
+    ];
+
+    protected $casts = [
+        'event_images' => 'array',
+        'event_date' => 'date',
+        'event_time' => 'datetime',
     ];
 }

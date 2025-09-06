@@ -147,12 +147,15 @@ class Main extends Component implements HasForms, HasTable, HasActions
                 DatePicker::make('event_date')->required()->minDate(now()),
                 TimePicker::make('event_time')->required(),
                 TextInput::make('event_duration')->required(),
-                FileUpload::make('event_image')
-                    ->label('Event Image')
+                FileUpload::make('event_images')
+                    ->label('Event Images')
                     ->image()
+                    ->multiple()
+                    ->maxFiles(15)
                     ->directory('events')
                     ->visibility('public')
                     ->imageEditor()
+                    ->reorderable()
                     ->columnSpanFull(),
 
                 MarkdownEditor::make('event_discription')
@@ -176,7 +179,7 @@ class Main extends Component implements HasForms, HasTable, HasActions
             'event_duration'    => $validatedData['event_duration'],
             'event_discription' => $validatedData['event_discription'],
             'event_location'    => $validatedData['event_location'],
-            'event_image'       => $validatedData['event_image'] ?? null,
+            'event_images'      => $validatedData['event_images'] ?? null,
             // 'created_by'        => Auth::id(), // optional: track creator
         ]);
         // Create custom notification
@@ -206,7 +209,7 @@ class Main extends Component implements HasForms, HasTable, HasActions
             ->columns([
                 TextColumn::make('event_name')->label('Event Name')->searchable()->sortable(),
                 TextColumn::make('event_category')->label('Category')->sortable(),
-                ImageColumn::make('event_image')->label('Image')->circular(),
+                ImageColumn::make('event_images')->label('Images')->circular()->stacked(),
                 TextColumn::make('event_date')->label('Date')->date()->sortable(),
                 TextColumn::make('event_time')->label('Time'),
                 TextColumn::make('event_duration')->label('Duration'),
@@ -348,10 +351,10 @@ class Main extends Component implements HasForms, HasTable, HasActions
                                         ->label('Duration')
                                         ->disabled()
                                         ->default($record->event_duration),
-                                    FileUpload::make('event_image')
-                                        ->label('Event Image')
+                                    FileUpload::make('event_images')
+                                        ->label('Event Images')
                                         ->disabled()
-                                        ->default($record->event_image),
+                                        ->default($record->event_images),
             
                                     MarkdownEditor::make('event_discription')
                                         ->label('Description')
@@ -427,12 +430,15 @@ class Main extends Component implements HasForms, HasTable, HasActions
                                 DatePicker::make('event_date')->required(),
                                 TimePicker::make('event_time')->required(),
                                 TextInput::make('event_duration')->required(),
-                                FileUpload::make('event_image')
-                                    ->label('Event Image')
+                                FileUpload::make('event_images')
+                                    ->label('Event Images')
                                     ->image()
+                                    ->multiple()
+                                    ->maxFiles(15)
                                     ->directory('events')
                                     ->visibility('public')
-                                    ->imageEditor(),
+                                    ->imageEditor()
+                                    ->reorderable(),
 
                                 MarkdownEditor::make('event_discription')->toolbarButtons([
                                     'bulletList',

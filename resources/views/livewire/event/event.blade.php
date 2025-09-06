@@ -1,32 +1,55 @@
 <div>
-    <div
-        class="bg-gray-100 dark:bg-gray-900 text-gray-800 dark:text-gray-100 min-h-screen flex flex-col items-center justify-start p-4 transition">
-        <div class="w-full max-w-4xl bg-white dark:bg-gray-800 rounded-2xl shadow-lg p-6 relative transition">
-            <!-- Header -->
-            <div class="flex items-center justify-between mb-6">
-                <button id="prev"
-                    class="text-gray-500 dark:text-gray-300 hover:text-black dark:hover:text-white text-2xl">&larr;</button>
-                <h2 id="monthYear" class="text-xl font-semibold">April 2025</h2>
-                <button id="next"
-                    class="text-gray-500 dark:text-gray-300 hover:text-black dark:hover:text-white text-2xl">&rarr;</button>
+    <div class="bg-white min-h-screen">
+        <!-- Google Calendar Style Header -->
+        <div class="flex items-center justify-between p-6 border-b border-gray-200">
+            <div class="flex items-center space-x-4">
+                <h1 class="text-2xl font-normal text-gray-900">Calendar</h1>
+                <div class="flex items-center space-x-2">
+                    <button id="prev" class="p-2 hover:bg-gray-100 rounded-full transition-colors">
+                        <svg class="w-5 h-5 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path>
+                        </svg>
+                    </button>
+                    <button id="next" class="p-2 hover:bg-gray-100 rounded-full transition-colors">
+                        <svg class="w-5 h-5 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+                        </svg>
+                    </button>
+                    <h2 id="monthYear" class="text-xl font-medium text-gray-900 ml-4">April 2025</h2>
+                </div>
             </div>
+            <div class="flex items-center space-x-2">
+                <button class="px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-md hover:bg-gray-50 transition-colors">
+                    Today
+                </button>
+                <div class="flex rounded-md shadow-sm">
+                    <button class="px-3 py-2 text-sm font-medium text-gray-900 bg-white border border-gray-300 rounded-l-md hover:bg-gray-50">
+                        Month
+                    </button>
+                    <button class="px-3 py-2 text-sm font-medium text-gray-700 bg-gray-100 border border-gray-300 rounded-r-md hover:bg-gray-50">
+                        Week
+                    </button>
+                </div>
+            </div>
+        </div>
 
+        <!-- Calendar Grid -->
+        <div class="p-6">
             <!-- Weekday Labels -->
-            <div class="grid grid-cols-7 text-center text-gray-500 dark:text-gray-400 mb-2 font-medium">
-                <div>Sun</div>
-                <div>Mon</div>
-                <div>Tue</div>
-                <div>Wed</div>
-                <div>Thu</div>
-                <div>Fri</div>
-                <div>Sat</div>
+            <div class="grid grid-cols-7 mb-2">
+                <div class="p-3 text-sm font-medium text-gray-500 text-center">Sun</div>
+                <div class="p-3 text-sm font-medium text-gray-500 text-center">Mon</div>
+                <div class="p-3 text-sm font-medium text-gray-500 text-center">Tue</div>
+                <div class="p-3 text-sm font-medium text-gray-500 text-center">Wed</div>
+                <div class="p-3 text-sm font-medium text-gray-500 text-center">Thu</div>
+                <div class="p-3 text-sm font-medium text-gray-500 text-center">Fri</div>
+                <div class="p-3 text-sm font-medium text-gray-500 text-center">Sat</div>
             </div>
 
             <!-- Calendar Dates -->
-            <div id="calendar" class="grid grid-cols-7 gap-2 text-center text-sm">
+            <div id="calendar" class="grid grid-cols-7 border-t border-gray-200">
                 <!-- Filled by JS -->
             </div>
-
         </div>
 
         <div id="modal" class="fixed inset-0 hidden bg-black bg-opacity-40 flex items-center justify-center z-50">
@@ -70,17 +93,26 @@
                                 {{ $event->event_category }}
                             </div>
                         </div>
-                        <div class="flex items-start gap-3 mb-3">
-                            @if($event->event_image)
-                                <img src="{{ asset('storage/' . $event->event_image) }}"
-                                     alt="{{ $event->event_name }}"
-                                     class="w-12 h-12 rounded-lg object-cover border-2 border-white shadow-sm">
-                            @endif
-                            <div class="flex-1">
-                                <h3 class="font-bold text-[#0a1f3f] text-lg mb-1">{{ $event->event_name }}</h3>
-                                <div class="text-[#4a5568] mb-4 text-sm leading-relaxed">
-                                    {!! \Illuminate\Support\Str::markdown($event->event_discription) !!}
+                        <div class="mb-4">
+                            <h3 class="font-bold text-[#0a1f3f] text-lg mb-2">{{ $event->event_name }}</h3>
+
+                            @if($event->event_images && count($event->event_images) > 0)
+                                <div class="grid grid-cols-{{ min(count($event->event_images), 3) }} gap-2 mb-3">
+                                    @foreach(array_slice($event->event_images, 0, 3) as $image)
+                                        <img src="{{ asset('storage/' . $image) }}"
+                                             alt="{{ $event->event_name }}"
+                                             class="w-full h-20 rounded-lg object-cover border border-gray-200">
+                                    @endforeach
+                                    @if(count($event->event_images) > 3)
+                                        <div class="w-full h-20 rounded-lg bg-gray-100 border border-gray-200 flex items-center justify-center text-sm text-gray-500">
+                                            +{{ count($event->event_images) - 3 }} more
+                                        </div>
+                                    @endif
                                 </div>
+                            @endif
+
+                            <div class="text-[#4a5568] mb-4 text-sm leading-relaxed">
+                                {!! \Illuminate\Support\Str::markdown($event->event_discription) !!}
                             </div>
                         </div>
                         <div class="flex items-center text-[#6b7280] text-xs space-x-2 mb-1">
@@ -123,6 +155,60 @@
                     });
                     console.log(events);
                     const calendar = document.getElementById("calendar");
+
+                    // Google Calendar style color mapping
+                    function getEventColor(category) {
+                        const colors = {
+                            "Exams & Quizzes": "#ea4335",
+                            "Science Fair": "#34a853",
+                            "Math Olympiad": "#4285f4",
+                            "Spelling Bee": "#fbbc04",
+                            "Debate/Essay Contests": "#ea4335",
+                            "Parent-Teacher Conferences": "#34a853",
+                            "Report Card Distribution": "#4285f4",
+                            "Clubs (e.g., Journalism, Robotics)": "#fbbc04",
+                            "Student Council Elections": "#ea4335",
+                            "Leadership Training": "#34a853",
+                            "Educational Field Trips": "#4285f4",
+                            "Intramurals": "#fbbc04",
+                            "Sports Fest": "#ea4335",
+                            "Tryouts and Practice Sessions": "#34a853",
+                            "Cheerleading Competitions": "#4285f4",
+                            "P.E. Demonstrations": "#fbbc04",
+                            "Foundation Day": "#ea4335",
+                            "Linggo ng Wika": "#34a853",
+                            "Buwan ng Sining": "#4285f4",
+                            "Christmas Program": "#fbbc04",
+                            "School Play or Musical": "#ea4335",
+                            "Art Exhibits": "#34a853",
+                            "Cultural Shows": "#4285f4",
+                            "Mass or Worship Services": "#fbbc04",
+                            "Retreats & Recollections": "#ea4335",
+                            "Religious Holidays": "#34a853",
+                            "Moral Instruction Sessions": "#4285f4",
+                            "Medical/Dental Missions": "#fbbc04",
+                            "Mental Health Week": "#ea4335",
+                            "Anti-Bullying Campaigns": "#34a853",
+                            "Nutrition Month": "#4285f4",
+                            "Blood Donation Drives": "#fbbc04",
+                            "Tree Planting": "#ea4335",
+                            "Community Clean-Up Drives": "#34a853",
+                            "Charity Events": "#4285f4",
+                            "School Caravan": "#fbbc04",
+                            "Brigada Eskwela": "#ea4335",
+                            "General Assembly": "#34a853",
+                            "Faculty Development": "#4285f4",
+                            "Student/Parent Orientation": "#fbbc04",
+                            "Enrollment Days": "#ea4335",
+                            "Accreditation Visits": "#34a853",
+                            "Awarding Ceremonies": "#4285f4",
+                            "Recognition Day": "#fbbc04",
+                            "Graduation/Moving-Up": "#ea4335",
+                            "Inter-School Competitions": "#34a853",
+                            "Other": "#4285f4"
+                        };
+                        return colors[category] || "#4285f4";
+                    }
                     const monthYear = document.getElementById("monthYear");
                     const prev = document.getElementById("prev");
                     const next = document.getElementById("next");
@@ -190,40 +276,39 @@
                                 console.log(`Day ${i}: ${count} event(s)`);
                             }
                             const div = document.createElement("div");
-                            div.className =
-                                `p-2 rounded-lg border cursor-pointer relative transition ${
-                        isToday ? "bg-green-500 text-white font-bold animate-pulse" : "hover:bg-gray-200 dark:hover:bg-gray-700"
-                    } ${hasEvent ? "bg-yellow-100 dark:bg-yellow-800 border border-yellow-400 dark:border-yellow-600" : ""}`;
+                            div.className = `min-h-[120px] p-2 border-r border-b border-gray-200 hover:bg-gray-50 transition-colors relative ${
+                                isToday ? 'bg-blue-50' : ''
+                            }`;
 
-                            div.textContent = i;
+                            // Date number
+                            const dateDiv = document.createElement("div");
+                            dateDiv.className = `text-sm font-medium mb-1 ${
+                                isToday ? 'text-blue-600 font-semibold' : 'text-gray-900'
+                            }`;
+                            dateDiv.textContent = i;
+                            div.appendChild(dateDiv);
 
-                            // Add event images (Facebook-style) - show up to 2 images
+                            // Add event indicators (Google Calendar style)
                             if (hasEvent) {
                                 const dayEvents = events.filter(e => e.day === i && e.month - 1 === month && e.year === year);
-                                const imagesToShow = dayEvents.slice(0, 2); // Show max 2 images
 
-                                imagesToShow.forEach((event, index) => {
-                                    if (event.raw.event_image) {
-                                        const img = document.createElement("img");
-                                        img.src = `/storage/${event.raw.event_image}`;
-                                        img.className = `absolute w-5 h-5 rounded-full border-2 border-white shadow-sm object-cover ${
-                                            imagesToShow.length === 1
-                                                ? 'top-1 right-1'
-                                                : index === 0
-                                                    ? 'top-1 right-1'
-                                                    : 'top-1 right-7'
-                                        }`;
-                                        img.alt = event.raw.event_name;
-                                        div.appendChild(img);
-                                    }
+                                // Show up to 3 event indicators
+                                const eventsToShow = dayEvents.slice(0, 3);
+                                eventsToShow.forEach((event, index) => {
+                                    const eventDiv = document.createElement("div");
+                                    eventDiv.className = "text-xs p-1 mb-1 rounded text-white truncate";
+                                    eventDiv.style.backgroundColor = getEventColor(event.raw.event_category);
+                                    eventDiv.textContent = event.raw.event_name;
+                                    eventDiv.title = event.raw.event_name;
+                                    div.appendChild(eventDiv);
                                 });
 
-                                // If more than 2 events, add a + indicator
-                                if (dayEvents.length > 2) {
-                                    const plusIndicator = document.createElement("div");
-                                    plusIndicator.className = "absolute top-1 right-1 w-5 h-5 rounded-full bg-gray-500 border-2 border-white shadow-sm flex items-center justify-center text-xs text-white font-bold";
-                                    plusIndicator.textContent = `+${dayEvents.length - 2}`;
-                                    div.appendChild(plusIndicator);
+                                // If more events, show "+N more"
+                                if (dayEvents.length > 3) {
+                                    const moreDiv = document.createElement("div");
+                                    moreDiv.className = "text-xs text-gray-500 mt-1";
+                                    moreDiv.textContent = `+${dayEvents.length - 3} more`;
+                                    div.appendChild(moreDiv);
                                 }
                             }
 
@@ -245,14 +330,23 @@
                                     const title =
                                         `Events on ${year}-${String(month + 1).padStart(2, '0')}-${String(i).padStart(2, '0')}`;
                                     const body = dayEvents.map(e =>
-                                        `<div class="mb-4 bg-white dark:bg-gray-800 rounded-lg shadow p-4 border border-gray-200 dark:border-gray-700 text-left">
-                                        <div class="flex items-start gap-3 mb-3">
-                                            ${e.raw.event_image ? `<img src="/storage/${e.raw.event_image}" alt="${e.raw.event_name}" class="w-12 h-12 rounded-lg object-cover border-2 border-white shadow-sm">` : ''}
-                                            <div class="flex-1">
-                                                <strong class="block text-base text-[#0a1f3f] mb-1">${e.raw.event_name}</strong>
+                                        `<div class="mb-4 bg-white rounded-lg shadow p-4 border border-gray-200 text-left">
+                                        <div class="mb-3">
+                                            <strong class="block text-base text-gray-900 mb-2">${e.raw.event_name}</strong>
+
+                                            ${e.raw.event_images && e.raw.event_images.length > 0 ? `
+                                                <div class="grid grid-cols-${Math.min(e.raw.event_images.length, 3)} gap-2 mb-3">
+                                                    ${e.raw.event_images.slice(0, 3).map(img =>
+                                                        `<img src="/storage/${img}" alt="${e.raw.event_name}" class="w-full h-16 rounded object-cover border border-gray-200">`
+                                                    ).join('')}
+                                                    ${e.raw.event_images.length > 3 ? `<div class="w-full h-16 rounded bg-gray-100 border border-gray-200 flex items-center justify-center text-sm text-gray-500">+${e.raw.event_images.length - 3} more</div>` : ''}
+                                                </div>
+                                            ` : ''}
+
+                                            <div class="text-sm text-gray-600">
                                                 <span class="block text-xs text-gray-500 mb-1">${e.raw.event_category} &mdash; ${e.raw.event_location}</span>
-                                                <span class="block text-xs text-gray-500 mb-1">${e.raw.event_date} | ${e.raw.event_time}${e.raw.event_duration ? ' – ' + e.raw.event_duration : ''}</span>
-                                                <p class="text-sm mt-1 text-[#4a5568]">${e.raw.event_discription.replace(/\n/g, '<br>')}</p>
+                                                <span class="block text-xs text-gray-500 mb-2">${e.raw.event_date} | ${e.raw.event_time}${e.raw.event_duration ? ' – ' + e.raw.event_duration : ''}</span>
+                                                <p class="text-sm text-gray-700">${e.raw.event_discription.replace(/\n/g, '<br>')}</p>
                                             </div>
                                         </div>
                                     </div>`
