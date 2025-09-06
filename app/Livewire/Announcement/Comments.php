@@ -12,7 +12,6 @@ use Filament\Notifications\Notification;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Log;
-use Livewire\Attributes\On;
 use App\Services\OpenRouterService;
 
 class Comments extends Component
@@ -23,10 +22,12 @@ class Comments extends Component
 
     public $id;
     public $closeCommentModal = false;
+    
     public function reply_comments($id, $commentatorId, $replyID, $name)
     {
         return CommentDB::where('post_id', $id)->where('reply_to', $replyID)->where('type', 'reply')->get();
     }
+    
     public function formatDateHumanReadable($date)
     {
         $date = Carbon::parse($date);
@@ -39,7 +40,7 @@ class Comments extends Component
         $diffInMonths = $date->diffInMonths($now);
 
         if ($diffInMonths >= 1) {
-            return $date->format('F d, Y'); // e.g. June 03, 2025
+            return $date->format('F d, Y');
         } elseif ($diffInWeeks >= 1) {
             return intval($diffInWeeks) . 'w';
         } elseif ($diffInDays >= 1) {
@@ -52,15 +53,18 @@ class Comments extends Component
             return 'Just now';
         }
     }
+    
     public function emojies_react($post_id, $type)
     {
         return React::where('post_id', $post_id)->where('type', $type)->groupBy('react')->get('react');
     }
+    
     public function total_reacts($post_id, $type)
     {
         $reactNum = React::where('post_id', $post_id)->where('type', $type)->count();
         return  $reactNum > 0 ? $reactNum : "";
     }
+    
     public function current_react($post_id, $type)
     {
         $post = React::where('user_id', Auth::user()->id)->where('post_id', $post_id)->where('type', $type);
@@ -69,6 +73,7 @@ class Comments extends Component
         }
         return "";
     }
+    
     public function react($react, $id, $type)
     {
         $post = React::where('user_id', Auth::user()->id)->where('post_id', $id)->where('type', $type);
@@ -88,7 +93,9 @@ class Comments extends Component
             'count' =>  1,
         ]);
     }
+    
     public $MainCommentData;
+    
     public function mount($id = null)
     {
         $this->id = $id ?? Session::get('comment');
@@ -99,6 +106,7 @@ class Comments extends Component
             $this->MainCommentData = [];
         }
     }
+    
     public function update()
     {
         $this->id = Session::get('comment');
@@ -112,6 +120,7 @@ class Comments extends Component
     public $mentionedName = "/";
     public $CommentType = 'main';
     public $commentID, $commentPostId, $commentatorId;
+    
     public function replay_comment($id, $post_id, $commentatorId)
     {
         $this->commentID = $id;
@@ -120,14 +129,13 @@ class Comments extends Component
         $this->commentatorId = $commentatorId;
         return $this->mentionedName = "@" . $this->Author($commentatorId);
     }
+    
     public $comment_input = '';
     
     public function submit_comment()
     {
-        // Trim and validate comment input
         $commentText = trim($this->comment_input ?? '');
         
-        // Debug logging
         Log::info('Comment submission attempt', [
             'comment_input' => $this->comment_input,
             'trimmed' => $commentText,
@@ -144,7 +152,6 @@ class Comments extends Component
         }
 
         if ($this->CommentType == "reply") {
-            // Validate required fields for reply
             if (empty($this->commentPostId) || empty($this->commentID)) {
                 Notification::make()
                     ->title('Invalid reply data')
@@ -187,7 +194,6 @@ class Comments extends Component
                 return;
             }
             
-            // Reset form state
             $this->mentionedName = "/";
             $this->CommentType = "main";
             $this->comment_input = '';
@@ -196,7 +202,6 @@ class Comments extends Component
             $this->commentatorId = null;
             
         } else {
-            // Validate required fields for main comment
             if (empty($this->id)) {
                 Notification::make()
                     ->title('Invalid post data')
@@ -239,58 +244,37 @@ class Comments extends Component
                 return;
             }
             
-            // Reset form state
             $this->mentionedName = "/";
             $this->comment_input = '';
         }
         
-        // Refresh comments data after successful creation
         try {
             $this->MainCommentData = CommentDB::where('post_id', $this->id)->where('type', 'main')->get();
         } catch (\Exception $e) {
             $this->MainCommentData = [];
         }
         
-        // Clear the input box via JavaScript
         $this->dispatch('clear-comment-input');
     }
 
     public $voilateWords = null, $mentionedUser;
+    
     public function checkWithAi()
     {
-        // return false;//remove if ai is actiVE
-        $rawComment = $this->mentionedUser . ' ' . $this->comment_input;
-        $openRouterService = new OpenRouterService();
-        $aiReply = $openRouterService->ask($rawComment);
-        preg_match_all('/\*(.*?)\*/', $aiReply, $matches);
-        $offensiveWords = $matches[1] ?? [];
-        // dd($offensiveWords);
-        if (!empty($offensiveWords)) {
-            $this->voilateWords = $offensiveWords;
-            $this->comment_input = null;
-            return true;
-        }
         return false;
     }
 
-
-    #[On('post-created')]
-    public function handleNewPost($refreshPosts)
-    {
-        Session::put('screen', $refreshPosts);
-    }
-    
     public function closeComment()
     {
-        // Dispatch event to parent component to close modal
         $this->dispatch('closeCommentModal');
     }
 
     public function Author($id)
     {
         $user = User::where('id', $id)->first();
-        return $user ? $user?->FirstName . " " . $user?->LastName . " " . $user?->MiddleName . " " . $user?->extension_name : "ICSIS User";
+        return $user ? $user->FirstName . " " . $user->LastName . " " . $user->MiddleName . " " . $user->extension_name : "ICSIS User";
     }
+    
     public function render()
     {
         return view('livewire.announcement.comments', [
