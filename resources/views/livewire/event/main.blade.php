@@ -4,9 +4,9 @@
     <x-filament::modal width="3xl" style="z-index: 99999;">
         <x-slot name="trigger">
             <x-filament::button
-                style="background-color: white; color: #16a34a; border: none; padding: 8px 16px; border-radius: 8px; font-weight: 500; cursor: pointer; display: flex; align-items: center; gap: 8px; transition: background-color 0.2s;"
+                style="background-color: rgb(231, 253, 238); color: #09642b; border: none; padding: 8px 16px; border-radius: 8px; font-weight: 500; cursor: pointer; display: flex; align-items: center; gap: 8px; transition: background-color 0.2s;"
                 class="dark:bg-gray-700 dark:text-green-400 dark:hover:bg-gray-600"
-                onmouseover="this.style.backgroundColor='#f0fdf4'" onmouseout="this.style.backgroundColor='white'">
+                onmouseover="this.style.backgroundColor='#C0FAD1FF'" onmouseout="this.style.backgroundColor='white'">
                 <svg style="width: 20px; height: 20px;" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path>
                 </svg>
@@ -25,6 +25,7 @@
             </x-filament::button>
         </form>
     </x-filament::modal>
+    <br>
     <!-- Calendar Container -->
     <div style="background-color: white; border-radius: 8px; box-shadow: 0 4px 12px -2px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.05); overflow: hidden; transition: all 0.3s ease;"
         class="dark:bg-gray-900 dark:border dark:border-gray-700 dark:shadow-xl dark:shadow-gray-900/30">
