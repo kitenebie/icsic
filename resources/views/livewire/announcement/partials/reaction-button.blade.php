@@ -44,7 +44,7 @@
                 aria-label="{{ $reaction }}"
                 title="{{ $reaction }}"
                 data-reaction="{{ strtolower($reaction) }}"
-                onmouseover="alert('you hovered')"
+                onmouseover="showReactionPopup({{ $itemId }})"
             >
                 <img
                     src="/build/img/{{ strtolower($reaction) }}.png"
