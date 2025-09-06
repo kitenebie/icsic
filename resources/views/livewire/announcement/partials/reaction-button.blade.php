@@ -55,3 +55,19 @@
         @endforeach
     </div>
 </div>
+
+<script>
+function showReactionPopup(itemId) {
+    const popup = document.querySelector(`[data-item-id="${itemId}"].reaction-popup-menu`);
+    if (popup) {
+        popup.classList.remove('hidden');
+    }
+}
+
+function hideReactionPopup(itemId) {
+    const popup = document.querySelector(`[data-item-id="${itemId}"].reaction-popup-menu`);
+    if (popup) {
+        popup.classList.add('hidden');
+    }
+}
+</script>
