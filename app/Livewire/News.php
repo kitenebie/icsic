@@ -38,13 +38,6 @@ class News extends Component implements HasForms, HasTable
     use InteractsWithTable;
 
     public ?array $data = [];
-    public $selectedDate = null;
-    public $monthName;
-    public $year;
-    public $calendarDays = [];
-    public $selectedDateNews;
-    public $viewMode = 'month'; // 'month' or 'week'
-    public $searchQuery = '';
 
     public $categories = [
         "World",
@@ -466,68 +459,6 @@ class News extends Component implements HasForms, HasTable
             ]);
     }
 
-    public function goToToday()
-    {
-        $this->monthName = date('F');
-        $this->year = date('Y');
-        $this->generateCalendarDays();
-        $this->selectedDate = date('Y-m-d');
-        $this->selectedDateNews = NewsDB::whereDate('created_at', $this->selectedDate)->get();
-    }
-
-    public function switchView($view)
-    {
-        $this->viewMode = $view;
-    }
-
-    public function selectDate($date)
-    {
-        $this->selectedDate = $date;
-        $this->selectedDateNews = NewsDB::whereDate('created_at', $date)->get();
-    }
-
-    private function generateCalendarDays()
-    {
-        $daysInMonth = date('t', strtotime($this->monthName . ' ' . $this->year));
-        $firstDayOfMonth = date('w', strtotime('1 ' . $this->monthName . ' ' . $this->year));
-        $today = date('Y-m-d');
-
-        $this->calendarDays = [];
-
-        // Add empty cells for days before the first day of the month
-        for ($i = 0; $i < $firstDayOfMonth; $i++) {
-            $this->calendarDays[] = null;
-        }
-
-        // Add days of the month
-        for ($day = 1; $day <= $daysInMonth; $day++) {
-            $date = date('Y-m-d', strtotime($day . ' ' . $this->monthName . ' ' . $this->year));
-            $query = NewsDB::whereDate('created_at', $date);
-
-            if (!empty($this->searchQuery)) {
-                $query->where(function($q) {
-                    $q->where('title', 'like', '%' . $this->searchQuery . '%')
-                      ->orWhere('content', 'like', '%' . $this->searchQuery . '%')
-                      ->orWhere('author', 'like', '%' . $this->searchQuery . '%');
-                });
-            }
-
-            $news = $query->get();
-
-            $this->calendarDays[] = [
-                'day' => $day,
-                'date' => $date,
-                'is_today' => $date === $today,
-                'is_selected' => $date === $this->selectedDate,
-                'news' => $news,
-            ];
-        }
-
-        // Fill the rest of the calendar grid (to make it 35 cells for 5 weeks)
-        while (count($this->calendarDays) < 35) {
-            $this->calendarDays[] = null;
-        }
-    }
 
     public function render()
     {
