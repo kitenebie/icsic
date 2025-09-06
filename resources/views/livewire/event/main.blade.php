@@ -1,6 +1,8 @@
-<div style="background-color: white; border-radius: 8px; box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05); overflow: hidden;" class="dark:bg-gray-800 dark:border-gray-700">
+<div style="background-color: white; border-radius: 12px; box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05); overflow: hidden; transition: all 0.3s ease;" class="dark:bg-gray-900 dark:border dark:border-gray-700 dark:shadow-2xl dark:shadow-gray-900/50">
     <!-- Calendar Header -->
-    <div style="background-color: #16a34a; color: white; padding: 16px 24px;" class="dark:bg-green-700">
+    <div style="background: linear-gradient(135deg, #16a34a 0%, #15803d 100%); color: white; padding: 20px 24px; position: relative;" class="dark:bg-gradient-to-r dark:from-gray-800 dark:to-gray-900 dark:shadow-lg">
+        <div style="position: absolute; top: 0; left: 0; right: 0; bottom: 0; background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><pattern id="grain" width="100" height="100" patternUnits="userSpaceOnUse"><circle cx="25" cy="25" r="1" fill="rgba(255,255,255,0.1)"/><circle cx="75" cy="75" r="1" fill="rgba(255,255,255,0.1)"/></pattern></defs><rect width="100" height="100" fill="url(%23grain)"/></svg>'); opacity: 0.1;" class="dark:opacity-20"></div>
+        <div style="position: relative; z-index: 1;">
         <div style="display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 16px;">
             <div style="display: flex; align-items: center; gap: 12px;">
                 <button wire:click="previousMonth"
@@ -89,14 +91,15 @@
                 </x-filament::modal>
             </div>
         </div>
+        </div>
     </div>
 
     <!-- Calendar Grid -->
-    <div style="padding: 24px; overflow-x: auto;">
+    <div style="padding: 24px; overflow-x: auto; background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);" class="dark:bg-gradient-to-br dark:from-gray-800 dark:to-gray-900">
         <!-- Days of Week Header -->
-        <div style="display: grid; grid-template-columns: repeat(7, 1fr); gap: 1px; margin-bottom: 8px; min-width: 600px;">
+        <div style="display: grid; grid-template-columns: repeat(7, 1fr); gap: 2px; margin-bottom: 12px; min-width: 600px;">
             @foreach(['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'] as $day)
-                <div style="padding: 12px; text-align: center; font-weight: 600; color: #4b5563; background-color: #f9fafb; font-size: 14px;">
+                <div style="padding: 16px 12px; text-align: center; font-weight: 700; color: #374151; background: linear-gradient(135deg, #ffffff 0%, #f9fafb 100%); border-radius: 8px; font-size: 14px; text-transform: uppercase; letter-spacing: 0.5px; box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);" class="dark:bg-gradient-to-br dark:from-gray-700 dark:to-gray-800 dark:text-gray-200 dark:shadow-lg dark:shadow-gray-900/20">
                     <span style="display: none;" class="hidden md:inline">{{ $day }}</span>
                     <span style="display: inline;" class="md:hidden">{{ substr($day, 0, 1) }}</span>
                 </div>
@@ -104,34 +107,35 @@
         </div>
 
         <!-- Calendar Days -->
-        <div style="display: grid; grid-template-columns: repeat(7, 1fr); gap: 1px; background-color: #e5e7eb; border-radius: 8px; overflow: hidden; min-width: 600px;" class="dark:bg-gray-600">
+        <div style="display: grid; grid-template-columns: repeat(7, 1fr); gap: 2px; background: linear-gradient(135deg, #e2e8f0 0%, #cbd5e1 100%); border-radius: 12px; overflow: hidden; min-width: 600px; box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.1);" class="dark:bg-gradient-to-br dark:from-gray-700 dark:to-gray-800 dark:shadow-2xl dark:shadow-gray-900/50">
             @foreach($calendarDays as $day)
                 @if($day)
                     <div wire:click="selectDate('{{ $day['date'] }}')"
-                         style="background-color: white; min-height: 120px; padding: 8px; cursor: pointer; transition: background-color 0.2s; {{ $day['is_today'] ? 'background-color: #dcfce7;' : '' }} {{ $day['is_selected'] ? 'box-shadow: 0 0 0 2px #16a34a;' : '' }}"
-                         class="dark:bg-gray-700 dark:text-white {{ $day['is_today'] ? 'dark:bg-green-900' : '' }}"
-                         onmouseover="this.style.backgroundColor='#f0fdf4'"
-                         onmouseout="this.style.backgroundColor='{{ $day['is_today'] ? '#dcfce7' : 'white' }}'">
-                        <div style="font-size: 14px; font-weight: 500; color: #111827; margin-bottom: 4px;" class="dark:text-gray-200">
+                         style="background: linear-gradient(135deg, #ffffff 0%, #fefefe 100%); min-height: 140px; padding: 12px; cursor: pointer; transition: all 0.3s ease; border-radius: 8px; {{ $day['is_today'] ? 'background: linear-gradient(135deg, #dcfce7 0%, #bbf7d0 100%); box-shadow: 0 4px 12px rgba(34, 197, 94, 0.3);' : '' }} {{ $day['is_selected'] ? 'box-shadow: 0 0 0 3px #16a34a, 0 4px 12px rgba(22, 163, 74, 0.4);' : '' }}"
+                         class="dark:bg-gradient-to-br dark:from-gray-700 dark:to-gray-800 dark:text-white {{ $day['is_today'] ? 'dark:bg-gradient-to-br dark:from-green-800 dark:to-green-900 dark:shadow-2xl dark:shadow-green-900/50' : '' }} dark:hover:shadow-lg dark:hover:shadow-gray-900/30"
+                         onmouseover="this.style.transform='translateY(-2px)'; this.style.boxShadow='{{ $day['is_selected'] ? '0 0 0 3px #16a34a, ' : '' }}0 8px 20px rgba(0, 0, 0, 0.15)'"
+                         onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='{{ $day['is_selected'] ? '0 0 0 3px #16a34a' : ($day['is_today'] ? '0 4px 12px rgba(34, 197, 94, 0.3)' : 'none') }}'">
+                        <div style="font-size: 16px; font-weight: 600; color: #111827; margin-bottom: 8px; text-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);" class="dark:text-gray-100">
                             {{ $day['day'] }}
                         </div>
 
                         <!-- Events for this day -->
-                        <div style="display: flex; flex-direction: column; gap: 4px;">
+                        <div style="display: flex; flex-direction: column; gap: 6px;">
                             @foreach($day['events']->take(3) as $event)
-                                <div style="background-color: #dcfce7; color: #166534; font-size: 12px; padding: 4px; border-radius: 4px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;"
-                                     class="dark:bg-green-800 dark:text-green-200"
+                                <div style="background: linear-gradient(135deg, #dcfce7 0%, #bbf7d0 100%); color: #166534; font-size: 11px; padding: 6px 8px; border-radius: 6px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-weight: 500; border: 1px solid rgba(34, 197, 94, 0.2); box-shadow: 0 2px 4px rgba(34, 197, 94, 0.1);"
+                                     class="dark:bg-gradient-to-r dark:from-green-800 dark:to-green-900 dark:text-green-200 dark:border-green-700 dark:shadow-lg dark:shadow-green-900/20"
                                      title="{{ $event->event_name }}">
                                     {{ Str::limit($event->event_name, 15) }}
                                 </div>
                             @endforeach
 
                             @if($day['events']->count() > 3)
-                                <div style="font-size: 12px; color: #6b7280;" class="dark:text-gray-400">
+                                <div style="font-size: 11px; color: #6b7280; font-weight: 500; background: rgba(107, 114, 128, 0.1); padding: 4px 8px; border-radius: 4px; text-align: center;" class="dark:text-gray-400 dark:bg-gray-600/50">
                                     +{{ $day['events']->count() - 3 }} more
                                 </div>
                             @endif
                         </div>
+                    </div>
                     </div>
                 @else
                     <div style="background-color: #f9fafb; min-height: 120px;" class="dark:bg-gray-800"></div>
@@ -142,7 +146,7 @@
 
     <!-- Selected Date Details -->
     @if($selectedDate)
-        <div style="border-top: 1px solid #e5e7eb; padding: 24px; background-color: #f9fafb;" class="dark:bg-gray-800 dark:border-gray-600">
+        <div style="border-top: 1px solid #e5e7eb; padding: 32px; background: linear-gradient(135deg, #f9fafb 0%, #f3f4f6 100%);" class="dark:bg-gradient-to-br dark:from-gray-800 dark:to-gray-900 dark:border-gray-700">
             <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 16px;">
                 <h3 style="font-size: 18px; font-weight: 600; color: #111827; margin: 0;" class="dark:text-white">
                     Events for {{ \Carbon\Carbon::parse($selectedDate)->format('F j, Y') }}
@@ -179,8 +183,12 @@
             @if($selectedDateEvents->count() > 0)
                 <div style="display: flex; flex-direction: column; gap: 16px;">
                     @foreach($selectedDateEvents as $event)
-                        <div style="background-color: white; padding: 16px; border-radius: 8px; box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06); border: 1px solid #e5e7eb;"
-                             class="dark:bg-gray-700 dark:border-gray-600">
+                        <div style="background: linear-gradient(135deg, #ffffff 0%, #fefefe 100%); padding: 20px; border-radius: 12px; box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1), 0 2px 4px rgba(0, 0, 0, 0.05); border: 1px solid rgba(229, 231, 235, 0.8); transition: all 0.3s ease; position: relative; overflow: hidden;"
+                             class="dark:bg-gradient-to-br dark:from-gray-700 dark:to-gray-800 dark:border-gray-600 dark:shadow-2xl dark:shadow-gray-900/30"
+                             onmouseover="this.style.transform='translateY(-2px)'; this.style.boxShadow='0 8px 20px rgba(0, 0, 0, 0.15)'"
+                             onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 4px 12px rgba(0, 0, 0, 0.1), 0 2px 4px rgba(0, 0, 0, 0.05)'">
+                        <div style="position: absolute; top: 0; left: 0; right: 0; bottom: 0; background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><pattern id="subtle-pattern" width="20" height="20" patternUnits="userSpaceOnUse"><circle cx="10" cy="10" r="0.5" fill="rgba(0,0,0,0.02)"/></pattern></defs><rect width="100" height="100" fill="url(%23subtle-pattern)"/></svg>'); opacity: 0.3;" class="dark:opacity-10"></div>
+                        <div style="position: relative; z-index: 1;">
                             <div style="display: flex; align-items: flex-start; justify-content: space-between;">
                                     <div style="flex: 1;">
                                         <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 8px;">
@@ -252,11 +260,15 @@
                     @endforeach
                 </div>
             @else
-                <div style="text-align: center; padding: 32px 0; color: #6b7280;" class="dark:text-gray-400">
-                    <svg style="width: 48px; height: 48px; margin: 0 auto 16px; color: #d1d5db;" class="dark:text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
-                    </svg>
-                    <p style="margin: 0;">No events for this date</p>
+                <div style="text-align: center; padding: 48px 0; color: #6b7280;" class="dark:text-gray-400">
+                    <div style="position: relative; display: inline-block;">
+                        <svg style="width: 64px; height: 64px; margin: 0 auto 20px; color: #d1d5db; filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.1));" class="dark:text-gray-600 dark:filter dark:drop-shadow-[0_4px_8px_rgba(0,0,0,0.3)]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
+                        </svg>
+                        <div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 32px; height: 32px; background: linear-gradient(135deg, #16a34a 0%, #15803d 100%); border-radius: 50%; opacity: 0.1;" class="dark:opacity-20"></div>
+                    </div>
+                    <h3 style="margin: 0 0 8px 0; font-size: 18px; font-weight: 600; color: #374151;" class="dark:text-gray-300">No Events Scheduled</h3>
+                    <p style="margin: 0; font-size: 14px; color: #9ca3af;" class="dark:text-gray-500">This date is free. Create a new event to get started!</p>
                 </div>
             @endif
         </div>
