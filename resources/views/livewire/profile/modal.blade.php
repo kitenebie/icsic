@@ -220,11 +220,23 @@
                 modalProfile();
             }
 
-            // Prevent backdrop click from closing modal
+            // Prevent backdrop click from closing modal (but allow form interactions)
             modal.addEventListener('click', function(e) {
-                e.stopPropagation();
-                e.preventDefault();
-                // Don't close the modal on backdrop click
+                const target = e.target;
+                const isFileInput = target.type === 'file' || target.tagName === 'LABEL' || target.closest('label');
+                const isFormElement = target.tagName === 'INPUT' || target.tagName === 'TEXTAREA' || target.tagName === 'SELECT' || target.tagName === 'BUTTON';
+                const isInsideForm = target.closest('form');
+
+                // If it's a file input interaction or form element, allow the event
+                if (isFileInput || (isFormElement && isInsideForm)) {
+                    return; // Allow the event to proceed
+                }
+
+                // For backdrop clicks, prevent modal closure
+                if (e.target === modal) {
+                    e.stopPropagation();
+                    e.preventDefault();
+                }
             });
 
             // Prevent escape key from closing modal
@@ -237,15 +249,25 @@
                 }
             });
 
-            // Override any other modal closing mechanisms
-            const originalAddEventListener = EventTarget.prototype.addEventListener;
-            EventTarget.prototype.addEventListener = function(type, listener, options) {
-                if (type === 'click' && this === modal) {
-                    // Block any click listeners that might close the modal
-                    return;
+            // Allow file input and form interactions while preventing modal closure
+            modal.addEventListener('click', function(e) {
+                // Allow clicks on file inputs, labels, and form elements
+                const target = e.target;
+                const isFileInput = target.type === 'file' || target.tagName === 'LABEL' || target.closest('label');
+                const isFormElement = target.tagName === 'INPUT' || target.tagName === 'TEXTAREA' || target.tagName === 'SELECT' || target.tagName === 'BUTTON';
+                const isInsideForm = target.closest('form');
+
+                // If it's a file input interaction or form element, allow the event
+                if (isFileInput || (isFormElement && isInsideForm)) {
+                    return; // Allow the event to proceed
                 }
-                return originalAddEventListener.call(this, type, listener, options);
-            };
+
+                // For backdrop clicks, prevent modal closure
+                if (e.target === modal) {
+                    e.stopPropagation();
+                    e.preventDefault();
+                }
+            }, true); // Use capture phase to intercept events early
         });
 
         // Prevent page unload from affecting modal
