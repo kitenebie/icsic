@@ -73,7 +73,6 @@ class Modal extends Component
         $this->reset('profile');
 
         session()->flash('success', 'Profile updated successfully!');
-        $this->dispatch('profile-updated');
     }
 
     public function removeProfilePicture()

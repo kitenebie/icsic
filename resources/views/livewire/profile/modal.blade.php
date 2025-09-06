@@ -204,6 +204,30 @@
             }, 300);
         }
 
+        // Prevent modal from closing on backdrop click or escape key
+        document.addEventListener('DOMContentLoaded', function() {
+            const modal = document.getElementById('modalProfile');
+            const content = document.getElementById('modalContent');
+
+            // Prevent backdrop click from closing modal
+            modal.addEventListener('click', function(e) {
+                // Only close if the click is directly on the modal backdrop (not on content)
+                if (e.target === modal) {
+                    e.stopPropagation();
+                    // Don't close the modal
+                }
+            });
+
+            // Prevent escape key from closing modal
+            document.addEventListener('keydown', function(e) {
+                if (e.key === 'Escape' && !modal.classList.contains('hidden')) {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    // Don't close the modal
+                }
+            });
+        });
+
         // Auto-hide success message after 5 seconds
         @if (session()->has('success'))
             setTimeout(() => {
