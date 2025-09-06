@@ -337,6 +337,14 @@ select:focus[data-flux-control] {
     @apply size-4;
 } */
 
+/* Line clamp utility */
+.line-clamp-3 {
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
 /* Reaction Popup Styles */
 .reaction-popup-menu {
     position: absolute;

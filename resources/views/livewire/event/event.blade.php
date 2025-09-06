@@ -1,53 +1,62 @@
 <div>
-    <div class="bg-white min-h-screen">
-        <!-- Google Calendar Style Header -->
-        <div class="flex items-center justify-between p-6 border-b border-gray-200">
-            <div class="flex items-center space-x-4">
-                <h1 class="text-2xl font-normal text-gray-900">Calendar</h1>
-                <div class="flex items-center space-x-2">
-                    <button id="prev" class="p-2 hover:bg-gray-100 rounded-full transition-colors">
-                        <svg class="w-5 h-5 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path>
-                        </svg>
-                    </button>
-                    <button id="next" class="p-2 hover:bg-gray-100 rounded-full transition-colors">
-                        <svg class="w-5 h-5 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
-                        </svg>
-                    </button>
-                    <h2 id="monthYear" class="text-xl font-medium text-gray-900 ml-4">April 2025</h2>
+    <div class="bg-gradient-to-br from-blue-50 to-indigo-100 min-h-screen">
+        <!-- Enhanced Header -->
+        <div class="bg-white shadow-lg">
+            <div class="flex items-center justify-between p-6 border-b border-gray-200">
+                <div class="flex items-center space-x-4">
+                    <div class="flex items-center space-x-3">
+                        <div class="w-10 h-10 bg-gradient-to-r from-blue-500 to-purple-600 rounded-lg flex items-center justify-center">
+                            <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
+                            </svg>
+                        </div>
+                        <h1 class="text-2xl font-bold text-gray-900">School Calendar</h1>
+                    </div>
+                    <div class="flex items-center space-x-2">
+                        <button id="prev" class="p-2 hover:bg-blue-50 rounded-full transition-colors duration-200">
+                            <svg class="w-5 h-5 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path>
+                            </svg>
+                        </button>
+                        <button id="next" class="p-2 hover:bg-blue-50 rounded-full transition-colors duration-200">
+                            <svg class="w-5 h-5 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+                            </svg>
+                        </button>
+                        <h2 id="monthYear" class="text-xl font-semibold text-gray-900 ml-4">April 2025</h2>
+                    </div>
                 </div>
-            </div>
-            <div class="flex items-center space-x-2">
-                <button class="px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-md hover:bg-gray-50 transition-colors">
-                    Today
-                </button>
-                <div class="flex rounded-md shadow-sm">
-                    <button class="px-3 py-2 text-sm font-medium text-gray-900 bg-white border border-gray-300 rounded-l-md hover:bg-gray-50">
-                        Month
+                <div class="flex items-center space-x-3">
+                    <button class="px-4 py-2 text-sm font-medium text-blue-600 bg-blue-50 border border-blue-200 rounded-lg hover:bg-blue-100 transition-colors duration-200">
+                        Today
                     </button>
-                    <button class="px-3 py-2 text-sm font-medium text-gray-700 bg-gray-100 border border-gray-300 rounded-r-md hover:bg-gray-50">
-                        Week
-                    </button>
+                    <div class="flex rounded-lg shadow-sm border border-gray-200">
+                        <button class="px-4 py-2 text-sm font-medium text-white bg-blue-600 border border-blue-600 rounded-l-lg hover:bg-blue-700 transition-colors duration-200">
+                            Month
+                        </button>
+                        <button class="px-4 py-2 text-sm font-medium text-gray-700 bg-white border-l border-gray-200 rounded-r-lg hover:bg-gray-50 transition-colors duration-200">
+                            Week
+                        </button>
+                    </div>
                 </div>
             </div>
         </div>
 
-        <!-- Calendar Grid -->
+        <!-- Enhanced Calendar Grid -->
         <div class="p-6">
             <!-- Weekday Labels -->
-            <div class="grid grid-cols-7 mb-2">
-                <div class="p-3 text-sm font-medium text-gray-500 text-center">Sun</div>
-                <div class="p-3 text-sm font-medium text-gray-500 text-center">Mon</div>
-                <div class="p-3 text-sm font-medium text-gray-500 text-center">Tue</div>
-                <div class="p-3 text-sm font-medium text-gray-500 text-center">Wed</div>
-                <div class="p-3 text-sm font-medium text-gray-500 text-center">Thu</div>
-                <div class="p-3 text-sm font-medium text-gray-500 text-center">Fri</div>
-                <div class="p-3 text-sm font-medium text-gray-500 text-center">Sat</div>
+            <div class="grid grid-cols-7 mb-4">
+                <div class="p-4 text-sm font-semibold text-gray-600 text-center bg-gray-50 rounded-t-lg">Sunday</div>
+                <div class="p-4 text-sm font-semibold text-gray-600 text-center bg-gray-50 rounded-t-lg">Monday</div>
+                <div class="p-4 text-sm font-semibold text-gray-600 text-center bg-gray-50 rounded-t-lg">Tuesday</div>
+                <div class="p-4 text-sm font-semibold text-gray-600 text-center bg-gray-50 rounded-t-lg">Wednesday</div>
+                <div class="p-4 text-sm font-semibold text-gray-600 text-center bg-gray-50 rounded-t-lg">Thursday</div>
+                <div class="p-4 text-sm font-semibold text-gray-600 text-center bg-gray-50 rounded-t-lg">Friday</div>
+                <div class="p-4 text-sm font-semibold text-gray-600 text-center bg-gray-50 rounded-t-lg">Saturday</div>
             </div>
 
             <!-- Calendar Dates -->
-            <div id="calendar" class="grid grid-cols-7 border-t border-gray-200">
+            <div id="calendar" class="grid grid-cols-7 bg-white rounded-lg shadow-sm border border-gray-200 overflow-hidden">
                 <!-- Filled by JS -->
             </div>
         </div>
@@ -61,67 +70,141 @@
                     class="mt-4 bg-green-500 text-white px-4 py-2 rounded-lg hover:bg-green-600">Close</button>
             </div>
         </div>
-        <section class="max-w-7xl mt-6 mx-auto px-6 pb-12">
-            <h2 class="text-center font-bold text-lg sm:text-xl mb-2">Events</h2>
-            <p class="text-center text-gray-600 text-xs sm:text-sm mb-8 max-w-md mx-auto">
-                Stay updated with the latest happenings at Irosin Central School.
-            </p>
-            <div id="event-loading" class="flex justify-center items-center py-8" style="display: none;">
-                <svg class="animate-spin h-8 w-8 text-blue-500" xmlns="http://www.w3.org/2000/svg" fill="none"
-                    viewBox="0 0 24 24">
-                    <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor"
-                        stroke-width="4"></circle>
-                    <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v4a4 4 0 00-4 4H4z"></path>
-                </svg>
+
+        <!-- Facebook-style Image Preview Modal -->
+        <div id="imagePreviewModal" class="fixed inset-0 hidden bg-black bg-opacity-90 flex items-center justify-center z-50">
+            <div class="relative max-w-4xl max-h-screen p-4">
+                <!-- Close button -->
+                <button onclick="closeImagePreview()" class="absolute top-4 right-4 z-10 bg-black bg-opacity-50 text-white rounded-full p-2 hover:bg-opacity-70 transition-all">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                    </svg>
+                </button>
+
+                <!-- Previous button -->
+                <button id="prevImageBtn" onclick="changeImage(-1)" class="absolute left-4 top-1/2 transform -translate-y-1/2 z-10 bg-black bg-opacity-50 text-white rounded-full p-3 hover:bg-opacity-70 transition-all">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path>
+                    </svg>
+                </button>
+
+                <!-- Next button -->
+                <button id="nextImageBtn" onclick="changeImage(1)" class="absolute right-4 top-1/2 transform -translate-y-1/2 z-10 bg-black bg-opacity-50 text-white rounded-full p-3 hover:bg-opacity-70 transition-all">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+                    </svg>
+                </button>
+
+                <!-- Main image -->
+                <img id="previewImage" src="" alt="" class="max-w-full max-h-full object-contain rounded-lg">
+
+                <!-- Image counter -->
+                <div class="absolute bottom-4 left-1/2 transform -translate-x-1/2 bg-black bg-opacity-50 text-white px-3 py-1 rounded-full text-sm">
+                    <span id="currentImageIndex">1</span> / <span id="totalImages">1</span>
+                </div>
+
+                <!-- Thumbnails -->
+                <div id="imageThumbnails" class="absolute bottom-16 left-1/2 transform -translate-x-1/2 flex space-x-2 max-w-full overflow-x-auto">
+                    <!-- Thumbnails will be populated by JavaScript -->
+                </div>
+            </div>
+        </div>
+        <section class="max-w-7xl mt-8 mx-auto px-6 pb-12">
+            <div class="text-center mb-8">
+                <h2 class="text-3xl font-bold text-gray-900 mb-2">Upcoming Events</h2>
+                <p class="text-gray-600 text-lg max-w-2xl mx-auto">
+                    Stay updated with the latest happenings at Irosin Central School.
+                </p>
+            </div>
+            <div id="event-loading" class="flex justify-center items-center py-12" style="display: none;">
+                <div class="flex items-center space-x-3">
+                    <svg class="animate-spin h-8 w-8 text-blue-500" xmlns="http://www.w3.org/2000/svg" fill="none"
+                        viewBox="0 0 24 24">
+                        <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor"
+                            stroke-width="4"></circle>
+                        <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v4a4 4 0 00-4 4H4z"></path>
+                    </svg>
+                    <span class="text-gray-600">Loading events...</span>
+                </div>
             </div>
 
-            <div class="max-w-7xl mx-auto grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+            <div class="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
                 @forelse ($events ?? [] as $event)
                     <div id="event-{{ \Carbon\Carbon::parse($event->event_date)->format('Y') }}{{ \Carbon\Carbon::parse($event->event_date)->format('M') }}"
-                        class="bg-white hidden rounded-xl p-6 shadow-md border">
-                        <div class="flex justify-between items-start mb-4">
-                            <div class="bg-[#d9f0e1] rounded-md text-[#2f7a4e] font-semibold text-center w-14">
-                                <div class="text-xl leading-none pt-1 font-bold">
-                                    {{ \Carbon\Carbon::parse($event->event_date)->format('d') }}
-                                </div>
-                                <div class="text-sm pb-1">
-                                    {{ \Carbon\Carbon::parse($event->event_date)->format('M') }}
-                                </div>
-                            </div>
-                            <div
-                                class="bg-[#0b6b2f] text-white text-xs rounded-full px-3 py-1 font-semibold self-start">
-                                {{ $event->event_category }}
-                            </div>
-                        </div>
-                        <div class="mb-4">
-                            <h3 class="font-bold text-[#0a1f3f] text-lg mb-2">{{ $event->event_name }}</h3>
-
-                            @if($event->event_images && count($event->event_images) > 0)
-                                <div class="grid grid-cols-{{ min(count($event->event_images), 3) }} gap-2 mb-3">
-                                    @foreach(array_slice($event->event_images, 0, 3) as $image)
-                                        <img src="{{ asset('storage/' . $image) }}"
-                                             alt="{{ $event->event_name }}"
-                                             class="w-full h-20 rounded-lg object-cover border border-gray-200">
-                                    @endforeach
-                                    @if(count($event->event_images) > 3)
-                                        <div class="w-full h-20 rounded-lg bg-gray-100 border border-gray-200 flex items-center justify-center text-sm text-gray-500">
-                                            +{{ count($event->event_images) - 3 }} more
+                        class="bg-white hidden rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 border border-gray-100 overflow-hidden group cursor-pointer">
+                        <!-- Event Images Gallery -->
+                        @if($event->event_images && count($event->event_images) > 0)
+                            <div class="relative h-48 overflow-hidden">
+                                <div class="grid {{ count($event->event_images) === 1 ? 'grid-cols-1' : (count($event->event_images) === 2 ? 'grid-cols-2' : 'grid-cols-2 grid-rows-2') }} h-full">
+                                    @foreach(array_slice($event->event_images, 0, 4) as $index => $image)
+                                        <div class="relative overflow-hidden {{ $index === 0 && count($event->event_images) > 1 ? 'row-span-2' : '' }}">
+                                            <img src="{{ asset('storage/' . $image) }}"
+                                                 alt="{{ $event->event_name }}"
+                                                 class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300 image-preview-trigger"
+                                                 data-images="{{ json_encode($event->event_images) }}"
+                                                 data-current="{{ $index }}"
+                                                 data-title="{{ $event->event_name }}">
+                                            @if($index === 3 && count($event->event_images) > 4)
+                                                <div class="absolute inset-0 bg-black bg-opacity-50 flex items-center justify-center">
+                                                    <span class="text-white font-bold text-lg">+{{ count($event->event_images) - 4 }}</span>
+                                                </div>
+                                            @endif
                                         </div>
-                                    @endif
+                                    @endforeach
                                 </div>
-                            @endif
+                                <div class="absolute top-3 left-3">
+                                    <div class="bg-white bg-opacity-90 backdrop-blur-sm rounded-lg px-3 py-1">
+                                        <div class="text-sm font-semibold text-gray-900">
+                                            {{ \Carbon\Carbon::parse($event->event_date)->format('M j') }}
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="absolute top-3 right-3">
+                                    <div class="bg-blue-600 text-white text-xs rounded-full px-3 py-1 font-semibold">
+                                        {{ $event->event_category }}
+                                    </div>
+                                </div>
+                            </div>
+                        @else
+                            <!-- No images fallback -->
+                            <div class="h-32 bg-gradient-to-r from-blue-400 to-purple-500 flex items-center justify-center">
+                                <div class="text-center text-white">
+                                    <div class="text-2xl font-bold mb-1">
+                                        {{ \Carbon\Carbon::parse($event->event_date)->format('d') }}
+                                    </div>
+                                    <div class="text-sm opacity-90">
+                                        {{ \Carbon\Carbon::parse($event->event_date)->format('M') }}
+                                    </div>
+                                </div>
+                            </div>
+                        @endif
 
-                            <div class="text-[#4a5568] mb-4 text-sm leading-relaxed">
+                        <!-- Event Content -->
+                        <div class="p-6">
+                            <h3 class="font-bold text-gray-900 text-xl mb-2 group-hover:text-blue-600 transition-colors">
+                                {{ $event->event_name }}
+                            </h3>
+                            <div class="text-gray-600 mb-4 text-sm leading-relaxed line-clamp-3">
                                 {!! \Illuminate\Support\Str::markdown($event->event_discription) !!}
                             </div>
-                        </div>
-                        <div class="flex items-center text-[#6b7280] text-xs space-x-2 mb-1">
-                            <i class="far fa-clock"></i>
-                            <span>{{ $event->event_time }}{{ $event->event_duration ? ' – ' . $event->event_duration : '' }}</span>
-                        </div>
-                        <div class="flex items-center text-[#6b7280] text-xs space-x-2">
-                            <i class="fas fa-map-marker-alt"></i>
-                            <span>{{ $event->event_location }}</span>
+
+                            <div class="flex items-center justify-between text-sm text-gray-500">
+                                <div class="flex items-center space-x-4">
+                                    <div class="flex items-center space-x-1">
+                                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                                        </svg>
+                                        <span>{{ $event->event_time }}{{ $event->event_duration ? ' – ' . $event->event_duration : '' }}</span>
+                                    </div>
+                                    <div class="flex items-center space-x-1">
+                                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"></path>
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"></path>
+                                        </svg>
+                                        <span>{{ $event->event_location }}</span>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 @empty
@@ -238,6 +321,80 @@
                         modal.classList.add("hidden");
                     };
 
+                    // Image Preview Modal Functions
+                    let currentImages = [];
+                    let currentImageIndex = 0;
+
+                    window.openImagePreview = function(images, startIndex = 0) {
+                        currentImages = images;
+                        currentImageIndex = startIndex;
+                        updateImagePreview();
+                        document.getElementById('imagePreviewModal').classList.remove('hidden');
+                    };
+
+                    window.closeImagePreview = function() {
+                        document.getElementById('imagePreviewModal').classList.add('hidden');
+                    };
+
+                    window.changeImage = function(direction) {
+                        currentImageIndex = (currentImageIndex + direction + currentImages.length) % currentImages.length;
+                        updateImagePreview();
+                    };
+
+                    function updateImagePreview() {
+                        const previewImage = document.getElementById('previewImage');
+                        const currentIndex = document.getElementById('currentImageIndex');
+                        const totalImages = document.getElementById('totalImages');
+                        const thumbnails = document.getElementById('imageThumbnails');
+                        const prevBtn = document.getElementById('prevImageBtn');
+                        const nextBtn = document.getElementById('nextImageBtn');
+
+                        previewImage.src = `/storage/${currentImages[currentImageIndex]}`;
+                        currentIndex.textContent = currentImageIndex + 1;
+                        totalImages.textContent = currentImages.length;
+
+                        // Update navigation buttons
+                        prevBtn.style.display = currentImages.length > 1 ? 'block' : 'none';
+                        nextBtn.style.display = currentImages.length > 1 ? 'block' : 'none';
+
+                        // Update thumbnails
+                        thumbnails.innerHTML = '';
+                        currentImages.forEach((image, index) => {
+                            const thumb = document.createElement('img');
+                            thumb.src = `/storage/${image}`;
+                            thumb.className = `w-12 h-12 rounded object-cover cursor-pointer border-2 ${
+                                index === currentImageIndex ? 'border-blue-500' : 'border-gray-300'
+                            }`;
+                            thumb.onclick = () => {
+                                currentImageIndex = index;
+                                updateImagePreview();
+                            };
+                            thumbnails.appendChild(thumb);
+                        });
+                    }
+
+                    // Add click handlers for image preview triggers
+                    document.addEventListener('click', function(e) {
+                        if (e.target.classList.contains('image-preview-trigger')) {
+                            const images = JSON.parse(e.target.dataset.images);
+                            const currentIndex = parseInt(e.target.dataset.current);
+                            openImagePreview(images, currentIndex);
+                        }
+                    });
+
+                    // Keyboard navigation for image preview
+                    document.addEventListener('keydown', function(e) {
+                        if (document.getElementById('imagePreviewModal').classList.contains('hidden')) return;
+
+                        if (e.key === 'ArrowLeft') {
+                            changeImage(-1);
+                        } else if (e.key === 'ArrowRight') {
+                            changeImage(1);
+                        } else if (e.key === 'Escape') {
+                            closeImagePreview();
+                        }
+                    });
+
                     function renderCalendar(date) {
                         calendar.innerHTML = "";
                         const year = date.getFullYear();
@@ -276,17 +433,24 @@
                                 console.log(`Day ${i}: ${count} event(s)`);
                             }
                             const div = document.createElement("div");
-                            div.className = `min-h-[120px] p-2 border-r border-b border-gray-200 hover:bg-gray-50 transition-colors relative ${
-                                isToday ? 'bg-blue-50' : ''
+                            div.className = `min-h-[140px] p-4 border-r border-b border-gray-200 hover:bg-blue-50 hover:shadow-md transition-all duration-200 relative ${
+                                isToday ? 'bg-blue-100 shadow-inner' : 'bg-white'
                             }`;
 
                             // Date number
                             const dateDiv = document.createElement("div");
-                            dateDiv.className = `text-sm font-medium mb-1 ${
-                                isToday ? 'text-blue-600 font-semibold' : 'text-gray-900'
+                            dateDiv.className = `text-lg font-bold mb-2 ${
+                                isToday ? 'text-blue-700' : 'text-gray-900'
                             }`;
                             dateDiv.textContent = i;
                             div.appendChild(dateDiv);
+
+                            // Today indicator
+                            if (isToday) {
+                                const todayBadge = document.createElement("div");
+                                todayBadge.className = "absolute top-2 right-2 w-2 h-2 bg-blue-600 rounded-full";
+                                div.appendChild(todayBadge);
+                            }
 
                             // Add event indicators (Google Calendar style)
                             if (hasEvent) {
