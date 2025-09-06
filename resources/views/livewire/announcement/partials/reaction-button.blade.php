@@ -30,7 +30,11 @@
                 style="{{ $sizeStyles }}"
             />
         @else
-            <i class="far fa-thumbs-up" style="{{ $sizeStyles }}"></i>
+            <img
+                src="{{ $currentReaction }}"
+                alt="Current reaction"
+                style="{{ $sizeStyles }}"
+            />
         @endif
     </button>
 
