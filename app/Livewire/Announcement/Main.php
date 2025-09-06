@@ -137,7 +137,7 @@ class Main extends Component
                 // Match user ID in 'users' array
                 $query->whereJsonContains('users', (string) $user->id)
                     ->orWhereJsonLength('users', 0); // include if users is []
-    
+
                 // Match group IDs in 'groups' array or include if empty
                 $query->orWhere(function ($q) use ($user) {
                     foreach ((array) $user->user_group as $groupId) {
@@ -145,7 +145,7 @@ class Main extends Component
                     }
                     $q->WhereJsonLength('groups', 0); // include if groups is []
                 });
-    
+
                 // Optional: if you also want to include those with empty tags
                 $query->WhereJsonLength('tags', 0);
             })

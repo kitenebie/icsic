@@ -14,10 +14,10 @@
                     <!-- Post Header -->
                     <header id="{{ $announcement->id }}" class="post-header">
                         <div class="post-author-info">
-                            <img src="{{ auth()->user()->profile_picture ? asset('storage/' . auth()->user()->profile_picture) : asset('images/blank-avatar.png') }}"
-                                alt="{{ auth()->user()->FirstName }} {{ auth()->user()->LastName }} avatar" class="post-avatar" />
+                            <img src="{{ $announcement->creator->profile_picture ? asset('storage/' . $announcement->creator->profile_picture) : asset('images/blank-avatar.png') }}"
+                                alt="{{ $announcement->creator->FirstName }} {{ $announcement->creator->LastName }} avatar" class="post-avatar" />
                             <div class="post-meta-info">
-                                <h3 class="post-author-name">{{ auth()->user()->FirstName }} {{ auth()->user()->LastName }}</h3>
+                                <h3 class="post-author-name">{{ $announcement->creator->FirstName }} {{ $announcement->creator->LastName }}</h3>
                                 <div class="post-time-privacy">
                                     <time datetime="{{ $announcement->created_at }}">
                                         {{ $this->formatDateHumanReadable($announcement->created_at) }}
