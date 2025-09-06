@@ -11,4 +11,14 @@ class NewsPage extends Model
         'relevant_topic' => 'array',
     ];
     protected $guarded = [];
+
+    public function views()
+    {
+        return $this->hasMany(NewsView::class);
+    }
+
+    public function getViewsCountAttribute()
+    {
+        return $this->views()->count();
+    }
 }

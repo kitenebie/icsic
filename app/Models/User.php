@@ -86,4 +86,9 @@ class User extends Authenticatable implements FilamentUser
     {
         return "{$this->LastName} {$this->extension_name}, {$this->FirstName} {$this->MiddleName}";
     }
+
+    public function newsViews()
+    {
+        return $this->hasMany(NewsView::class);
+    }
 }
