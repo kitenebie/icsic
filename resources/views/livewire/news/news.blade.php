@@ -133,6 +133,40 @@
                 @livewire('news.latest-news')
             </div>
         </div>
+
+        <!-- Trending Topics Section -->
+        <div class="mb-8">
+            <h2 class="text-2xl font-bold text-gray-900 mb-6">Trending Topics</h2>
+            <div class="bg-white rounded-2xl shadow-lg p-6">
+                <div class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-4">
+                    @if(isset($trendingTopics) && $trendingTopics->count() > 0)
+                        @foreach($trendingTopics as $index => $topic)
+                            <div class="text-center group cursor-pointer">
+                                <div class="w-16 h-16 mx-auto mb-3 bg-gradient-to-r from-blue-500 to-purple-600 rounded-full flex items-center justify-center group-hover:scale-110 transition-transform duration-200">
+                                    <span class="text-white font-bold text-lg">{{ $index + 1 }}</span>
+                                </div>
+                                <h3 class="font-semibold text-gray-900 text-sm group-hover:text-blue-600 transition-colors">{{ $topic }}</h3>
+                                <p class="text-xs text-gray-500 mt-1">Trending now</p>
+                            </div>
+                        @endforeach
+                    @else
+                        <!-- Default trending topics if no data -->
+                        @php
+                            $defaultTopics = ['Technology', 'Education', 'Sports', 'Health', 'Science', 'Arts'];
+                        @endphp
+                        @foreach($defaultTopics as $index => $topic)
+                            <div class="text-center group cursor-pointer">
+                                <div class="w-16 h-16 mx-auto mb-3 bg-gradient-to-r from-blue-500 to-purple-600 rounded-full flex items-center justify-center group-hover:scale-110 transition-transform duration-200">
+                                    <span class="text-white font-bold text-lg">{{ $index + 1 }}</span>
+                                </div>
+                                <h3 class="font-semibold text-gray-900 text-sm group-hover:text-blue-600 transition-colors">{{ $topic }}</h3>
+                                <p class="text-xs text-gray-500 mt-1">Popular topic</p>
+                            </div>
+                        @endforeach
+                    @endif
+                </div>
+            </div>
+        </div>
     </div>
 
     <!-- Facebook-style Image Preview Modal -->

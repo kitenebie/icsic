@@ -80,6 +80,51 @@
                         </div>
                     </div>
                 </div>
+
+                <!-- Related Articles & Trending Topics -->
+                <div class="mt-4 pt-4 border-t border-gray-100 space-y-3">
+                    <!-- Related Articles -->
+                    @php
+                        $relatedArticles = $this->getRelatedArticles($News_item->id, $News_item->topic_category);
+                    @endphp
+                    @if($relatedArticles->count() > 0)
+                        <div>
+                            <h4 class="text-xs font-semibold text-gray-700 mb-2 flex items-center">
+                                <svg class="w-3 h-3 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+                                </svg>
+                                Related Articles
+                            </h4>
+                            <div class="space-y-1">
+                                @foreach($relatedArticles as $related)
+                                    <a href="/read/{{ Illuminate\Support\Str::random(100) }}/{{ $related->id }}"
+                                       class="block text-xs text-blue-600 hover:text-blue-700 hover:underline truncate">
+                                        {{ Illuminate\Support\Str::limit($related->title, 40) }}
+                                    </a>
+                                @endforeach
+                            </div>
+                        </div>
+                    @endif
+
+                    <!-- Trending Topics -->
+                    @if(isset($trendingTopics) && $trendingTopics->count() > 0)
+                        <div>
+                            <h4 class="text-xs font-semibold text-gray-700 mb-2 flex items-center">
+                                <svg class="w-3 h-3 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"></path>
+                                </svg>
+                                Trending Topics
+                            </h4>
+                            <div class="flex flex-wrap gap-1">
+                                @foreach($trendingTopics->take(3) as $topic)
+                                    <span class="inline-block px-2 py-1 text-xs bg-blue-100 text-blue-700 rounded-full">
+                                        {{ $topic }}
+                                    </span>
+                                @endforeach
+                            </div>
+                        </div>
+                    @endif
+                </div>
             </div>
         </article>
     @empty

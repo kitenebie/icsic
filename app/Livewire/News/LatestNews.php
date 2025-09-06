@@ -178,10 +178,33 @@ class LatestNews extends Component
     }
     public function render()
     {
+        $latestNews = NewsDB::orderByDesc('id')
+            ->limit(9)
+            ->get();
+
+        // Get trending topics based on most viewed/read articles in the last 7 days
+        $trendingTopics = NewsDB::where('created_at', '>=', now()->subDays(7))
+            ->orderByDesc('views')
+            ->limit(5)
+            ->get()
+            ->map(function($news) {
+                return $this->categories[$news->topic_category];
+            })
+            ->unique()
+            ->values();
+
         return view('livewire.news.latest-news', [
-            'latest' => NewsDB::orderByDesc('id')
-                ->limit(9)
-                ->get()
+            'latest' => $latestNews,
+            'trendingTopics' => $trendingTopics
         ]);
+    }
+
+    public function getRelatedArticles($currentNewsId, $category)
+    {
+        return NewsDB::where('topic_category', $category)
+            ->where('id', '!=', $currentNewsId)
+            ->orderByDesc('views')
+            ->limit(3)
+            ->get();
     }
 }

@@ -41,8 +41,20 @@ class News extends Component
             ->limit(3)
             ->get();
 
+        // Get trending topics based on most viewed/read articles in the last 7 days
+        $trendingTopics = NewsDB::where('created_at', '>=', now()->subDays(7))
+            ->orderByDesc('views')
+            ->limit(6)
+            ->get()
+            ->map(function($news) {
+                return $this->categories[$news->topic_category];
+            })
+            ->unique()
+            ->values();
+
         return view('livewire.news.news', [
-            'featuredNews' => $featuredNews
+            'featuredNews' => $featuredNews,
+            'trendingTopics' => $trendingTopics
         ]);
     }
 }
