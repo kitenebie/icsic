@@ -124,60 +124,138 @@ class Comments extends Component
     
     public function submit_comment()
     {
-        $commentText = trim($this->comment_input ?? '');
-        
-        if (empty($commentText)) {
+        // Check if user is authenticated
+        if (!Auth::check()) {
+            Notification::make()
+                ->title('Authentication Required')
+                ->body('Please log in to comment.')
+                ->warning()
+                ->send();
             return;
         }
 
-        if ($this->CommentType == "reply") {
-            if (empty($this->commentPostId) || empty($this->commentID)) {
-                return;
-            }
-            
-            $data = [
-                'post_id' => $this->commentPostId,
-                'commentatorId' => Auth::user()->id,
-                'type' => $this->CommentType,
-                'reply_to' => $this->commentID,
-                'comment' => $commentText
-            ];
-            
-            CommentDB::create($data);
-            
-            $this->mentionedName = "/";
-            $this->CommentType = "main";
-            $this->comment_input = '';
-            $this->commentID = null;
-            $this->commentPostId = null;
-            $this->commentatorId = null;
-            
-        } else {
-            if (empty($this->id)) {
-                return;
-            }
-                
-            $data = [
-                'post_id' => $this->id,
-                'commentatorId' => Auth::user()->id,
-                'type' => $this->CommentType,
-                'reply_to' => null,
-                'comment' => $commentText
-            ];
-            
-            CommentDB::create($data);
-            
-            $this->mentionedName = "/";
-            $this->comment_input = '';
-        }
+        $commentText = trim($this->comment_input ?? '');
         
+        if (empty($commentText)) {
+            Notification::make()
+                ->title('Empty Comment')
+                ->body('Please write something before submitting.')
+                ->warning()
+                ->send();
+            return;
+        }
+
         try {
-            $this->MainCommentData = CommentDB::where('post_id', $this->id)->where('type', 'main')->get();
+            if ($this->CommentType == "reply") {
+                if (empty($this->commentPostId) || empty($this->commentID)) {
+                    Notification::make()
+                        ->title('Invalid Reply')
+                        ->body('Reply information is missing.')
+                        ->warning()
+                        ->send();
+                    return;
+                }
+                
+                $data = [
+                    'post_id' => $this->commentPostId,
+                    'commentatorId' => Auth::user()->id,
+                    'type' => $this->CommentType,
+                    'reply_to' => $this->commentID,
+                    'comment' => $commentText
+                ];
+                
+                $comment = CommentDB::create($data);
+                
+                if ($comment && $comment->id) {
+                    Log::info('Reply comment saved successfully', ['comment_id' => $comment->id]);
+                    
+                    Notification::make()
+                        ->title('Reply Posted')
+                        ->body('Your reply has been posted successfully.')
+                        ->success()
+                        ->send();
+                        
+                    $this->mentionedName = "/";
+                    $this->CommentType = "main";
+                    $this->comment_input = '';
+                    $this->commentID = null;
+                    $this->commentPostId = null;
+                    $this->commentatorId = null;
+                } else {
+                    throw new \Exception('Failed to create reply comment');
+                }
+                
+            } else {
+                if (empty($this->id)) {
+                    Notification::make()
+                        ->title('Invalid Post')
+                        ->body('Post information is missing.')
+                        ->warning()
+                        ->send();
+                    return;
+                }
+                    
+                $data = [
+                    'post_id' => $this->id,
+                    'commentatorId' => Auth::user()->id,
+                    'type' => $this->CommentType,
+                    'reply_to' => null,
+                    'comment' => $commentText
+                ];
+                
+                $comment = CommentDB::create($data);
+                
+                if ($comment && $comment->id) {
+                    Log::info('Main comment saved successfully', ['comment_id' => $comment->id]);
+                    
+                    Notification::make()
+                        ->title('Comment Posted')
+                        ->body('Your comment has been posted successfully.')
+                        ->success()
+                        ->send();
+                        
+                    $this->mentionedName = "/";
+                    $this->comment_input = '';
+                } else {
+                    throw new \Exception('Failed to create main comment');
+                }
+            }
+
+            // Refresh comments list to show the new comment
+            $this->refreshComments();
+            
         } catch (\Exception $e) {
-            $this->MainCommentData = [];
+            Log::error('Comment submission failed', [
+                'error' => $e->getMessage(),
+                'user_id' => Auth::user()->id,
+                'data' => $data ?? []
+            ]);
+            
+            Notification::make()
+                ->title('Comment Failed')
+                ->body('Unable to save your comment. Please try again.')
+                ->danger()
+                ->send();
         }
         
         $this->dispatch('clear-comment-input');
+    }
+
+    /**
+     * Refresh the comments list
+     */
+    public function refreshComments()
+    {
+        try {
+            $this->MainCommentData = CommentDB::where('post_id', $this->id)->where('type', 'main')->orderBy('created_at', 'desc')->get();
+            Log::info('Comments refreshed successfully', ['post_id' => $this->id]);
+        } catch (\Exception $e) {
+            Log::error('Failed to refresh comments', [
+                'error' => $e->getMessage(),
+                'post_id' => $this->id
+            ]);
+            $this->MainCommentData = [];
+        }
     }
 
     public $voilateWords = null, $mentionedUser;
