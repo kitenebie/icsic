@@ -220,34 +220,72 @@
     </script>
 
     {{-- Reaction button behavior --}}
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            document.querySelectorAll('.reaction-trigger-btn').forEach(btn => {
-                btn.addEventListener('click', function(e) {
-                    e.preventDefault();
+<script>
+(function(){
+  if (window.__reactionMenusInitialized) return;
+  window.__reactionMenusInitialized = true;
 
-                    // close all open menus first
-                    document.querySelectorAll('.reaction-popup-menu').forEach(menu => {
-                        menu.classList.add('hidden');
-                    });
+  function closeAll() {
+    document.querySelectorAll('.reaction-popup-menu').forEach(menu => menu.classList.add('hidden'));
+  }
+  function getWrapper(el){ return el ? el.closest('.reaction-button-wrapper') : null; }
+  function getPopup(wrapper){ return wrapper ? wrapper.querySelector('.reaction-popup-menu') : null; }
 
-                    // open only the popup inside THIS wrapper
-                    const wrapper = this.closest('.reaction-button-wrapper');
-                    const popup = wrapper.querySelector('.reaction-popup-menu');
-                    if (popup) {
-                        popup.classList.toggle('hidden');
-                    }
-                });
-            });
+  // Show on hover (use mouseover which bubbles)
+  document.addEventListener('mouseover', function(e){
+    const trigger = e.target.closest('.reaction-trigger-btn');
+    if (!trigger) return;
+    const wrapper = getWrapper(trigger);
+    const popup = getPopup(wrapper);
+    if (!popup) return;
+    closeAll();
+    popup.classList.remove('hidden');
+  }, true);
 
-            // close menus if clicking outside
-            document.addEventListener('click', function(e) {
-                if (!e.target.closest('.reaction-button-wrapper')) {
-                    document.querySelectorAll('.reaction-popup-menu').forEach(menu => {
-                        menu.classList.add('hidden');
-                    });
-                }
-            });
-        });
-    </script>
+  // Keyboard focus
+  document.addEventListener('focusin', function(e){
+    const trigger = e.target.closest('.reaction-trigger-btn');
+    if (!trigger) return;
+    const wrapper = getWrapper(trigger);
+    const popup = getPopup(wrapper);
+    if (!popup) return;
+    closeAll();
+    popup.classList.remove('hidden');
+  });
+
+  // Toggle on click (touch friendly)
+  document.addEventListener('click', function(e){
+    const trigger = e.target.closest('.reaction-trigger-btn');
+    if (trigger) {
+      e.preventDefault();
+      const wrapper = getWrapper(trigger);
+      const popup = getPopup(wrapper);
+      if (!popup) return;
+      const isHidden = popup.classList.contains('hidden');
+      closeAll();
+      if (isHidden) popup.classList.remove('hidden');
+      return;
+    }
+    if (!e.target.closest('.reaction-button-wrapper')) {
+      closeAll();
+    }
+  }, true);
+
+  // Hide when the pointer leaves the wrapper entirely (use mouseout which bubbles)
+  document.addEventListener('mouseout', function(e){
+    const wrapper = e.target.closest('.reaction-button-wrapper');
+    if (!wrapper) return;
+    const related = e.relatedTarget;
+    if (related && wrapper.contains(related)) return; // still inside wrapper
+    const popup = getPopup(wrapper);
+    if (popup) popup.classList.add('hidden');
+  }, true);
+
+  // After Livewire updates, ensure menus are closed
+  if (window.Livewire && window.Livewire.hook) {
+    window.Livewire.hook('message.processed', () => closeAll());
+  }
+  document.addEventListener('livewire:navigated', closeAll);
+})();
+</script>
 </div>

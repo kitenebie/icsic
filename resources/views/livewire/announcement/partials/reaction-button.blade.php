@@ -37,20 +37,45 @@
 
     <!-- Reaction Popup -->
     <div class="reaction-popup-menu hidden" data-item-id="{{ $itemId }}">
+        @php
+            $emojiMap = [
+                'like' => '👍',
+                'love' => '❤️',
+                'haha' => '😂',
+                'care' => '🤗',
+                'wow'  => '😮',
+                'sad'  => '😢',
+                'angry'=> '😡',
+            ];
+        @endphp
+
         @foreach (['Like', 'Love', 'Haha', 'Care', 'Wow', 'Sad', 'Angry'] as $reaction)
+            @php
+                $key = strtolower($reaction);
+                $file = public_path('build/img/' . $key . '.png');
+                $src  = file_exists($file) ? '/build/img/' . $key . '.png' : null;
+                $emoji = $emojiMap[$key] ?? '👍';
+            @endphp
             <button
                 type="button"
                 class="reaction-option-btn"
                 wire:click.stop.prevent='react("{{ $reaction }}", {{ $itemId }}, "{{ $type }}")'
                 aria-label="{{ $reaction }}"
                 title="{{ $reaction }}"
-                data-reaction="{{ strtolower($reaction) }}"
+                data-reaction="{{ $key }}"
             >
-                <img
-                    src="/build/img/{{ strtolower($reaction) }}.png"
-                    alt="{{ $reaction }}"
-                    style="{{ $popupSizeStyles }}"
-                />
+                @if ($src)
+                    <img
+                        src="{{ $src }}"
+                        alt="{{ $reaction }}"
+                        style="{{ $popupSizeStyles }}"
+                    />
+                @else
+                    <span
+                        aria-hidden="true"
+                        style="{{ $popupSizeStyles }}; display:inline-flex; align-items:center; justify-content:center; font-size: 18px;"
+                    >{{ $emoji }}</span>
+                @endif
             </button>
         @endforeach
     </div>
