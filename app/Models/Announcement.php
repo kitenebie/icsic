@@ -20,5 +20,11 @@ class Announcement extends Model
         'tags',
         'users',
         'groups',
+        'created_by',
     ];
+
+    public function creator()
+    {
+        return $this->belongsTo(User::class, 'created_by');
+    }
 }

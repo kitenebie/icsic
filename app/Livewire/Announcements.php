@@ -210,6 +210,7 @@ class Announcements extends Component implements HasForms, HasActions, HasTable
             'users' => $users,
             'groups' => $groups,
             'tags' => $tags,
+            'created_by' => Auth::id(),
         ]);
 
         // Fetch SMS numbers only when needed
