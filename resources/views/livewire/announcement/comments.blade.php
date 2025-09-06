@@ -222,8 +222,8 @@
     {{-- Reaction button behavior --}}
 <script>
 (function(){
-  if (window.__reactionMenusInitialized) return;
-  window.__reactionMenusInitialized = true;
+  if (window.__reactionMenusInitializedV2) return;
+  window.__reactionMenusInitializedV2 = true;
 
   function closeAll() {
     document.querySelectorAll('.reaction-popup-menu').forEach(menu => menu.classList.add('hidden'));
@@ -231,29 +231,27 @@
   function getWrapper(el){ return el ? el.closest('.reaction-button-wrapper') : null; }
   function getPopup(wrapper){ return wrapper ? wrapper.querySelector('.reaction-popup-menu') : null; }
 
-  // Show on hover (use mouseover which bubbles)
+  // OPEN on hover anywhere inside the wrapper (works for <i> and <img>)
   document.addEventListener('mouseover', function(e){
-    const trigger = e.target.closest('.reaction-trigger-btn');
-    if (!trigger) return;
-    const wrapper = getWrapper(trigger);
+    const wrapper = getWrapper(e.target);
+    if (!wrapper) return;
     const popup = getPopup(wrapper);
     if (!popup) return;
     closeAll();
     popup.classList.remove('hidden');
   }, true);
 
-  // Keyboard focus
+  // OPEN on keyboard focus inside wrapper
   document.addEventListener('focusin', function(e){
-    const trigger = e.target.closest('.reaction-trigger-btn');
-    if (!trigger) return;
-    const wrapper = getWrapper(trigger);
+    const wrapper = getWrapper(e.target);
+    if (!wrapper) return;
     const popup = getPopup(wrapper);
     if (!popup) return;
     closeAll();
     popup.classList.remove('hidden');
   });
 
-  // Toggle on click (touch friendly)
+  // TOGGLE on clicking the trigger button (touch devices)
   document.addEventListener('click', function(e){
     const trigger = e.target.closest('.reaction-trigger-btn');
     if (trigger) {
@@ -261,19 +259,20 @@
       const wrapper = getWrapper(trigger);
       const popup = getPopup(wrapper);
       if (!popup) return;
-      const isHidden = popup.classList.contains('hidden');
+      const willOpen = popup.classList.contains('hidden');
       closeAll();
-      if (isHidden) popup.classList.remove('hidden');
+      if (willOpen) popup.classList.remove('hidden');
       return;
     }
+    // CLOSE when clicking outside any wrapper
     if (!e.target.closest('.reaction-button-wrapper')) {
       closeAll();
     }
   }, true);
 
-  // Hide when the pointer leaves the wrapper entirely (use mouseout which bubbles)
+  // CLOSE when mouse leaves the entire wrapper (including trigger/icon + popup)
   document.addEventListener('mouseout', function(e){
-    const wrapper = e.target.closest('.reaction-button-wrapper');
+    const wrapper = getWrapper(e.target);
     if (!wrapper) return;
     const related = e.relatedTarget;
     if (related && wrapper.contains(related)) return; // still inside wrapper
