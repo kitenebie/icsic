@@ -22,6 +22,7 @@
         data-item-id="{{ $itemId }}"
         data-type="{{ $type }}"
         aria-label="React to {{ $type }}"
+        onmouseover="alert('you hovered')"
     >
         @if ($currentReaction)
             <img
@@ -43,6 +44,7 @@
                 aria-label="{{ $reaction }}"
                 title="{{ $reaction }}"
                 data-reaction="{{ strtolower($reaction) }}"
+                onmouseover="alert('you hovered')"
             >
                 <img
                     src="/build/img/{{ strtolower($reaction) }}.png"
