@@ -14,10 +14,10 @@
                     <!-- Post Header -->
                     <header id="{{ $announcement->id }}" class="post-header">
                         <div class="post-author-info">
-                            <img src="https://storage.googleapis.com/a1aa/image/10e94bdc-c408-4a4f-44e0-cc6af4a3b589.jpg"
-                                alt="Irosin Central School logo" class="post-avatar" />
+                            <img src="{{ auth()->user()->profile_picture ? asset('storage/' . auth()->user()->profile_picture) : asset('images/blank-avatar.png') }}"
+                                alt="{{ auth()->user()->FirstName }} {{ auth()->user()->LastName }} avatar" class="post-avatar" />
                             <div class="post-meta-info">
-                                <h3 class="post-author-name">Irosin Central School</h3>
+                                <h3 class="post-author-name">{{ auth()->user()->FirstName }} {{ auth()->user()->LastName }}</h3>
                                 <div class="post-time-privacy">
                                     <time datetime="{{ $announcement->created_at }}">
                                         {{ $this->formatDateHumanReadable($announcement->created_at) }}
