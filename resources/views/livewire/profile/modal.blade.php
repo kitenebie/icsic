@@ -180,11 +180,16 @@
     </div>
 
     <script>
+        // Modal state management with localStorage
+        const MODAL_STATE_KEY = 'profile_modal_open';
+
         function modalProfile() {
             const modal = document.getElementById('modalProfile');
             const content = document.getElementById('modalContent');
 
             modal.classList.remove('hidden');
+            localStorage.setItem(MODAL_STATE_KEY, 'true');
+
             // Trigger animation
             setTimeout(() => {
                 content.classList.remove('translate-y-10', 'opacity-0');
@@ -201,6 +206,7 @@
 
             setTimeout(() => {
                 modal.classList.add('hidden');
+                localStorage.removeItem(MODAL_STATE_KEY);
             }, 300);
         }
 
@@ -209,13 +215,16 @@
             const modal = document.getElementById('modalProfile');
             const content = document.getElementById('modalContent');
 
+            // Check if modal should be open from localStorage
+            if (localStorage.getItem(MODAL_STATE_KEY) === 'true') {
+                modalProfile();
+            }
+
             // Prevent backdrop click from closing modal
             modal.addEventListener('click', function(e) {
-                // Only close if the click is directly on the modal backdrop (not on content)
-                if (e.target === modal) {
-                    e.stopPropagation();
-                    // Don't close the modal
-                }
+                e.stopPropagation();
+                e.preventDefault();
+                // Don't close the modal on backdrop click
             });
 
             // Prevent escape key from closing modal
@@ -223,9 +232,27 @@
                 if (e.key === 'Escape' && !modal.classList.contains('hidden')) {
                     e.preventDefault();
                     e.stopPropagation();
-                    // Don't close the modal
+                    e.stopImmediatePropagation();
+                    // Don't close the modal on escape
                 }
             });
+
+            // Override any other modal closing mechanisms
+            const originalAddEventListener = EventTarget.prototype.addEventListener;
+            EventTarget.prototype.addEventListener = function(type, listener, options) {
+                if (type === 'click' && this === modal) {
+                    // Block any click listeners that might close the modal
+                    return;
+                }
+                return originalAddEventListener.call(this, type, listener, options);
+            };
+        });
+
+        // Prevent page unload from affecting modal
+        window.addEventListener('beforeunload', function(e) {
+            if (!document.getElementById('modalProfile').classList.contains('hidden')) {
+                localStorage.setItem(MODAL_STATE_KEY, 'true');
+            }
         });
 
         // Auto-hide success message after 5 seconds
