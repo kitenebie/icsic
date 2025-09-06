@@ -4,7 +4,7 @@
     <x-filament::modal width="3xl" style="z-index: 99999;">
         <x-slot name="trigger">
             <x-filament::button
-                style="background-color:#449C65; color: #054721; border: none; padding: 8px 16px; border-radius: 8px; font-weight: 500; cursor: pointer; display: flex; align-items: center; gap: 8px; transition: background-color 0.2s; width: fit-content;"
+                style="background-color:#79f1a7; color: #054721; border: none; padding: 8px 16px; border-radius: 8px; font-weight: 500; cursor: pointer; display: flex; align-items: center; gap: 8px; transition: background-color 0.2s; width: 200px;"
                 class="dark:bg-gray-700 dark:text-green-400 dark:hover:bg-gray-600"
                 onmouseover="this.style.backgroundColor='#C0FAD1FF'" onmouseout="this.style.backgroundColor='#449C65'">
                 <svg style="width: 20px; height: 20px;" fill="none" stroke="currentColor" viewBox="0 0 24 24">
