@@ -1,7 +1,10 @@
 
 document.addEventListener("DOMContentLoaded", () => {
+    console.log("Announcement JS loaded");
     const likeButtons = document.querySelectorAll('[aria-label="Like button with reactions"]');
+    console.log("Found likeButtons:", likeButtons.length);
     const topIcons = document.querySelectorAll('#like-icon-post1');
+    console.log("Found topIcons:", topIcons.length);
     
     const reactionImages = {
         like:  '/build/img/like.png',
@@ -14,7 +17,9 @@ document.addEventListener("DOMContentLoaded", () => {
     };
     
     likeButtons.forEach((button) => {
+        console.log("Processing button:", button);
         const popup = button.querySelector(".reaction-popup");
+        console.log("Popup found:", popup);
         const displayImg = button.querySelector("img#like-icon-post");
         const defaultIcon = button.querySelector("i#like-icon-post1");
     
@@ -39,10 +44,12 @@ document.addEventListener("DOMContentLoaded", () => {
         });
       // Show popup on hover
       button.addEventListener("mouseenter", () => {
+        console.log("Mouse enter on button");
         popup.classList.add("show");
     });
 
     button.addEventListener("mouseleave", () => {
+        console.log("Mouse leave on button");
         popup.classList.remove("show");
     });
         // Handle reaction clicks
