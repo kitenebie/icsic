@@ -134,73 +134,40 @@
             const hiddenInput = document.getElementById('hidden-comment');
 
             if (richBox && hiddenInput) {
-                // Function to update hidden input and sync with Livewire
-                function updateHiddenInput() {
+                function updateInput() {
                     let content = richBox.innerText.trim();
                     
-                    // Handle mention preservation - extract text after mentions
+                    // Handle mentions
                     const mentions = richBox.querySelectorAll('.mention');
                     let mentionText = '';
                     mentions.forEach(mention => {
                         mentionText += mention.textContent + ' ';
                     });
                     
-                    // Get text after mentions
-                    let actualContent = content;
                     if (mentionText) {
-                        actualContent = content.replace(mentionText.trim(), '').trim();
+                        content = content.replace(mentionText.trim(), '').trim();
                     }
                     
-                    // Update both hidden input value and Livewire property
-                    hiddenInput.value = actualContent;
+                    hiddenInput.value = content;
                     
-                    // Force Livewire sync
+                    // Sync with Livewire
                     if (window.Livewire && @this) {
-                        @this.set('comment_input', actualContent);
+                        @this.set('comment_input', content);
                     }
-                    
-                    // Dispatch input event for good measure
-                    hiddenInput.dispatchEvent(new Event('input', { bubbles: true }));
-                    
-                    console.log('Comment input updated:', actualContent); // Debug log
                 }
 
-                // Clear input on clear-comment-input event
-                window.addEventListener('clear-comment-input', function() {
-                    richBox.innerHTML = '';
-                    const mentionData = richBox.getAttribute('data-mention');
-                    if (mentionData && mentionData !== '/') {
-                        richBox.innerHTML = `<span class="mention" contenteditable="false">${mentionData}</span>&nbsp;`;
-                    }
-                    hiddenInput.value = '';
-                    if (window.Livewire && @this) {
-                        @this.set('comment_input', '');
-                    }
+                // Input events
+                richBox.addEventListener('input', updateInput);
+                richBox.addEventListener('paste', function() {
+                    setTimeout(updateInput, 100);
                 });
 
-                // Enhanced input handler
-                richBox.addEventListener('input', updateHiddenInput);
-                richBox.addEventListener('paste', function(e) {
-                    // Handle paste events
-                    setTimeout(updateHiddenInput, 100);
-                });
-
+                // Focus/blur styling
                 richBox.addEventListener('focus', function() {
                     const wrapper = this.closest('.comment-input-wrapper');
                     if (wrapper) {
                         wrapper.style.backgroundColor = '#ffffff';
                         wrapper.style.border = '1px solid #1877f2';
-                    }
-                    
-                    // Place cursor after mention if exists
-                    const mentions = richBox.querySelectorAll('.mention');
-                    if (mentions.length > 0) {
-                        const range = document.createRange();
-                        const selection = window.getSelection();
-                        range.setStartAfter(mentions[mentions.length - 1]);
-                        range.collapse(true);
-                        selection.removeAllRanges();
-                        selection.addRange(range);
                     }
                 });
 
@@ -210,85 +177,37 @@
                         wrapper.style.backgroundColor = '#f0f2f5';
                         wrapper.style.border = 'none';
                     }
-                    // Final sync on blur
-                    updateHiddenInput();
+                    updateInput();
                 });
 
+                // Enter to submit
                 richBox.addEventListener('keydown', function(e) {
                     if (e.key === 'Enter' && !e.shiftKey) {
                         e.preventDefault();
-                        // Ensure final sync before submit
-                        updateHiddenInput();
-                        setTimeout(() => {
-                            @this.submit_comment();
-                        }, 50);
-                    }
-                    
-                    // Prevent deletion of mention spans
-                    if (e.key === 'Backspace' || e.key === 'Delete') {
-                        const selection = window.getSelection();
-                        if (selection.rangeCount > 0) {
-                            const range = selection.getRangeAt(0);
-                            const mention = range.startContainer.parentElement?.closest('.mention');
-                            if (mention && range.startOffset === 0) {
-                                e.preventDefault();
-                            }
-                        }
+                        updateInput();
+                        @this.submit_comment();
                     }
                 });
 
-                // Initial sync
-                updateHiddenInput();
-            }
-
-            function handleScreenSizeChange() {
-                const isSmallOrMedium = window.matchMedia('(max-width: 1023px)').matches;
-                if (window.Livewire) {
-                    window.Livewire.dispatch('post-created', {
-                        refreshPosts: !isSmallOrMedium
+                // Clear input event
+                document.addEventListener('livewire:init', () => {
+                    Livewire.on('clear-comment-input', () => {
+                        const mentionData = richBox.getAttribute('data-mention');
+                        if (mentionData && mentionData !== '/') {
+                            richBox.innerHTML = `<span class="mention" contenteditable="false">${mentionData}</span>&nbsp;`;
+                        } else {
+                            richBox.innerHTML = '';
+                        }
+                        hiddenInput.value = '';
+                        if (@this) {
+                            @this.set('comment_input', '');
+                        }
                     });
-                }
-            }
+                });
 
-            handleScreenSizeChange();
-            window.addEventListener('resize', handleScreenSizeChange);
-
-            const violationWords = @json($this->voilateWords ?? []);
-            if (violationWords && violationWords.length > 0 && violationWords !== '[]') {
-                alert(`${violationWords} contains words that are not allowed. Please remove them and try again.`);
+                updateInput();
             }
         });
-
-        // Listen for Livewire events
-        document.addEventListener('livewire:init', () => {
-            Livewire.on('clear-comment-input', () => {
-                const richBox = document.getElementById('rich-comment-box');
-                const hiddenInput = document.getElementById('hidden-comment');
-                
-                if (richBox && hiddenInput) {
-                    const mentionData = richBox.getAttribute('data-mention');
-                    if (mentionData && mentionData !== '/') {
-                        richBox.innerHTML = `<span class="mention" contenteditable="false">${mentionData}</span>&nbsp;`;
-                    } else {
-                        richBox.innerHTML = '';
-                    }
-                    hiddenInput.value = '';
-                    if (window.Livewire && @this) {
-                        @this.set('comment_input', '');
-                    }
-                }
-            });
-        });
-
-        window.submitComment = function() {
-            const richBox = document.getElementById('rich-comment-box');
-            if (richBox) {
-                const content = richBox.innerText.trim();
-                if (content) {
-                    @this.submit_comment();
-                }
-            }
-        };
     </script>
 
     {{-- Reaction button behavior --}}
