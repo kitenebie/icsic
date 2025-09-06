@@ -16,6 +16,7 @@ class event extends Model
         'event_date',
         'event_time',
         'event_duration',
-        'event_discription'
+        'event_discription',
+        'event_image'
     ];
 }

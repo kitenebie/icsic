@@ -70,9 +70,18 @@
                                 {{ $event->event_category }}
                             </div>
                         </div>
-                        <h3 class="font-bold text-[#0a1f3f] text-lg mb-1">{{ $event->event_name }}</h3>
-                        <div class="text-[#4a5568] mb-4 text-sm leading-relaxed">
-                            {!! \Illuminate\Support\Str::markdown($event->event_discription) !!}
+                        <div class="flex items-start gap-3 mb-3">
+                            @if($event->event_image)
+                                <img src="{{ asset('storage/' . $event->event_image) }}"
+                                     alt="{{ $event->event_name }}"
+                                     class="w-12 h-12 rounded-lg object-cover border-2 border-white shadow-sm">
+                            @endif
+                            <div class="flex-1">
+                                <h3 class="font-bold text-[#0a1f3f] text-lg mb-1">{{ $event->event_name }}</h3>
+                                <div class="text-[#4a5568] mb-4 text-sm leading-relaxed">
+                                    {!! \Illuminate\Support\Str::markdown($event->event_discription) !!}
+                                </div>
+                            </div>
                         </div>
                         <div class="flex items-center text-[#6b7280] text-xs space-x-2 mb-1">
                             <i class="far fa-clock"></i>
@@ -188,6 +197,36 @@
 
                             div.textContent = i;
 
+                            // Add event images (Facebook-style) - show up to 2 images
+                            if (hasEvent) {
+                                const dayEvents = events.filter(e => e.day === i && e.month - 1 === month && e.year === year);
+                                const imagesToShow = dayEvents.slice(0, 2); // Show max 2 images
+
+                                imagesToShow.forEach((event, index) => {
+                                    if (event.raw.event_image) {
+                                        const img = document.createElement("img");
+                                        img.src = `/storage/${event.raw.event_image}`;
+                                        img.className = `absolute w-5 h-5 rounded-full border-2 border-white shadow-sm object-cover ${
+                                            imagesToShow.length === 1
+                                                ? 'top-1 right-1'
+                                                : index === 0
+                                                    ? 'top-1 right-1'
+                                                    : 'top-1 right-7'
+                                        }`;
+                                        img.alt = event.raw.event_name;
+                                        div.appendChild(img);
+                                    }
+                                });
+
+                                // If more than 2 events, add a + indicator
+                                if (dayEvents.length > 2) {
+                                    const plusIndicator = document.createElement("div");
+                                    plusIndicator.className = "absolute top-1 right-1 w-5 h-5 rounded-full bg-gray-500 border-2 border-white shadow-sm flex items-center justify-center text-xs text-white font-bold";
+                                    plusIndicator.textContent = `+${dayEvents.length - 2}`;
+                                    div.appendChild(plusIndicator);
+                                }
+                            }
+
                             if (hasEvent) {
                                 div.classList.add("font-semibold", "text-green-900", "dark:text-green-200");
                                 // div.addEventListener("click", () => {
@@ -207,10 +246,15 @@
                                         `Events on ${year}-${String(month + 1).padStart(2, '0')}-${String(i).padStart(2, '0')}`;
                                     const body = dayEvents.map(e =>
                                         `<div class="mb-4 bg-white dark:bg-gray-800 rounded-lg shadow p-4 border border-gray-200 dark:border-gray-700 text-left">
-                                        <strong class="block text-base text-[#0a1f3f] mb-1">${e.raw.event_name}</strong>
-                                        <span class="block text-xs text-gray-500 mb-1">${e.raw.event_category} &mdash; ${e.raw.event_location}</span>
-                                        <span class="block text-xs text-gray-500 mb-1">${e.raw.event_date} | ${e.raw.event_time}${e.raw.event_duration ? ' – ' + e.raw.event_duration : ''}</span>
-                                        <p class="text-sm mt-1 text-[#4a5568]">{!! \Illuminate\Support\Str::markdown($event->event_discription) !!}</p>
+                                        <div class="flex items-start gap-3 mb-3">
+                                            ${e.raw.event_image ? `<img src="/storage/${e.raw.event_image}" alt="${e.raw.event_name}" class="w-12 h-12 rounded-lg object-cover border-2 border-white shadow-sm">` : ''}
+                                            <div class="flex-1">
+                                                <strong class="block text-base text-[#0a1f3f] mb-1">${e.raw.event_name}</strong>
+                                                <span class="block text-xs text-gray-500 mb-1">${e.raw.event_category} &mdash; ${e.raw.event_location}</span>
+                                                <span class="block text-xs text-gray-500 mb-1">${e.raw.event_date} | ${e.raw.event_time}${e.raw.event_duration ? ' – ' + e.raw.event_duration : ''}</span>
+                                                <p class="text-sm mt-1 text-[#4a5568]">${e.raw.event_discription.replace(/\n/g, '<br>')}</p>
+                                            </div>
+                                        </div>
                                     </div>`
                                     ).join('');
                                     openModal(title, body);
