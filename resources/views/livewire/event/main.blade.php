@@ -338,20 +338,19 @@
             </div>
         </div>
     @endif
-</div>
 
-<script>
-    // Handle keyboard navigation
-    document.addEventListener('keydown', function(e) {
-        if (e.key === 'Escape') {
-            @this.closeImageModal();
-        }
-        if (e.key === 'ArrowLeft') {
-            @this.previousImage();
-        }
-        if (e.key === 'ArrowRight') {
-            @this.nextImage();
-        }
-    });
-</script>
+    <script>
+        // Handle keyboard navigation
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') {
+                @this.closeImageModal();
+            }
+            if (e.key === 'ArrowLeft') {
+                @this.previousImage();
+            }
+            if (e.key === 'ArrowRight') {
+                @this.nextImage();
+            }
+        });
+    </script>
 </div>
