@@ -286,42 +286,38 @@
                         <h2 class="font-semibold mb-3 text-[14px]">
                             Related Articles
                         </h2>
-                        <article class="mb-4 last:mb-0">
-                            <span class="inline-block text-[10px] font-semibold uppercase text-[#2CAC5B] mb-1">
-                                Technology
-                            </span>
-                            <h3 class="font-semibold text-[13px] text-[#0f172a] leading-tight mb-1">
-                                Tech Giants Invest Billions in Quantum Computing Research
-                            </h3>
-                            <p class="text-[11px] text-[#64748b] leading-tight">
-                                Major technology companies are racing to develop quantum computing
-                                capabilities...
-                            </p>
-                        </article>
-                        <article class="mb-4 last:mb-0">
-                            <span class="inline-block text-[10px] font-semibold uppercase text-[#22c55e] mb-1">
-                                Business
-                            </span>
-                            <h3 class="font-semibold text-[13px] text-[#0f172a] leading-tight mb-1">
-                                Quantum Computing Startups Attract Record Venture Capital
-                            </h3>
-                            <p class="text-[11px] text-[#64748b] leading-tight">
-                                Investment in quantum computing startups has reached an all-time
-                                high...
-                            </p>
-                        </article>
-                        <article>
-                            <span class="inline-block text-[10px] font-semibold uppercase text-[#ec4899] mb-1">
-                                Science
-                            </span>
-                            <h3 class="font-semibold text-[13px] text-[#0f172a] leading-tight mb-1">
-                                The Physics Behind Quantum Computing Explained
-                            </h3>
-                            <p class="text-[11px] text-[#64748b] leading-tight">
-                                Understanding the fundamental principles that make quantum computers
-                                work...
-                            </p>
-                        </article>
+                        @php
+                            $relatedArticles = \App\Models\NewsPage::where('topic_category', $News->topic_category)
+                                ->where('id', '!=', $News->id)
+                                ->orderByDesc('views')
+                                ->limit(3)
+                                ->get();
+                        @endphp
+                        @forelse($relatedArticles as $related)
+                            <article class="mb-4 last:mb-0">
+                                <span class="inline-block text-[10px] font-semibold uppercase mb-1
+                                    @if($related->topic_category == 0) text-[#2CAC5B]
+                                    @elseif($related->topic_category == 1) text-[#22c55e]
+                                    @elseif($related->topic_category == 2) text-[#ec4899]
+                                    @elseif($related->topic_category == 3) text-[#3b82f6]
+                                    @elseif($related->topic_category == 4) text-[#f59e0b]
+                                    @else text-[#6b7280]
+                                    @endif">
+                                    {{ $this->categories[$related->topic_category] ?? 'General' }}
+                                </span>
+                                <h3 class="font-semibold text-[13px] text-[#0f172a] leading-tight mb-1">
+                                    <a href="/read/{{ Illuminate\Support\Str::random(100) }}/{{ $related->id }}"
+                                       class="hover:text-[#2CAC5B] transition-colors">
+                                        {{ Illuminate\Support\Str::limit($related->title, 50) }}
+                                    </a>
+                                </h3>
+                                <p class="text-[11px] text-[#64748b] leading-tight">
+                                    {!! Illuminate\Support\Str::limit(strip_tags($related->content[0]['Paragraph'][0]['content'] ?? ''), 80) !!}
+                                </p>
+                            </article>
+                        @empty
+                            <p class="text-[12px] text-[#64748b] italic">No related articles found.</p>
+                        @endforelse
                     </section>
                     <!-- Sticky Table of Contents below Related Articles -->
                     <section aria-label="Table of Contents"
