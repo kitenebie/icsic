@@ -46,7 +46,7 @@
                 flex-direction: row; 
                 gap: 4px; 
                 box-shadow: 0 2px 8px rgba(0,0,0,0.15); 
-                z-index: 1000;
+                z-index: 99999;
                 white-space: nowrap;">
         
         @foreach (['Like', 'Love', 'Haha', 'Care', 'Wow', 'Sad', 'Angry'] as $reaction)
