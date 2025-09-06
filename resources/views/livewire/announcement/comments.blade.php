@@ -1,11 +1,11 @@
-<div class="comments-modal absolute {{ $this->closeCommentModal ? 'hidden' : 'flex' }}" role="dialog" aria-modal="true"
+<div class="comments-modal fixed inset-0 z-50 flex items-center justify-center lg:absolute lg:inset-auto lg:top-0 lg:right-0 lg:bottom-0 lg:w-96" role="dialog" aria-modal="true"
     aria-labelledby="comments-title">
 
     <!-- Modal Overlay (Mobile) -->
-    <div class="modal-overlay lg:hidden" wire:click="closeComment"></div>
+    <div class="fixed inset-0 bg-black bg-opacity-50 lg:hidden" wire:click="closeComment"></div>
 
     <!-- Comments Container -->
-    <div class="comments-container">
+    <div class="comments-container relative bg-white w-full h-full lg:h-auto lg:w-96 flex flex-col max-h-screen lg:max-h-[80vh] rounded-t-lg lg:rounded-lg lg:shadow-lg">
         <!-- Header -->
         <header class="comments-header">
             <button type="button" wire:click="closeComment" class="back-button" aria-label="Close comments">
@@ -107,9 +107,7 @@
                 <div id="rich-comment-box" contenteditable="true" class="comment-input" placeholder="Write a comment..."
                     role="textbox" aria-label="Write a comment">
                     @if ($this->mentionedName !== '/')
-                        <span class="mention">{{ $this->mentionedName }}</span>
-                    @else
-                        <span class="placeholder-text">{{ $this->Author(auth()->user()->id) }}</span>
+                        <span class="mention" contenteditable="false">{{ $this->mentionedName }}</span>&nbsp;
                     @endif
                 </div>
 
@@ -135,19 +133,33 @@
             const hiddenInput = document.getElementById('hidden-comment');
 
             if (richBox && hiddenInput) {
-                let isActive = true;
+                // Clear input on clear-comment-input event
+                window.addEventListener('clear-comment-input', function() {
+                    richBox.innerHTML = '';
+                    hiddenInput.value = '';
+                    const placeholder = richBox.getAttribute('placeholder');
+                    if (placeholder && richBox.innerText.trim() === '') {
+                        richBox.setAttribute('data-placeholder', placeholder);
+                    }
+                });
 
                 richBox.addEventListener('input', function() {
-                    const content = richBox.innerText.trim();
-                    if (content.length === 1 && isActive) {
-                        hiddenInput.value = content;
-                        isActive = false;
+                    let content = richBox.innerText.trim();
+                    
+                    // Handle mention preservation
+                    const mentions = richBox.querySelectorAll('.mention');
+                    let mentionText = '';
+                    mentions.forEach(mention => {
+                        mentionText += mention.textContent + ' ';
+                    });
+                    
+                    // Get text after mentions
+                    let actualContent = content;
+                    if (mentionText) {
+                        actualContent = content.replace(mentionText.trim(), '').trim();
                     }
-                    const html = richBox.innerHTML;
-                    if (!html.includes('&nbsp;') && !html.includes('\u00A0') && isActive) {
-                        richBox.innerText = '';
-                    }
-                    hiddenInput.value = content;
+                    
+                    hiddenInput.value = actualContent;
                     hiddenInput.dispatchEvent(new Event('input', { bubbles: true }));
                 });
 
@@ -156,6 +168,17 @@
                     if (wrapper) {
                         wrapper.style.backgroundColor = '#ffffff';
                         wrapper.style.border = '1px solid #1877f2';
+                    }
+                    
+                    // Place cursor after mention if exists
+                    const mentions = richBox.querySelectorAll('.mention');
+                    if (mentions.length > 0) {
+                        const range = document.createRange();
+                        const selection = window.getSelection();
+                        range.setStartAfter(mentions[mentions.length - 1]);
+                        range.collapse(true);
+                        selection.removeAllRanges();
+                        selection.addRange(range);
                     }
                 });
 
@@ -170,8 +193,18 @@
                 richBox.addEventListener('keydown', function(e) {
                     if (e.key === 'Enter' && !e.shiftKey) {
                         e.preventDefault();
-                        const event = new CustomEvent('submit-comment');
-                        document.dispatchEvent(event);
+                        // Trigger Livewire submit_comment method
+                        @this.submit_comment();
+                    }
+                    
+                    // Prevent deletion of mention spans
+                    if (e.key === 'Backspace' || e.key === 'Delete') {
+                        const selection = window.getSelection();
+                        const range = selection.getRangeAt(0);
+                        const mention = range.startContainer.parentElement?.closest('.mention');
+                        if (mention && range.startOffset === 0) {
+                            e.preventDefault();
+                        }
                     }
                 });
             }
@@ -192,6 +225,19 @@
             if (violationWords && violationWords.length > 0 && violationWords !== '[]') {
                 alert(`${violationWords} contains words that are not allowed. Please remove them and try again.`);
             }
+        });
+
+        // Listen for Livewire events
+        document.addEventListener('livewire:init', () => {
+            Livewire.on('clear-comment-input', () => {
+                const richBox = document.getElementById('rich-comment-box');
+                const hiddenInput = document.getElementById('hidden-comment');
+                
+                if (richBox && hiddenInput) {
+                    richBox.innerHTML = '';
+                    hiddenInput.value = '';
+                }
+            });
         });
 
         window.submitComment = function() {

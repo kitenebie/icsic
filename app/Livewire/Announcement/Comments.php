@@ -20,9 +20,8 @@ class Comments extends Component
     public bool $disableLoadComments = false;
     public $isNotSmallMidium = true;
 
-
-
     public $id;
+    public $closeCommentModal = false;
     public function reply_comments($id, $commentatorId, $replyID, $name)
     {
         return CommentDB::where('post_id', $id)->where('reply_to', $replyID)->where('type', 'reply')->get();
@@ -89,9 +88,9 @@ class Comments extends Component
         ]);
     }
     public $MainCommentData;
-    public function mount()
+    public function mount($id = null)
     {
-        $this->id = Session::get('comment');
+        $this->id = $id ?? Session::get('comment');
         $this->isNotSmallMidium = Session::get('screen', true);
         try {
             $this->MainCommentData = CommentDB::where('post_id', $this->id)->where('type', 'main')->get();
@@ -123,50 +122,67 @@ class Comments extends Component
     public $comment_input;
     public function submit_comment()
     {
+        if (empty($this->comment_input)) {
+            return;
+        }
+
         if ($this->CommentType == "reply") {
-            if (!$this->comment_input == null) {
-                $isValid = $this->checkWithAi();
-                if ($isValid) {
-                    $this->comment_input = null;
-                    return;
-                }else{
-
-                $data = [
-                    'post_id' => $this->commentPostId,
-                    'commentatorId' => Auth::user()->id,
-                    'type' => $this->CommentType,
-                    'reply_to' => $this->commentID,
-                    'comment' => $this->comment_input
-                ];
-                $this->mentionedName = "/";
-                $this->CommentType = "main";
-
-                CommentDB::create($data);
-                return redirect()->route('comment_section', ['id' => $this->id]);
-                }
+            $isValid = $this->checkWithAi();
+            if ($isValid) {
+                $this->comment_input = null;
+                return;
             }
+
+            $data = [
+                'post_id' => $this->commentPostId,
+                'commentatorId' => Auth::user()->id,
+                'type' => $this->CommentType,
+                'reply_to' => $this->commentID,
+                'comment' => $this->comment_input
+            ];
+            
+            CommentDB::create($data);
+            
+            // Reset form state
+            $this->mentionedName = "/";
+            $this->CommentType = "main";
+            $this->comment_input = null;
+            $this->commentID = null;
+            $this->commentPostId = null;
+            $this->commentatorId = null;
+            
+            // Refresh comments data
+            $this->update();
+            
+            // Clear the input box via JavaScript
+            $this->dispatch('clear-comment-input');
+            
         } else {
-            if (!$this->comment_input == null) {
-                $this->checkWithAi();
-                $isValid = $this->checkWithAi();
-                if ($isValid) {
-                    $this->comment_input = null;
-                    return;
-                }else{
-                    
-                $data = [
-                    'post_id' => $this->id,
-                    'commentatorId' => Auth::user()->id,
-                    'type' => $this->CommentType,
-                    'reply_to' => null,
-                    'comment' => $this->comment_input
-                ];
-                $this->mentionedName = "/";
-
-                CommentDB::create($data);
-                return redirect()->route('comment_section', ['id' => $this->id]);
-                }
+            $isValid = $this->checkWithAi();
+            if ($isValid) {
+                $this->comment_input = null;
+                return;
             }
+                
+            $data = [
+                'post_id' => $this->id,
+                'commentatorId' => Auth::user()->id,
+                'type' => $this->CommentType,
+                'reply_to' => null,
+                'comment' => $this->comment_input
+            ];
+            
+            CommentDB::create($data);
+            
+            // Reset form state
+            $this->mentionedName = "/";
+            $this->comment_input = null;
+            
+            // Refresh comments data
+            $this->update();
+            
+            // Clear the input box via JavaScript
+            $this->dispatch('clear-comment-input');
         }
     }
 
@@ -194,10 +210,11 @@ class Comments extends Component
     {
         Session::put('screen', $refreshPosts);
     }
-    public $closeCommentModal = false;
+    
     public function closeComment()
     {
-        $this->closeCommentModal = true;
+        // Dispatch event to parent component to close modal
+        $this->dispatch('closeCommentModal');
     }
 
     public function Author($id)

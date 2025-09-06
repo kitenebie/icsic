@@ -1,6 +1,276 @@
 @import 'tailwindcss';
 @import '../../vendor/livewire/flux/dist/flux.css';
 
+/* Comment Modal Styles */
+.comments-modal {
+    z-index: 9999;
+}
+
+.comments-container {
+    max-width: 100%;
+    overflow: hidden;
+}
+
+@media (max-width: 1023px) {
+    .comments-modal {
+        position: fixed !important;
+        top: 0 !important;
+        left: 0 !important;
+        right: 0 !important;
+        bottom: 0 !important;
+        width: 100% !important;
+        height: 100% !important;
+    }
+    
+    .comments-container {
+        width: 100% !important;
+        height: 100% !important;
+        max-height: 100vh !important;
+        border-radius: 0 !important;
+    }
+    
+    .comments-header {
+        padding: 1rem;
+        border-bottom: 1px solid #e5e7eb;
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+        background: white;
+        position: sticky;
+        top: 0;
+        z-index: 10;
+    }
+    
+    .comments-list {
+        flex: 1;
+        overflow-y: auto;
+        padding: 1rem;
+        padding-bottom: 80px; /* Space for input */
+    }
+    
+    .comment-input-container {
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        background: white;
+        padding: 1rem;
+        border-top: 1px solid #e5e7eb;
+    }
+}
+
+@media (min-width: 1024px) {
+    .comments-modal {
+        position: absolute !important;
+        top: 0 !important;
+        right: 0 !important;
+        bottom: 0 !important;
+        width: 24rem !important; /* w-96 */
+        height: auto !important;
+        max-height: 80vh !important;
+    }
+    
+    .comments-container {
+        width: 24rem !important;
+        max-height: 80vh !important;
+        border-radius: 0.5rem;
+        box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+    }
+    
+    .comments-header {
+        padding: 1rem;
+        border-bottom: 1px solid #e5e7eb;
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+        background: white;
+        border-radius: 0.5rem 0.5rem 0 0;
+    }
+    
+    .comments-list {
+        flex: 1;
+        overflow-y: auto;
+        padding: 1rem;
+        max-height: calc(80vh - 120px); /* Adjust based on header/input heights */
+    }
+    
+    .comment-input-container {
+        position: relative;
+        background: white;
+        padding: 1rem;
+        border-top: 1px solid #e5e7eb;
+        border-radius: 0 0 0.5rem 0.5rem;
+    }
+}
+
+/* Comment styles */
+.comment-thread {
+    margin-bottom: 1.5rem;
+}
+
+.comment {
+    display: flex;
+    gap: 0.75rem;
+    margin-bottom: 0.75rem;
+}
+
+.reply-comment {
+    margin-left: 3rem;
+}
+
+.comment-avatar {
+    width: 2rem;
+    height: 2rem;
+    border-radius: 50%;
+    flex-shrink: 0;
+}
+
+.comment-content {
+    flex: 1;
+    min-width: 0;
+}
+
+.comment-bubble {
+    background: #f0f2f5;
+    border-radius: 1rem;
+    padding: 0.75rem 1rem;
+    margin-bottom: 0.25rem;
+}
+
+.comment-author {
+    font-weight: 600;
+    font-size: 0.875rem;
+    color: #1c1e21;
+    margin: 0 0 0.25rem 0;
+}
+
+.comment-text {
+    font-size: 0.9375rem;
+    color: #1c1e21;
+    margin: 0;
+    word-wrap: break-word;
+}
+
+.comment-actions {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    font-size: 0.8125rem;
+    color: #65676b;
+    margin-left: 1rem;
+}
+
+.reply-button {
+    background: none;
+    border: none;
+    color: #65676b;
+    font-size: 0.8125rem;
+    font-weight: 600;
+    cursor: pointer;
+    padding: 0;
+}
+
+.reply-button:hover {
+    text-decoration: underline;
+}
+
+.comment-input-wrapper {
+    display: flex;
+    align-items: center;
+    background: #f0f2f5;
+    border-radius: 1.25rem;
+    padding: 0.5rem 1rem;
+    gap: 0.75rem;
+}
+
+.comment-input {
+    flex: 1;
+    border: none;
+    outline: none;
+    background: transparent;
+    font-size: 0.9375rem;
+    line-height: 1.5;
+    resize: none;
+    min-height: 1.5rem;
+    max-height: 6rem;
+    overflow-y: auto;
+}
+
+.comment-input:empty:before {
+    content: "Write a comment...";
+    color: #65676b;
+    cursor: text;
+}
+
+.mention {
+    background: #e7f3ff;
+    color: #1877f2;
+    padding: 0.125rem 0.25rem;
+    border-radius: 0.25rem;
+    font-weight: 600;
+    user-select: none;
+    display: inline-block;
+}
+
+.send-button {
+    background: none;
+    border: none;
+    color: #1877f2;
+    cursor: pointer;
+    padding: 0.25rem;
+    border-radius: 50%;
+    width: 2rem;
+    height: 2rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.send-button:hover {
+    background: #f0f2f5;
+}
+
+.sending-indicator {
+    text-align: center;
+    padding: 0.5rem;
+    color: #65676b;
+    font-size: 0.875rem;
+}
+
+.back-button {
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 0.5rem;
+    border-radius: 50%;
+    color: #1c1e21;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.back-button:hover {
+    background: #f0f2f5;
+}
+
+.comments-title {
+    font-size: 1.125rem;
+    font-weight: 600;
+    color: #1c1e21;
+    margin: 0;
+}
+
+.empty-state {
+    text-align: center;
+    padding: 2rem;
+}
+
+.empty-message {
+    color: #65676b;
+    font-size: 0.9375rem;
+    margin: 0;
+}
+
 @source '../views';
 @source '../../vendor/laravel/framework/src/Illuminate/Pagination/resources/views/*.blade.php';
 @source '../../vendor/livewire/flux-pro/stubs/**/*.blade.php';

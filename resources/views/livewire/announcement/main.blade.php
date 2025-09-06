@@ -167,8 +167,10 @@
             </div>
         </div>
     </div>
-    @if (session('comment'))
-        @livewire('announcement.comments', ['comment', 5])
+
+    <!-- Comment Modal Integration -->
+    @if ($showCommentModal && $currentAnnouncementId)
+        @livewire('announcement.comments', ['id' => $currentAnnouncementId], key('comments-'.$currentAnnouncementId))
     @endif
 
 </div>

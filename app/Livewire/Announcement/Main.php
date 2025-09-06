@@ -8,7 +8,9 @@ use App\Models\announcementReacts as React;
 use App\Models\announcementComment as CommentDB;
 use Carbon\Carbon;
 use Filament\Notifications\Notification;
-use  Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Auth;
+use Livewire\Attributes\On;
+
 class Main extends Component
 {
 
@@ -105,9 +107,25 @@ class Main extends Component
         }
     }
     public $i = null;
+    public $showCommentModal = false;
+    public $currentAnnouncementId = null;
+    
     public function openComment($id)
     {
-        return redirect()->route('comment_section', ['id' => $id]);
+        $this->currentAnnouncementId = $id;
+        $this->showCommentModal = true;
+    }
+    
+    public function closeComment()
+    {
+        $this->showCommentModal = false;
+        $this->currentAnnouncementId = null;
+    }
+    
+    #[On('closeCommentModal')]
+    public function handleCloseCommentModal()
+    {
+        $this->closeComment();
     }
     public function render()
     {
