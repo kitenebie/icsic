@@ -718,5 +718,10 @@
                 }
             </script>
         @endif
+        <style>
+            #modalContainer{
+                z-index: 9999;
+            }
+        </style>
     </div>
 </div>
