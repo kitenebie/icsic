@@ -133,7 +133,7 @@ class Main extends Component
         $announcements = [];
         // Ensure user exists
         if ($user) {
-            $announcements = AnnouncementDB::with('creator')->where(function ($query) use ($user) {
+            $announcements = AnnouncementDB::where(function ($query) use ($user) {
                 // Match user ID in 'users' array
                 $query->whereJsonContains('users', (string) $user->id)
                     ->orWhereJsonLength('users', 0); // include if users is []
@@ -149,7 +149,6 @@ class Main extends Component
                 // Optional: if you also want to include those with empty tags
                 $query->WhereJsonLength('tags', 0);
             })
-                ->where('created_by', $user->id)
                 ->orderByDesc('id')
                 ->get();
         } else {

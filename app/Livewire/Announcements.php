@@ -158,7 +158,7 @@ class Announcements extends Component implements HasForms, HasActions, HasTable
     public function table(Table $table): Table
     {
         return $table
-            ->query(Announcement::query()->latest())
+            ->query(Announcement::query()->where('created_by', Auth::id())->latest())
             ->columns([
                 Tables\Columns\ImageColumn::make('images')->label('Image')->getStateUsing(function ($record) {
                     return $record->images ? asset('storage/' . $record->images[0]) : null;
