@@ -35,7 +35,7 @@
     </button>
 
     <!-- Reaction Popup -->
-    <div class="reaction-popup-menu hidden" style="z-index: 99999" data-item-id="{{ $itemId }}">
+    <div class="reaction-popup-menu hidden" data-item-id="{{ $itemId }}">
         @foreach (['Like', 'Love', 'Haha', 'Care', 'Wow', 'Sad', 'Angry'] as $reaction)
             <button
                 class="reaction-option-btn"
