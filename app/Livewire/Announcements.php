@@ -20,14 +20,7 @@ use App\Models\Announcement as Announcement;
 use Illuminate\Support\Facades\Auth;
 use Filament\Notifications\Notification;
 use Illuminate\Support\Str;
-use Filament\Tables\Columns\TextColumn;
-use Filament\Tables\Columns\IconColumn;
-use Filament\Tables\Columns\ImageColumn;
-use Filament\Tables\Columns\CheckboxColumn;
-use Filament\Tables\Concerns\InteractsWithTable;
-use Filament\Tables\Table;
-use Filament\Tables;
-use Filament\Tables\Contracts\HasTable;
+use Carbon\Carbon;
 use Filament\Actions\Action;
 use Filament\Actions\Concerns\InteractsWithActions;
 use Filament\Actions\Contracts\HasActions;
@@ -41,11 +34,14 @@ use App\Models\Notification as CustomNotification;
 use Filament\Forms\Components\Textarea;
 use App\Services\FirebaseNotificationService;
 
-class Announcements extends Component implements HasForms, HasTable, HasActions
+class Announcements extends Component implements HasForms, HasActions
 {
     use InteractsWithActions;
-    use InteractsWithTable;
     use InteractsWithForms;
+
+    public $currentMonth;
+    public $currentYear;
+    public $selectedDate = null;
 
     public ?array $data = [];
     public $modalData = [];
@@ -54,6 +50,8 @@ class Announcements extends Component implements HasForms, HasTable, HasActions
     public function mount(): void
     {
         $this->form->fill();
+        $this->currentMonth = now()->month;
+        $this->currentYear = now()->year;
     }
 
     public function form(Form $form): Form
@@ -253,170 +251,73 @@ class Announcements extends Component implements HasForms, HasTable, HasActions
         $this->modalData = Announcement::where('id', $id)->get();
         dd($this->modalData);
     }
-    public static function table(Table $table): Table
+
+    public function previousMonth()
     {
-        return $table
-            ->query(Announcement::query()->orderByDesc('id'))->poll('10s')
-            ->columns([
-                TextColumn::make('title')
-                    ->label('Post Title')
-                    ->searchable()
-                    ->sortable(),
+        if ($this->currentMonth == 1) {
+            $this->currentMonth = 12;
+            $this->currentYear--;
+        } else {
+            $this->currentMonth--;
+        }
+    }
 
-                IconColumn::make('post_public')
-                    ->boolean()
-                    ->label('Public')
-                    ->trueIcon('heroicon-o-eye')
-                    ->falseIcon('heroicon-o-eye-slash')
-                    ->color(fn(bool $state): string => $state ? 'success' : 'danger'),
+    public function nextMonth()
+    {
+        if ($this->currentMonth == 12) {
+            $this->currentMonth = 1;
+            $this->currentYear++;
+        } else {
+            $this->currentMonth++;
+        }
+    }
 
-                TextColumn::make('users')
-                    ->label('Tagged Users')
-                    // ->formatStateUsing(fn($state) => is_array($state) ? implode(', ', $state) : '-')
-                    ->toggleable(),
+    public function selectDate($date)
+    {
+        $this->selectedDate = $date;
+    }
 
-                TextColumn::make('groups')
-                    ->label('Tagged Groups')
-                    // ->formatStateUsing(fn($state) => is_array($state) ? implode(', ', $state) : '-')
-                    ->toggleable(),
+    public function getAnnouncementsForDate($date)
+    {
+        return Announcement::whereDate('created_at', $date)->get();
+    }
 
-                ImageColumn::make('images')
-                    ->label('Media')
-                    ->circular()
-                    ->limit(3),
+    public function getCalendarDays()
+    {
+        $date = Carbon::create($this->currentYear, $this->currentMonth, 1);
+        $daysInMonth = $date->daysInMonth;
+        $firstDayOfWeek = $date->copy()->startOfMonth()->dayOfWeek;
 
-                TextColumn::make('updated_at')
-                    ->label('Last Updated')
-                    ->dateTime('M d, Y H:i')
-                    ->sortable(),
-            ])
-            ->filters([
-                //
-            ])
-            ->actions([
-                Tables\Actions\ViewAction::make()
-                    ->label('View')
-                    ->modalHeading('View announcement')
-                    ->modalSubmitAction(false) // Hide submit button
-                    ->modalCancelActionLabel('Close')
-                    ->fillForm(fn(Announcement $record): array => [
-                        // dd($record);
-                        'title' => $record->title,
-                        'content' => $record->content,
-                        'images' => $record->images ?? [],
-                        'post_public' => $record->post_public ?? true,
-                        'users' => $record->tags_user ?? [],
-                        'groups' => $record->tags_group ?? [],
-                    ])
-                    ->form([
-                        Section::make('Audience Visibility')
-                            ->schema([
-                                Toggle::make('post_public')->label('Public')->disabled(),
-                                TextInput::make('users')->label('Tagged Users')->disabled(),
-                                TextInput::make('groups')->label('Tagged Groups')->disabled(),
-                            ]),
-                        TextInput::make('title')->disabled(),
-                        FileUpload::make('images')
-                            ->multiple()
-                            ->imageEditor()
-                            ->disabled(),
-                        MarkdownEditor::make('content')->disabled(),
-                    ]),
-                Tables\Actions\EditAction::make()
-                    ->modalHeading('Edit announcement')
-                    ->modalCancelActionLabel('Close')
-                    ->fillForm(fn(Announcement $record): array => [
-                        'title' => $record->title,
-                        'content' => $record->content,
-                        'images' => $record->images ?? [],
-                        'post_public' => $record->post_public ?? true,
-                        'users' => $record->tags_user ?? [],
-                        'groups' => $record->tags_group ?? [],
-                    ])
-                    ->form([
-                        Section::make('Audience Visibility')
-                            ->description('Control who can view this post by tagging specific users or groups')
-                            ->schema([
-                                Toggle::make('post_public')
-                                    ->onColor('success')
-                                    ->offColor('danger')
-                                    ->default(true)
-                                    ->reactive(),
-                                Fieldset::make('private')
-                                    ->hidden(fn(callable $get) => $get('post_public'))
-                                    ->schema([
-                                        Checkbox::make('user')->reactive()->label("Tag Specific users"),
-                                        Checkbox::make('group')->reactive()->label("Tag Specific groups"),
-                                        CheckboxList::make('tags_user')
-                                            ->hidden(fn(callable $get) => ! $get('user'))
-                                            ->label('Tag your audience [Users]')
-                                            ->noSearchResultsMessage('No users found.')
-                                            ->searchPrompt('Search for a audience')
-                                            ->searchable()
-                                            ->bulkToggleable()
-                                            ->columns(1)
-                                            ->options([
-                                                'Carl Martes',
-                                                'John Doe',
-                                                'Edward Swite',
-                                                'Anne Brezee',
-                                            ]),
-                                        CheckboxList::make('tags_group')
-                                            ->hidden(fn(callable $get) => ! $get('group'))
-                                            ->label('Tag your audience [Groups]')
-                                            ->noSearchResultsMessage('No groups found.')
-                                            ->searchPrompt('Search for a audience')
-                                            ->searchable()
-                                            ->bulkToggleable()
-                                            ->columns(1)
-                                            ->options([
-                                                'Grade 1 - Charity',
-                                                'Grade 1 - Prarents',
-                                                'Faculty Members',
-                                                'PTA Members',
-                                                'Parents',
-                                            ]),
-                                    ])
-                            ]),
-                        TextInput::make('title')
-                            ->required(),
-                        FileUpload::make('images')
-                            ->acceptedFileTypes([
-                                'image/png',
-                                'image/jpeg',
-                                'image/gif',
-                                'video/mp4',
-                            ])
-                            ->imageCropAspectRatio('16:9')
-                            ->multiple()
-                            ->imageEditor()
-                            ->imageEditorEmptyFillColor('Green')
-                            ->loadingIndicatorPosition('left')
-                            ->panelLayout('integrated')
-                            ->removeUploadedFileButtonPosition('right')
-                            ->uploadButtonPosition('left')
-                            ->uploadProgressIndicatorPosition('left')
-                            ->panelLayout('grid')
-                            ->reorderable()
-                            ->appendFiles()
-                            ->openable()
-                            ->uploadingMessage('Uploading Images...')
-                            ->minFiles(0)
-                            ->maxFiles(15)
-                            ->maxSize(50000),
-                        MarkdownEditor::make('content')
-                            ->toolbarButtons([]),
-                    ]),
-                Tables\Actions\DeleteAction::make(),
-            ])
-            ->bulkActions([
-                Tables\Actions\DeleteBulkAction::make(),
-            ]);
+        $days = [];
+
+        // Add empty cells for days before the first day of the month
+        for ($i = 0; $i < $firstDayOfWeek; $i++) {
+            $days[] = null;
+        }
+
+        // Add days of the month
+        for ($day = 1; $day <= $daysInMonth; $day++) {
+            $currentDate = Carbon::create($this->currentYear, $this->currentMonth, $day);
+            $announcements = $this->getAnnouncementsForDate($currentDate->format('Y-m-d'));
+
+            $days[] = [
+                'day' => $day,
+                'date' => $currentDate->format('Y-m-d'),
+                'announcements' => $announcements,
+                'is_today' => $currentDate->isToday(),
+                'is_selected' => $this->selectedDate === $currentDate->format('Y-m-d'),
+            ];
+        }
+
+        return $days;
     }
     public function render(): View
     {
         return view('livewire.announcements', [
-            'Announcements' => Announcement::orderBy('updated_at', 'desc')->get()
+            'calendarDays' => $this->getCalendarDays(),
+            'monthName' => Carbon::create($this->currentYear, $this->currentMonth)->format('F'),
+            'year' => $this->currentYear,
+            'selectedDateAnnouncements' => $this->selectedDate ? $this->getAnnouncementsForDate($this->selectedDate) : collect(),
         ]);
     }
 }

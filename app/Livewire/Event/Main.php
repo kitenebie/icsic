@@ -19,14 +19,7 @@ use App\Models\event as event;
 use Illuminate\Support\Facades\Auth;
 use Filament\Notifications\Notification;
 use Illuminate\Support\Str;
-use Filament\Tables\Columns\TextColumn;
-use Filament\Tables\Columns\IconColumn;
-use Filament\Tables\Columns\ImageColumn;
-use Filament\Tables\Columns\CheckboxColumn;
-use Filament\Tables\Concerns\InteractsWithTable;
-use Filament\Tables\Table;
-use Filament\Tables;
-use Filament\Tables\Contracts\HasTable;
+use Carbon\Carbon;
 use Filament\Actions\Action;
 use Filament\Actions\Concerns\InteractsWithActions;
 use Filament\Actions\Contracts\HasActions;
@@ -38,17 +31,22 @@ use App\Notifications\EventCreated;
 use App\Models\Notification as CustomNotification;
 use App\Models\User;
 
-class Main extends Component implements HasForms, HasTable, HasActions
+class Main extends Component implements HasForms, HasActions
 {
     use InteractsWithActions;
     use InteractsWithForms;
-    use InteractsWithTable;
 
     public ?array $data = [];
+    public $currentMonth;
+    public $currentYear;
+    public $viewMode = 'month'; // 'month' or 'week'
+    public $selectedDate = null;
 
     public function mount(): void
     {
         $this->form->fill();
+        $this->currentMonth = now()->month;
+        $this->currentYear = now()->year;
     }
     public function form(Form $form): Form
     {
@@ -200,6 +198,79 @@ class Main extends Component implements HasForms, HasTable, HasActions
             ->title('Event saved successfully!')
             ->success()
             ->send();
+    }
+
+    // Calendar Navigation Methods
+    public function previousMonth()
+    {
+        if ($this->currentMonth == 1) {
+            $this->currentMonth = 12;
+            $this->currentYear--;
+        } else {
+            $this->currentMonth--;
+        }
+    }
+
+    public function nextMonth()
+    {
+        if ($this->currentMonth == 12) {
+            $this->currentMonth = 1;
+            $this->currentYear++;
+        } else {
+            $this->currentMonth++;
+        }
+    }
+
+    public function goToToday()
+    {
+        $this->currentMonth = now()->month;
+        $this->currentYear = now()->year;
+        $this->selectedDate = now()->format('Y-m-d');
+    }
+
+    public function switchView($view)
+    {
+        $this->viewMode = $view;
+    }
+
+    public function selectDate($date)
+    {
+        $this->selectedDate = $date;
+    }
+
+    public function getEventsForDate($date)
+    {
+        return event::whereDate('event_date', $date)->get();
+    }
+
+    public function getCalendarDays()
+    {
+        $date = Carbon::create($this->currentYear, $this->currentMonth, 1);
+        $daysInMonth = $date->daysInMonth;
+        $firstDayOfWeek = $date->copy()->startOfMonth()->dayOfWeek;
+
+        $days = [];
+
+        // Add empty cells for days before the first day of the month
+        for ($i = 0; $i < $firstDayOfWeek; $i++) {
+            $days[] = null;
+        }
+
+        // Add days of the month
+        for ($day = 1; $day <= $daysInMonth; $day++) {
+            $currentDate = Carbon::create($this->currentYear, $this->currentMonth, $day);
+            $events = $this->getEventsForDate($currentDate->format('Y-m-d'));
+
+            $days[] = [
+                'day' => $day,
+                'date' => $currentDate->format('Y-m-d'),
+                'events' => $events,
+                'is_today' => $currentDate->isToday(),
+                'is_selected' => $this->selectedDate === $currentDate->format('Y-m-d'),
+            ];
+        }
+
+        return $days;
     }
 
     public function table(Table $table): Table
@@ -461,8 +532,13 @@ class Main extends Component implements HasForms, HasTable, HasActions
 
 
 
-    public function render()
+    public function render(): View
     {
-        return view('livewire..event.main');
+        return view('livewire.event.main', [
+            'calendarDays' => $this->getCalendarDays(),
+            'monthName' => Carbon::create($this->currentYear, $this->currentMonth)->format('F'),
+            'year' => $this->currentYear,
+            'selectedDateEvents' => $this->selectedDate ? $this->getEventsForDate($this->selectedDate) : collect(),
+        ]);
     }
 }
