@@ -210,7 +210,7 @@ class LatestNews extends Component
 
     public function getLikesCount($newsId)
     {
-        return \App\Models\newsLikes::where('post_id', $newsId)->count();
+        return \App\Models\newsLikes::where('news_id', $newsId)->count();
     }
 
     public function getCommentsCount($newsId)
