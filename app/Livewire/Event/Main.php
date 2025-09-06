@@ -55,6 +55,10 @@ class Main extends Component implements HasForms, HasActions
     // Edit modal property
     public $showEditModal = false;
 
+    // Bulk selection properties
+    public $selectedEvents = [];
+    public $selectAll = false;
+
     public function mount(): void
     {
         $this->form->fill();
@@ -256,6 +260,77 @@ class Main extends Component implements HasForms, HasActions
             ->title('Event updated successfully!')
             ->success()
             ->send();
+    }
+
+    public function toggleEventSelection($eventId): void
+    {
+        if (in_array($eventId, $this->selectedEvents)) {
+            $this->selectedEvents = array_diff($this->selectedEvents, [$eventId]);
+        } else {
+            $this->selectedEvents[] = $eventId;
+        }
+
+        $this->updateSelectAllState();
+    }
+
+    public function toggleSelectAll(): void
+    {
+        if ($this->selectAll) {
+            $this->selectedEvents = [];
+            $this->selectAll = false;
+        } else {
+            $selectedDateEvents = $this->selectedDate ? $this->getEventsForDate($this->selectedDate) : collect();
+            $this->selectedEvents = $selectedDateEvents->pluck('id')->toArray();
+            $this->selectAll = true;
+        }
+    }
+
+    public function deleteSelectedEvents(): void
+    {
+        if (empty($this->selectedEvents)) {
+            Notification::make()
+                ->title('No events selected')
+                ->warning()
+                ->send();
+            return;
+        }
+
+        $eventsToDelete = event::whereIn('id', $this->selectedEvents)->get();
+
+        foreach ($eventsToDelete as $event) {
+            // Delete associated images if they exist
+            if ($event->event_images) {
+                foreach ($event->event_images as $image) {
+                    $imagePath = storage_path('app/public/' . $image);
+                    if (file_exists($imagePath)) {
+                        unlink($imagePath);
+                    }
+                }
+            }
+            $event->delete();
+        }
+
+        $this->selectedEvents = [];
+        $this->selectAll = false;
+
+        Notification::make()
+            ->title('Selected events deleted successfully!')
+            ->success()
+            ->send();
+    }
+
+    private function updateSelectAllState(): void
+    {
+        if (!$this->selectedDate) {
+            $this->selectAll = false;
+            return;
+        }
+
+        $selectedDateEvents = $this->getEventsForDate($this->selectedDate);
+        $totalEvents = $selectedDateEvents->count();
+        $selectedCount = count($this->selectedEvents);
+
+        $this->selectAll = $totalEvents > 0 && $selectedCount === $totalEvents;
     }
 
     // Calendar Navigation Methods

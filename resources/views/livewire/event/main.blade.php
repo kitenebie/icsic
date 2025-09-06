@@ -143,9 +143,38 @@
     <!-- Selected Date Details -->
     @if($selectedDate)
         <div style="border-top: 1px solid #e5e7eb; padding: 24px; background-color: #f9fafb;" class="dark:bg-gray-800 dark:border-gray-600">
-            <h3 style="font-size: 18px; font-weight: 600; color: #111827; margin-bottom: 16px; margin-top: 0;" class="dark:text-white">
-                Events for {{ \Carbon\Carbon::parse($selectedDate)->format('F j, Y') }}
-            </h3>
+            <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 16px;">
+                <h3 style="font-size: 18px; font-weight: 600; color: #111827; margin: 0;" class="dark:text-white">
+                    Events for {{ \Carbon\Carbon::parse($selectedDate)->format('F j, Y') }}
+                </h3>
+
+                <!-- Bulk Actions -->
+                @if($selectedDateEvents->count() > 0)
+                    <div style="display: flex; align-items: center; gap: 12px;">
+                        <label style="display: flex; align-items: center; gap: 8px; font-size: 14px; color: #4b5563; cursor: pointer;" class="dark:text-gray-300">
+                            <input type="checkbox"
+                                   {{ $selectAll ? 'checked' : '' }}
+                                   wire:click="toggleSelectAll"
+                                   style="width: 16px; height: 16px; accent-color: #16a34a; cursor: pointer;">
+                            <span>Select All</span>
+                        </label>
+
+                        @if(count($selectedEvents) > 0)
+                            <button wire:click="deleteSelectedEvents"
+                                    style="padding: 8px 16px; background-color: #dc2626; color: white; border: none; border-radius: 6px; font-size: 14px; font-weight: 500; cursor: pointer; transition: background-color 0.2s;"
+                                    class="dark:bg-red-700 dark:hover:bg-red-600"
+                                    onmouseover="this.style.backgroundColor='#b91c1c'"
+                                    onmouseout="this.style.backgroundColor='#dc2626'"
+                                    onclick="return confirm('Are you sure you want to delete the selected events?')">
+                                <svg style="width: 16px; height: 16px; display: inline; margin-right: 6px;" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path>
+                                </svg>
+                                Delete Selected ({{ count($selectedEvents) }})
+                            </button>
+                        @endif
+                    </div>
+                @endif
+            </div>
 
             @if($selectedDateEvents->count() > 0)
                 <div style="display: flex; flex-direction: column; gap: 16px;">
@@ -153,9 +182,15 @@
                         <div style="background-color: white; padding: 16px; border-radius: 8px; box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06); border: 1px solid #e5e7eb;"
                              class="dark:bg-gray-700 dark:border-gray-600">
                             <div style="display: flex; align-items: flex-start; justify-content: space-between;">
-                                <div style="flex: 1;">
-                                    <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 8px;">
-                                        <h4 style="font-weight: 600; color: #111827; margin: 0;" class="dark:text-white">{{ $event->event_name }}</h4>
+                                    <div style="flex: 1;">
+                                        <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 8px;">
+                                            <div style="display: flex; align-items: center; gap: 12px;">
+                                                <input type="checkbox"
+                                                       {{ in_array($event->id, $selectedEvents) ? 'checked' : '' }}
+                                                       wire:click="toggleEventSelection({{ $event->id }})"
+                                                       style="width: 16px; height: 16px; accent-color: #16a34a; cursor: pointer;">
+                                                <h4 style="font-weight: 600; color: #111827; margin: 0;" class="dark:text-white">{{ $event->event_name }}</h4>
+                                            </div>
                                         <!-- Edit Button -->
                                         <x-filament::modal width="3xl" wire:model="showEditModal">
                                             <x-slot name="trigger">
