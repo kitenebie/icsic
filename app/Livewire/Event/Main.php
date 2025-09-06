@@ -42,6 +42,11 @@ class Main extends Component implements HasForms, HasActions
     public $viewMode = 'month'; // 'month' or 'week'
     public $selectedDate = null;
 
+    // Full-screen image modal properties
+    public $showImageModal = false;
+    public $currentImageIndex = 0;
+    public $modalImages = [];
+
     public function mount(): void
     {
         $this->form->fill();
@@ -271,6 +276,35 @@ class Main extends Component implements HasForms, HasActions
         }
 
         return $days;
+    }
+
+    // Image Modal Methods
+    public function openImageModal($images, $startIndex = 0)
+    {
+        $this->modalImages = $images;
+        $this->currentImageIndex = $startIndex;
+        $this->showImageModal = true;
+    }
+
+    public function closeImageModal()
+    {
+        $this->showImageModal = false;
+        $this->modalImages = [];
+        $this->currentImageIndex = 0;
+    }
+
+    public function nextImage()
+    {
+        if ($this->currentImageIndex < count($this->modalImages) - 1) {
+            $this->currentImageIndex++;
+        }
+    }
+
+    public function previousImage()
+    {
+        if ($this->currentImageIndex > 0) {
+            $this->currentImageIndex--;
+        }
     }
 
     public function table(Table $table): Table

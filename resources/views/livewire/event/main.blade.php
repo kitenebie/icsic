@@ -145,7 +145,8 @@
                                     <div class="ml-4">
                                         <img src="{{ asset('storage/' . $event->event_images[0]) }}"
                                              alt="Event image"
-                                             class="w-16 h-16 object-cover rounded-lg">
+                                             class="w-16 h-16 object-cover rounded-lg cursor-pointer hover:opacity-80 transition-opacity"
+                                             wire:click="openImageModal({{ json_encode($event->event_images) }}, 0)">
                                     </div>
                                 @endif
                             </div>
@@ -162,4 +163,75 @@
             @endif
         </div>
     @endif
+
+    <!-- Full-Screen Image Modal -->
+    @if($showImageModal && count($modalImages) > 0)
+        <div class="fixed inset-0 z-50 bg-black bg-opacity-90 flex items-center justify-center"
+             wire:keydown.escape="closeImageModal">
+            <!-- Close Button -->
+            <button wire:click="closeImageModal"
+                    class="absolute top-4 right-4 z-60 text-white hover:text-gray-300 text-3xl font-bold transition-colors">
+                &times;
+            </button>
+
+            <!-- Main Image -->
+            <div class="relative max-w-4xl max-h-screen p-4">
+                <img src="{{ asset('storage/' . $modalImages[$currentImageIndex]) }}"
+                     alt="Full screen image"
+                     class="max-w-full max-h-full object-contain rounded-lg shadow-2xl">
+
+                <!-- Image Counter -->
+                <div class="absolute bottom-4 left-1/2 transform -translate-x-1/2 bg-black bg-opacity-75 text-white px-3 py-1 rounded-full text-sm">
+                    {{ $currentImageIndex + 1 }} / {{ count($modalImages) }}
+                </div>
+
+                <!-- Navigation Arrows (only show if multiple images) -->
+                @if(count($modalImages) > 1)
+                    <!-- Previous Button -->
+                    @if($currentImageIndex > 0)
+                        <button wire:click="previousImage"
+                                class="absolute left-4 top-1/2 transform -translate-y-1/2 bg-black bg-opacity-50 hover:bg-opacity-75 text-white p-3 rounded-full transition-all">
+                            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path>
+                            </svg>
+                        </button>
+                    @endif
+
+                    <!-- Next Button -->
+                    @if($currentImageIndex < count($modalImages) - 1)
+                        <button wire:click="nextImage"
+                                class="absolute right-4 top-1/2 transform -translate-y-1/2 bg-black bg-opacity-50 hover:bg-opacity-75 text-white p-3 rounded-full transition-all">
+                            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+                            </svg>
+                        </button>
+                    @endif
+
+                    <!-- Thumbnail Navigation -->
+                    <div class="absolute bottom-16 left-1/2 transform -translate-x-1/2 flex space-x-2 bg-black bg-opacity-50 rounded-lg p-2">
+                        @foreach($modalImages as $index => $image)
+                            <button wire:click="$set('currentImageIndex', {{ $index }})"
+                                    class="w-3 h-3 rounded-full transition-colors {{ $index === $currentImageIndex ? 'bg-white' : 'bg-gray-400 hover:bg-gray-300' }}">
+                            </button>
+                        @endforeach
+                    </div>
+                @endif
+            </div>
+        </div>
+    @endif
 </div>
+
+<script>
+    // Handle keyboard navigation
+    document.addEventListener('keydown', function(e) {
+        if (e.key === 'Escape') {
+            @this.closeImageModal();
+        }
+        if (e.key === 'ArrowLeft') {
+            @this.previousImage();
+        }
+        if (e.key === 'ArrowRight') {
+            @this.nextImage();
+        }
+    });
+</script>
