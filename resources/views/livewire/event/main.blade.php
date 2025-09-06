@@ -7,15 +7,7 @@
         <!-- Calendar Header -->
         <div style="background: linear-gradient(135deg, #16a34a 0%, #15803d 100%); color: white; padding: 16px 20px; position: relative;"
             class="dark:bg-gradient-to-r dark:from-gray-800 dark:to-gray-900 dark:shadow-lg">
-            <div style="position: absolute; top: 0; left: 0; right: 0; bottom: 0; background: url('data:image/svg+xml,<svg xmlns=\"http://www.w3.org/2000/svg\"
-                viewBox=\"0 0 100 100\">
-                <defs>
-                    <pattern id=\"grain\" width=\"100\" height=\"100\" patternUnits=\"userSpaceOnUse\">
-                        <circle cx=\"25\" cy=\"25\" r=\"1\" fill=\"rgba(255,255,255,0.1)\" />
-                        <circle cx=\"75\" cy=\"75\" r=\"1\" fill=\"rgba(255,255,255,0.1)\" />
-                    </pattern>
-                </defs>
-                <rect width=\"100\" height=\"100\" fill=\"url(%23grain)\" /></svg>'); opacity: 0.1;"
+            <div style="position: absolute; top: 0; left: 0; right: 0; bottom: 0; background: url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48ZGVmcz48cGF0dGVybiBpZD0iZ3JhaW4iIHdpZHRoPSIxMDAiIGhlaWdodD0iMTAwIiBwYXR0ZXJuVW5pdHM9InVzZXJTcGFjZU9uVXNlIj48Y2lyY2xlIGN4PSIyNSIgY3k9IjI1IiByPSIxIiBmaWxsPSJyZ2JhKDI1NSwyNTUsMjU1LDAuMSkiLz48Y2lyY2xlIGN4PSI3NSIgY3k9Ijc1IiByPSIxIiBmaWxsPSJyZ2JhKDI1NSwyNTUsMjU1LDAuMSkiLz48L3BhdHRlcm4+PC9kZWZzPjxyZWN0IHdpZHRoPSIxMDAiIGhlaWdodD0iMTAwIiBmaWxsPSJ1cmwoI2dyYWluKSIvPjwvc3ZnPg=='); opacity: 0.1;"
                 class="dark:opacity-20">
             </div>
             <div style="position: relative; z-index: 1;">
@@ -226,15 +218,7 @@
                                 class="dark:bg-gradient-to-br dark:from-gray-700 dark:to-gray-800 dark:border-gray-600 dark:shadow-2xl dark:shadow-gray-900/30"
                                 onmouseover="this.style.transform='translateY(-1px)'; this.style.boxShadow='0 6px 16px rgba(0, 0, 0, 0.15)'"
                                 onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 2px 8px rgba(0, 0, 0, 0.1), 0 1px 3px rgba(0, 0, 0, 0.05)'">
-                                <div style="position: absolute; top: 0; left: 0; right: 0; bottom: 0; background: url('data:image/svg+xml,<svg xmlns=\"http://www.w3.org/2000/svg\"
-                                    viewBox=\"0 0 100 100\">
-                                    <defs>
-                                        <pattern id=\"subtle-pattern\" width=\"20\" height=\"20\"
-                                            patternUnits=\"userSpaceOnUse\">
-                                            <circle cx=\"10\" cy=\"10\" r=\"0.5\" fill=\"rgba(0,0,0,0.02)\" />
-                                        </pattern>
-                                    </defs>
-                                    <rect width=\"100\" height=\"100\" fill=\"url(%23subtle-pattern)\" /></svg>');
+                                <div style="position: absolute; top: 0; left: 0; right: 0; bottom: 0; background: url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48ZGVmcz48cGF0dGVybiBpZD0ic3VidGxlLXBhdHRlcm4iIHdpZHRoPSIyMCIgaGVpZ2h0PSIyMCIgcGF0dGVyblVuaXRzPSJ1c2VyU3BhY2VPblVzZSI+PGNpcmNsZSBjeD0iMTAiIGN5PSIxMCIgcj0iMC41IiBmaWxsPSJyZ2JhKDAsMCwwLDAuMDIpIi8+PC9wYXR0ZXJuPjwvZGVmcz48cmVjdCB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgZmlsbD0idXJsKCNzdWJ0bGUtcGF0dGVybikiLz48L3N2Zz4=');
                                     opacity: 0.3;"
                                     class="dark:opacity-10">
                                 </div>
