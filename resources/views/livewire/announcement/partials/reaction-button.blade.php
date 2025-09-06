@@ -22,7 +22,7 @@
         data-item-id="{{ $itemId }}"
         data-type="{{ $type }}"
         aria-label="React to {{ $type }}"
-        onmouseover="alert('you hovered')"
+        onmouseover="showReactionPopup({{ $itemId }})"
     >
         @if ($currentReaction)
             <img
@@ -44,7 +44,6 @@
                 aria-label="{{ $reaction }}"
                 title="{{ $reaction }}"
                 data-reaction="{{ strtolower($reaction) }}"
-                onmouseover="showReactionPopup({{ $itemId }})"
             >
                 <img
                     src="/build/img/{{ strtolower($reaction) }}.png"
@@ -55,7 +54,6 @@
         @endforeach
     </div>
 </div>
-
 <script>
 function showReactionPopup(itemId) {
     const popup = document.querySelector(`[data-item-id="${itemId}"].reaction-popup-menu`);
