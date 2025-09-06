@@ -277,6 +277,24 @@
             }
         });
 
+        // Prevent modal closure after form submission
+        document.addEventListener('livewire:updated', function (event) {
+            // Keep modal open after any Livewire update
+            const modal = document.getElementById('modalProfile');
+            if (modal && !modal.classList.contains('hidden')) {
+                localStorage.setItem(MODAL_STATE_KEY, 'true');
+            }
+        });
+
+        // Listen for form submission and prevent modal closure
+        document.addEventListener('submit', function(e) {
+            const modal = document.getElementById('modalProfile');
+            if (modal && !modal.classList.contains('hidden') && e.target.closest('#modalProfile')) {
+                // Form submitted from within modal, keep it open
+                localStorage.setItem(MODAL_STATE_KEY, 'true');
+            }
+        });
+
         // Auto-hide success message after 5 seconds
         @if (session()->has('success'))
             setTimeout(() => {
