@@ -52,6 +52,9 @@ class Main extends Component implements HasForms, HasActions
     public $currentImageIndex = 0;
     public $modalImages = [];
 
+    // Edit modal property
+    public $showEditModal = false;
+
     public function mount(): void
     {
         $this->form->fill();
@@ -210,6 +213,24 @@ class Main extends Component implements HasForms, HasActions
             ->send();
     }
 
+    public function editEvent($eventId): void
+    {
+        $event = event::findOrFail($eventId);
+
+        $this->form->fill([
+            'event_name' => $event->event_name,
+            'event_category' => $event->event_category,
+            'event_location' => $event->event_location,
+            'event_date' => $event->event_date,
+            'event_time' => $event->event_time,
+            'event_duration' => $event->event_duration,
+            'event_images' => $event->event_images,
+            'event_discription' => $event->event_discription,
+        ]);
+
+        $this->showEditModal = true;
+    }
+
     public function update($eventId): void
     {
         $validatedData = $this->form->getState();
@@ -227,8 +248,9 @@ class Main extends Component implements HasForms, HasActions
             'event_images'      => $validatedData['event_images'] ?? $event->event_images,
         ]);
 
-        // Reset form
+        // Reset form and close modal
         $this->form->fill([]);
+        $this->showEditModal = false;
 
         Notification::make()
             ->title('Event updated successfully!')

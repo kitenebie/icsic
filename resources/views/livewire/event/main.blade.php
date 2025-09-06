@@ -157,9 +157,10 @@
                                     <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 8px;">
                                         <h4 style="font-weight: 600; color: #111827; margin: 0;" class="dark:text-white">{{ $event->event_name }}</h4>
                                         <!-- Edit Button -->
-                                        <x-filament::modal width="3xl">
+                                        <x-filament::modal width="3xl" wire:model="showEditModal">
                                             <x-slot name="trigger">
-                                                <button style="padding: 6px 12px; background-color: #16a34a; color: white; border: none; border-radius: 6px; font-size: 12px; font-weight: 500; cursor: pointer; transition: background-color 0.2s; display: flex; align-items: center; gap: 4px;"
+                                                <button wire:click="editEvent({{ $event->id }})"
+                                                        style="padding: 6px 12px; background-color: #16a34a; color: white; border: none; border-radius: 6px; font-size: 12px; font-weight: 500; cursor: pointer; transition: background-color 0.2s; display: flex; align-items: center; gap: 4px;"
                                                         class="dark:bg-green-700 dark:hover:bg-green-600"
                                                         onmouseover="this.style.backgroundColor='#15803d'"
                                                         onmouseout="this.style.backgroundColor='#16a34a'">
