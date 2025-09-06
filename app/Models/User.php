@@ -91,4 +91,12 @@ class User extends Authenticatable implements FilamentUser
     {
         return $this->hasMany(NewsView::class);
     }
+
+    /**
+     * Get the student record associated with this user
+     */
+    public function student()
+    {
+        return $this->belongsTo(\App\Models\Student::class, 'lrn', 'lrn');
+    }
 }

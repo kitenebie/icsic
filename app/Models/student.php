@@ -31,4 +31,27 @@ class student extends Model
         'year_graduated',
         'remarks',
     ];
+
+    /**
+     * Get the user associated with this student
+     */
+    public function user()
+    {
+        return $this->hasOne(\App\Models\User::class, 'lrn', 'lrn');
+    }
+
+    /**
+     * Boot the model and add cascading delete
+     */
+    protected static function boot()
+    {
+        parent::boot();
+
+        static::deleting(function ($student) {
+            // Delete the associated user when student is deleted
+            if ($student->user) {
+                $student->user->delete();
+            }
+        });
+    }
 }

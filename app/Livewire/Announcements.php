@@ -24,6 +24,10 @@ use Carbon\Carbon;
 use Filament\Actions\Action;
 use Filament\Actions\Concerns\InteractsWithActions;
 use Filament\Actions\Contracts\HasActions;
+use Filament\Tables\Concerns\InteractsWithTable;
+use Filament\Tables\Contracts\HasTable;
+use Filament\Tables\Table;
+use Filament\Tables;
 use App\Models\Group;
 use App\Models\User;
 use App\Models\Sms;
@@ -34,10 +38,11 @@ use App\Models\Notification as CustomNotification;
 use Filament\Forms\Components\Textarea;
 use App\Services\FirebaseNotificationService;
 
-class Announcements extends Component implements HasForms, HasActions
+class Announcements extends Component implements HasForms, HasActions, HasTable
 {
     use InteractsWithActions;
     use InteractsWithForms;
+    use InteractsWithTable;
 
     public ?array $data = [];
     public $modalData = [];
@@ -148,6 +153,30 @@ class Announcements extends Component implements HasForms, HasActions
                     ->maxLength(200),
             ])
             ->statePath('data');
+    }
+
+    public function table(Table $table): Table
+    {
+        return $table
+            ->query(Announcement::query()->latest())
+            ->columns([
+                Tables\Columns\ImageColumn::make('images')->label('Image')->getStateUsing(function ($record) {
+                    return $record->images ? asset('storage/' . $record->images[0]) : null;
+                })->size(50),
+                Tables\Columns\TextColumn::make('title')->searchable()->label('Title')->limit(50),
+                Tables\Columns\TextColumn::make('created_at')->label('Created At')->dateTime(),
+                Tables\Columns\TextColumn::make('content')->label('Content')->limit(100),
+            ])
+            ->filters([
+                //
+            ])
+            ->actions([
+                Tables\Actions\EditAction::make(),
+                Tables\Actions\DeleteAction::make(),
+            ])
+            ->bulkActions([
+                Tables\Actions\DeleteBulkAction::make(),
+            ]);
     }
 
     public bool $isLoading = false;
