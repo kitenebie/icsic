@@ -124,36 +124,20 @@ class Comments extends Component
     
     public function submit_comment()
     {
-        dd('test');
         // Check if user is authenticated
         if (!Auth::check()) {
-            Notification::make()
-                ->title('Authentication Required')
-                ->body('Please log in to comment.')
-                ->warning()
-                ->send();
             return;
         }
 
         $commentText = trim($this->comment_input ?? '');
         
         if (empty($commentText)) {
-            Notification::make()
-                ->title('Empty Comment')
-                ->body('Please write something before submitting.')
-                ->warning()
-                ->send();
             return;
         }
 
         try {
             if ($this->CommentType == "reply") {
                 if (empty($this->commentPostId) || empty($this->commentID)) {
-                    Notification::make()
-                        ->title('Invalid Reply')
-                        ->body('Reply information is missing.')
-                        ->warning()
-                        ->send();
                     return;
                 }
                 
@@ -169,12 +153,6 @@ class Comments extends Component
                 
                 if ($comment && $comment->id) {
                     Log::info('Reply comment saved successfully', ['comment_id' => $comment->id]);
-                    
-                    Notification::make()
-                        ->title('Reply Posted')
-                        ->body('Your reply has been posted successfully.')
-                        ->success()
-                        ->send();
                         
                     $this->mentionedName = "/";
                     $this->CommentType = "main";
@@ -188,11 +166,6 @@ class Comments extends Component
                 
             } else {
                 if (empty($this->id)) {
-                    Notification::make()
-                        ->title('Invalid Post')
-                        ->body('Post information is missing.')
-                        ->warning()
-                        ->send();
                     return;
                 }
                     
@@ -208,12 +181,6 @@ class Comments extends Component
                 
                 if ($comment && $comment->id) {
                     Log::info('Main comment saved successfully', ['comment_id' => $comment->id]);
-                    
-                    Notification::make()
-                        ->title('Comment Posted')
-                        ->body('Your comment has been posted successfully.')
-                        ->success()
-                        ->send();
                         
                     $this->mentionedName = "/";
                     $this->comment_input = '';
@@ -231,12 +198,6 @@ class Comments extends Component
                 'user_id' => Auth::user()->id,
                 'data' => $data ?? []
             ]);
-            
-            Notification::make()
-                ->title('Comment Failed')
-                ->body('Unable to save your comment. Please try again.')
-                ->danger()
-                ->send();
         }
         
         $this->dispatch('clear-comment-input');
