@@ -20,7 +20,7 @@
                 <div class="comment-thread">
                     <!-- Main Comment -->
                     <article class="comment">
-                        <img src="https://picsum.photos/id/1027/200/200" alt="User avatar" class="comment-avatar" />
+                        <img src="{{ $this->Avatar($main_comment->commentatorId) }}" alt="User avatar" class="comment-avatar" />
                         <div class="comment-content">
                             <div class="comment-bubble">
                                 <h4 class="comment-author">{{ $this->Author($main_comment->commentatorId) }}</h4>
@@ -58,7 +58,7 @@
                     <!-- Reply Comments -->
                     @foreach ($this->reply_comments($main_comment->post_id, $main_comment->commentatorId, $main_comment->id, $main_comment) as $reply_comment)
                         <article class="comment reply-comment">
-                            <img src="https://picsum.photos/id/1027/200/200" alt="User avatar" class="comment-avatar" />
+                            <img src="{{ $this->Avatar($reply_comment->commentatorId) }}" alt="User avatar" class="comment-avatar" />
                             <div class="comment-content">
                                 <div class="comment-bubble">
                                     <h4 class="comment-author">{{ $this->Author($reply_comment->commentatorId) }}</h4>

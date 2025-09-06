@@ -5,6 +5,7 @@ namespace App\Livewire\Profile;
 use Livewire\Component;
 use Livewire\WithFileUploads;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Auth;
 
 class Modal extends Component
 {
@@ -21,7 +22,7 @@ class Modal extends Component
 
     public function mount()
     {
-        $user = auth()->user();
+        $user = Auth::user();
         $this->first_name = $user->FirstName;
         $this->middle_name = $user->MiddleName;
         $this->last_name = $user->LastName;
@@ -31,13 +32,14 @@ class Modal extends Component
 
     public function updateProfile()
     {
-        $user = auth()->user();
+        $user = Auth::user();
 
         $this->validate([
             'first_name' => 'required|string|max:255',
             'last_name' => 'required|string|max:255',
             'email' => 'required|email|unique:users,email,' . $user->id,
             'password' => 'nullable|min:6|same:confirm_password',
+            'profile' => 'nullable|image|max:2048', // up to 2MB
         ]);
 
         $user->FirstName = $this->first_name;
@@ -50,7 +52,17 @@ class Modal extends Component
             $user->password = Hash::make($this->password);
         }
 
+        // Handle profile photo upload
+        if ($this->profile) {
+            // Store image in storage/app/public/profiles and save relative path
+            $path = $this->profile->store('profiles', 'public');
+            $user->profile_picture = $path;
+        }
+
         $user->save();
+
+        // Reset only the file input after saving
+        $this->reset('profile');
 
         session()->flash('success', 'Profile updated successfully!');
         $this->dispatch('profile-updated');

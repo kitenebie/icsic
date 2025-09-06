@@ -71,22 +71,33 @@ class Comments extends Component
     }
     public function react($react, $id, $type)
     {
-        $post = React::where('user_id', Auth::user()->id)->where('post_id', $id)->where('type', $type);
-        if ($post->first()) {
-            if (strtolower($post->first()->react)  != strtolower($react)) {
-                return $post->update([
-                    'react' => $react,
-                ]);
-            }
-            return $post->delete();
+        if (!Auth::check()) {
+            return;
         }
-        return React::create([
-            'user_id' => Auth::user()->id,
-            'post_id' => $id,
-            'type' => $type,
-            'react' => $react,
-            'count' =>  1,
-        ]);
+
+        $normalized = ucfirst(strtolower(trim($react)));
+
+        $query = React::where('user_id', Auth::id())
+            ->where('post_id', $id)
+            ->where('type', $type);
+
+        $existing = $query->first();
+
+        if ($existing) {
+            if (strtolower($existing->react) !== strtolower($normalized)) {
+                $query->update(['react' => $normalized]);
+            } else {
+                $query->delete();
+            }
+        } else {
+            React::create([
+                'user_id' => Auth::id(),
+                'post_id' => $id,
+                'type' => $type,
+                'react' => $normalized,
+                'count' => 1,
+            ]);
+        }
     }
     public $MainCommentData;
     public function mount($id = null)
@@ -256,6 +267,15 @@ class Comments extends Component
         }
         return false;
     }
+    public function Avatar($id)
+    {
+        $user = User::find($id);
+        if ($user && !empty($user->profile_picture)) {
+            return asset('storage/' . ltrim($user->profile_picture, '/'));
+        }
+        return asset('images/blank-avatar.png');
+    }
+
 
 
     #[On('post-created')]

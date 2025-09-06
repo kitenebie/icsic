@@ -18,6 +18,7 @@
 
 <div class="reaction-button-wrapper">
     <button
+        type="button"
         class="reaction-trigger-btn"
         data-item-id="{{ $itemId }}"
         data-type="{{ $type }}"
@@ -38,8 +39,9 @@
     <div class="reaction-popup-menu hidden" data-item-id="{{ $itemId }}">
         @foreach (['Like', 'Love', 'Haha', 'Care', 'Wow', 'Sad', 'Angry'] as $reaction)
             <button
+                type="button"
                 class="reaction-option-btn"
-                wire:click='react("{{ $reaction }}", {{ $itemId }}, "{{ $type }}")'
+                wire:click.stop.prevent='react("{{ $reaction }}", {{ $itemId }}, "{{ $type }}")'
                 aria-label="{{ $reaction }}"
                 title="{{ $reaction }}"
                 data-reaction="{{ strtolower($reaction) }}"

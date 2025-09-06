@@ -9,8 +9,12 @@
 
         <!-- Avatar -->
         <div class="flex flex-col items-center mb-6">
-            <img src="{{ auth()->user()->profile ? asset('storage/' . auth()->user()->profile) : asset('images/blank-avatar.png') }}"
-                alt="Avatar" class="w-24 h-24 rounded-full border-4 border-green-500 mb-2">
+            @if ($profile)
+                <img src="{{ $profile->temporaryUrl() }}" alt="Avatar preview" class="w-24 h-24 rounded-full border-4 border-green-500 mb-2">
+            @else
+                <img src="{{ auth()->user()->profile_picture ? asset('storage/' . auth()->user()->profile_picture) : asset('images/blank-avatar.png') }}"
+                    alt="Avatar" class="w-24 h-24 rounded-full border-4 border-green-500 mb-2">
+            @endif
             <p class="text-lg font-semibold">User Profile</p>
         </div>
 
@@ -28,8 +32,16 @@
             <input wire:model="password" type="password" placeholder="Password" class="border p-2 rounded w-full" />
             <input wire:model="confirm_password" type="password" placeholder="Confirm Password" class="border p-2 rounded w-full" />
 
+            <!-- Profile Photo Upload -->
+            <div>
+                <label class="block text-sm font-medium text-gray-700">Profile Photo</label>
+                <input type="file" wire:model="profile" accept="image/*" class="border p-2 rounded w-full" />
+                @error('profile') <span class="text-red-600 text-sm">{{ $message }}</span> @enderror
+                <div wire:loading wire:target="profile" class="text-sm text-gray-500 mt-1">Uploading...</div>
+            </div>
+
             <!-- Submit Button -->
-            <button type="submit" class="w-full bg-green-600 text-white py-2 rounded hover:bg-blue-700">
+            <button type="submit" class="w-full bg-green-600 text-white py-2 rounded hover:bg-blue-700" wire:loading.attr="disabled">
                 Update Profile
             </button>
         </form>
