@@ -61,13 +61,38 @@
             </div>
         </div>
 
-        <div id="modal" class="fixed inset-0 hidden bg-black bg-opacity-40 flex items-center justify-center z-50">
-            <div
-                class="bg-white dark:bg-gray-800 p-6 max-h-screen rounded-xl shadow-lg w-full max-w-sm text-gray-800 dark:text-gray-100">
-                <h3 class="text-lg font-semibold mb-2" id="modalTitle">Event</h3>
-                <p id="modalBody" class="text-gray-700 pr-4 dark:text-gray-300 max-h-[500px] max-w-screen overflow-y-auto"></p>
-                <button onclick="closeModal()"
-                    class="mt-4 bg-green-500 text-white px-4 py-2 rounded-lg hover:bg-green-600">Close</button>
+        <div id="modal" class="fixed inset-0 hidden bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
+            <div class="bg-white rounded-2xl shadow-2xl w-full max-w-2xl max-h-[90vh] overflow-hidden">
+                <!-- Modal Header -->
+                <div class="flex items-center justify-between p-6 border-b border-gray-200">
+                    <div class="flex items-center space-x-3">
+                        <div class="w-10 h-10 bg-gradient-to-r from-blue-500 to-purple-600 rounded-lg flex items-center justify-center">
+                            <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
+                            </svg>
+                        </div>
+                        <h3 class="text-xl font-bold text-gray-900" id="modalTitle">Event Details</h3>
+                    </div>
+                    <button onclick="closeModal()" class="p-2 hover:bg-gray-100 rounded-full transition-colors duration-200">
+                        <svg class="w-6 h-6 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                        </svg>
+                    </button>
+                </div>
+
+                <!-- Modal Body -->
+                <div class="p-6 max-h-[calc(90vh-140px)] overflow-y-auto">
+                    <div id="modalBody" class="space-y-4">
+                        <!-- Content will be populated by JavaScript -->
+                    </div>
+                </div>
+
+                <!-- Modal Footer -->
+                <div class="flex items-center justify-end p-6 border-t border-gray-200 bg-gray-50">
+                    <button onclick="closeModal()" class="px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors duration-200 font-medium">
+                        Close
+                    </button>
+                </div>
             </div>
         </div>
 
@@ -483,7 +508,7 @@
                                 // });
                                 const badge = document.createElement("span");
                                 badge.className =
-                                    "absolute top-[-3px] right-[-3px] sm:text-[12px]  sm:top-[-10px] sm:right-[-10px]  bg-green-500 text-white text-xs font-bold px-2 py-0.5 rounded-full";
+                                    "absolute top-[-3px] right-[-3px] sm:text-[12px]  sm:top-[-10px] sm:right-[-10px]  bg-green-500 text-white text-xs font-bold px-2 py-0.5 rounded-full z-[9999]";
                                 badge.textContent = count;
                                 div.appendChild(badge);
 
@@ -493,28 +518,67 @@
                                         year);
                                     const title =
                                         `Events on ${year}-${String(month + 1).padStart(2, '0')}-${String(i).padStart(2, '0')}`;
-                                    const body = dayEvents.map(e =>
-                                        `<div class="mb-4 bg-white rounded-lg shadow p-4 border border-gray-200 text-left">
-                                        <div class="mb-3">
-                                            <strong class="block text-base text-gray-900 mb-2">${e.raw.event_name}</strong>
-
-                                            ${e.raw.event_images && e.raw.event_images.length > 0 ? `
-                                                <div class="grid grid-cols-${Math.min(e.raw.event_images.length, 3)} gap-2 mb-3">
-                                                    ${e.raw.event_images.slice(0, 3).map(img =>
-                                                        `<img src="/storage/${img}" alt="${e.raw.event_name}" class="w-full h-16 rounded object-cover border border-gray-200">`
-                                                    ).join('')}
-                                                    ${e.raw.event_images.length > 3 ? `<div class="w-full h-16 rounded bg-gray-100 border border-gray-200 flex items-center justify-center text-sm text-gray-500">+${e.raw.event_images.length - 3} more</div>` : ''}
+                                    const body = dayEvents.map(e => `
+                                        <div class="bg-gray-50 rounded-xl p-6 border border-gray-200">
+                                            <div class="flex items-start space-x-4">
+                                                <!-- Event Image -->
+                                                <div class="flex-shrink-0">
+                                                    ${e.raw.event_images && e.raw.event_images.length > 0 ? `
+                                                        <img src="/storage/${e.raw.event_images[0]}" alt="${e.raw.event_name}" class="w-16 h-16 rounded-lg object-cover border-2 border-white shadow-sm">
+                                                    ` : `
+                                                        <div class="w-16 h-16 bg-gradient-to-r from-blue-400 to-purple-500 rounded-lg flex items-center justify-center">
+                                                            <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
+                                                            </svg>
+                                                        </div>
+                                                    `}
                                                 </div>
-                                            ` : ''}
 
-                                            <div class="text-sm text-gray-600">
-                                                <span class="block text-xs text-gray-500 mb-1">${e.raw.event_category} &mdash; ${e.raw.event_location}</span>
-                                                <span class="block text-xs text-gray-500 mb-2">${e.raw.event_date} | ${e.raw.event_time}${e.raw.event_duration ? ' – ' + e.raw.event_duration : ''}</span>
-                                                <p class="text-sm text-gray-700">${e.raw.event_discription.replace(/\n/g, '<br>')}</p>
+                                                <!-- Event Details -->
+                                                <div class="flex-1 min-w-0">
+                                                    <h4 class="text-lg font-bold text-gray-900 mb-2">${e.raw.event_name}</h4>
+
+                                                    <div class="flex items-center space-x-4 mb-3">
+                                                        <div class="flex items-center space-x-1 text-sm text-gray-600">
+                                                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"></path>
+                                                            </svg>
+                                                            <span>${e.raw.event_category}</span>
+                                                        </div>
+                                                        <div class="flex items-center space-x-1 text-sm text-gray-600">
+                                                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"></path>
+                                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"></path>
+                                                            </svg>
+                                                            <span>${e.raw.event_location}</span>
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="flex items-center space-x-1 text-sm text-gray-600 mb-3">
+                                                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                                                        </svg>
+                                                        <span>${e.raw.event_date} | ${e.raw.event_time}${e.raw.event_duration ? ' – ' + e.raw.event_duration : ''}</span>
+                                                    </div>
+
+                                                    <div class="text-sm text-gray-700 leading-relaxed">
+                                                        ${e.raw.event_discription.replace(/\n/g, '<br>')}
+                                                    </div>
+
+                                                    ${e.raw.event_images && e.raw.event_images.length > 1 ? `
+                                                        <div class="mt-4 pt-4 border-t border-gray-200">
+                                                            <div class="flex items-center space-x-2">
+                                                                <svg class="w-4 h-4 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
+                                                                </svg>
+                                                                <span class="text-sm text-gray-600">${e.raw.event_images.length} photos</span>
+                                                            </div>
+                                                        </div>
+                                                    ` : ''}
+                                                </div>
                                             </div>
                                         </div>
-                                    </div>`
-                                    ).join('');
+                                    `).join('');
                                     openModal(title, body);
                                 });
                                 const dot = document.createElement("span");
