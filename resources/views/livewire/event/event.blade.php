@@ -97,7 +97,7 @@
         </div>
 
         <!-- Facebook-style Image Preview Modal -->
-        <div id="imagePreviewModal" class="fixed inset-0 hidden bg-black bg-opacity-90 flex items-center justify-center z-50">
+        <div id="imagePreviewModal" class="fixed inset-0 hidden bg-black bg-opacity-90 flex items-center justify-center" style="z-index: 99999;">
             <div class="relative max-w-4xl max-h-screen p-4">
                 <!-- Close button -->
                 <button onclick="closeImagePreview()" class="absolute top-4 right-4 z-10 bg-black bg-opacity-50 text-white rounded-full p-2 hover:bg-opacity-70 transition-all">

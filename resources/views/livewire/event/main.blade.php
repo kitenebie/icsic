@@ -237,7 +237,7 @@
                                                         class="dark:text-white">{{ $event->event_name }}</h4>
                                                 </div>
                                                 <!-- Edit Button -->
-                                                <x-filament::modal width="3xl" wire:model="showEditModal">
+                                                <x-filament::modal width="3xl" wire:model="showEditModal" style="z-index: 99999;">
                                                     <x-slot name="trigger">
                                                         <button wire:click="editEvent({{ $event->id }})"
                                                             style="padding: 6px 12px; background-color: #16a34a; color: white; border: none; border-radius: 6px; font-size: 12px; font-weight: 500; cursor: pointer; transition: background-color 0.2s; display: flex; align-items: center; gap: 4px;"
@@ -338,7 +338,7 @@
 
     <!-- Full-Screen Image Modal -->
     @if ($showImageModal && count($modalImages) > 0)
-        <div style="position: fixed; top: 0; left: 0; right: 0; bottom: 0; z-index: 50; background-color: rgba(0, 0, 0, 0.9); display: flex; align-items: center; justify-content: center;"
+        <div style="position: fixed; top: 0; left: 0; right: 0; bottom: 0; z-index: 99999; background-color: rgba(0, 0, 0, 0.9); display: flex; align-items: center; justify-content: center;"
             wire:keydown.escape="closeImageModal">
             <!-- Close Button -->
             <button wire:click="closeImageModal"
