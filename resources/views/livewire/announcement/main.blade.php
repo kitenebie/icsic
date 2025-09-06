@@ -3,7 +3,7 @@
         <!-- News Feed Posts -->
         <div class="posts-container">
             @forelse ($announcements as $announcement)
-                <article id="announcement-{{ $announcement->id }}" class="facebook-post mt-12">
+                <article id="announcement-{{ $announcement->id }}" class="facebook-post mt-4">
                     @section('meta')
                         <meta property="og:title" content="{{ $announcement->title }}" />
                         <meta property="og:description" content="{{ Str::limit(strip_tags($announcement->content), 150) }}" />
