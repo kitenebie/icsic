@@ -1,5 +1,5 @@
-<div id="modalProfile" class="fixed z-50 inset-0 bg-black bg-opacity-50 flex items-center justify-center hidden">
-    <div id="modalContent" class="bg-white w-full max-w-2xl rounded-lg p-8 relative shadow-xl transform translate-y-10 opacity-0 transition-all duration-300">
+<div id="modalProfile" class="fixed z-50 inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 hidden">
+    <div id="modalContent" class="bg-white w-full max-w-2xl max-h-[90vh] rounded-lg relative shadow-xl transform translate-y-10 opacity-0 transition-all duration-300 overflow-hidden flex flex-col">
 
         <!-- Close Button -->
         <button onclick="closemodalProfile()"
@@ -7,44 +7,48 @@
             &times;
         </button>
 
-        <!-- Header -->
-        <div class="text-center mb-8">
-            <h2 class="text-2xl font-bold text-gray-900">Edit Profile</h2>
-            <p class="text-gray-600 mt-1">Update your personal information</p>
-        </div>
-
-        <!-- Avatar Section -->
-        <div class="flex flex-col items-center mb-8">
-            <div class="relative">
-                @if ($profile)
-                    <img src="{{ $profile->temporaryUrl() }}" alt="Avatar preview"
-                         class="w-32 h-32 rounded-full border-4 border-blue-500 object-cover shadow-lg">
-                @else
-                    <img src="{{ auth()->user()->profile_picture ? asset('storage/' . auth()->user()->profile_picture) : asset('images/blank-avatar.png') }}"
-                         alt="Current Avatar"
-                         class="w-32 h-32 rounded-full border-4 border-gray-300 object-cover shadow-lg">
-                @endif
-                <div class="absolute bottom-0 right-0 bg-blue-500 text-white rounded-full p-2 shadow-lg">
-                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path>
-                    </svg>
-                </div>
-                @if (auth()->user()->profile_picture)
-                    <button wire:click="removeProfilePicture"
-                            class="absolute -top-2 -right-2 bg-red-500 text-white rounded-full p-1 shadow-lg hover:bg-red-600 transition-colors"
-                            title="Remove profile picture">
-                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
-                        </svg>
-                    </button>
-                @endif
+        <!-- Header (Fixed) -->
+        <div class="flex-shrink-0 px-8 py-6 border-b border-gray-200">
+            <div class="text-center">
+                <h2 class="text-2xl font-bold text-gray-900">Edit Profile</h2>
+                <p class="text-gray-600 mt-1">Update your personal information</p>
             </div>
-            <p class="text-lg font-semibold text-gray-900 mt-4">{{ auth()->user()->FirstName }} {{ auth()->user()->LastName }}</p>
-            <p class="text-gray-600">{{ auth()->user()->email }}</p>
         </div>
 
-        <!-- Form -->
-        <form wire:submit.prevent="updateProfile" class="space-y-6">
+        <!-- Scrollable Content -->
+        <div class="flex-1 overflow-y-auto px-8 py-6">
+            <!-- Avatar Section -->
+            <div class="flex flex-col items-center mb-8">
+                <div class="relative">
+                    @if ($profile)
+                        <img src="{{ $profile->temporaryUrl() }}" alt="Avatar preview"
+                             class="w-32 h-32 rounded-full border-4 border-blue-500 object-cover shadow-lg">
+                    @else
+                        <img src="{{ auth()->user()->profile_picture ? asset('storage/' . auth()->user()->profile_picture) : asset('images/blank-avatar.png') }}"
+                             alt="Current Avatar"
+                             class="w-32 h-32 rounded-full border-4 border-gray-300 object-cover shadow-lg">
+                    @endif
+                    <div class="absolute bottom-0 right-0 bg-blue-500 text-white rounded-full p-2 shadow-lg">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path>
+                        </svg>
+                    </div>
+                    @if (auth()->user()->profile_picture)
+                        <button wire:click="removeProfilePicture"
+                                class="absolute -top-2 -right-2 bg-red-500 text-white rounded-full p-1 shadow-lg hover:bg-red-600 transition-colors"
+                                title="Remove profile picture">
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                            </svg>
+                        </button>
+                    @endif
+                </div>
+                <p class="text-lg font-semibold text-gray-900 mt-4">{{ auth()->user()->FirstName }} {{ auth()->user()->LastName }}</p>
+                <p class="text-gray-600">{{ auth()->user()->email }}</p>
+            </div>
+
+            <!-- Form -->
+            <form wire:submit.prevent="updateProfile" class="space-y-6">
             <!-- Name Fields -->
             <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div>
@@ -128,50 +132,51 @@
                 </div>
             </div>
 
-            <!-- Submit Button -->
-            <button type="submit"
-                    class="w-full bg-blue-600 text-white py-3 px-6 rounded-lg hover:bg-blue-700 focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-colors font-medium disabled:opacity-50 disabled:cursor-not-allowed"
-                    wire:loading.attr="disabled">
-                <span wire:loading.remove>Update Profile</span>
-                <span wire:loading class="flex items-center justify-center">
-                    <svg class="animate-spin -ml-1 mr-3 h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                        <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
-                        <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
-                    </svg>
-                    Updating Profile...
-                </span>
-            </button>
-        </form>
+                <!-- Submit Button -->
+                <button type="submit"
+                        class="w-full bg-blue-600 text-white py-3 px-6 rounded-lg hover:bg-blue-700 focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-colors font-medium disabled:opacity-50 disabled:cursor-not-allowed"
+                        wire:loading.attr="disabled">
+                    <span wire:loading.remove>Update Profile</span>
+                    <span wire:loading class="flex items-center justify-center">
+                        <svg class="animate-spin -ml-1 mr-3 h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                            <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                            <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                        </svg>
+                        Updating Profile...
+                    </span>
+                </button>
+            </form>
 
-        <!-- Success/Error Messages -->
-        @if (session()->has('success'))
-            <div class="mt-6 bg-green-50 border border-green-200 rounded-lg p-4">
-                <div class="flex items-center">
-                    <svg class="w-5 h-5 text-green-400 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
-                    </svg>
-                    <p class="text-green-800 font-medium">{{ session('success') }}</p>
-                </div>
-            </div>
-        @endif
-
-        @if ($errors->any())
-            <div class="mt-6 bg-red-50 border border-red-200 rounded-lg p-4">
-                <div class="flex items-center">
-                    <svg class="w-5 h-5 text-red-400 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
-                    </svg>
-                    <div class="text-red-800">
-                        <p class="font-medium">Please fix the following errors:</p>
-                        <ul class="list-disc list-inside mt-2 text-sm">
-                            @foreach ($errors->all() as $error)
-                                <li>{{ $error }}</li>
-                            @endforeach
-                        </ul>
+            <!-- Success/Error Messages -->
+            @if (session()->has('success'))
+                <div class="mt-6 bg-green-50 border border-green-200 rounded-lg p-4">
+                    <div class="flex items-center">
+                        <svg class="w-5 h-5 text-green-400 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                        </svg>
+                        <p class="text-green-800 font-medium">{{ session('success') }}</p>
                     </div>
                 </div>
-            </div>
-        @endif
+            @endif
+
+            @if ($errors->any())
+                <div class="mt-6 bg-red-50 border border-red-200 rounded-lg p-4">
+                    <div class="flex items-center">
+                        <svg class="w-5 h-5 text-red-400 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                        </svg>
+                        <div class="text-red-800">
+                            <p class="font-medium">Please fix the following errors:</p>
+                            <ul class="list-disc list-inside mt-2 text-sm">
+                                @foreach ($errors->all() as $error)
+                                    <li>{{ $error }}</li>
+                                @endforeach
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            @endif
+        </div>
     </div>
 
     <script>
