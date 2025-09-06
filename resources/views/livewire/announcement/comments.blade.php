@@ -221,70 +221,68 @@
 
     {{-- Reaction button behavior --}}
 <script>
-(function(){
-  if (window.__reactionMenusInitializedV2) return;
-  window.__reactionMenusInitializedV2 = true;
-
-  function closeAll() {
-    document.querySelectorAll('.reaction-popup-menu').forEach(menu => menu.classList.add('hidden'));
-  }
-  function getWrapper(el){ return el ? el.closest('.reaction-button-wrapper') : null; }
-  function getPopup(wrapper){ return wrapper ? wrapper.querySelector('.reaction-popup-menu') : null; }
-
-  // OPEN on hover anywhere inside the wrapper (works for <i> and <img>)
-  document.addEventListener('mouseover', function(e){
-    const wrapper = getWrapper(e.target);
-    if (!wrapper) return;
-    const popup = getPopup(wrapper);
-    if (!popup) return;
-    closeAll();
-    popup.classList.remove('hidden');
-  }, true);
-
-  // OPEN on keyboard focus inside wrapper
-  document.addEventListener('focusin', function(e){
-    const wrapper = getWrapper(e.target);
-    if (!wrapper) return;
-    const popup = getPopup(wrapper);
-    if (!popup) return;
-    closeAll();
-    popup.classList.remove('hidden');
-  });
-
-  // TOGGLE on clicking the trigger button (touch devices)
-  document.addEventListener('click', function(e){
-    const trigger = e.target.closest('.reaction-trigger-btn');
-    if (trigger) {
-      e.preventDefault();
-      const wrapper = getWrapper(trigger);
-      const popup = getPopup(wrapper);
-      if (!popup) return;
-      const willOpen = popup.classList.contains('hidden');
-      closeAll();
-      if (willOpen) popup.classList.remove('hidden');
-      return;
+document.addEventListener('DOMContentLoaded', function() {
+    function closeAll() {
+        document.querySelectorAll('.reaction-popup-menu').forEach(menu => menu.classList.add('hidden'));
     }
-    // CLOSE when clicking outside any wrapper
-    if (!e.target.closest('.reaction-button-wrapper')) {
-      closeAll();
+
+    function bindEvents() {
+        // Remove existing listeners to prevent duplicates
+        document.querySelectorAll('.reaction-trigger-btn').forEach(btn => {
+            btn.onmouseenter = null;
+            btn.onmouseleave = null;
+            btn.onclick = null;
+        });
+
+        // Bind to all current trigger buttons
+        document.querySelectorAll('.reaction-trigger-btn').forEach(btn => {
+            const wrapper = btn.closest('.reaction-button-wrapper');
+            const popup = wrapper ? wrapper.querySelector('.reaction-popup-menu') : null;
+            
+            if (!popup) return;
+
+            // Show on hover (mouseenter bubbles from child elements)
+            btn.addEventListener('mouseenter', function() {
+                closeAll();
+                popup.classList.remove('hidden');
+            });
+
+            // Hide when leaving the entire wrapper
+            wrapper.addEventListener('mouseleave', function() {
+                popup.classList.add('hidden');
+            });
+
+            // Toggle on click for touch devices
+            btn.addEventListener('click', function(e) {
+                e.preventDefault();
+                const isHidden = popup.classList.contains('hidden');
+                closeAll();
+                if (isHidden) {
+                    popup.classList.remove('hidden');
+                }
+            });
+        });
     }
-  }, true);
 
-  // CLOSE when mouse leaves the entire wrapper (including trigger/icon + popup)
-  document.addEventListener('mouseout', function(e){
-    const wrapper = getWrapper(e.target);
-    if (!wrapper) return;
-    const related = e.relatedTarget;
-    if (related && wrapper.contains(related)) return; // still inside wrapper
-    const popup = getPopup(wrapper);
-    if (popup) popup.classList.add('hidden');
-  }, true);
+    // Initial binding
+    bindEvents();
 
-  // After Livewire updates, ensure menus are closed
-  if (window.Livewire && window.Livewire.hook) {
-    window.Livewire.hook('message.processed', () => closeAll());
-  }
-  document.addEventListener('livewire:navigated', closeAll);
-})();
+    // Re-bind after Livewire updates
+    document.addEventListener('livewire:load', bindEvents);
+    document.addEventListener('livewire:update', bindEvents);
+    if (window.Livewire && window.Livewire.hook) {
+        window.Livewire.hook('message.processed', () => {
+            setTimeout(bindEvents, 50); // Small delay to ensure DOM is updated
+            closeAll(); // Close any open menus
+        });
+    }
+
+    // Close when clicking outside
+    document.addEventListener('click', function(e) {
+        if (!e.target.closest('.reaction-button-wrapper')) {
+            closeAll();
+        }
+    });
+});
 </script>
 </div>
