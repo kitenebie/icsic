@@ -36,6 +36,35 @@ class Modal extends Component
         $this->validate([
             'profile' => 'image|max:2048', // 2MB max
         ]);
+
+        // Store file in localStorage for persistence
+        if ($this->profile) {
+            $this->storeFileInLocalStorage();
+        }
+    }
+
+    private function storeFileInLocalStorage()
+    {
+        if ($this->profile) {
+            // Convert file to base64 for localStorage
+            $fileData = base64_encode(file_get_contents($this->profile->getRealPath()));
+            $fileInfo = [
+                'name' => $this->profile->getClientOriginalName(),
+                'size' => $this->profile->getSize(),
+                'mime' => $this->profile->getMimeType(),
+                'data' => $fileData,
+                'timestamp' => now()->timestamp
+            ];
+
+            // Store in localStorage via JavaScript
+            $this->dispatch('store-file', fileInfo: $fileInfo);
+        }
+    }
+
+    public function restoreFileFromLocalStorage()
+    {
+        // This will be called from JavaScript to restore file
+        $this->dispatch('restore-file');
     }
 
     public function updateProfile()

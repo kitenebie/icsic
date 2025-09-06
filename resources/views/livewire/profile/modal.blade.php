@@ -207,6 +207,8 @@
             setTimeout(() => {
                 modal.classList.add('hidden');
                 localStorage.removeItem(MODAL_STATE_KEY);
+                // Clear stored file when modal closes
+                localStorage.removeItem(FILE_STORAGE_KEY);
             }, 300);
         }
 
@@ -292,6 +294,74 @@
             if (modal && !modal.classList.contains('hidden') && e.target.closest('#modalProfile')) {
                 // Form submitted from within modal, keep it open
                 localStorage.setItem(MODAL_STATE_KEY, 'true');
+            }
+        });
+
+        // File storage and retrieval from localStorage
+        const FILE_STORAGE_KEY = 'profile_upload_file';
+
+        // Listen for store-file event from PHP
+        document.addEventListener('store-file', function(e) {
+            const fileInfo = e.detail.fileInfo;
+            localStorage.setItem(FILE_STORAGE_KEY, JSON.stringify(fileInfo));
+        });
+
+        // Listen for restore-file event from PHP
+        document.addEventListener('restore-file', function(e) {
+            const storedFile = localStorage.getItem(FILE_STORAGE_KEY);
+            if (storedFile) {
+                const fileInfo = JSON.parse(storedFile);
+
+                // Convert base64 back to blob
+                fetch(`data:${fileInfo.mime};base64,${fileInfo.data}`)
+                    .then(res => res.blob())
+                    .then(blob => {
+                        // Create a new File object
+                        const file = new File([blob], fileInfo.name, {
+                            type: fileInfo.mime,
+                            lastModified: fileInfo.timestamp * 1000
+                        });
+
+                        // Set the file to the input (this will trigger Livewire)
+                        const fileInput = document.getElementById('profile-upload');
+                        if (fileInput) {
+                            const dataTransfer = new DataTransfer();
+                            dataTransfer.items.add(file);
+                            fileInput.files = dataTransfer.files;
+
+                            // Trigger change event to notify Livewire
+                            fileInput.dispatchEvent(new Event('change', { bubbles: true }));
+                        }
+                    })
+                    .catch(error => {
+                        console.error('Error restoring file from localStorage:', error);
+                        localStorage.removeItem(FILE_STORAGE_KEY);
+                    });
+            }
+        });
+
+        // Restore file on page load if modal was open
+        document.addEventListener('DOMContentLoaded', function() {
+            const modal = document.getElementById('modalProfile');
+            const storedFile = localStorage.getItem(FILE_STORAGE_KEY);
+
+            if (storedFile && localStorage.getItem(MODAL_STATE_KEY) === 'true') {
+                // Small delay to ensure Livewire is ready
+                setTimeout(() => {
+                    document.dispatchEvent(new CustomEvent('restore-file'));
+                }, 100);
+            }
+        });
+
+        // Clear stored file when modal closes or form is submitted
+        function clearStoredFile() {
+            localStorage.removeItem(FILE_STORAGE_KEY);
+        }
+
+        // Clear file when form is submitted successfully
+        document.addEventListener('livewire:updated', function(e) {
+            if (document.querySelector('.bg-green-50')) {
+                clearStoredFile();
             }
         });
 
