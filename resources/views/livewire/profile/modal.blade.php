@@ -279,23 +279,73 @@
             }
         });
 
-        // Prevent modal closure after form submission
+        // Ultra-aggressive modal protection after any update
         document.addEventListener('livewire:updated', function (event) {
-            // Keep modal open after any Livewire update
+            // Force modal to stay open after any Livewire update
+            setTimeout(() => {
+                const modal = document.getElementById('modalProfile');
+                if (modal) {
+                    modal.classList.remove('hidden');
+                    localStorage.setItem(MODAL_STATE_KEY, 'true');
+
+                    // Re-apply animation classes
+                    const content = document.getElementById('modalContent');
+                    if (content) {
+                        content.classList.remove('translate-y-10', 'opacity-0');
+                        content.classList.add('translate-y-0', 'opacity-100');
+                    }
+                }
+            }, 10);
+        });
+
+        // Prevent modal closure during file upload process
+        document.addEventListener('livewire:loading', function (event) {
             const modal = document.getElementById('modalProfile');
             if (modal && !modal.classList.contains('hidden')) {
                 localStorage.setItem(MODAL_STATE_KEY, 'true');
             }
         });
 
-        // Listen for form submission and prevent modal closure
+        // Listen for form submission and force modal to stay open
         document.addEventListener('submit', function(e) {
             const modal = document.getElementById('modalProfile');
-            if (modal && !modal.classList.contains('hidden') && e.target.closest('#modalProfile')) {
-                // Form submitted from within modal, keep it open
+            if (modal && e.target.closest('#modalProfile')) {
+                // Aggressive prevention of modal closure
                 localStorage.setItem(MODAL_STATE_KEY, 'true');
+
+                // Add multiple event listeners to prevent closure
+                const preventClosure = (e) => {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    e.stopImmediatePropagation();
+                    return false;
+                };
+
+                // Prevent any modal closure events
+                setTimeout(() => {
+                    modal.classList.remove('hidden');
+                    const content = document.getElementById('modalContent');
+                    if (content) {
+                        content.classList.remove('translate-y-10', 'opacity-0');
+                        content.classList.add('translate-y-0', 'opacity-100');
+                    }
+                }, 100);
             }
         });
+
+        // Continuous modal monitoring
+        setInterval(() => {
+            const modal = document.getElementById('modalProfile');
+            if (modal && localStorage.getItem(MODAL_STATE_KEY) === 'true' && modal.classList.contains('hidden')) {
+                // Force modal back open if it was supposed to be open
+                modal.classList.remove('hidden');
+                const content = document.getElementById('modalContent');
+                if (content) {
+                    content.classList.remove('translate-y-10', 'opacity-0');
+                    content.classList.add('translate-y-0', 'opacity-100');
+                }
+            }
+        }, 500);
 
         // File storage and retrieval from localStorage
         const FILE_STORAGE_KEY = 'profile_upload_file';
