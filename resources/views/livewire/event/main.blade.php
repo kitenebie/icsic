@@ -1,5 +1,30 @@
 <!-- Single root container for Livewire component -->
 <div>
+    <!-- Create Event Button -->
+    <x-filament::modal width="3xl" style="z-index: 99999;">
+        <x-slot name="trigger">
+            <x-filament::button
+                style="background-color: white; color: #16a34a; border: none; padding: 8px 16px; border-radius: 8px; font-weight: 500; cursor: pointer; display: flex; align-items: center; gap: 8px; transition: background-color 0.2s;"
+                class="dark:bg-gray-700 dark:text-green-400 dark:hover:bg-gray-600"
+                onmouseover="this.style.backgroundColor='#f0fdf4'" onmouseout="this.style.backgroundColor='white'">
+                <svg style="width: 20px; height: 20px;" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path>
+                </svg>
+                New Event
+            </x-filament::button>
+        </x-slot>
+        <x-slot name="heading">
+            Create New Event
+        </x-slot>
+
+        <form wire:submit="create">
+            {{ $this->form }}
+            <br>
+            <x-filament::button type="submit" size="xl" icon="heroicon-m-calendar-date-range">
+                Save Event
+            </x-filament::button>
+        </form>
+    </x-filament::modal>
     <!-- Calendar Container -->
     <div style="background-color: white; border-radius: 8px; box-shadow: 0 4px 12px -2px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.05); overflow: hidden; transition: all 0.3s ease;"
         class="dark:bg-gray-900 dark:border dark:border-gray-700 dark:shadow-xl dark:shadow-gray-900/30">
@@ -11,36 +36,37 @@
                 class="dark:opacity-20">
             </div>
             <div style="position: relative; z-index: 1;">
-                    <div
-                        style="display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 12px;">
-                        <div style="display: flex; align-items: center; gap: 8px; flex-shrink: 0;">
-                            <button wire:click="previousMonth"
-                                style="padding: 6px; background-color: transparent; border: none; border-radius: 6px; color: white; cursor: pointer; transition: background-color 0.2s;"
-                                onmouseover="this.style.backgroundColor='rgba(255,255,255,0.1)'"
-                                onmouseout="this.style.backgroundColor='transparent'">
-                                <svg style="width: 18px; height: 18px;" fill="none" stroke="currentColor"
-                                    viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                        d="M15 19l-7-7 7-7">
-                                    </path>
-                                </svg>
-                            </button>
-    
-                            <h1 style="font-size: 18px; font-weight: bold; margin: 0; white-space: nowrap;">{{ $monthName }}
-                                {{ $year }}
-                            </h1>
-    
-                            <button wire:click="nextMonth"
-                                style="padding: 6px; background-color: transparent; border: none; border-radius: 6px; color: white; cursor: pointer; transition: background-color 0.2s;"
-                                onmouseover="this.style.backgroundColor='rgba(255,255,255,0.1)'"
-                                onmouseout="this.style.backgroundColor='transparent'">
-                                <svg style="width: 18px; height: 18px;" fill="none" stroke="currentColor"
-                                    viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7">
-                                    </path>
-                                </svg>
-                            </button>
-                        </div>
+                <div
+                    style="display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 12px;">
+                    <div style="display: flex; align-items: center; gap: 8px; flex-shrink: 0;">
+                        <button wire:click="previousMonth"
+                            style="padding: 6px; background-color: transparent; border: none; border-radius: 6px; color: white; cursor: pointer; transition: background-color 0.2s;"
+                            onmouseover="this.style.backgroundColor='rgba(255,255,255,0.1)'"
+                            onmouseout="this.style.backgroundColor='transparent'">
+                            <svg style="width: 18px; height: 18px;" fill="none" stroke="currentColor"
+                                viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M15 19l-7-7 7-7">
+                                </path>
+                            </svg>
+                        </button>
+
+                        <h1 style="font-size: 18px; font-weight: bold; margin: 0; white-space: nowrap;">
+                            {{ $monthName }}
+                            {{ $year }}
+                        </h1>
+
+                        <button wire:click="nextMonth"
+                            style="padding: 6px; background-color: transparent; border: none; border-radius: 6px; color: white; cursor: pointer; transition: background-color 0.2s;"
+                            onmouseover="this.style.backgroundColor='rgba(255,255,255,0.1)'"
+                            onmouseout="this.style.backgroundColor='transparent'">
+                            <svg style="width: 18px; height: 18px;" fill="none" stroke="currentColor"
+                                viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7">
+                                </path>
+                            </svg>
+                        </button>
+                    </div>
 
                     <div style="display: flex; align-items: center; gap: 12px; flex-wrap: wrap;">
                         <!-- Search Input -->
@@ -83,34 +109,6 @@
                             </button>
                         </div>
 
-                        <!-- Create Event Button -->
-                        <x-filament::modal width="3xl" style="z-index: 99999;">
-                            <x-slot name="trigger">
-                                <x-filament::button
-                                    style="background-color: white; color: #16a34a; border: none; padding: 8px 16px; border-radius: 8px; font-weight: 500; cursor: pointer; display: flex; align-items: center; gap: 8px; transition: background-color 0.2s;"
-                                    class="dark:bg-gray-700 dark:text-green-400 dark:hover:bg-gray-600"
-                                    onmouseover="this.style.backgroundColor='#f0fdf4'"
-                                    onmouseout="this.style.backgroundColor='white'">
-                                    <svg style="width: 20px; height: 20px;" fill="none" stroke="currentColor"
-                                        viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                            d="M12 4v16m8-8H4"></path>
-                                    </svg>
-                                    New Event
-                                </x-filament::button>
-                            </x-slot>
-                            <x-slot name="heading">
-                                Create New Event
-                            </x-slot>
-
-                            <form wire:submit="create">
-                                {{ $this->form }}
-                                <br>
-                                <x-filament::button type="submit" size="xl" icon="heroicon-m-calendar-date-range">
-                                    Save Event
-                                </x-filament::button>
-                            </form>
-                        </x-filament::modal>
                     </div>
                 </div>
             </div>
@@ -237,7 +235,8 @@
                                                         class="dark:text-white">{{ $event->event_name }}</h4>
                                                 </div>
                                                 <!-- Edit Button -->
-                                                <x-filament::modal width="3xl" wire:model="showEditModal" style="z-index: 99999;">
+                                                <x-filament::modal width="3xl" wire:model="showEditModal"
+                                                    style="z-index: 99999;">
                                                     <x-slot name="trigger">
                                                         <button wire:click="editEvent({{ $event->id }})"
                                                             style="padding: 6px 12px; background-color: #16a34a; color: white; border: none; border-radius: 6px; font-size: 12px; font-weight: 500; cursor: pointer; transition: background-color 0.2s; display: flex; align-items: center; gap: 4px;"
