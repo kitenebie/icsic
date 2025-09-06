@@ -3,6 +3,7 @@
 namespace App\Filament\Widgets;
 
 use Filament\Widgets\ChartWidget;
+use App\Models\User;
 
 class alluStudentsChart extends ChartWidget
 {
@@ -15,17 +16,38 @@ class alluStudentsChart extends ChartWidget
 
     protected function getData(): array
     {
+        // Get current authenticated user
+        $currentUser = \Filament\Facades\Filament::auth()->user();
+
+        // Base query for filtering
+        $query = User::query();
+
+        // Apply role-based filtering for teachers
+        if ($currentUser && $currentUser->role === 'teacher') {
+            $query->where('grade', $currentUser->grade)
+                  ->where('section', $currentUser->section);
+        }
+
+        // Get dynamic counts from database with filtering
+        $pendingCount = (clone $query)->where('status', 'pending')->count();
+        $adminCount = (clone $query)->where('role', 'admin')->count();
+        $parentCount = (clone $query)->where('role', 'parent')->count();
+        $teacherCount = (clone $query)->where('role', 'teacher')->count();
+        $studentCount = (clone $query)->where('role', 'student')->count();
+        $rejectedCount = (clone $query)->where('status', 'rejected')->count();
+
         return [
             'datasets' => [
                 [
                     'label' => 'User Count',
-                    'data' => [86, 5, 597, 79, 3000, 150], // Pending, Admin, Parents, Teachers, Students
+                    'data' => [$pendingCount, $adminCount, $parentCount, $teacherCount, $studentCount, $rejectedCount],
                     'backgroundColor' => [
                         '#f59e0b', // Pending - amber
-                        '#1e40af', // Admin - dark blue
+                        '#dc2626', // Admin - red
                         '#22c55e', // Parents - green
                         '#06b6d4', // Teachers - cyan
                         '#3b82f6', // Students - blue
+                        '#6b7280', // Rejected - gray
                     ],
                     'borderColor' => '#1f2937', // Consistent dark border
                     'borderWidth' => 2,
@@ -45,5 +67,58 @@ class alluStudentsChart extends ChartWidget
     protected function getType(): string
     {
         return 'bar';
+    }
+
+    protected function getOptions(): array
+    {
+        return [
+            'plugins' => [
+                'legend' => [
+                    'display' => true,
+                    'position' => 'top',
+                ],
+                'tooltip' => [
+                    'enabled' => true,
+                ],
+            ],
+            'scales' => [
+                'y' => [
+                    'beginAtZero' => true,
+                    'ticks' => [
+                        'precision' => 0,
+                    ],
+                ],
+            ],
+            'responsive' => true,
+            'maintainAspectRatio' => false,
+        ];
+    }
+
+    public function getDescription(): ?string
+    {
+        // Get current authenticated user
+        $currentUser = \Filament\Facades\Filament::auth()->user();
+
+        // Base query for filtering
+        $query = User::query();
+
+        // Apply role-based filtering for teachers
+        if ($currentUser && $currentUser->role === 'teacher') {
+            $query->where('grade', $currentUser->grade)
+                  ->where('section', $currentUser->section);
+            $totalUsers = $query->count();
+            return "Total users in Grade {$currentUser->grade}, Section {$currentUser->section}: {$totalUsers} | Updated: " . now()->format('M d, Y H:i');
+        }
+
+        $totalUsers = $query->count();
+        return "Total users: {$totalUsers} | Updated: " . now()->format('M d, Y H:i');
+    }
+
+    public function getColumnSpan(): string | array | int
+    {
+        return [
+            'md' => 2,
+            'xl' => 3,
+        ];
     }
 }

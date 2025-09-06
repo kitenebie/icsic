@@ -10,13 +10,25 @@ class allUsers extends BaseWidget
 {
     protected function getStats(): array
     {
-        // Get dynamic counts from database
-        $pendingCount = User::where('status', 'pending')->count();
-        $adminCount = User::where('role', 'admin')->count();
-        $parentCount = User::where('role', 'parent')->count();
-        $teacherCount = User::where('role', 'teacher')->count();
-        $studentCount = User::where('role', 'student')->count();
-        $rejectedCount = User::where('status', 'rejected')->count();
+        // Get current authenticated user
+        $currentUser = \Filament\Facades\Filament::auth()->user();
+
+        // Base query for filtering
+        $query = User::query();
+
+        // Apply role-based filtering for teachers
+        if ($currentUser && $currentUser->role === 'teacher') {
+            $query->where('grade', $currentUser->grade)
+                  ->where('section', $currentUser->section);
+        }
+
+        // Get dynamic counts from database with filtering
+        $pendingCount = (clone $query)->where('status', 'pending')->count();
+        $adminCount = (clone $query)->where('role', 'admin')->count();
+        $parentCount = (clone $query)->where('role', 'parent')->count();
+        $teacherCount = (clone $query)->where('role', 'teacher')->count();
+        $studentCount = (clone $query)->where('role', 'student')->count();
+        $rejectedCount = (clone $query)->where('status', 'rejected')->count();
 
         return [
             Stat::make('Number of Pending', number_format($pendingCount))
