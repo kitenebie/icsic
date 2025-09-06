@@ -154,7 +154,34 @@
                              class="dark:bg-gray-700 dark:border-gray-600">
                             <div style="display: flex; align-items: flex-start; justify-content: space-between;">
                                 <div style="flex: 1;">
-                                    <h4 style="font-weight: 600; color: #111827; margin: 0;" class="dark:text-white">{{ $event->event_name }}</h4>
+                                    <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 8px;">
+                                        <h4 style="font-weight: 600; color: #111827; margin: 0;" class="dark:text-white">{{ $event->event_name }}</h4>
+                                        <!-- Edit Button -->
+                                        <x-filament::modal width="3xl">
+                                            <x-slot name="trigger">
+                                                <button style="padding: 6px 12px; background-color: #16a34a; color: white; border: none; border-radius: 6px; font-size: 12px; font-weight: 500; cursor: pointer; transition: background-color 0.2s; display: flex; align-items: center; gap: 4px;"
+                                                        class="dark:bg-green-700 dark:hover:bg-green-600"
+                                                        onmouseover="this.style.backgroundColor='#15803d'"
+                                                        onmouseout="this.style.backgroundColor='#16a34a'">
+                                                    <svg style="width: 14px; height: 14px;" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path>
+                                                    </svg>
+                                                    Edit
+                                                </button>
+                                            </x-slot>
+                                            <x-slot name="heading">
+                                                Edit Event
+                                            </x-slot>
+
+                                            <form wire:submit="update({{ $event->id }})">
+                                                {{ $this->form }}
+                                                <br>
+                                                <x-filament::button type="submit" size="xl" icon="heroicon-m-calendar-date-range">
+                                                    Update Event
+                                                </x-filament::button>
+                                            </form>
+                                        </x-filament::modal>
+                                    </div>
                                     <p style="font-size: 14px; color: #4b5563; margin: 4px 0 0 0;" class="dark:text-gray-300">{{ $event->event_category }}</p>
                                     <div style="display: flex; align-items: center; margin-top: 8px; font-size: 12px; color: #6b7280; gap: 16px;" class="dark:text-gray-400">
                                         <span style="display: flex; align-items: center;">

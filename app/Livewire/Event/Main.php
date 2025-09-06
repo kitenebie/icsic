@@ -210,6 +210,32 @@ class Main extends Component implements HasForms, HasActions
             ->send();
     }
 
+    public function update($eventId): void
+    {
+        $validatedData = $this->form->getState();
+
+        $event = event::findOrFail($eventId);
+
+        $event->update([
+            'event_name'        => $validatedData['event_name'],
+            'event_category'    => $validatedData['event_category'],
+            'event_date'        => $validatedData['event_date'],
+            'event_time'        => $validatedData['event_time'],
+            'event_duration'    => $validatedData['event_duration'],
+            'event_discription' => $validatedData['event_discription'],
+            'event_location'    => $validatedData['event_location'],
+            'event_images'      => $validatedData['event_images'] ?? $event->event_images,
+        ]);
+
+        // Reset form
+        $this->form->fill([]);
+
+        Notification::make()
+            ->title('Event updated successfully!')
+            ->success()
+            ->send();
+    }
+
     // Calendar Navigation Methods
     public function previousMonth()
     {
