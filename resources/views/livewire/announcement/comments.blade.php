@@ -111,11 +111,10 @@
                     @endif
                 </div>
 
-                <input type="hidden" wire:model.live="comment_input" name="comment" id="hidden-comment" />
+                <input type="hidden" wire:model="comment_input" name="comment" id="hidden-comment" />
 
                 <!-- Submit button -->
-                <button wire:click="submit_comment" class="send-button" aria-label="Send comment"
-                        wire:loading.attr="disabled">
+                <button onclick="(function(){try{var rb=document.getElementById('rich-comment-box');var hi=document.getElementById('hidden-comment');if(rb&&hi){var content=rb.innerText.trim();var mentions=rb.querySelectorAll('.mention');var mt='';mentions.forEach(function(m){mt+=m.textContent+' ';});if(mt){content=content.replace(mt.trim(),'').trim();}hi.value=content;hi.dispatchEvent(new Event('input',{bubbles:true}));}}catch(e){}})();" wire:click="submit_comment" class="send-button" aria-label="Send comment" wire:loading.attr="disabled">
                     <i class="fas fa-paper-plane"></i>
                 </button>
             </div>
@@ -154,6 +153,16 @@
                     if (window.Livewire && @this) {
                         @this.set('comment_input', content);
                     }
+                }
+
+                // Expose updater and ensure it's called before Livewire handles click
+                window.__updateCommentInput = updateInput;
+                const sendBtn = document.querySelector('.send-button');
+                if (sendBtn) {
+                    // Use capture phase to run before Livewire's click handler
+                    sendBtn.addEventListener('click', function () {
+                        try { updateInput(); } catch (e) {}
+                    }, true);
                 }
 
                 // Input events

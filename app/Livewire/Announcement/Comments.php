@@ -8,7 +8,6 @@ use App\Models\announcementReacts as React;
 use App\Models\announcementComment as CommentDB;
 use App\Models\User;
 use Carbon\Carbon;
-use Filament\Notifications\Notification;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Log;
@@ -21,7 +20,8 @@ class Comments extends Component
     public bool $disableLoadComments = false;
     public $isNotSmallMidium = true;
 
-    public $id;
+    // Do NOT override Livewire's internal $id property; use $postId instead
+    public $postId;
     public $closeCommentModal = false;
     public function reply_comments($id, $commentatorId, $replyID, $name)
     {
@@ -91,19 +91,19 @@ class Comments extends Component
     public $MainCommentData;
     public function mount($id = null)
     {
-        $this->id = $id ?? Session::get('comment');
+        $this->postId = $id ?? Session::get('comment');
         $this->isNotSmallMidium = Session::get('screen', true);
         try {
-            $this->MainCommentData = CommentDB::where('post_id', $this->id)->where('type', 'main')->get();
+            $this->MainCommentData = CommentDB::where('post_id', $this->postId)->where('type', 'main')->get();
         } catch (\Exception $e) {
             $this->MainCommentData = [];
         }
     }
     public function update()
     {
-        $this->id = Session::get('comment');
+        $this->postId = Session::get('comment');
         try {
-            $this->MainCommentData = CommentDB::where('post_id', $this->id)->where('type', 'main')->get();
+            $this->MainCommentData = CommentDB::where('post_id', $this->postId)->where('type', 'main')->get();
         } catch (\Exception $e) {
             $this->MainCommentData = [];
         }
@@ -165,18 +165,23 @@ class Comments extends Component
                 }
                 
             } else {
-                if (empty($this->id)) {
+                if (empty($this->postId)) {
+                    $this->postId = Session::get('comment');
+                }
+                if (empty($this->postId)) {
+                    Log::warning('Main comment submission aborted: Missing postId after fallback');
                     return;
                 }
                     
                 $data = [
-                    'post_id' => $this->id,
+                    'post_id' => $this->postId,
                     'commentatorId' => Auth::user()->id,
                     'type' => $this->CommentType,
                     'reply_to' => null,
                     'comment' => $commentText
                 ];
                 
+                Log::info('Attempting to save main comment', ['data' => $data]);
                 $comment = CommentDB::create($data);
                 
                 if ($comment && $comment->id) {
@@ -209,12 +214,26 @@ class Comments extends Component
     public function refreshComments()
     {
         try {
-            $this->MainCommentData = CommentDB::where('post_id', $this->id)->where('type', 'main')->orderBy('created_at', 'desc')->get();
-            Log::info('Comments refreshed successfully', ['post_id' => $this->id]);
+            $pid = $this->postId ?? null;
+            if (empty($pid)) {
+                $pid = Session::get('comment');
+            }
+            if (empty($pid)) {
+                Log::warning('refreshComments skipped: missing postId');
+                $this->MainCommentData = [];
+                return;
+            }
+
+            $this->MainCommentData = CommentDB::where('post_id', $pid)
+                ->where('type', 'main')
+                ->orderBy('created_at', 'desc')
+                ->get();
+
+            Log::info('Comments refreshed successfully', ['post_id' => $pid]);
         } catch (\Exception $e) {
             Log::error('Failed to refresh comments', [
                 'error' => $e->getMessage(),
-                'post_id' => $this->id
+                'post_id' => $this->postId
             ]);
             $this->MainCommentData = [];
         }
