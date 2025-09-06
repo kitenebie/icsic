@@ -1,3 +1,4 @@
+<div>
 <div style="background-color: white; border-radius: 12px; box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05); overflow: hidden; transition: all 0.3s ease;" class="dark:bg-gray-900 dark:border dark:border-gray-700 dark:shadow-2xl dark:shadow-gray-900/50">
     <!-- Calendar Header -->
     <div style="background: linear-gradient(135deg, #16a34a 0%, #15803d 100%); color: white; padding: 20px 24px; position: relative;" class="dark:bg-gradient-to-r dark:from-gray-800 dark:to-gray-900 dark:shadow-lg">
@@ -353,3 +354,4 @@
         }
     });
 </script>
+</div>
