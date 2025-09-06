@@ -180,8 +180,9 @@ class Trends extends Component
     {
         // Get trending news based on most visited/read articles in the last 30 days
         $trendingNews = NewsDB::where('created_at', '>=', now()->subDays(30))
-            ->where('views', '>', 0) // Only include articles with views
-            ->orderByDesc('views')
+            ->withCount('views')
+            ->having('views_count', '>', 0) // Only include articles with views
+            ->orderByDesc('views_count')
             ->limit(10)
             ->get();
 

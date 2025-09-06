@@ -43,7 +43,8 @@ class News extends Component
 
         // Get trending topics based on most viewed/read articles in the last 7 days
         $trendingTopics = NewsDB::where('created_at', '>=', now()->subDays(7))
-            ->orderByDesc('views')
+            ->withCount('views')
+            ->orderByDesc('views_count')
             ->limit(6)
             ->get()
             ->map(function($news) {
@@ -71,6 +72,6 @@ class News extends Component
     public function getViewsCount($newsId)
     {
         $news = NewsDB::find($newsId);
-        return $news ? $news->views : 0;
+        return $news ? $news->views_count : 0;
     }
 }

@@ -10,6 +10,7 @@ use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
 use App\Services\OpenRouterService;
+use App\Models\NewsView;
 
 class View extends Component
 {
@@ -155,6 +156,30 @@ class View extends Component
         "Web3",
         "Space Exploration"
     ];
+
+    public function mount($hashId)
+    {
+        $this->hashId = $hashId;
+
+        // Track view for authenticated users
+        if (Auth::check()) {
+            $userId = Auth::id();
+            $newsPageId = $this->hashId;
+
+            // Check if user has already viewed this news item
+            $existingView = NewsView::where('user_id', $userId)
+                ->where('news_page_id', $newsPageId)
+                ->first();
+
+            // If no existing view, create one
+            if (!$existingView) {
+                NewsView::create([
+                    'user_id' => $userId,
+                    'news_page_id' => $newsPageId,
+                ]);
+            }
+        }
+    }
 
     public function formatDateHumanReadable($date)
     {

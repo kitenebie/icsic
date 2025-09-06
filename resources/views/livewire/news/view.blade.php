@@ -65,7 +65,7 @@
                         <i class="far fa-eye">
                         </i>
                         <span>
-                            {{ $News->views }} views
+                            {{ $News->views_count }} views
                         </span>
                     </div>
                 </div>
@@ -289,7 +289,8 @@
                         @php
                             $relatedArticles = \App\Models\NewsPage::where('topic_category', $News->topic_category)
                                 ->where('id', '!=', $News->id)
-                                ->orderByDesc('views')
+                                ->withCount('views')
+                                ->orderByDesc('views_count')
                                 ->limit(3)
                                 ->get();
                         @endphp
