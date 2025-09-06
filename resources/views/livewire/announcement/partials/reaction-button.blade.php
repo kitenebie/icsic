@@ -30,7 +30,7 @@
                 style="{{ $sizeStyles }}"
             />
         @else
-            <i class="far fa-thumbs-up" style="{{ $sizeStyles }}"></i>
+            <i class="far fa-thumbs-up"style="{{ $sizeStyles }}"></i>
         @endif
     </button>
 

@@ -219,70 +219,35 @@
         });
     </script>
 
-    {{-- Reaction button behavior --}}
-<script>
-document.addEventListener('DOMContentLoaded', function() {
-    function closeAll() {
-        document.querySelectorAll('.reaction-popup-menu').forEach(menu => menu.classList.add('hidden'));
-    }
+ {{-- Reaction button behavior --}}
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            document.querySelectorAll('.reaction-trigger-btn').forEach(btn => {
+                btn.addEventListener('click', function(e) {
+                    e.preventDefault();
 
-    function bindEvents() {
-        // Remove existing listeners to prevent duplicates
-        document.querySelectorAll('.reaction-trigger-btn').forEach(btn => {
-            btn.onmouseenter = null;
-            btn.onmouseleave = null;
-            btn.onclick = null;
-        });
+                    // close all open menus first
+                    document.querySelectorAll('.reaction-popup-menu').forEach(menu => {
+                        menu.classList.add('hidden');
+                    });
 
-        // Bind to all current trigger buttons
-        document.querySelectorAll('.reaction-trigger-btn').forEach(btn => {
-            const wrapper = btn.closest('.reaction-button-wrapper');
-            const popup = wrapper ? wrapper.querySelector('.reaction-popup-menu') : null;
-            
-            if (!popup) return;
-
-            // Show on hover (mouseenter bubbles from child elements)
-            btn.addEventListener('mouseenter', function() {
-                closeAll();
-                popup.classList.remove('hidden');
+                    // open only the popup inside THIS wrapper
+                    const wrapper = this.closest('.reaction-button-wrapper');
+                    const popup = wrapper.querySelector('.reaction-popup-menu');
+                    if (popup) {
+                        popup.classList.toggle('hidden');
+                    }
+                });
             });
 
-            // Hide when leaving the entire wrapper
-            wrapper.addEventListener('mouseleave', function() {
-                popup.classList.add('hidden');
-            });
-
-            // Toggle on click for touch devices
-            btn.addEventListener('click', function(e) {
-                e.preventDefault();
-                const isHidden = popup.classList.contains('hidden');
-                closeAll();
-                if (isHidden) {
-                    popup.classList.remove('hidden');
+            // close menus if clicking outside
+            document.addEventListener('click', function(e) {
+                if (!e.target.closest('.reaction-button-wrapper')) {
+                    document.querySelectorAll('.reaction-popup-menu').forEach(menu => {
+                        menu.classList.add('hidden');
+                    });
                 }
             });
         });
-    }
-
-    // Initial binding
-    bindEvents();
-
-    // Re-bind after Livewire updates
-    document.addEventListener('livewire:load', bindEvents);
-    document.addEventListener('livewire:update', bindEvents);
-    if (window.Livewire && window.Livewire.hook) {
-        window.Livewire.hook('message.processed', () => {
-            setTimeout(bindEvents, 50); // Small delay to ensure DOM is updated
-            closeAll(); // Close any open menus
-        });
-    }
-
-    // Close when clicking outside
-    document.addEventListener('click', function(e) {
-        if (!e.target.closest('.reaction-button-wrapper')) {
-            closeAll();
-        }
-    });
-});
-</script>
+    </script>
 </div>
