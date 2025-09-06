@@ -124,6 +124,7 @@ class Comments extends Component
     
     public function submit_comment()
     {
+        dd('test');
         // Check if user is authenticated
         if (!Auth::check()) {
             Notification::make()
