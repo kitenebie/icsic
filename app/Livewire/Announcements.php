@@ -42,6 +42,8 @@ class Announcements extends Component implements HasForms, HasActions
     public $currentMonth;
     public $currentYear;
     public $selectedDate = null;
+    public $viewMode = 'month'; // 'month' or 'week'
+    public $searchQuery = '';
 
     public ?array $data = [];
     public $modalData = [];
@@ -272,6 +274,18 @@ class Announcements extends Component implements HasForms, HasActions
         }
     }
 
+    public function goToToday()
+    {
+        $this->currentMonth = now()->month;
+        $this->currentYear = now()->year;
+        $this->selectedDate = now()->format('Y-m-d');
+    }
+
+    public function switchView($view)
+    {
+        $this->viewMode = $view;
+    }
+
     public function selectDate($date)
     {
         $this->selectedDate = $date;
@@ -279,7 +293,16 @@ class Announcements extends Component implements HasForms, HasActions
 
     public function getAnnouncementsForDate($date)
     {
-        return Announcement::whereDate('created_at', $date)->get();
+        $query = Announcement::whereDate('created_at', $date);
+
+        if (!empty($this->searchQuery)) {
+            $query->where(function($q) {
+                $q->where('title', 'like', '%' . $this->searchQuery . '%')
+                  ->orWhere('content', 'like', '%' . $this->searchQuery . '%');
+            });
+        }
+
+        return $query->get();
     }
 
     public function getCalendarDays()

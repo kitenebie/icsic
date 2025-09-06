@@ -24,6 +24,41 @@
                 </button>
             </div>
 
+            <div style="display: flex; align-items: center; gap: 16px;">
+                <!-- Search Input -->
+                <div style="position: relative;">
+                    <input type="text" wire:model.live="searchQuery" placeholder="Search announcements..."
+                           style="width: 200px; padding: 8px 12px; padding-right: 40px; border: 1px solid #d1d5db; border-radius: 8px; font-size: 14px; focus:outline: none; focus:ring-2: focus:ring-blue-500; focus:border-transparent;">
+                    <svg style="width: 16px; height: 16px; color: #9ca3af; position: absolute; right: 12px; top: 50%; transform: translateY(-50%);" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+                    </svg>
+                </div>
+
+                <!-- Today Button -->
+                <button wire:click="goToToday"
+                        style="padding: 8px 16px; background-color: white; color: #2563eb; border: none; border-radius: 8px; font-weight: 500; cursor: pointer; transition: background-color 0.2s;"
+                        onmouseover="this.style.backgroundColor='#f3f4f6'"
+                        onmouseout="this.style.backgroundColor='white'">
+                    Today
+                </button>
+
+                <!-- View Toggle -->
+                <div style="display: flex; background-color: rgba(255,255,255,0.2); border-radius: 8px; padding: 4px;">
+                    <button wire:click="switchView('month')"
+                            style="padding: 4px 12px; border: none; border-radius: 6px; font-weight: 500; cursor: pointer; transition: all 0.2s; {{ $viewMode === 'month' ? 'background-color: white; color: #2563eb;' : 'color: white; background-color: transparent;' }}"
+                            onmouseover="{{ $viewMode !== 'month' ? 'this.style.backgroundColor=\"rgba(255,255,255,0.2)\"' : '' }}"
+                            onmouseout="{{ $viewMode !== 'month' ? 'this.style.backgroundColor=\"transparent\"' : '' }}">
+                        Month
+                    </button>
+                    <button wire:click="switchView('week')"
+                            style="padding: 4px 12px; border: none; border-radius: 6px; font-weight: 500; cursor: pointer; transition: all 0.2s; {{ $viewMode === 'week' ? 'background-color: white; color: #2563eb;' : 'color: white; background-color: transparent;' }}"
+                            onmouseover="{{ $viewMode !== 'week' ? 'this.style.backgroundColor=\"rgba(255,255,255,0.2)\"' : '' }}"
+                            onmouseout="{{ $viewMode !== 'week' ? 'this.style.backgroundColor=\"transparent\"' : '' }}">
+                        Week
+                    </button>
+                </div>
+            </div>
+
             <!-- Create Announcement Button -->
             <x-filament::modal width="2xl" slide-over :close-by-clicking-away="false">
                 <x-slot name="trigger">

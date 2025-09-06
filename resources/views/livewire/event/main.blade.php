@@ -1,8 +1,8 @@
 <div style="background-color: white; border-radius: 8px; box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05); overflow: hidden;">
     <!-- Calendar Header -->
-    <div style="background-color: #2563eb; color: white; padding: 24px;">
-        <div style="display: flex; align-items: center; justify-content: space-between;">
-            <div style="display: flex; align-items: center; gap: 16px;">
+    <div style="background-color: #2563eb; color: white; padding: 16px 24px;">
+        <div style="display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 16px;">
+            <div style="display: flex; align-items: center; gap: 12px;">
                 <button wire:click="previousMonth"
                         style="padding: 8px; background-color: transparent; border: none; border-radius: 8px; color: white; cursor: pointer; transition: background-color 0.2s;"
                         onmouseover="this.style.backgroundColor='rgba(255,255,255,0.1)'"
@@ -12,7 +12,7 @@
                     </svg>
                 </button>
 
-                <h1 style="font-size: 24px; font-weight: bold; margin: 0;">{{ $monthName }} {{ $year }}</h1>
+                <h1 style="font-size: 20px; font-weight: bold; margin: 0;">{{ $monthName }} {{ $year }}</h1>
 
                 <button wire:click="nextMonth"
                         style="padding: 8px; background-color: transparent; border: none; border-radius: 8px; color: white; cursor: pointer; transition: background-color 0.2s;"
@@ -25,6 +25,15 @@
             </div>
 
             <div style="display: flex; align-items: center; gap: 16px;">
+                <!-- Search Input -->
+                <div style="position: relative;">
+                    <input type="text" wire:model.live="searchQuery" placeholder="Search events..."
+                           style="width: 200px; padding: 8px 12px; padding-right: 40px; border: 1px solid #d1d5db; border-radius: 8px; font-size: 14px; focus:outline: none; focus:ring-2: focus:ring-blue-500; focus:border-transparent;">
+                    <svg style="width: 16px; height: 16px; color: #9ca3af; position: absolute; right: 12px; top: 50%; transform: translateY(-50%);" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+                    </svg>
+                </div>
+
                 <!-- Today Button -->
                 <button wire:click="goToToday"
                         style="padding: 8px 16px; background-color: white; color: #2563eb; border: none; border-radius: 8px; font-weight: 500; cursor: pointer; transition: background-color 0.2s;"
@@ -78,18 +87,19 @@
     </div>
 
     <!-- Calendar Grid -->
-    <div style="padding: 24px;">
+    <div style="padding: 24px; overflow-x: auto;">
         <!-- Days of Week Header -->
-        <div style="display: grid; grid-template-columns: repeat(7, 1fr); gap: 1px; margin-bottom: 8px;">
+        <div style="display: grid; grid-template-columns: repeat(7, 1fr); gap: 1px; margin-bottom: 8px; min-width: 600px;">
             @foreach(['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'] as $day)
-                <div style="padding: 12px; text-align: center; font-weight: 600; color: #4b5563; background-color: #f9fafb;">
-                    {{ $day }}
+                <div style="padding: 12px; text-align: center; font-weight: 600; color: #4b5563; background-color: #f9fafb; font-size: 14px;">
+                    <span style="display: none;" class="hidden md:inline">{{ $day }}</span>
+                    <span style="display: inline;" class="md:hidden">{{ substr($day, 0, 1) }}</span>
                 </div>
             @endforeach
         </div>
 
         <!-- Calendar Days -->
-        <div style="display: grid; grid-template-columns: repeat(7, 1fr); gap: 1px; background-color: #e5e7eb; border-radius: 8px; overflow: hidden;">
+        <div style="display: grid; grid-template-columns: repeat(7, 1fr); gap: 1px; background-color: #e5e7eb; border-radius: 8px; overflow: hidden; min-width: 600px;">
             @foreach($calendarDays as $day)
                 @if($day)
                     <div wire:click="selectDate('{{ $day['date'] }}')"

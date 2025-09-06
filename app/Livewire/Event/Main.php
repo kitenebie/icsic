@@ -26,6 +26,10 @@ use Filament\Actions\Contracts\HasActions;
 use Filament\Forms\Components\DatePicker;
 use Filament\Forms\Components\TimePicker;
 use Filament\Forms\Components\Grid;
+use Filament\Tables;
+use Filament\Tables\Table;
+use Filament\Tables\Columns\TextColumn;
+use Filament\Tables\Columns\ImageColumn;
 use Illuminate\Support\Facades\Notification as Notify;
 use App\Notifications\EventCreated;
 use App\Models\Notification as CustomNotification;
@@ -41,6 +45,7 @@ class Main extends Component implements HasForms, HasActions
     public $currentYear;
     public $viewMode = 'month'; // 'month' or 'week'
     public $selectedDate = null;
+    public $searchQuery = '';
 
     // Full-screen image modal properties
     public $showImageModal = false;
@@ -245,7 +250,17 @@ class Main extends Component implements HasForms, HasActions
 
     public function getEventsForDate($date)
     {
-        return event::whereDate('event_date', $date)->get();
+        $query = event::whereDate('event_date', $date);
+
+        if (!empty($this->searchQuery)) {
+            $query->where(function($q) {
+                $q->where('event_name', 'like', '%' . $this->searchQuery . '%')
+                  ->orWhere('event_category', 'like', '%' . $this->searchQuery . '%')
+                  ->orWhere('event_location', 'like', '%' . $this->searchQuery . '%');
+            });
+        }
+
+        return $query->get();
     }
 
     public function getCalendarDays()
