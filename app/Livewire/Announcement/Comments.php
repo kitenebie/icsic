@@ -124,174 +124,56 @@ class Comments extends Component
     
     public function submit_comment()
     {
-        // Log comment submission attempt
-        Log::info('Comment submission attempt started', [
-            'user_id' => Auth::id(),
-            'comment_type' => $this->CommentType,
-            'post_id' => $this->id,
-            'comment_post_id' => $this->commentPostId ?? null,
-            'comment_id' => $this->commentID ?? null,
-        ]);
-
-        // Authentication check
-        if (!Auth::check()) {
-            Log::warning('Comment submission failed: User not authenticated');
-            Notification::make()
-                ->title('Authentication Error')
-                ->body('You must be logged in to comment.')
-                ->danger()
-                ->send();
-            return;
-        }
-
         $commentText = trim($this->comment_input ?? '');
         
-        // Input validation
         if (empty($commentText)) {
-            Log::info('Comment submission aborted: Empty comment text');
             return;
         }
 
-        if (strlen($commentText) > 10000) {
-            Log::warning('Comment submission failed: Text too long', ['length' => strlen($commentText)]);
-            Notification::make()
-                ->title('Comment Too Long')
-                ->body('Comments must be less than 10,000 characters.')
-                ->warning()
-                ->send();
-            return;
-        }
-
-        // XSS Protection
-        $commentText = strip_tags($commentText);
-
-        try {
-            if ($this->CommentType == "reply") {
-                // Validate reply data
-                if (empty($this->commentPostId) || empty($this->commentID)) {
-                    Log::warning('Reply comment submission failed: Missing reply data', [
-                        'comment_post_id' => $this->commentPostId,
-                        'comment_id' => $this->commentID
-                    ]);
-                    return;
-                }
-
-                // Verify parent comment exists
-                $parentComment = CommentDB::find($this->commentID);
-                if (!$parentComment) {
-                    Log::warning('Reply comment submission failed: Parent comment not found', [
-                        'parent_comment_id' => $this->commentID
-                    ]);
-                    Notification::make()
-                        ->title('Invalid Reply')
-                        ->body('The comment you are replying to no longer exists.')
-                        ->warning()
-                        ->send();
-                    return;
-                }
-
-                // Verify announcement exists
-                $announcement = AnnouncementDB::find($this->commentPostId);
-                if (!$announcement) {
-                    Log::warning('Reply comment submission failed: Announcement not found', [
-                        'announcement_id' => $this->commentPostId
-                    ]);
-                    Notification::make()
-                        ->title('Invalid Post')
-                        ->body('The announcement you are commenting on no longer exists.')
-                        ->warning()
-                        ->send();
-                    return;
-                }
-                
-                $data = [
-                    'post_id' => $this->commentPostId,
-                    'commentatorId' => Auth::user()->id,
-                    'type' => $this->CommentType,
-                    'reply_to' => $this->commentID,
-                    'comment' => $commentText
-                ];
-                
-                Log::info('Creating reply comment', $data);
-                CommentDB::create($data);
-                
-                $this->mentionedName = "/";
-                $this->CommentType = "main";
-                $this->comment_input = '';
-                $this->commentID = null;
-                $this->commentPostId = null;
-                $this->commentatorId = null;
-                
-            } else {
-                // Validate main comment data
-                if (empty($this->id)) {
-                    Log::warning('Main comment submission failed: Missing post ID');
-                    return;
-                }
-
-                // Verify announcement exists
-                $announcement = AnnouncementDB::find($this->id);
-                if (!$announcement) {
-                    Log::warning('Main comment submission failed: Announcement not found', [
-                        'announcement_id' => $this->id
-                    ]);
-                    Notification::make()
-                        ->title('Invalid Post')
-                        ->body('The announcement you are commenting on no longer exists.')
-                        ->warning()
-                        ->send();
-                    return;
-                }
-                    
-                $data = [
-                    'post_id' => $this->id,
-                    'commentatorId' => Auth::user()->id,
-                    'type' => $this->CommentType,
-                    'reply_to' => null,
-                    'comment' => $commentText
-                ];
-                
-                Log::info('Creating main comment', $data);
-                CommentDB::create($data);
-                
-                $this->mentionedName = "/";
-                $this->comment_input = '';
+        if ($this->CommentType == "reply") {
+            if (empty($this->commentPostId) || empty($this->commentID)) {
+                return;
             }
-
-            Log::info('Comment created successfully');
             
-            // Success notification
-            Notification::make()
-                ->title('Comment Posted')
-                ->body('Your comment has been posted successfully.')
-                ->success()
-                ->send();
+            $data = [
+                'post_id' => $this->commentPostId,
+                'commentatorId' => Auth::user()->id,
+                'type' => $this->CommentType,
+                'reply_to' => $this->commentID,
+                'comment' => $commentText
+            ];
             
-        } catch (\Exception $e) {
-            Log::error('Comment submission database error', [
-                'error' => $e->getMessage(),
-                'trace' => $e->getTraceAsString(),
-                'data' => $data ?? null
-            ]);
+            CommentDB::create($data);
             
-            Notification::make()
-                ->title('Save Error')
-                ->body('Unable to save your comment. Please try again.')
-                ->danger()
-                ->send();
+            $this->mentionedName = "/";
+            $this->CommentType = "main";
+            $this->comment_input = '';
+            $this->commentID = null;
+            $this->commentPostId = null;
+            $this->commentatorId = null;
+            
+        } else {
+            if (empty($this->id)) {
+                return;
+            }
                 
-            return;
+            $data = [
+                'post_id' => $this->id,
+                'commentatorId' => Auth::user()->id,
+                'type' => $this->CommentType,
+                'reply_to' => null,
+                'comment' => $commentText
+            ];
+            
+            CommentDB::create($data);
+            
+            $this->mentionedName = "/";
+            $this->comment_input = '';
         }
         
-        // Refresh comments list
         try {
             $this->MainCommentData = CommentDB::where('post_id', $this->id)->where('type', 'main')->get();
-            Log::info('Comments list refreshed successfully');
         } catch (\Exception $e) {
-            Log::error('Failed to refresh comments list', [
-                'error' => $e->getMessage(),
-                'post_id' => $this->id
-            ]);
             $this->MainCommentData = [];
         }
         
