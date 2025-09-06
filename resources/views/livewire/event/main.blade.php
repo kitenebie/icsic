@@ -234,8 +234,8 @@
                         @foreach($modalImages as $index => $image)
                             <button wire:click="$set('currentImageIndex', {{ $index }})"
                                     style="width: 12px; height: 12px; border-radius: 9999px; border: none; cursor: pointer; transition: background-color 0.2s; {{ $index === $currentImageIndex ? 'background-color: white;' : 'background-color: #9ca3af;' }}"
-                                    onmouseover="{{ $index !== $currentImageIndex ? 'this.style.backgroundColor=\"#d1d5db\"' : '' }}"
-                                    onmouseout="{{ $index !== $currentImageIndex ? 'this.style.backgroundColor='#9ca3af'' : '' }}">
+                                    onmouseover="{{ $index !== $currentImageIndex ? 'this.style.backgroundColor=\'#d1d5db\'' : '' }}"
+                                    onmouseout="{{ $index !== $currentImageIndex ? 'this.style.backgroundColor=\'#9ca3af\'' : '' }}">
                             </button>
                         @endforeach
                     </div>
