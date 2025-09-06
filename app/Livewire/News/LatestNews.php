@@ -207,4 +207,20 @@ class LatestNews extends Component
             ->limit(3)
             ->get();
     }
+
+    public function getLikesCount($newsId)
+    {
+        return \App\Models\newsLikes::where('post_id', $newsId)->count();
+    }
+
+    public function getCommentsCount($newsId)
+    {
+        return \App\Models\newsComment::where('post_id', $newsId)->count();
+    }
+
+    public function getViewsCount($newsId)
+    {
+        $news = NewsDB::find($newsId);
+        return $news ? $news->views : 0;
+    }
 }

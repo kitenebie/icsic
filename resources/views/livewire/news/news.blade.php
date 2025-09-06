@@ -50,11 +50,11 @@
                                     <span class="px-3 py-1 bg-blue-600 text-white text-xs font-semibold rounded-full">Breaking News</span>
                                     <span class="text-white/80 text-sm">2 hours ago</span>
                                 </div>
-                                <h3 class="text-2xl font-bold text-white leading-tight">School Achieves Record Academic Excellence in National Exams</h3>
+                                <h3 class="text-2xl font-bold text-white leading-tight">{{ $featuredNews->first() ? $featuredNews->first()->title : 'School Achieves Record Academic Excellence in National Exams' }}</h3>
                             </div>
                         </div>
                         <div class="p-6">
-                            <p class="text-gray-600 text-lg leading-relaxed">Our students have achieved outstanding results in this year's national examinations, setting new records for academic excellence...</p>
+                            <p class="text-gray-600 text-lg leading-relaxed">{{ $featuredNews->first() ? Illuminate\Support\Str::limit(strip_tags($featuredNews->first()->content[0]['Paragraph'][0]['content'] ?? ''), 120) : 'Our students have achieved outstanding results in this year\'s national examinations, setting new records for academic excellence...' }}</p>
                             <div class="flex items-center justify-between mt-4">
                                 <div class="flex items-center space-x-3">
                                     <div class="w-8 h-8 bg-blue-100 rounded-full flex items-center justify-center">
@@ -69,13 +69,13 @@
                                         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"></path>
                                         </svg>
-                                        <span>24</span>
+                                        <span>{{ $featuredNews->first() ? $this->getLikesCount($featuredNews->first()->id) : 24 }}</span>
                                     </div>
                                     <div class="flex items-center space-x-1">
                                         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"></path>
                                         </svg>
-                                        <span>8</span>
+                                        <span>{{ $featuredNews->first() ? $this->getCommentsCount($featuredNews->first()->id) : 8 }}</span>
                                     </div>
                                 </div>
                             </div>
