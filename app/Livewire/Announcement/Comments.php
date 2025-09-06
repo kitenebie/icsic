@@ -9,10 +9,11 @@ use App\Models\announcementComment as CommentDB;
 use App\Models\User;
 use Carbon\Carbon;
 use Filament\Notifications\Notification;
-use  Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Session;
+use Illuminate\Support\Facades\Log;
 use Livewire\Attributes\On;
-    use App\Services\OpenRouterService;
+use App\Services\OpenRouterService;
 
 class Comments extends Component
 {
@@ -119,17 +120,42 @@ class Comments extends Component
         $this->commentatorId = $commentatorId;
         return $this->mentionedName = "@" . $this->Author($commentatorId);
     }
-    public $comment_input;
+    public $comment_input = '';
+    
     public function submit_comment()
     {
-        if (empty($this->comment_input)) {
+        // Trim and validate comment input
+        $commentText = trim($this->comment_input ?? '');
+        
+        // Debug logging
+        Log::info('Comment submission attempt', [
+            'comment_input' => $this->comment_input,
+            'trimmed' => $commentText,
+            'empty_check' => empty($commentText),
+            'CommentType' => $this->CommentType
+        ]);
+        
+        if (empty($commentText)) {
+            Notification::make()
+                ->title('Comment cannot be empty')
+                ->warning()
+                ->send();
             return;
         }
 
         if ($this->CommentType == "reply") {
+            // Validate required fields for reply
+            if (empty($this->commentPostId) || empty($this->commentID)) {
+                Notification::make()
+                    ->title('Invalid reply data')
+                    ->warning()
+                    ->send();
+                return;
+            }
+            
             $isValid = $this->checkWithAi();
             if ($isValid) {
-                $this->comment_input = null;
+                $this->comment_input = '';
                 return;
             }
 
@@ -138,29 +164,50 @@ class Comments extends Component
                 'commentatorId' => Auth::user()->id,
                 'type' => $this->CommentType,
                 'reply_to' => $this->commentID,
-                'comment' => $this->comment_input
+                'comment' => $commentText
             ];
             
-            CommentDB::create($data);
+            try {
+                CommentDB::create($data);
+                
+                Notification::make()
+                    ->title('Reply posted successfully')
+                    ->success()
+                    ->send();
+            } catch (\Exception $e) {
+                Log::error('Failed to create reply comment', [
+                    'error' => $e->getMessage(),
+                    'data' => $data
+                ]);
+                
+                Notification::make()
+                    ->title('Failed to post reply')
+                    ->danger()
+                    ->send();
+                return;
+            }
             
             // Reset form state
             $this->mentionedName = "/";
             $this->CommentType = "main";
-            $this->comment_input = null;
+            $this->comment_input = '';
             $this->commentID = null;
             $this->commentPostId = null;
             $this->commentatorId = null;
             
-            // Refresh comments data
-            $this->update();
-            
-            // Clear the input box via JavaScript
-            $this->dispatch('clear-comment-input');
-            
         } else {
+            // Validate required fields for main comment
+            if (empty($this->id)) {
+                Notification::make()
+                    ->title('Invalid post data')
+                    ->warning()
+                    ->send();
+                return;
+            }
+            
             $isValid = $this->checkWithAi();
             if ($isValid) {
-                $this->comment_input = null;
+                $this->comment_input = '';
                 return;
             }
                 
@@ -169,21 +216,43 @@ class Comments extends Component
                 'commentatorId' => Auth::user()->id,
                 'type' => $this->CommentType,
                 'reply_to' => null,
-                'comment' => $this->comment_input
+                'comment' => $commentText
             ];
             
-            CommentDB::create($data);
+            try {
+                CommentDB::create($data);
+                
+                Notification::make()
+                    ->title('Comment posted successfully')
+                    ->success()
+                    ->send();
+            } catch (\Exception $e) {
+                Log::error('Failed to create main comment', [
+                    'error' => $e->getMessage(),
+                    'data' => $data
+                ]);
+                
+                Notification::make()
+                    ->title('Failed to post comment')
+                    ->danger()
+                    ->send();
+                return;
+            }
             
             // Reset form state
             $this->mentionedName = "/";
-            $this->comment_input = null;
-            
-            // Refresh comments data
-            $this->update();
-            
-            // Clear the input box via JavaScript
-            $this->dispatch('clear-comment-input');
+            $this->comment_input = '';
         }
+        
+        // Refresh comments data after successful creation
+        try {
+            $this->MainCommentData = CommentDB::where('post_id', $this->id)->where('type', 'main')->get();
+        } catch (\Exception $e) {
+            $this->MainCommentData = [];
+        }
+        
+        // Clear the input box via JavaScript
+        $this->dispatch('clear-comment-input');
     }
 
     public $voilateWords = null, $mentionedUser;
