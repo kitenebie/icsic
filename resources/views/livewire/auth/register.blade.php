@@ -156,9 +156,9 @@ new #[Layout('components.layouts.auth')] class extends Component {}; ?>
             <video id="faceVideo" width="320" height="240" autoplay muted playsinline></video>
             <canvas id="faceOverlay"></canvas>
             <!-- Profile Picture Preview Overlay -->
-            <div id="profileImagePreview" width="320" height="240">
+            <div id="profileImagePreview">
                 <p class="text-xs font-medium text-gray-700 mb-1">Profile Picture:</p>
-                <img id="capturedImage" src="" alt="Captured Profile Picture">
+                <img id="capturedImage" width="320" height="240" src="" alt="Captured Profile Picture">
             </div>
         </div>
 
@@ -665,12 +665,12 @@ new #[Layout('components.layouts.auth')] class extends Component {}; ?>
                 });
             });
 
-            faceStatus.textContent = '🎯 Camera ready. Keep your face in view and blink when ready!';
+            faceStatus.textContent = '🎯 Camera ready. Keep your face in view and follow the steps!';
             faceStatus.style.color = 'blue';
             faceInstructions.style.display = 'block';
 
-            // Speak initial instruction
-            speak('Camera is ready. Keep only one face in view');
+            // Speak initial instruction - Step 1
+            speak('Step 1: Keep only one face in view');
 
             // Start face detection
             detectFaces();
@@ -864,7 +864,7 @@ new #[Layout('components.layouts.auth')] class extends Component {}; ?>
                     if (!singleFaceDetected) {
                         singleFaceDetected = true;
                         faceStep1.innerHTML = 'Step 1: Keep only one face in view ✅';
-                        speak('Face detected. Now blink your eyes');
+                        speak('Step 1 completed. Now proceed to Step 2: Blink your eyes');
                     }
 
                     // Check eye blink
@@ -875,10 +875,12 @@ new #[Layout('components.layouts.auth')] class extends Component {}; ?>
                     const ear = (leftEAR + rightEAR) / 2.0;
 
                     if (ear < 0.25) {
-                        blinkDetected = true;
-                        faceStep3.innerHTML = 'Step 3: Blink your eyes ✅';
-                        speak('Smile on the camera');
-                        console.log('👁️ Blink detected with EAR:', ear.toFixed(3));
+                        if (!blinkDetected) {
+                            blinkDetected = true;
+                            faceStep3.innerHTML = 'Step 3: Blink your eyes ✅';
+                            speak('Step 2 completed. Now proceed to Step 3: Smile at the camera');
+                            console.log('👁️ Blink detected with EAR:', ear.toFixed(3));
+                        }
                     }
 
                     // Check smile
@@ -886,7 +888,7 @@ new #[Layout('components.layouts.auth')] class extends Component {}; ?>
                         if (!smileDetected) {
                             smileDetected = true;
                             faceStep2.innerHTML = 'Step 2: Smile ✅';
-                            speak('Smile detected. All validations complete');
+                            speak('Step 3 completed. All validations complete');
                         }
                     }
 
@@ -903,7 +905,7 @@ new #[Layout('components.layouts.auth')] class extends Component {}; ?>
                             clearInterval(detectionInterval);
                             faceStatus.textContent = '✅ Validation completed! All steps successful.';
                             faceStatus.style.color = 'green';
-                            speak('Validation completed. Capturing photo');
+                            speak('All steps completed successfully. Capturing your profile photo now');
                             setTimeout(() => {
                                 capturePhoto();
                             }, 1000); // Brief pause to show completion message
