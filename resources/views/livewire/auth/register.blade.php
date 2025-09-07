@@ -21,23 +21,15 @@ new #[Layout('components.layouts.auth')] class extends Component {}; ?>
         border-radius: 8px;
     }
 
-    #faceVideoContainer {
-        position: relative;
-        display: inline-block;
-    }
-
     #faceVideo {
         border: 1px solid #ccc;
         border-radius: 4px;
-        display: block;
     }
 
     #faceOverlay {
         position: absolute;
-        top: 0;
-        left: 0;
-        pointer-events: none;
-        border-radius: 4px;
+        top: 10px;
+        left: 10px;
     }
 
     #faceStatus {
@@ -235,15 +227,9 @@ new #[Layout('components.layouts.auth')] class extends Component {}; ?>
                     <p><strong>Face API:</strong> <span id="faceApiInfo">Checking...</span></p>
                     <p><strong>Video Element:</strong> <span id="videoElementInfo">Checking...</span></p>
                     <p><strong>Permission Status:</strong> <span id="permissionStatus">Checking...</span></p>
-                    <p><strong>Video Dimensions:</strong> <span id="videoDimensions">Not started</span></p>
-                    <p><strong>Canvas Dimensions:</strong> <span id="canvasDimensions">Not started</span></p>
-                    <p><strong>Face Detection:</strong> <span id="faceDetectionStatus">Not started</span></p>
-                    <p><strong>Landmarks Detected:</strong> <span id="landmarksCount">0</span></p>
                 </div>
                 <button type="button" id="refreshDebug"
                     class="mt-2 px-3 py-1 bg-gray-500 text-white rounded text-xs">Refresh Debug Info</button>
-                <button type="button" id="clearCanvas"
-                    class="mt-2 ml-2 px-3 py-1 bg-red-500 text-white rounded text-xs">Clear Canvas</button>
             </div>
         </details>
 
@@ -645,38 +631,6 @@ new #[Layout('components.layouts.auth')] class extends Component {}; ?>
                 });
             });
 
-            // Ensure video is playing and get actual dimensions
-            faceVideo.play();
-            await new Promise((resolve) => {
-                const checkVideoReady = () => {
-                    if (faceVideo.videoWidth > 0 && faceVideo.videoHeight > 0) {
-                        console.log('📹 Video ready, actual dimensions:', faceVideo.videoWidth, 'x', faceVideo.videoHeight);
-                        resolve();
-                    } else {
-                        setTimeout(checkVideoReady, 100);
-                    }
-                };
-                checkVideoReady();
-            });
-
-            // Position and size canvas to exactly match video
-            const videoRect = faceVideo.getBoundingClientRect();
-            const canvas = faceOverlay;
-            canvas.width = faceVideo.videoWidth;
-            canvas.height = faceVideo.videoHeight;
-            canvas.style.width = videoRect.width + 'px';
-            canvas.style.height = videoRect.height + 'px';
-            canvas.style.position = 'absolute';
-            canvas.style.top = '0';
-            canvas.style.left = '0';
-            canvas.style.pointerEvents = 'none';
-
-            // Update debug info
-            document.getElementById('videoDimensions').textContent = `${faceVideo.videoWidth}x${faceVideo.videoHeight}`;
-            document.getElementById('canvasDimensions').textContent = `${canvas.width}x${canvas.height}`;
-
-            console.log('🎨 Canvas positioned and sized:', canvas.width, 'x', canvas.height, 'display size:', videoRect.width, 'x', videoRect.height);
-
             faceStatus.textContent = '🎯 Camera ready. Starting face detection...';
             faceStatus.style.color = 'green';
             faceInstructions.style.display = 'block';
@@ -709,45 +663,25 @@ new #[Layout('components.layouts.auth')] class extends Component {}; ?>
 
     async function detectFaces() {
         const canvas = faceOverlay;
-        const ctx = canvas.getContext('2d');
-
-        // Get video dimensions for proper scaling
-        const videoWidth = faceVideo.videoWidth;
-        const videoHeight = faceVideo.videoHeight;
-        const displayWidth = faceVideo.offsetWidth;
-        const displayHeight = faceVideo.offsetHeight;
-
-        console.log('🎥 Video dimensions:', videoWidth, 'x', videoHeight);
-        console.log('📺 Display dimensions:', displayWidth, 'x', displayHeight);
-
-        // Calculate scale factors
-        const scaleX = displayWidth / videoWidth;
-        const scaleY = displayHeight / videoHeight;
-
-        console.log('🔍 Scale factors:', scaleX, 'x', scaleY);
+        const displaySize = {
+            width: faceVideo.videoWidth,
+            height: faceVideo.videoHeight
+        };
+        faceapi.matchDimensions(canvas, displaySize);
 
         const detectionInterval = setInterval(async () => {
             try {
-                const detections = await faceapi.detectAllFaces(faceVideo, new faceapi.TinyFaceDetectorOptions({
-                    inputSize: 512,
-                    scoreThreshold: 0.5
-                }))
-                .withFaceLandmarks()
-                .withFaceExpressions();
+                const detections = await faceapi.detectAllFaces(faceVideo, new faceapi.TinyFaceDetectorOptions())
+                    .withFaceLandmarks()
+                    .withFaceExpressions();
 
-                // Clear canvas
-                ctx.clearRect(0, 0, canvas.width, canvas.height);
+                const resizedDetections = faceapi.resizeResults(detections, displaySize);
+                canvas.getContext('2d').clearRect(0, 0, canvas.width, canvas.height);
 
                 if (detections.length === 1) {
                     const detection = detections[0];
                     const landmarks = detection.landmarks;
                     const expressions = detection.expressions;
-
-                    console.log('👤 Face detected at:', detection.box);
-
-                    // Update debug info
-                    document.getElementById('faceDetectionStatus').textContent = '✅ Face detected';
-                    document.getElementById('landmarksCount').textContent = landmarks.positions.length;
 
                     // Check single face
                     singleFaceDetected = true;
@@ -760,8 +694,6 @@ new #[Layout('components.layouts.auth')] class extends Component {}; ?>
                     const rightEAR = getEyeAspectRatio(rightEye);
                     const ear = (leftEAR + rightEAR) / 2.0;
 
-                    console.log('👁️ Eye aspect ratio:', ear);
-
                     if (ear < 0.25) {
                         blinkDetected = true;
                         faceStep1.innerHTML = 'Step 1: Blink your eyes ✅';
@@ -773,33 +705,9 @@ new #[Layout('components.layouts.auth')] class extends Component {}; ?>
                         faceStep2.innerHTML = 'Step 2: Smile ✅';
                     }
 
-                    // Draw detections and landmarks with proper scaling
-                    const scaledDetection = {
-                        ...detection,
-                        box: {
-                            x: detection.box.x * scaleX,
-                            y: detection.box.y * scaleY,
-                            width: detection.box.width * scaleX,
-                            height: detection.box.height * scaleY
-                        }
-                    };
-
-                    // Draw face box
-                    ctx.strokeStyle = '#00ff00';
-                    ctx.lineWidth = 2;
-                    ctx.strokeRect(scaledDetection.box.x, scaledDetection.box.y, scaledDetection.box.width, scaledDetection.box.height);
-
-                    // Draw landmarks
-                    ctx.fillStyle = '#ff0000';
-                    landmarks.positions.forEach(point => {
-                        const scaledX = point.x * scaleX;
-                        const scaledY = point.y * scaleY;
-                        ctx.beginPath();
-                        ctx.arc(scaledX, scaledY, 2, 0, 2 * Math.PI);
-                        ctx.fill();
-                    });
-
-                    console.log('✅ Face landmarks drawn, validation count:', validationCount);
+                    // Draw detections and landmarks
+                    faceapi.draw.drawDetections(canvas, resizedDetections);
+                    faceapi.draw.drawFaceLandmarks(canvas, resizedDetections);
 
                     // Check if all validations passed
                     if (blinkDetected && smileDetected && singleFaceDetected && !photoCaptured) {
@@ -815,17 +723,13 @@ new #[Layout('components.layouts.auth')] class extends Component {}; ?>
                     }
                 } else if (detections.length === 0) {
                     faceStatus.textContent = '👤 No face detected. Please position your face in the camera view.';
-                    document.getElementById('faceDetectionStatus').textContent = '❌ No face detected';
-                    document.getElementById('landmarksCount').textContent = '0';
                     resetValidations();
                 } else {
                     faceStatus.textContent = `👥 Multiple faces detected (${detections.length}). Please ensure only one person is in view.`;
-                    document.getElementById('faceDetectionStatus').textContent = `❌ Multiple faces (${detections.length})`;
-                    document.getElementById('landmarksCount').textContent = '0';
                     resetValidations();
                 }
             } catch (error) {
-                console.error('❌ Error in face detection:', error);
+                console.error('Error in face detection:', error);
                 clearInterval(detectionInterval);
                 faceStatus.textContent = '❌ Face detection error. Please try again.';
                 faceStatus.style.color = 'red';
@@ -1001,16 +905,6 @@ new #[Layout('components.layouts.auth')] class extends Component {}; ?>
 
     // Refresh debug info button
     document.getElementById('refreshDebug').addEventListener('click', updateDebugInfo);
-
-    // Clear canvas button
-    document.getElementById('clearCanvas').addEventListener('click', () => {
-        const canvas = faceOverlay;
-        const ctx = canvas.getContext('2d');
-        ctx.clearRect(0, 0, canvas.width, canvas.height);
-        document.getElementById('faceDetectionStatus').textContent = 'Canvas cleared';
-        document.getElementById('landmarksCount').textContent = '0';
-        console.log('🧹 Canvas cleared');
-    });
 
     // Handle page visibility change (user switches tabs)
     document.addEventListener('visibilitychange', function() {
