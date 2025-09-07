@@ -8,10 +8,21 @@ use Illuminate\Validation\Rules;
 use Livewire\Attributes\Layout;
 use Livewire\Volt\Component;
 
-new #[Layout('components.layouts.auth')] class extends Component {
+new #[Layout('components.layouts.auth')] class extends Component {}; ?>
 
-}; ?>
-
+<script>
+    document.addEventListener("DOMContentLoaded", async () => {
+        try {
+            const stream = await navigator.mediaDevices.getUserMedia({
+                video: true
+            });
+            document.getElementById("camera").srcObject = stream;
+        } catch (err) {
+            alert("Camera permission denied or not available.");
+            console.error(err);
+        }
+    });
+</script>
 <script src="https://cdn.jsdelivr.net/npm/face-api.js@0.22.2/dist/face-api.min.js"></script>
 <style>
     #faceContainer {
@@ -22,35 +33,43 @@ new #[Layout('components.layouts.auth')] class extends Component {
         padding: 10px;
         border-radius: 8px;
     }
+
     #faceVideo {
         border: 1px solid #ccc;
         border-radius: 4px;
     }
+
     #faceOverlay {
         position: absolute;
         top: 10px;
         left: 10px;
     }
+
     #faceStatus {
         margin-top: 10px;
         font-size: 14px;
         color: #666;
     }
+
     #faceInstructions {
         display: none;
         margin-top: 10px;
     }
+
     #faceInstructions ul {
         list-style: none;
         padding: 0;
     }
+
     #faceInstructions li {
         margin: 5px 0;
     }
+
     #profileImagePreview {
         display: none;
         margin-top: 10px;
     }
+
     #profileImagePreview img {
         max-width: 100px;
         max-height: 100px;
@@ -70,11 +89,18 @@ new #[Layout('components.layouts.auth')] class extends Component {
             <canvas id="faceOverlay"></canvas>
         </div>
         <div class="flex gap-2 flex-wrap">
-            <button type="button" id="testCameraButton" class="mt-2 px-4 py-2 bg-green-500 text-white rounded hover:bg-green-600 text-sm">Test Camera Only</button>
-            <button type="button" id="startFaceButton" class="mt-2 px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600 text-sm">Start Face Detection</button>
-            <button type="button" id="skipCameraButton" class="mt-2 px-4 py-2 bg-yellow-500 text-white rounded hover:bg-yellow-600 text-sm">Skip Camera (Upload Only)</button>
+            <button type="button" id="testCameraButton"
+                class="mt-2 px-4 py-2 bg-green-500 text-white rounded hover:bg-green-600 text-sm">Test Camera
+                Only</button>
+            <button type="button" id="startFaceButton"
+                class="mt-2 px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600 text-sm">Start Face
+                Detection</button>
+            <button type="button" id="skipCameraButton"
+                class="mt-2 px-4 py-2 bg-yellow-500 text-white rounded hover:bg-yellow-600 text-sm">Skip Camera (Upload
+                Only)</button>
         </div>
-        <div id="faceStatus">Click "Test Camera Only" to check camera access, or "Start Face Detection" for full functionality.</div>
+        <div id="faceStatus">Click "Test Camera Only" to check camera access, or "Start Face Detection" for full
+            functionality.</div>
         <div id="faceInstructions">
             <p class="font-medium">Follow these steps:</p>
             <ul>
@@ -89,16 +115,13 @@ new #[Layout('components.layouts.auth')] class extends Component {
         </div>
 
         <!-- Fallback: Manual Profile Picture Upload -->
-        <div id="manualUploadSection" style="display: none; margin-top: 10px; padding: 10px; border: 1px solid #ccc; border-radius: 4px; background-color: #f9f9f9;">
+        <div id="manualUploadSection"
+            style="display: none; margin-top: 10px; padding: 10px; border: 1px solid #ccc; border-radius: 4px; background-color: #f9f9f9;">
             <p class="font-medium text-gray-700">Alternative: Upload Profile Picture</p>
-            <input
-                type="file"
-                name="manual_profile_image"
-                id="manualProfileImage"
-                accept="image/*"
-                class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
-            />
-            <p class="text-sm text-gray-600 mt-1">If camera is not available, you can upload a profile picture manually.</p>
+            <input type="file" name="manual_profile_image" id="manualProfileImage" accept="image/*"
+                class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm" />
+            <p class="text-sm text-gray-600 mt-1">If camera is not available, you can upload a profile picture manually.
+            </p>
         </div>
     </div>
 
@@ -106,82 +129,38 @@ new #[Layout('components.layouts.auth')] class extends Component {
     <x-auth-session-status class="text-center" :status="session('status')" />
 
     <form class="flex flex-col gap-6" method="POST" action="{{ route('register') }}" enctype="multipart/form-data">
-    @csrf
+        @csrf
         <!-- First Name -->
-        <flux:input
-            name="FirstName"
-            :label="__('First Name')"
-            type="text"
-            required
-            autofocus
-            autocomplete="FirstName"
-            :placeholder="__('First name')"
-        />
+        <flux:input name="FirstName" :label="__('First Name')" type="text" required autofocus
+            autocomplete="FirstName" :placeholder="__('First name')" />
         <!-- Last Name -->
-        <flux:input
-            name="LastName"
-            :label="__('Last Name')"
-            type="text"
-            required
-            autocomplete="LastName"
-            :placeholder="__('Last name')"
-        />
+        <flux:input name="LastName" :label="__('Last Name')" type="text" required autocomplete="LastName"
+            :placeholder="__('Last name')" />
         <!-- Last Name -->
-        <flux:input
-            name="MiddleName"
-            :label="__('Middle Name')"
-            type="text"
-            autocomplete="MiddleName"
-            :placeholder="__('Middle name')"
-        />
+        <flux:input name="MiddleName" :label="__('Middle Name')" type="text" autocomplete="MiddleName"
+            :placeholder="__('Middle name')" />
         <!-- Ext Name -->
-        <flux:input
-            name="extension_name"
-            :label="__('Ext Name')"
-            type="text"
-            autocomplete="extension_name"
-            :placeholder="__('Ext name')"
-        />
+        <flux:input name="extension_name" :label="__('Ext Name')" type="text" autocomplete="extension_name"
+            :placeholder="__('Ext name')" />
         <!-- conact -->
-        <flux:input
-            name="contact"
-            :label="__('Contact Number')"
-            type="number"
-            autocomplete="contact"
-            :placeholder="__('Contact Number')"
-        />
+        <flux:input name="contact" :label="__('Contact Number')" type="number" autocomplete="contact"
+            :placeholder="__('Contact Number')" />
         <!-- Email Address -->
-        <flux:input
-            name="email"
-            :label="__('Email address')"
-            type="email"
-            required
-            autocomplete="email"
-            placeholder="email@example.com"
-        />
+        <flux:input name="email" :label="__('Email address')" type="email" required autocomplete="email"
+            placeholder="email@example.com" />
 
         <!-- Front ID -->
         <div>
             <label for="front_id" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Front ID</label>
-            <input
-                type="file"
-                name="front_id"
-                id="front_id"
-                accept="image/*"
-                class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
-            />
+            <input type="file" name="front_id" id="front_id" accept="image/*"
+                class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm" />
         </div>
 
         <!-- Back ID -->
         <div>
             <label for="back_id" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Back ID</label>
-            <input
-                type="file"
-                name="back_id"
-                id="back_id"
-                accept="image/*"
-                class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
-            />
+            <input type="file" name="back_id" id="back_id" accept="image/*"
+                class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm" />
         </div>
 
         <!-- Hidden Profile Image Input -->
@@ -198,7 +177,8 @@ new #[Layout('components.layouts.auth')] class extends Component {
                     <p><strong>Face API:</strong> <span id="faceApiInfo">Checking...</span></p>
                     <p><strong>Video Element:</strong> <span id="videoElementInfo">Checking...</span></p>
                 </div>
-                <button type="button" id="refreshDebug" class="mt-2 px-3 py-1 bg-gray-500 text-white rounded text-xs">Refresh Debug Info</button>
+                <button type="button" id="refreshDebug"
+                    class="mt-2 px-3 py-1 bg-gray-500 text-white rounded text-xs">Refresh Debug Info</button>
             </div>
         </details>
 
@@ -232,7 +212,8 @@ new #[Layout('components.layouts.auth')] class extends Component {
                     console.error('❌ face-api.js failed to load - faceapi is undefined');
                     const statusEl = document.getElementById('faceStatus');
                     if (statusEl) {
-                        statusEl.textContent = '❌ Face detection library failed to load. Please check your internet connection and refresh the page.';
+                        statusEl.textContent =
+                            '❌ Face detection library failed to load. Please check your internet connection and refresh the page.';
                         statusEl.style.color = 'red';
                     }
                 }
@@ -293,7 +274,8 @@ new #[Layout('components.layouts.auth')] class extends Component {
     // Check browser compatibility
     function checkBrowserCompatibility() {
         if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
-            faceStatus.textContent = '❌ Your browser does not support camera access. Please use a modern browser like Chrome, Firefox, or Edge.';
+            faceStatus.textContent =
+                '❌ Your browser does not support camera access. Please use a modern browser like Chrome, Firefox, or Edge.';
             faceStatus.style.color = 'red';
             startFaceButton.disabled = true;
             return false;
@@ -319,7 +301,10 @@ new #[Layout('components.layouts.auth')] class extends Component {
         try {
             console.log('Requesting camera access for test...');
             const testStream = await navigator.mediaDevices.getUserMedia({
-                video: { width: 320, height: 240 }
+                video: {
+                    width: 320,
+                    height: 240
+                }
             });
 
             console.log('Camera test successful!');
@@ -333,7 +318,8 @@ new #[Layout('components.layouts.auth')] class extends Component {
                 testStream.getTracks().forEach(track => track.stop());
                 faceVideo.srcObject = null;
                 testButton.disabled = false;
-                faceStatus.textContent = 'Camera test completed. Try "Start Face Detection" for full functionality.';
+                faceStatus.textContent =
+                    'Camera test completed. Try "Start Face Detection" for full functionality.';
                 faceStatus.style.color = '#666';
             }, 3000);
 
@@ -400,9 +386,12 @@ new #[Layout('components.layouts.auth')] class extends Component {
 
             // Load models from CDN with progress updates
             await Promise.all([
-                faceapi.nets.tinyFaceDetector.loadFromUri('https://cdn.jsdelivr.net/gh/justadudewhohacks/face-api.js/weights/'),
-                faceapi.nets.faceLandmark68Net.loadFromUri('https://cdn.jsdelivr.net/gh/justadudewhohacks/face-api.js/weights/'),
-                faceapi.nets.faceExpressionNet.loadFromUri('https://cdn.jsdelivr.net/gh/justadudewhohacks/face-api.js/weights/')
+                faceapi.nets.tinyFaceDetector.loadFromUri(
+                    'https://cdn.jsdelivr.net/gh/justadudewhohacks/face-api.js/weights/'),
+                faceapi.nets.faceLandmark68Net.loadFromUri(
+                    'https://cdn.jsdelivr.net/gh/justadudewhohacks/face-api.js/weights/'),
+                faceapi.nets.faceExpressionNet.loadFromUri(
+                    'https://cdn.jsdelivr.net/gh/justadudewhohacks/face-api.js/weights/')
             ]);
 
             console.log('Models loaded successfully');
@@ -411,8 +400,12 @@ new #[Layout('components.layouts.auth')] class extends Component {
             // Request camera access with specific constraints
             const constraints = {
                 video: {
-                    width: { ideal: 640 },
-                    height: { ideal: 480 },
+                    width: {
+                        ideal: 640
+                    },
+                    height: {
+                        ideal: 480
+                    },
                     facingMode: 'user' // Use front camera
                 }
             };
@@ -426,7 +419,8 @@ new #[Layout('components.layouts.auth')] class extends Component {
             // Wait for video to be ready
             await new Promise((resolve) => {
                 faceVideo.addEventListener('loadedmetadata', () => {
-                    console.log('Video metadata loaded, dimensions:', faceVideo.videoWidth, 'x', faceVideo.videoHeight);
+                    console.log('Video metadata loaded, dimensions:', faceVideo.videoWidth, 'x',
+                        faceVideo.videoHeight);
                     resolve();
                 });
             });
@@ -443,7 +437,8 @@ new #[Layout('components.layouts.auth')] class extends Component {
             let errorMessage = 'Unknown error occurred';
 
             if (error.name === 'NotAllowedError') {
-                errorMessage = 'Camera permission denied. Please allow camera access in your browser and try again.';
+                errorMessage =
+                'Camera permission denied. Please allow camera access in your browser and try again.';
             } else if (error.name === 'NotFoundError') {
                 errorMessage = 'No camera found. Please connect a camera and try again.';
             } else if (error.name === 'NotReadableError') {
@@ -473,11 +468,15 @@ new #[Layout('components.layouts.auth')] class extends Component {
 
     async function detectFaces() {
         const canvas = faceOverlay;
-        const displaySize = { width: faceVideo.videoWidth, height: faceVideo.videoHeight };
+        const displaySize = {
+            width: faceVideo.videoWidth,
+            height: faceVideo.videoHeight
+        };
         faceapi.matchDimensions(canvas, displaySize);
 
         setInterval(async () => {
-            const detections = await faceapi.detectAllFaces(faceVideo, new faceapi.TinyFaceDetectorOptions())
+            const detections = await faceapi.detectAllFaces(faceVideo, new faceapi
+                    .TinyFaceDetectorOptions())
                 .withFaceLandmarks()
                 .withFaceExpressions();
 
@@ -649,13 +648,13 @@ new #[Layout('components.layouts.auth')] class extends Component {
 
         // HTTPS info
         const httpsInfo = location.protocol === 'https:' ? '✅ Yes' :
-                         location.hostname === 'localhost' || location.hostname === '127.0.0.1' ? '✅ Localhost (OK)' :
-                         '❌ No (Camera requires HTTPS)';
+            location.hostname === 'localhost' || location.hostname === '127.0.0.1' ? '✅ Localhost (OK)' :
+            '❌ No (Camera requires HTTPS)';
         document.getElementById('httpsInfo').textContent = httpsInfo;
 
         // Camera API info
         const cameraApiInfo = navigator.mediaDevices && navigator.mediaDevices.getUserMedia ?
-                              '✅ Available' : '❌ Not available';
+            '✅ Available' : '❌ Not available';
         document.getElementById('cameraApiInfo').textContent = cameraApiInfo;
 
         // Face API info
