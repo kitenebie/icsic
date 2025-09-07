@@ -26,6 +26,31 @@ new #[Layout('components.layouts.auth')] class extends Component {}; ?>
         border-radius: 4px;
     }
 
+    #faceVideoContainer {
+        position: relative;
+        display: inline-block;
+    }
+
+    #profileImagePreview {
+        position: absolute;
+        top: 10px;
+        right: 10px;
+        background: rgba(255, 255, 255, 0.95);
+        padding: 8px;
+        border-radius: 8px;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+        backdrop-filter: blur(2px);
+        z-index: 10;
+    }
+
+    #capturedImage {
+        width: 80px;
+        height: 80px;
+        object-fit: cover;
+        border: 2px solid #4CAF50;
+        border-radius: 4px;
+    }
+
     #faceOverlay {
         position: absolute;
         top: 10px;
@@ -137,6 +162,11 @@ new #[Layout('components.layouts.auth')] class extends Component {}; ?>
         <div id="faceVideoContainer">
             <video id="faceVideo" width="320" height="240" autoplay muted playsinline></video>
             <canvas id="faceOverlay"></canvas>
+            <!-- Profile Picture Preview Overlay -->
+            <div id="profileImagePreview">
+                <p class="text-xs font-medium text-gray-700 mb-1">Profile Picture:</p>
+                <img id="capturedImage" src="" alt="Captured Profile Picture">
+            </div>
         </div>
         <div class="flex gap-2 flex-wrap">
             <button type="button" id="startFaceButton"
@@ -156,10 +186,6 @@ new #[Layout('components.layouts.auth')] class extends Component {}; ?>
                 <li id="faceStep2">Step 2: Smile</li>
                 <li id="faceStep3">Step 3: Blink your eyes</li>
             </ul>
-        </div>
-        <div id="profileImagePreview">
-            <p class="font-medium">Profile Picture Captured:</p>
-            <img id="capturedImage" src="" alt="Captured Profile Picture">
         </div>
 
         <!-- Real-time Debug Display -->

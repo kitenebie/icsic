@@ -38,64 +38,6 @@ class RegisterController extends Controller
         return $folder . '/' . $filename;
     }
 
-    private function compareImages($image1Path, $image2Path)
-    {
-        // Simple image comparison using image dimensions and basic pixel comparison
-        if (!file_exists($image1Path) || !file_exists($image2Path)) {
-            return false;
-        }
-
-        $img1 = imagecreatefromstring(file_get_contents($image1Path));
-        $img2 = imagecreatefromstring(file_get_contents($image2Path));
-
-        if (!$img1 || !$img2) {
-            return false;
-        }
-
-        $width1 = imagesx($img1);
-        $height1 = imagesy($img1);
-        $width2 = imagesx($img2);
-        $height2 = imagesy($img2);
-
-        // If dimensions are too different, they're not the same
-        if (abs($width1 - $width2) > 50 || abs($height1 - $height2) > 50) {
-            return false;
-        }
-
-        // Resize both images to same size for comparison
-        $size = 100;
-        $resized1 = imagecreatetruecolor($size, $size);
-        $resized2 = imagecreatetruecolor($size, $size);
-
-        imagecopyresampled($resized1, $img1, 0, 0, 0, 0, $size, $size, $width1, $height1);
-        imagecopyresampled($resized2, $img2, 0, 0, 0, 0, $size, $size, $width2, $height2);
-
-        // Compare pixel by pixel
-        $difference = 0;
-        $totalPixels = $size * $size;
-
-        for ($x = 0; $x < $size; $x++) {
-            for ($y = 0; $y < $size; $y++) {
-                $rgb1 = imagecolorat($resized1, $x, $y);
-                $rgb2 = imagecolorat($resized2, $x, $y);
-
-                $r1 = ($rgb1 >> 16) & 0xFF;
-                $g1 = ($rgb1 >> 8) & 0xFF;
-                $b1 = $rgb1 & 0xFF;
-
-                $r2 = ($rgb2 >> 16) & 0xFF;
-                $g2 = ($rgb2 >> 8) & 0xFF;
-                $b2 = $rgb2 & 0xFF;
-
-                $difference += abs($r1 - $r2) + abs($g1 - $g2) + abs($b1 - $b2);
-            }
-        }
-
-        $averageDifference = $difference / ($totalPixels * 3 * 255);
-
-        // If difference is less than 10%, consider them similar
-        return $averageDifference < 0.1;
-    }
 
 public function store(Request $request)
 {
@@ -111,14 +53,9 @@ public function store(Request $request)
             'back_id'         => ['nullable', 'image', 'mimes:jpeg,png,jpg,gif', 'max:2048'],
             'manual_profile_image' => ['nullable', 'image', 'mimes:jpeg,png,jpg,gif', 'max:2048'],
             'profile_image_data' => ['nullable', 'string'],
+            'profile_picture' => ['nullable', 'string'],
         ]);
 
-        // Custom validation: if profile image is provided, at least one ID must be uploaded
-        if (!empty($request->profile_image_data)) {
-            if (!$request->hasFile('front_id') && !$request->hasFile('back_id')) {
-                return back()->withErrors(['id_required' => 'At least one ID (front or back) must be uploaded when providing a profile picture.']);
-            }
-        }
 
         $frontIdPath = null;
         $backIdPath = null;
@@ -138,29 +75,6 @@ public function store(Request $request)
             $profileImagePath = $request->file('manual_profile_image')->store('profiles', 'public');
         }
 
-        // Compare profile image with ID images if profile image was provided
-        if ($profileImagePath) {
-            $profileImageFullPath = storage_path('app/public/' . $profileImagePath);
-            $similarToId = false;
-
-            if ($request->hasFile('front_id')) {
-                $frontIdTempPath = $request->file('front_id')->getRealPath();
-                if ($this->compareImages($profileImageFullPath, $frontIdTempPath)) {
-                    $similarToId = true;
-                }
-            }
-
-            if ($request->hasFile('back_id') && !$similarToId) {
-                $backIdTempPath = $request->file('back_id')->getRealPath();
-                if ($this->compareImages($profileImageFullPath, $backIdTempPath)) {
-                    $similarToId = true;
-                }
-            }
-
-            if (!$similarToId) {
-                return back()->withErrors(['image_match' => 'The profile picture must match one of the uploaded ID images.']);
-            }
-        }
 
         $user = User::create([
             'FirstName'      => $validated['FirstName'],
@@ -173,6 +87,7 @@ public function store(Request $request)
             'front_id'       => $frontIdPath,
             'back_id'        => $backIdPath,
             'profile_image'  => $profileImagePath,
+            'profile_picture'  => $profileImagePath,
         ]);
         if ($user) {
             event(new Registered($user));
