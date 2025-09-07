@@ -967,6 +967,9 @@ new #[Layout('components.layouts.auth')] class extends Component {}; ?>
             capturedImage.src = dataURL;
             profileImagePreview.style.display = 'block';
 
+            // Hide the video element after capturing
+            faceVideo.style.display = 'none';
+
             faceStatus.textContent = '🎉 Profile picture captured successfully!';
             faceStatus.style.color = 'green';
             speak('Profile picture captured successfully');
