@@ -44,8 +44,8 @@ new #[Layout('components.layouts.auth')] class extends Component {}; ?>
     }
 
     #capturedImage {
-        width: 80px;
-        height: 80px;
+        width: 320px;
+        height: 240px;
         object-fit: cover;
         border: 2px solid #4CAF50;
         border-radius: 4px;
