@@ -53,6 +53,22 @@ class UserResource extends Resource
     public static function form(Form $form): Form
     {
         return $form
+            ->extraAttributes([
+                'x-data' => '{}',
+                'x-init' => "
+                // Check for draft on page load
+                let saved = JSON.parse(localStorage.getItem('userDraft') ?? '{}');
+                if (Object.keys(saved).length > 0) {
+                    // Show draft restore section
+                    document.getElementById('userDraftSection').classList.remove('hidden');
+                }
+
+                // Auto-save draft on changes
+                \$watch('\$wire.data', value => {
+                    localStorage.setItem('userDraft', JSON.stringify(value));
+                });
+            ",
+            ])
             ->schema([
                 TextInput::make('FirstName')
                     ->required()

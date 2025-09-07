@@ -23,6 +23,7 @@ Route::get('/waiting', function () {
 })->name('waiting');
 
 Route::view('/faq', 'faq')->name('faq');
+Route::view('/view-faq', 'faq')->name('view-faq');
 
 Route::middleware([EnsureTokenIsValid::class])->group(function () {
     Route::get('/', function () {

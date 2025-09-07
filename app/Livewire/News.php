@@ -194,20 +194,14 @@ class News extends Component implements HasForms, HasTable
             ->extraAttributes([
                 'x-data' => '{}',
                 'x-init' => "
+                // Check for draft on page load
                 let saved = JSON.parse(localStorage.getItem('NewsDraft') ?? '{}');
-                
                 if (Object.keys(saved).length > 0) {
-                    if (confirm('A saved draft was found. Do you want to restore it?')) {
-                        for (let key in saved) {
-                            if (saved[key] !== null && saved[key] !== undefined) {
-                                \$wire.set('data.' + key, saved[key]);
-                            }
-                        }
-                    } else {
-                        localStorage.removeItem('NewsDraft');
-                    }
+                    // Show draft restore section
+                    document.getElementById('newsDraftSection').classList.remove('hidden');
                 }
 
+                // Auto-save draft on changes
                 \$watch('\$wire.data', value => {
                     localStorage.setItem('NewsDraft', JSON.stringify(value));
                 });

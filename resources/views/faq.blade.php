@@ -366,6 +366,11 @@
             </div>
         </div>
     </section>
+    @if (request()->routeIs('faq'))
+        <script>
+            location.href = '/view-faq';
+        </script>
+    @endif
     <script>
         document.querySelectorAll('.faq-toggle').forEach(button => {
             button.addEventListener('click', () => {

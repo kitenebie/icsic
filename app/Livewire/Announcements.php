@@ -62,20 +62,14 @@ class Announcements extends Component implements HasForms, HasActions, HasTable
             ->extraAttributes([
                 'x-data' => '{}',
                 'x-init' => "
+                // Check for draft on page load
                 let saved = JSON.parse(localStorage.getItem('announcementDraft') ?? '{}');
-                
                 if (Object.keys(saved).length > 0) {
-                    if (confirm('A saved draft was found. Do you want to restore it?')) {
-                        for (let key in saved) {
-                            if (saved[key] !== null && saved[key] !== undefined) {
-                                \$wire.set('data.' + key, saved[key]);
-                            }
-                        }
-                    } else {
-                        localStorage.removeItem('announcementDraft');
-                    }
+                    // Show draft restore section
+                    document.getElementById('announcementDraftSection').classList.remove('hidden');
                 }
 
+                // Auto-save draft on changes
                 \$watch('\$wire.data', value => {
                     localStorage.setItem('announcementDraft', JSON.stringify(value));
                 });
