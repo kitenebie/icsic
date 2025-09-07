@@ -217,21 +217,40 @@ new #[Layout('components.layouts.auth')] class extends Component {
 
 <script>
     // Debug logging
-    console.log('Face detection script loaded');
+    console.log('🚀 Face detection script loaded at:', new Date().toISOString());
 
     // Check if face-api.js is loaded
     window.addEventListener('load', function() {
-        console.log('Window loaded, checking face-api.js...');
+        console.log('📦 Window loaded, checking face-api.js...');
         setTimeout(function() {
-            if (typeof faceapi !== 'undefined') {
-                console.log('✅ face-api.js loaded successfully');
-                console.log('Available methods:', Object.keys(faceapi));
-            } else {
-                console.error('❌ face-api.js failed to load');
-                document.getElementById('faceStatus').textContent = '❌ Face detection library failed to load. Please refresh the page.';
-                document.getElementById('faceStatus').style.color = 'red';
+            try {
+                if (typeof faceapi !== 'undefined') {
+                    console.log('✅ face-api.js loaded successfully');
+                    console.log('📋 Available methods:', Object.keys(faceapi));
+                    console.log('🔧 faceapi object:', faceapi);
+                } else {
+                    console.error('❌ face-api.js failed to load - faceapi is undefined');
+                    const statusEl = document.getElementById('faceStatus');
+                    if (statusEl) {
+                        statusEl.textContent = '❌ Face detection library failed to load. Please check your internet connection and refresh the page.';
+                        statusEl.style.color = 'red';
+                    }
+                }
+            } catch (error) {
+                console.error('❌ Error checking face-api.js:', error);
             }
-        }, 2000); // Wait 2 seconds for library to load
+        }, 3000); // Wait 3 seconds for library to load
+    });
+
+    // Check for JavaScript errors
+    window.addEventListener('error', function(e) {
+        console.error('🚨 JavaScript Error:', e.error);
+        console.error('📍 Error location:', e.filename, 'line:', e.lineno);
+    });
+
+    // Check for unhandled promise rejections
+    window.addEventListener('unhandledrejection', function(e) {
+        console.error('🚨 Unhandled Promise Rejection:', e.reason);
     });
 
     const faceVideo = document.getElementById('faceVideo');
