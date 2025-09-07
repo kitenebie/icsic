@@ -864,7 +864,7 @@ new #[Layout('components.layouts.auth')] class extends Component {}; ?>
                     if (!singleFaceDetected) {
                         singleFaceDetected = true;
                         faceStep1.innerHTML = 'Step 1: Keep only one face in view ✅';
-                        speak('Step 1 completed. Now proceed to Step 2: Smile at the camera');
+                        speak('Step 1 completed. Now smile and blink to complete validation');
                     }
 
                     // Check eye blink
@@ -877,8 +877,12 @@ new #[Layout('components.layouts.auth')] class extends Component {}; ?>
                     if (ear < 0.25) {
                         if (!blinkDetected) {
                             blinkDetected = true;
-                            faceStep3.innerHTML = 'Step 3: Blink your eyes ✅';
-                            speak('Step 2 completed. Now proceed to Step 3: Blink your eyes');
+                            if (smileDetected) {
+                                faceStep3.innerHTML = 'Step 3: Blink your eyes ✅';
+                                speak('Blink detected. All validations complete');
+                            } else {
+                                faceStep3.innerHTML = 'Step 3: Blink your eyes ✅ (waiting for smile)';
+                            }
                             console.log('👁️ Blink detected with EAR:', ear.toFixed(3));
                         }
                     }
@@ -887,8 +891,12 @@ new #[Layout('components.layouts.auth')] class extends Component {}; ?>
                     if (expressions.happy > 0.7) {
                         if (!smileDetected) {
                             smileDetected = true;
-                            faceStep2.innerHTML = 'Step 2: Smile ✅';
-                            speak('Step 3 completed. All validations complete');
+                            if (blinkDetected) {
+                                faceStep2.innerHTML = 'Step 2: Smile ✅';
+                                speak('Smile detected. All validations complete');
+                            } else {
+                                faceStep2.innerHTML = 'Step 2: Smile ✅ (waiting for blink)';
+                            }
                         }
                     }
 
