@@ -235,6 +235,10 @@ new #[Layout('components.layouts.auth')] class extends Component {}; ?>
                     <p><strong>Face API:</strong> <span id="faceApiInfo">Checking...</span></p>
                     <p><strong>Video Element:</strong> <span id="videoElementInfo">Checking...</span></p>
                     <p><strong>Permission Status:</strong> <span id="permissionStatus">Checking...</span></p>
+                    <p><strong>Video Dimensions:</strong> <span id="videoDimensions">Not started</span></p>
+                    <p><strong>Canvas Dimensions:</strong> <span id="canvasDimensions">Not started</span></p>
+                    <p><strong>Face Detection:</strong> <span id="faceDetectionStatus">Not started</span></p>
+                    <p><strong>Landmarks Detected:</strong> <span id="landmarksCount">0</span></p>
                 </div>
                 <button type="button" id="refreshDebug"
                     class="mt-2 px-3 py-1 bg-gray-500 text-white rounded text-xs">Refresh Debug Info</button>
