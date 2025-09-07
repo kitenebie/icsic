@@ -22,7 +22,20 @@ public function store(Request $request)
             'extension_name'  => ['nullable', 'string', 'max:255'],
             'contact'         => ['nullable','digits:11'],
             'email'           => ['required', 'string', 'lowercase', 'email', 'max:255', 'unique:' . User::class],
+            'front_id'        => ['nullable', 'image', 'mimes:jpeg,png,jpg,gif', 'max:2048'],
+            'back_id'         => ['nullable', 'image', 'mimes:jpeg,png,jpg,gif', 'max:2048'],
         ]);
+
+        $frontIdPath = null;
+        $backIdPath = null;
+
+        if ($request->hasFile('front_id')) {
+            $frontIdPath = $request->file('front_id')->store('ids', 'public');
+        }
+
+        if ($request->hasFile('back_id')) {
+            $backIdPath = $request->file('back_id')->store('ids', 'public');
+        }
 
         $user = User::create([
             'FirstName'      => $validated['FirstName'],
@@ -32,6 +45,8 @@ public function store(Request $request)
             'contact'        => $validated['contact'] ?? null,
             'email'          => $validated['email'],
             'password'       => Hash::make(str()->random(16)),
+            'front_id'       => $frontIdPath,
+            'back_id'        => $backIdPath,
         ]);
         if ($user) {
             event(new Registered($user));

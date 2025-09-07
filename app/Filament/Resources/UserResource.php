@@ -22,9 +22,11 @@ use Filament\Support\Enums\ActionSize;
 use Filament\Support\Enums\MaxWidth;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\Select;
+use Filament\Forms\Components\FileUpload;
 use Filament\Tables\Filters\SelectFilter;
 use Filament\Tables\Enums\FiltersLayout;
 use Filament\Notifications\Notification;
+use Filament\Tables\Columns\ImageColumn;
 
 class UserResource extends Resource
 {
@@ -142,6 +144,16 @@ class UserResource extends Resource
                     ->hidden()
                     ->columnSpanFull()
                     ->placeholder('Select user Status'),
+                FileUpload::make('front_id')
+                    ->label('Front ID')
+                    ->image()
+                    ->directory('ids')
+                    ->columnSpanFull(),
+                FileUpload::make('back_id')
+                    ->label('Back ID')
+                    ->image()
+                    ->directory('ids')
+                    ->columnSpanFull(),
             ]);
     }
 
@@ -171,7 +183,19 @@ class UserResource extends Resource
                 TextColumn::make('email'),
                 TextColumn::make('role'),
                 TextColumn::make('user_group'),
-                TextColumn::make('year_graduated')
+                TextColumn::make('year_graduated'),
+                ImageColumn::make('front_id')
+                    ->label('Front ID')
+                    ->disk('public')
+                    ->height(50)
+                    ->width(50)
+                    ->openUrlInNewTab(),
+                ImageColumn::make('back_id')
+                    ->label('Back ID')
+                    ->disk('public')
+                    ->height(50)
+                    ->width(50)
+                    ->openUrlInNewTab()
             ])
             ->filters([
                 SelectFilter::make('role')
