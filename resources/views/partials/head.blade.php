@@ -7,9 +7,11 @@
 
 <link rel="preconnect" href="https://fonts.bunny.net">
 <link href="https://fonts.bunny.net/css?family=instrument-sans:400,500,600" rel="stylesheet" />
-@vite(['resources/css/app.css', 'resources/js/app.js'])
+<link rel="stylesheet" href="/build/assets/app-DoDyzDhk.css">
+<script src="/build/assets/app.js" type="module"></script>
 {{-- <script src="//unpkg.com/alpinejs" defer></script> --}}
 <x-script.app />
 @fluxAppearance
 @livewireStyles()
 <!-- index.html -->
+
