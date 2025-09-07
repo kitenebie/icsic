@@ -97,6 +97,27 @@ new #[Layout('components.layouts.auth')] class extends Component {}; ?>
 <div class="flex flex-col gap-6">
     <x-auth-header :title="__('Create an account')" :description="__('Enter your details below to create your account')" />
 
+    <!-- Camera Access Alert Modal -->
+    <div id="cameraAlertModal" class="permission-modal" style="display: none;">
+        <div class="permission-modal-content">
+            <h3>📷 Camera Access Required</h3>
+            <p><strong>This website wants to access your camera</strong></p>
+            <p>We need camera access to:</p>
+            <ul style="text-align: left; margin: 10px 0;">
+                <li>📸 Capture your profile picture</li>
+                <li👤 Perform face detection for verification</li>
+                <li>🎯 Ensure photo quality and proper positioning</li>
+            </ul>
+            <p style="font-size: 14px; color: #666; margin: 10px 0;">
+                Your privacy is important. The camera will only be used during registration and no images are stored without your consent.
+            </p>
+            <div>
+                <button id="proceedToCameraBtn" style="background: #4CAF50; color: white;">Continue to Camera</button>
+                <button id="cancelCameraBtn" style="background: #f44336; color: white;">Cancel</button>
+            </div>
+        </div>
+    </div>
+
     <!-- Permission Modal -->
     <div id="permissionModal" class="permission-modal" style="display: none;">
         <div class="permission-modal-content">
@@ -129,7 +150,7 @@ new #[Layout('components.layouts.auth')] class extends Component {}; ?>
                 Only)</button>
         </div>
         <div id="faceStatus">Click "Test Camera Only" to check camera access, or "Start Face Detection" for full
-            functionality.</div>
+            functionality. You'll be asked to allow camera access first.</div>
         <div id="faceInstructions">
             <p class="font-medium">Follow these steps:</p>
             <ul>
@@ -420,69 +441,96 @@ new #[Layout('components.layouts.auth')] class extends Component {}; ?>
         document.getElementById('manualUploadSection').style.display = 'block';
     }
 
+    // Show camera alert modal first
+    function showCameraAlertModal(callback) {
+        document.getElementById('cameraAlertModal').style.display = 'flex';
+
+        // Handle proceed button
+        document.getElementById('proceedToCameraBtn').onclick = function() {
+            document.getElementById('cameraAlertModal').style.display = 'none';
+            callback();
+        };
+
+        // Handle cancel button
+        document.getElementById('cancelCameraBtn').onclick = function() {
+            document.getElementById('cameraAlertModal').style.display = 'none';
+            faceStatus.textContent = '❌ Camera access cancelled by user.';
+            faceStatus.style.color = 'orange';
+        };
+    }
+
     // Test camera button with enhanced error handling
     document.getElementById('testCameraButton').addEventListener('click', async () => {
         console.log('Test camera button clicked');
-        const testButton = document.getElementById('testCameraButton');
-        testButton.disabled = true;
-        faceStatus.textContent = '🔄 Testing camera access...';
-        faceStatus.style.color = '#666';
 
-        try {
-            const testStream = await CameraPermissionManager.requestCameraAccess({
-                video: { width: 320, height: 240 }
-            });
+        showCameraAlertModal(async () => {
+            const testButton = document.getElementById('testCameraButton');
+            testButton.disabled = true;
+            faceStatus.textContent = '🔄 Testing camera access...';
+            faceStatus.style.color = '#666';
 
-            console.log('✅ Camera test successful!');
-            faceVideo.srcObject = testStream;
-            faceStatus.textContent = '✅ Camera test successful! Camera is working properly.';
-            faceStatus.style.color = 'green';
+            try {
+                const testStream = await CameraPermissionManager.requestCameraAccess({
+                    video: { width: 320, height: 240 }
+                });
 
-            // Stop test stream after 3 seconds
-            setTimeout(() => {
-                console.log('Stopping test camera stream');
-                testStream.getTracks().forEach(track => track.stop());
-                faceVideo.srcObject = null;
+                console.log('✅ Camera test successful!');
+                faceVideo.srcObject = testStream;
+                faceStatus.textContent = '✅ Camera test successful! Camera is working properly.';
+                faceStatus.style.color = 'green';
+
+                // Stop test stream after 3 seconds
+                setTimeout(() => {
+                    console.log('Stopping test camera stream');
+                    testStream.getTracks().forEach(track => track.stop());
+                    faceVideo.srcObject = null;
+                    testButton.disabled = false;
+                    faceStatus.textContent = '✅ Camera test completed. Ready for face detection.';
+                    faceStatus.style.color = '#666';
+                }, 3000);
+
+            } catch (error) {
+                console.error('❌ Camera test failed:', error);
                 testButton.disabled = false;
-                faceStatus.textContent = '✅ Camera test completed. Ready for face detection.';
-                faceStatus.style.color = '#666';
-            }, 3000);
-
-        } catch (error) {
-            console.error('❌ Camera test failed:', error);
-            testButton.disabled = false;
-            // Error handling is done in CameraPermissionManager.handleCameraError
-        }
+                // Error handling is done in CameraPermissionManager.handleCameraError
+            }
+        });
     });
 
     // Start face detection with enhanced permission handling
     startFaceButton.addEventListener('click', async () => {
         console.log('Start face detection button clicked');
-        startFaceButton.disabled = true;
-        faceStatus.textContent = '🔄 Starting face detection...';
-        faceStatus.style.color = '#666';
 
-        try {
-            await startFaceDetection();
-        } catch (error) {
-            console.error('Error starting face detection:', error);
-            startFaceButton.disabled = false;
-        }
+        showCameraAlertModal(async () => {
+            startFaceButton.disabled = true;
+            faceStatus.textContent = '🔄 Starting face detection...';
+            faceStatus.style.color = '#666';
+
+            try {
+                await startFaceDetection();
+            } catch (error) {
+                console.error('Error starting face detection:', error);
+                startFaceButton.disabled = false;
+            }
+        });
     });
 
     // Permission modal event listeners
     document.getElementById('allowCameraBtn').addEventListener('click', async () => {
         CameraPermissionManager.hidePermissionModal();
-        
-        try {
-            const stream = await CameraPermissionManager.requestCameraAccess();
-            // If successful, continue with face detection
-            if (stream) {
-                continueWithFaceDetection(stream);
+
+        // Show camera alert before requesting permission
+        showCameraAlertModal(async () => {
+            try {
+                const stream = await CameraPermissionManager.requestCameraAccess();
+                // If successful, continue with face detection
+                if (stream) {
+                    continueWithFaceDetection(stream);
+                }
+            } catch (error) {
+                // Error already handled in CameraPermissionManager
             }
-        } catch (error) {
-            // Error already handled in CameraPermissionManager
-        }
+        });
     });
 
     document.getElementById('skipCameraBtn').addEventListener('click', () => {
@@ -909,7 +957,14 @@ new #[Layout('components.layouts.auth')] class extends Component {}; ?>
         }
     });
 
-    // Auto-hide permission modal if user clicks outside
+    // Auto-hide modals if user clicks outside
+    document.getElementById('cameraAlertModal').addEventListener('click', function(e) {
+        if (e.target === document.getElementById('cameraAlertModal')) {
+            // Don't auto-hide for camera alerts - user should make a conscious choice
+            console.log('🖱️ User clicked outside camera alert modal - requires explicit choice');
+        }
+    });
+
     permissionModal.addEventListener('click', function(e) {
         if (e.target === permissionModal) {
             // Don't auto-hide for camera permissions - user should make a conscious choice
@@ -917,9 +972,20 @@ new #[Layout('components.layouts.auth')] class extends Component {}; ?>
         }
     });
 
-    // Keyboard accessibility for permission modal
+    // Keyboard accessibility for both modals
     document.addEventListener('keydown', function(e) {
-        if (permissionModal.style.display === 'flex') {
+        // Handle camera alert modal
+        if (document.getElementById('cameraAlertModal').style.display === 'flex') {
+            if (e.key === 'Escape') {
+                // ESC key acts like "Cancel"
+                document.getElementById('cancelCameraBtn').click();
+            } else if (e.key === 'Enter') {
+                // Enter key acts like "Continue to Camera"
+                document.getElementById('proceedToCameraBtn').click();
+            }
+        }
+        // Handle permission modal
+        else if (permissionModal.style.display === 'flex') {
             if (e.key === 'Escape') {
                 // ESC key acts like "Skip Camera"
                 document.getElementById('skipCameraBtn').click();
