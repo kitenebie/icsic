@@ -142,6 +142,11 @@ new #[Layout('components.layouts.auth')] class extends Component {}; ?>
             <button type="button" id="startFaceButton"
                 class="mt-2 px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600 text-sm">Start Face
                 Detection</button>
+            <button type="button" id="toggleDebugBtn"
+                class="mt-2 px-4 py-2 bg-gray-500 text-white rounded hover:bg-gray-600 text-sm">🔍 Debug</button>
+            <button type="button" id="manualBlinkBtn"
+                class="mt-2 px-4 py-2 bg-orange-500 text-white rounded hover:bg-orange-600 text-sm"
+                style="display: none;">👁️ Manual Blink</button>
         </div>
         <div id="faceStatus"></div>
         <div id="faceInstructions">
@@ -155,6 +160,14 @@ new #[Layout('components.layouts.auth')] class extends Component {}; ?>
         <div id="profileImagePreview">
             <p class="font-medium">Profile Picture Captured:</p>
             <img id="capturedImage" src="" alt="Captured Profile Picture">
+        </div>
+
+        <!-- Real-time Debug Display -->
+        <div id="debugDisplay" style="margin-top: 10px; padding: 10px; background: #f0f0f0; border-radius: 4px; font-family: monospace; font-size: 12px; display: none;">
+            <div><strong>🔍 Blink Detection Debug:</strong></div>
+            <div id="earDisplay">EAR: -- | Threshold: -- | Status: --</div>
+            <div id="calibrationDisplay">Calibration: --/30 frames</div>
+            <div id="blinkStatusDisplay">Blink Status: Not calibrated</div>
         </div>
 
         <!-- Fallback: Manual Profile Picture Upload -->
@@ -258,6 +271,12 @@ new #[Layout('components.layouts.auth')] class extends Component {}; ?>
     const permissionModal = document.getElementById('permissionModal');
     const permissionMessage = document.getElementById('permissionMessage');
 
+    // Debug display elements
+    const debugDisplay = document.getElementById('debugDisplay');
+    const earDisplay = document.getElementById('earDisplay');
+    const calibrationDisplay = document.getElementById('calibrationDisplay');
+    const blinkStatusDisplay = document.getElementById('blinkStatusDisplay');
+
     let blinkDetected = false;
     let smileDetected = false;
     let singleFaceDetected = false;
@@ -273,7 +292,7 @@ new #[Layout('components.layouts.auth')] class extends Component {}; ?>
     let baselineEAR = null;
     let earThreshold = 0.25;
     let consecutiveBlinkFrames = 0;
-    let requiredConsecutiveFrames = 3;
+    let requiredConsecutiveFrames = 2;
 
     // Speech synthesis for instructions
     function speak(text) {
@@ -494,6 +513,30 @@ new #[Layout('components.layouts.auth')] class extends Component {}; ?>
         });
     });
 
+    // Toggle debug display
+    document.getElementById('toggleDebugBtn').addEventListener('click', () => {
+        const debugDisplay = document.getElementById('debugDisplay');
+        if (debugDisplay.style.display === 'none' || debugDisplay.style.display === '') {
+            debugDisplay.style.display = 'block';
+            document.getElementById('toggleDebugBtn').textContent = '🔍 Hide Debug';
+        } else {
+            debugDisplay.style.display = 'none';
+            document.getElementById('toggleDebugBtn').textContent = '🔍 Show Debug';
+        }
+    });
+
+    // Manual blink button (fallback)
+    document.getElementById('manualBlinkBtn').addEventListener('click', () => {
+        if (blinkCalibrationFrames >= 30 && !blinkDetected) {
+            console.log('🎯 Manual blink triggered');
+            blinkDetected = true;
+            faceStep1.innerHTML = 'Step 1: Blink your eyes ✅ (Manual)';
+            speak('Blink confirmed manually');
+            document.getElementById('manualBlinkBtn').style.display = 'none';
+            updateDebugDisplay(null, false);
+        }
+    });
+
     // Permission modal event listeners
     document.getElementById('allowCameraBtn').addEventListener('click', async () => {
         CameraPermissionManager.hidePermissionModal();
@@ -659,52 +702,81 @@ new #[Layout('components.layouts.auth')] class extends Component {}; ?>
         const rightEAR = getEyeAspectRatio(rightEye);
         const avgEAR = (leftEAR + rightEAR) / 2.0;
 
+        // Log EAR values for debugging
+        console.log(`👁️ EAR Values - Left: ${leftEAR.toFixed(3)}, Right: ${rightEAR.toFixed(3)}, Avg: ${avgEAR.toFixed(3)}`);
+
         // Calibration phase - collect baseline EAR for first 30 frames
         if (blinkCalibrationFrames < 30) {
             blinkHistory.push(avgEAR);
             blinkCalibrationFrames++;
 
+            console.log(`📊 Calibration Frame ${blinkCalibrationFrames}/30 - EAR: ${avgEAR.toFixed(3)}`);
+
             if (blinkCalibrationFrames === 30) {
                 // Calculate baseline EAR (average of collected frames)
                 baselineEAR = blinkHistory.reduce((sum, ear) => sum + ear, 0) / blinkHistory.length;
 
-                // Set dynamic threshold based on baseline (typically 20-30% below baseline)
-                earThreshold = Math.max(0.15, baselineEAR * 0.75);
+                // Set dynamic threshold based on baseline (15% below baseline for better sensitivity)
+                earThreshold = Math.max(0.12, baselineEAR * 0.85);
 
                 console.log(`🔍 Blink calibration complete. Baseline EAR: ${baselineEAR.toFixed(3)}, Threshold: ${earThreshold.toFixed(3)}`);
                 console.log(`📊 EAR History: [${blinkHistory.map(ear => ear.toFixed(3)).join(', ')}]`);
 
                 // Update status to show calibration is complete
-                faceStatus.textContent = '🎯 Blink detection calibrated. Now blink your eyes!';
+                faceStatus.textContent = `🎯 Blink detection calibrated. Baseline: ${baselineEAR.toFixed(3)}, Threshold: ${earThreshold.toFixed(3)}. Now blink your eyes!`;
                 faceStatus.style.color = 'green';
+
+                // Show manual blink button as fallback
+                document.getElementById('manualBlinkBtn').style.display = 'inline-block';
+
+                // Set a timeout to show manual option if no blink detected after 10 seconds
+                setTimeout(() => {
+                    if (!blinkDetected) {
+                        faceStatus.textContent += ' (Tip: If blinking doesn\'t work, try the Manual Blink button)';
+                        console.log('⏰ No blink detected automatically, manual option available');
+                    }
+                }, 10000);
             } else if (blinkCalibrationFrames % 10 === 0) {
                 // Show calibration progress
                 const progress = Math.round((blinkCalibrationFrames / 30) * 100);
-                faceStatus.textContent = `🔄 Calibrating blink detection... ${progress}%`;
+                faceStatus.textContent = `🔄 Calibrating blink detection... ${progress}% (Current EAR: ${avgEAR.toFixed(3)})`;
             }
+            updateDebugDisplay(avgEAR, false);
             return false;
         }
 
         // Check for blink using dynamic threshold
         const isBlinking = avgEAR < earThreshold;
 
+        console.log(`🎯 Blink Check - EAR: ${avgEAR.toFixed(3)}, Threshold: ${earThreshold.toFixed(3)}, Is Blinking: ${isBlinking}, Consecutive: ${consecutiveBlinkFrames}`);
+
         if (isBlinking) {
             consecutiveBlinkFrames++;
+
+            console.log(`⚡ Blink detected! Consecutive frames: ${consecutiveBlinkFrames}/${requiredConsecutiveFrames}`);
 
             // Require multiple consecutive frames to confirm blink
             if (consecutiveBlinkFrames >= requiredConsecutiveFrames) {
                 // Check timing to prevent rapid repeated detections
                 const currentTime = Date.now();
                 if (currentTime - lastBlinkTime > 1000) { // Minimum 1 second between blinks
+                    console.log(`✅ BLINK CONFIRMED! Time since last blink: ${(currentTime - lastBlinkTime)}ms`);
                     lastBlinkTime = currentTime;
                     consecutiveBlinkFrames = 0;
+                    updateDebugDisplay(avgEAR, false); // Reset to normal after confirmation
                     return true;
+                } else {
+                    console.log(`⏳ Blink too soon (${currentTime - lastBlinkTime}ms < 1000ms), ignoring`);
                 }
             }
         } else {
+            if (consecutiveBlinkFrames > 0) {
+                console.log(`❌ Blink sequence broken, resetting counter`);
+            }
             consecutiveBlinkFrames = 0;
         }
 
+        updateDebugDisplay(avgEAR, isBlinking);
         return false;
     }
 
@@ -716,6 +788,47 @@ new #[Layout('components.layouts.auth')] class extends Component {}; ?>
         earThreshold = 0.25;
         consecutiveBlinkFrames = 0;
         lastBlinkTime = 0;
+        updateDebugDisplay();
+    }
+
+    // Update debug display with current values
+    function updateDebugDisplay(currentEAR = null, isBlinking = false) {
+        if (!debugDisplay) return;
+
+        // Show debug display during face detection
+        debugDisplay.style.display = 'block';
+
+        // Update EAR and threshold display
+        if (baselineEAR !== null) {
+            const earText = currentEAR !== null ? currentEAR.toFixed(3) : '--';
+            const thresholdText = earThreshold.toFixed(3);
+            const statusText = isBlinking ? 'BLINKING!' : 'Normal';
+            const statusColor = isBlinking ? 'red' : 'green';
+
+            earDisplay.innerHTML = `EAR: <span style="color: blue;">${earText}</span> | Threshold: <span style="color: orange;">${thresholdText}</span> | Status: <span style="color: ${statusColor};">${statusText}</span>`;
+        } else {
+            earDisplay.innerHTML = `EAR: -- | Threshold: -- | Status: Calibrating`;
+        }
+
+        // Update calibration display
+        if (blinkCalibrationFrames < 30) {
+            calibrationDisplay.innerHTML = `Calibration: ${blinkCalibrationFrames}/30 frames`;
+        } else {
+            calibrationDisplay.innerHTML = `Calibration: Complete (Baseline: ${baselineEAR ? baselineEAR.toFixed(3) : '--'})`;
+        }
+
+        // Update blink status
+        let blinkStatusText = 'Not calibrated';
+        if (blinkCalibrationFrames >= 30) {
+            if (blinkDetected) {
+                blinkStatusText = '✅ Blink detected!';
+            } else if (consecutiveBlinkFrames > 0) {
+                blinkStatusText = `🔄 Detecting... (${consecutiveBlinkFrames}/${requiredConsecutiveFrames})`;
+            } else {
+                blinkStatusText = '👁️ Ready - Blink your eyes';
+            }
+        }
+        blinkStatusDisplay.innerHTML = `Blink Status: ${blinkStatusText}`;
     }
 
     async function detectFaces() {
