@@ -22,9 +22,7 @@ Route::get('/waiting', function () {
     return view('template.pendding');
 })->name('waiting');
 
-Route::get('/faq', function () {
-    return view('faq');
-})->name('faq');
+Route::view('/faq', 'faq')->name('faq');
 
 Route::middleware([EnsureTokenIsValid::class])->group(function () {
     Route::get('/', function () {
