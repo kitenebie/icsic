@@ -143,8 +143,7 @@ new #[Layout('components.layouts.auth')] class extends Component {}; ?>
                 class="mt-2 px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600 text-sm">Start Face
                 Detection</button>
         </div>
-        <div id="faceStatus">Click "Test Camera Only" to check camera access, or "Start Face Detection" for full
-            functionality. You'll be asked to allow camera access first.</div>
+        <div id="faceStatus"></div>
         <div id="faceInstructions">
             <p class="font-medium">Follow these steps:</p>
             <ul>
