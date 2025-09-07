@@ -147,9 +147,9 @@ new #[Layout('components.layouts.auth')] class extends Component {}; ?>
         <div id="faceInstructions">
             <p class="font-medium">Follow these steps:</p>
             <ul>
-                <li id="faceStep3">Step 1: Keep only one face in view</li>
-                <li id="faceStep1">Step 2: Blink your eyes</li>
-                <li id="faceStep2">Step 3: Smile</li>
+                <li id="faceStep1">Step 1: Blink your eyes</li>
+                <li id="faceStep2">Step 2: Smile</li>
+                <li id="faceStep3">Step 3: Keep only one face in view</li>
             </ul>
         </div>
         <div id="profileImagePreview">
@@ -265,6 +265,15 @@ new #[Layout('components.layouts.auth')] class extends Component {}; ?>
     let photoCaptured = false;
     let stream = null;
     let currentPermissionState = 'unknown';
+
+    // Enhanced blink detection variables
+    let blinkHistory = [];
+    let lastBlinkTime = 0;
+    let blinkCalibrationFrames = 0;
+    let baselineEAR = null;
+    let earThreshold = 0.25;
+    let consecutiveBlinkFrames = 0;
+    let requiredConsecutiveFrames = 3;
 
     // Speech synthesis for instructions
     function speak(text) {
@@ -592,8 +601,8 @@ new #[Layout('components.layouts.auth')] class extends Component {}; ?>
                 });
             });
 
-            faceStatus.textContent = '🎯 Camera ready. Starting face detection...';
-            faceStatus.style.color = 'green';
+            faceStatus.textContent = '🎯 Camera ready. Calibrating blink detection...';
+            faceStatus.style.color = 'blue';
             faceInstructions.style.display = 'block';
 
             // Speak initial instruction
@@ -617,12 +626,96 @@ new #[Layout('components.layouts.auth')] class extends Component {}; ?>
         return Math.sqrt(Math.pow(p1.x - p2.x, 2) + Math.pow(p1.y - p2.y, 2));
     }
 
-    // Eye aspect ratio calculation for blink detection
+    // Enhanced eye aspect ratio calculation for blink detection
     function getEyeAspectRatio(eye) {
-        const A = euclideanDistance(eye[1], eye[5]);
-        const B = euclideanDistance(eye[2], eye[4]);
-        const C = euclideanDistance(eye[0], eye[3]);
-        return (A + B) / (2.0 * C);
+        if (!eye || eye.length < 6) {
+            return 1.0; // Return open eye ratio if landmarks are invalid
+        }
+
+        try {
+            const A = euclideanDistance(eye[1], eye[5]);
+            const B = euclideanDistance(eye[2], eye[4]);
+            const C = euclideanDistance(eye[0], eye[3]);
+
+            if (C === 0) return 1.0; // Prevent division by zero
+
+            const ear = (A + B) / (2.0 * C);
+
+            // Validate EAR is within reasonable bounds
+            if (ear < 0 || ear > 1 || isNaN(ear)) {
+                return 1.0;
+            }
+
+            return ear;
+        } catch (error) {
+            console.warn('Error calculating EAR:', error);
+            return 1.0;
+        }
+    }
+
+    // Enhanced blink detection with calibration and temporal consistency
+    function detectBlink(leftEye, rightEye) {
+        const leftEAR = getEyeAspectRatio(leftEye);
+        const rightEAR = getEyeAspectRatio(rightEye);
+        const avgEAR = (leftEAR + rightEAR) / 2.0;
+
+        // Calibration phase - collect baseline EAR for first 30 frames
+        if (blinkCalibrationFrames < 30) {
+            blinkHistory.push(avgEAR);
+            blinkCalibrationFrames++;
+
+            if (blinkCalibrationFrames === 30) {
+                // Calculate baseline EAR (average of collected frames)
+                baselineEAR = blinkHistory.reduce((sum, ear) => sum + ear, 0) / blinkHistory.length;
+
+                // Set dynamic threshold based on baseline (typically 20-30% below baseline)
+                earThreshold = Math.max(0.15, baselineEAR * 0.75);
+
+                console.log(`🔍 Blink calibration complete. Baseline EAR: ${baselineEAR.toFixed(3)}, Threshold: ${earThreshold.toFixed(3)}`);
+                console.log(`📊 EAR History: [${blinkHistory.map(ear => ear.toFixed(3)).join(', ')}]`);
+
+                // Update status to show calibration is complete
+                faceStatus.textContent = '🎯 Blink detection calibrated. Now blink your eyes!';
+                faceStatus.style.color = 'green';
+            } else if (blinkCalibrationFrames % 10 === 0) {
+                // Show calibration progress
+                const progress = Math.round((blinkCalibrationFrames / 30) * 100);
+                faceStatus.textContent = `🔄 Calibrating blink detection... ${progress}%`;
+            }
+            return false;
+        }
+
+        // Check for blink using dynamic threshold
+        const isBlinking = avgEAR < earThreshold;
+
+        if (isBlinking) {
+            consecutiveBlinkFrames++;
+
+            // Require multiple consecutive frames to confirm blink
+            if (consecutiveBlinkFrames >= requiredConsecutiveFrames) {
+                // Check timing to prevent rapid repeated detections
+                const currentTime = Date.now();
+                if (currentTime - lastBlinkTime > 1000) { // Minimum 1 second between blinks
+                    lastBlinkTime = currentTime;
+                    consecutiveBlinkFrames = 0;
+                    return true;
+                }
+            }
+        } else {
+            consecutiveBlinkFrames = 0;
+        }
+
+        return false;
+    }
+
+    // Reset blink detection state
+    function resetBlinkDetection() {
+        blinkHistory = [];
+        blinkCalibrationFrames = 0;
+        baselineEAR = null;
+        earThreshold = 0.25;
+        consecutiveBlinkFrames = 0;
+        lastBlinkTime = 0;
     }
 
     async function detectFaces() {
@@ -654,17 +747,15 @@ new #[Layout('components.layouts.auth')] class extends Component {}; ?>
                         speak('Blink your eyes');
                     }
 
-                    // Check eye blink
+                    // Enhanced blink detection
                     const leftEye = landmarks.getLeftEye();
                     const rightEye = landmarks.getRightEye();
-                    const leftEAR = getEyeAspectRatio(leftEye);
-                    const rightEAR = getEyeAspectRatio(rightEye);
-                    const ear = (leftEAR + rightEAR) / 2.0;
 
-                    if (ear < 0.25 && !blinkDetected) {
+                    if (detectBlink(leftEye, rightEye) && !blinkDetected) {
                         blinkDetected = true;
                         faceStep1.innerHTML = 'Step 1: Blink your eyes ✅';
                         speak('Smile on the camera');
+                        console.log('👁️ Blink detected and confirmed!');
                     }
 
                     // Check smile
@@ -713,6 +804,9 @@ new #[Layout('components.layouts.auth')] class extends Component {}; ?>
         faceStep1.innerHTML = 'Step 1: Blink your eyes';
         faceStep2.innerHTML = 'Step 2: Smile';
         faceStep3.innerHTML = 'Step 3: Keep only one face in view';
+
+        // Reset enhanced blink detection
+        resetBlinkDetection();
     }
 
     async function capturePhoto() {
