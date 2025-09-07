@@ -156,7 +156,7 @@ new #[Layout('components.layouts.auth')] class extends Component {}; ?>
             <video id="faceVideo" width="320" height="240" autoplay muted playsinline></video>
             <canvas id="faceOverlay"></canvas>
             <!-- Profile Picture Preview Overlay -->
-            <div id="profileImagePreview">
+            <div id="profileImagePreview" width="320" height="240">
                 <p class="text-xs font-medium text-gray-700 mb-1">Profile Picture:</p>
                 <img id="capturedImage" src="" alt="Captured Profile Picture">
             </div>
@@ -901,12 +901,21 @@ new #[Layout('components.layouts.auth')] class extends Component {}; ?>
                         faceStatus.textContent = `🎯 Validating... ${validationCount}/5`;
                         if (validationCount >= 5) {
                             clearInterval(detectionInterval);
-                            speak('Capturing photo');
-                            capturePhoto();
+                            faceStatus.textContent = '✅ Validation completed! All steps successful.';
+                            faceStatus.style.color = 'green';
+                            speak('Validation completed. Capturing photo');
+                            setTimeout(() => {
+                                capturePhoto();
+                            }, 1000); // Brief pause to show completion message
                             photoCaptured = true;
                         }
                     } else {
                         validationCount = 0;
+                        // Reset status if validation is broken
+                        if (blinkDetected || smileDetected || singleFaceDetected) {
+                            faceStatus.textContent = '⏳ Validation in progress...';
+                            faceStatus.style.color = '#666';
+                        }
                     }
                 } else if (detections.length === 0) {
                     faceStatus.textContent = '👤 No face detected. Please position your face in the camera view.';
