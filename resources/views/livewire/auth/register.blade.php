@@ -69,8 +69,12 @@ new #[Layout('components.layouts.auth')] class extends Component {
             <video id="faceVideo" width="320" height="240" autoplay muted playsinline></video>
             <canvas id="faceOverlay"></canvas>
         </div>
-        <button type="button" id="startFaceButton" class="mt-2 px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600">Start Camera</button>
-        <div id="faceStatus">Click "Start Camera" to begin face verification.</div>
+        <div class="flex gap-2 flex-wrap">
+            <button type="button" id="testCameraButton" class="mt-2 px-4 py-2 bg-green-500 text-white rounded hover:bg-green-600 text-sm">Test Camera Only</button>
+            <button type="button" id="startFaceButton" class="mt-2 px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600 text-sm">Start Face Detection</button>
+            <button type="button" id="skipCameraButton" class="mt-2 px-4 py-2 bg-yellow-500 text-white rounded hover:bg-yellow-600 text-sm">Skip Camera (Upload Only)</button>
+        </div>
+        <div id="faceStatus">Click "Test Camera Only" to check camera access, or "Start Face Detection" for full functionality.</div>
         <div id="faceInstructions">
             <p class="font-medium">Follow these steps:</p>
             <ul>
@@ -183,6 +187,21 @@ new #[Layout('components.layouts.auth')] class extends Component {
         <!-- Hidden Profile Image Input -->
         <input type="hidden" name="profile_image_data" id="profileImageData">
 
+        <!-- Debug Panel -->
+        <details class="mt-4 p-4 bg-gray-100 rounded">
+            <summary class="cursor-pointer font-medium">🔧 Debug Information</summary>
+            <div class="mt-2 text-sm">
+                <div id="debugInfo">
+                    <p><strong>Browser:</strong> <span id="browserInfo">Checking...</span></p>
+                    <p><strong>HTTPS:</strong> <span id="httpsInfo">Checking...</span></p>
+                    <p><strong>Camera API:</strong> <span id="cameraApiInfo">Checking...</span></p>
+                    <p><strong>Face API:</strong> <span id="faceApiInfo">Checking...</span></p>
+                    <p><strong>Video Element:</strong> <span id="videoElementInfo">Checking...</span></p>
+                </div>
+                <button type="button" id="refreshDebug" class="mt-2 px-3 py-1 bg-gray-500 text-white rounded text-xs">Refresh Debug Info</button>
+            </div>
+        </details>
+
         <div class="flex items-center justify-end">
             <flux:button type="submit" variant="primary" class="w-full">
                 {{ __('Create account') }}
@@ -200,6 +219,21 @@ new #[Layout('components.layouts.auth')] class extends Component {
     // Debug logging
     console.log('Face detection script loaded');
 
+    // Check if face-api.js is loaded
+    window.addEventListener('load', function() {
+        console.log('Window loaded, checking face-api.js...');
+        setTimeout(function() {
+            if (typeof faceapi !== 'undefined') {
+                console.log('✅ face-api.js loaded successfully');
+                console.log('Available methods:', Object.keys(faceapi));
+            } else {
+                console.error('❌ face-api.js failed to load');
+                document.getElementById('faceStatus').textContent = '❌ Face detection library failed to load. Please refresh the page.';
+                document.getElementById('faceStatus').style.color = 'red';
+            }
+        }, 2000); // Wait 2 seconds for library to load
+    });
+
     const faceVideo = document.getElementById('faceVideo');
     const faceOverlay = document.getElementById('faceOverlay');
     const faceStatus = document.getElementById('faceStatus');
@@ -211,6 +245,13 @@ new #[Layout('components.layouts.auth')] class extends Component {
     const profileImagePreview = document.getElementById('profileImagePreview');
     const capturedImage = document.getElementById('capturedImage');
     const profileImageData = document.getElementById('profileImageData');
+
+    // Debug: Check if elements exist
+    console.log('DOM elements check:');
+    console.log('faceVideo:', faceVideo);
+    console.log('faceOverlay:', faceOverlay);
+    console.log('faceStatus:', faceStatus);
+    console.log('startFaceButton:', startFaceButton);
 
     let blinkDetected = false;
     let smileDetected = false;
@@ -246,6 +287,55 @@ new #[Layout('components.layouts.auth')] class extends Component {
         console.log('DOM loaded, initializing face detection');
         checkBrowserCompatibility();
         checkHTTPSRequirement();
+    });
+
+    // Test camera only (without face detection)
+    document.getElementById('testCameraButton').addEventListener('click', async () => {
+        console.log('Test camera button clicked');
+        const testButton = document.getElementById('testCameraButton');
+        testButton.disabled = true;
+        faceStatus.textContent = 'Testing camera access...';
+        faceStatus.style.color = '#666';
+
+        try {
+            console.log('Requesting camera access for test...');
+            const testStream = await navigator.mediaDevices.getUserMedia({
+                video: { width: 320, height: 240 }
+            });
+
+            console.log('Camera test successful!');
+            faceVideo.srcObject = testStream;
+            faceStatus.textContent = '✅ Camera access successful! Camera is working.';
+            faceStatus.style.color = 'green';
+
+            // Stop test stream after 3 seconds
+            setTimeout(() => {
+                console.log('Stopping test camera stream');
+                testStream.getTracks().forEach(track => track.stop());
+                faceVideo.srcObject = null;
+                testButton.disabled = false;
+                faceStatus.textContent = 'Camera test completed. Try "Start Face Detection" for full functionality.';
+                faceStatus.style.color = '#666';
+            }, 3000);
+
+        } catch (error) {
+            console.error('Camera test failed:', error);
+            let errorMessage = 'Camera test failed: ';
+
+            if (error.name === 'NotAllowedError') {
+                errorMessage += 'Permission denied. Please allow camera access.';
+            } else if (error.name === 'NotFoundError') {
+                errorMessage += 'No camera found.';
+            } else if (error.name === 'NotReadableError') {
+                errorMessage += 'Camera is already in use.';
+            } else {
+                errorMessage += error.message;
+            }
+
+            faceStatus.textContent = '❌ ' + errorMessage;
+            faceStatus.style.color = 'red';
+            testButton.disabled = false;
+        }
     });
 
     startFaceButton.addEventListener('click', async () => {
@@ -531,6 +621,49 @@ new #[Layout('components.layouts.auth')] class extends Component {
             reader.readAsDataURL(file);
         }
     });
+
+    // Debug panel functionality
+    function updateDebugInfo() {
+        // Browser info
+        const browserInfo = navigator.userAgent;
+        document.getElementById('browserInfo').textContent = browserInfo.substring(0, 50) + '...';
+
+        // HTTPS info
+        const httpsInfo = location.protocol === 'https:' ? '✅ Yes' :
+                         location.hostname === 'localhost' || location.hostname === '127.0.0.1' ? '✅ Localhost (OK)' :
+                         '❌ No (Camera requires HTTPS)';
+        document.getElementById('httpsInfo').textContent = httpsInfo;
+
+        // Camera API info
+        const cameraApiInfo = navigator.mediaDevices && navigator.mediaDevices.getUserMedia ?
+                              '✅ Available' : '❌ Not available';
+        document.getElementById('cameraApiInfo').textContent = cameraApiInfo;
+
+        // Face API info
+        const faceApiInfo = typeof faceapi !== 'undefined' ? '✅ Loaded' : '❌ Not loaded';
+        document.getElementById('faceApiInfo').textContent = faceApiInfo;
+
+        // Video element info
+        const videoElementInfo = faceVideo ? '✅ Found' : '❌ Not found';
+        document.getElementById('videoElementInfo').textContent = videoElementInfo;
+    }
+
+    // Update debug info on load
+    updateDebugInfo();
+
+    // Skip camera button - show manual upload immediately
+    document.getElementById('skipCameraButton').addEventListener('click', () => {
+        console.log('Skip camera button clicked');
+        document.getElementById('manualUploadSection').style.display = 'block';
+        document.getElementById('faceStatus').textContent = 'Camera skipped. Use manual upload below.';
+        document.getElementById('faceStatus').style.color = 'orange';
+        document.getElementById('startFaceButton').style.display = 'none';
+        document.getElementById('testCameraButton').style.display = 'none';
+        document.getElementById('skipCameraButton').style.display = 'none';
+    });
+
+    // Refresh debug info button
+    document.getElementById('refreshDebug').addEventListener('click', updateDebugInfo);
 
     // Cleanup on page unload
     window.addEventListener('beforeunload', () => {
