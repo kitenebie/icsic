@@ -21,7 +21,7 @@ new #[Layout('components.layouts.auth')] class extends Component {}; ?>
         border-radius: 8px;
     }
 
-    #faceVideo {
+    #profileImagePreview {
         border: 1px solid #ccc;
         border-radius: 4px;
     }
@@ -31,7 +31,7 @@ new #[Layout('components.layouts.auth')] class extends Component {}; ?>
         display: inline-block;
     }
 
-    #profileImagePreview {
+    /* #profileImagePreview {
         position: absolute;
         top: 10px;
         right: 10px;
@@ -41,7 +41,7 @@ new #[Layout('components.layouts.auth')] class extends Component {}; ?>
         box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
         backdrop-filter: blur(2px);
         z-index: 10;
-    }
+    } */
 
     #faceOverlay {
         position: absolute;
