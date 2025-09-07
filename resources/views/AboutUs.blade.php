@@ -595,9 +595,9 @@
                             <li><strong>Camera Access:</strong> Users grant camera permission to start the process</li>
                             <li><strong>Liveness Detection:</strong> The system performs three validation steps:
                                 <ul class="list-disc list-inside ml-6 mt-1 space-y-1">
-                                    <li>👁️ <strong>Blink Detection:</strong> Users must blink their eyes</li>
+                                    <li>👤 <strong>Face Verification:</strong> Users must keep only one face in view</li>
                                     <li>😊 <strong>Smile Detection:</strong> Users must smile at the camera</li>
-                                    <li>👤 <strong>Face Verification:</strong> Ensures only one face is in view</li>
+                                    <li>👁️ <strong>Blink Detection:</strong> Users must blink their eyes</li>
                                 </ul>
                             </li>
                             <li><strong>Photo Capture:</strong> After successful validation, a profile picture is automatically captured</li>

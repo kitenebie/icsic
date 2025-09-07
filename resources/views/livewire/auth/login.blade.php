@@ -118,6 +118,13 @@ new #[Layout('components.layouts.auth')] class extends Component {
             @endif
         </div>
 
+        <!-- Help Links -->
+        <div class="text-center">
+            <flux:link :href="route('faq')" class="text-sm text-blue-600 hover:text-blue-800" wire:navigate>
+                {{ __('Need help? View FAQ') }}
+            </flux:link>
+        </div>
+
         <!-- Remember Me -->
         <flux:checkbox wire:model="remember" :label="__('Remember me')" />
 

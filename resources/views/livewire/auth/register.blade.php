@@ -152,9 +152,9 @@ new #[Layout('components.layouts.auth')] class extends Component {}; ?>
         <div id="faceInstructions">
             <p class="font-medium">Follow these steps:</p>
             <ul>
-                <li id="faceStep1">Step 1: Blink your eyes</li>
+                <li id="faceStep1">Step 1: Keep only one face in view</li>
                 <li id="faceStep2">Step 2: Smile</li>
-                <li id="faceStep3">Step 3: Keep only one face in view</li>
+                <li id="faceStep3">Step 3: Blink your eyes</li>
             </ul>
         </div>
         <div id="profileImagePreview">
@@ -163,7 +163,7 @@ new #[Layout('components.layouts.auth')] class extends Component {}; ?>
         </div>
 
         <!-- Real-time Debug Display -->
-        <div id="debugDisplay" style="margin-top: 10px; padding: 10px; background: #f0f0f0; border-radius: 4px; font-family: monospace; font-size: 12px; display: none;">
+        <div id="debugDisplay" class="hidden" style="margin-top: 10px; padding: 10px; background: #f0f0f0; border-radius: 4px; font-family: monospace; font-size: 12px; display: none;">
             <div><strong>🔍 Blink Detection Debug:</strong></div>
             <div id="earDisplay">EAR: -- | Threshold: -- | Status: --</div>
             <div id="calibrationDisplay">Calibration: --/30 frames</div>
@@ -249,6 +249,13 @@ new #[Layout('components.layouts.auth')] class extends Component {}; ?>
     <div class="space-x-1 rtl:space-x-reverse text-center text-sm text-zinc-600 dark:text-zinc-400">
         {{ __('Already have an account?') }}
         <flux:link :href="route('login')" wire:navigate>{{ __('Log in') }}</flux:link>
+    </div>
+
+    <!-- Help Links -->
+    <div class="text-center">
+        <flux:link :href="route('faq')" class="text-sm text-blue-600 hover:text-blue-800" wire:navigate>
+            {{ __('Need help? View FAQ') }}
+        </flux:link>
     </div>
 </div>
 
@@ -842,7 +849,7 @@ new #[Layout('components.layouts.auth')] class extends Component {}; ?>
                     // Check single face
                     if (!singleFaceDetected) {
                         singleFaceDetected = true;
-                        faceStep3.innerHTML = 'Step 3: Keep only one face in view ✅';
+                        faceStep1.innerHTML = 'Step 1: Keep only one face in view ✅';
                         speak('Face detected. Now blink your eyes');
                     }
 
@@ -855,7 +862,7 @@ new #[Layout('components.layouts.auth')] class extends Component {}; ?>
 
                     if (ear < 0.25) {
                         blinkDetected = true;
-                        faceStep1.innerHTML = 'Step 1: Blink your eyes ✅';
+                        faceStep3.innerHTML = 'Step 3: Blink your eyes ✅';
                         speak('Smile on the camera');
                         console.log('👁️ Blink detected with EAR:', ear.toFixed(3));
                     }
@@ -913,9 +920,9 @@ new #[Layout('components.layouts.auth')] class extends Component {}; ?>
         smileDetected = false;
         singleFaceDetected = false;
         validationCount = 0;
-        faceStep1.innerHTML = 'Step 1: Blink your eyes';
+        faceStep1.innerHTML = 'Step 1: Keep only one face in view';
         faceStep2.innerHTML = 'Step 2: Smile';
-        faceStep3.innerHTML = 'Step 3: Keep only one face in view';
+        faceStep3.innerHTML = 'Step 3: Blink your eyes';
 
         // Reset enhanced blink detection
         resetBlinkDetection();
