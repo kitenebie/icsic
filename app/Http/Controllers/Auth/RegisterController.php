@@ -109,6 +109,7 @@ public function store(Request $request)
             'email'           => ['required', 'string', 'lowercase', 'email', 'max:255', 'unique:' . User::class],
             'front_id'        => ['nullable', 'image', 'mimes:jpeg,png,jpg,gif', 'max:2048'],
             'back_id'         => ['nullable', 'image', 'mimes:jpeg,png,jpg,gif', 'max:2048'],
+            'manual_profile_image' => ['nullable', 'image', 'mimes:jpeg,png,jpg,gif', 'max:2048'],
             'profile_image_data' => ['nullable', 'string'],
         ]);
 
@@ -133,8 +134,12 @@ public function store(Request $request)
         $profileImagePath = null;
         if ($request->has('profile_image_data') && !empty($request->profile_image_data)) {
             $profileImagePath = $this->saveBase64Image($request->profile_image_data, 'profiles');
+        } elseif ($request->hasFile('manual_profile_image')) {
+            $profileImagePath = $request->file('manual_profile_image')->store('profiles', 'public');
+        }
 
-            // Compare profile image with ID images
+        // Compare profile image with ID images if profile image was provided
+        if ($profileImagePath) {
             $profileImageFullPath = storage_path('app/public/' . $profileImagePath);
             $similarToId = false;
 

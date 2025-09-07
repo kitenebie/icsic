@@ -83,6 +83,19 @@ new #[Layout('components.layouts.auth')] class extends Component {
             <p class="font-medium">Profile Picture Captured:</p>
             <img id="capturedImage" src="" alt="Captured Profile Picture">
         </div>
+
+        <!-- Fallback: Manual Profile Picture Upload -->
+        <div id="manualUploadSection" style="display: none; margin-top: 10px; padding: 10px; border: 1px solid #ccc; border-radius: 4px; background-color: #f9f9f9;">
+            <p class="font-medium text-gray-700">Alternative: Upload Profile Picture</p>
+            <input
+                type="file"
+                name="manual_profile_image"
+                id="manualProfileImage"
+                accept="image/*"
+                class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+            />
+            <p class="text-sm text-gray-600 mt-1">If camera is not available, you can upload a profile picture manually.</p>
+        </div>
     </div>
 
     <!-- Session Status -->
@@ -184,6 +197,9 @@ new #[Layout('components.layouts.auth')] class extends Component {
 </div>
 
 <script>
+    // Debug logging
+    console.log('Face detection script loaded');
+
     const faceVideo = document.getElementById('faceVideo');
     const faceOverlay = document.getElementById('faceOverlay');
     const faceStatus = document.getElementById('faceStatus');
@@ -201,10 +217,51 @@ new #[Layout('components.layouts.auth')] class extends Component {
     let singleFaceDetected = false;
     let validationCount = 0;
     let photoCaptured = false;
+    let stream = null;
 
-    startFaceButton.addEventListener('click', () => {
+    // Check for HTTPS requirement
+    function checkHTTPSRequirement() {
+        if (location.protocol !== 'https:' && location.hostname !== 'localhost' && location.hostname !== '127.0.0.1') {
+            faceStatus.textContent = '⚠️ Camera access requires HTTPS. Please use HTTPS or localhost.';
+            faceStatus.style.color = 'red';
+            startFaceButton.disabled = true;
+            return false;
+        }
+        return true;
+    }
+
+    // Check browser compatibility
+    function checkBrowserCompatibility() {
+        if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
+            faceStatus.textContent = '❌ Your browser does not support camera access. Please use a modern browser like Chrome, Firefox, or Edge.';
+            faceStatus.style.color = 'red';
+            startFaceButton.disabled = true;
+            return false;
+        }
+        return true;
+    }
+
+    // Initialize on page load
+    document.addEventListener('DOMContentLoaded', function() {
+        console.log('DOM loaded, initializing face detection');
+        checkBrowserCompatibility();
+        checkHTTPSRequirement();
+    });
+
+    startFaceButton.addEventListener('click', async () => {
+        console.log('Start camera button clicked');
         startFaceButton.disabled = true;
-        startFaceDetection();
+        faceStatus.textContent = 'Initializing...';
+        faceStatus.style.color = '#666';
+
+        try {
+            await startFaceDetection();
+        } catch (error) {
+            console.error('Error starting face detection:', error);
+            faceStatus.textContent = '❌ Failed to start camera: ' + error.message;
+            faceStatus.style.color = 'red';
+            startFaceButton.disabled = false;
+        }
     });
 
     // Euclidean distance
@@ -222,30 +279,86 @@ new #[Layout('components.layouts.auth')] class extends Component {
 
     async function startFaceDetection() {
         try {
-            // Load models from CDN
-            await faceapi.nets.tinyFaceDetector.loadFromUri('https://cdn.jsdelivr.net/gh/justadudewhohacks/face-api.js/weights/');
-            await faceapi.nets.faceLandmark68Net.loadFromUri('https://cdn.jsdelivr.net/gh/justadudewhohacks/face-api.js/weights/');
-            await faceapi.nets.faceExpressionNet.loadFromUri('https://cdn.jsdelivr.net/gh/justadudewhohacks/face-api.js/weights/');
+            console.log('Starting face detection initialization');
 
-            faceStatus.textContent = 'Models loaded. Accessing camera...';
+            // Check if face-api.js is loaded
+            if (typeof faceapi === 'undefined') {
+                throw new Error('face-api.js library not loaded. Please check your internet connection.');
+            }
 
-            // Access webcam
-            const stream = await navigator.mediaDevices.getUserMedia({ video: {} });
+            faceStatus.textContent = 'Loading face detection models...';
+            console.log('Loading face-api models');
+
+            // Load models from CDN with progress updates
+            await Promise.all([
+                faceapi.nets.tinyFaceDetector.loadFromUri('https://cdn.jsdelivr.net/gh/justadudewhohacks/face-api.js/weights/'),
+                faceapi.nets.faceLandmark68Net.loadFromUri('https://cdn.jsdelivr.net/gh/justadudewhohacks/face-api.js/weights/'),
+                faceapi.nets.faceExpressionNet.loadFromUri('https://cdn.jsdelivr.net/gh/justadudewhohacks/face-api.js/weights/')
+            ]);
+
+            console.log('Models loaded successfully');
+            faceStatus.textContent = 'Models loaded. Requesting camera permission...';
+
+            // Request camera access with specific constraints
+            const constraints = {
+                video: {
+                    width: { ideal: 640 },
+                    height: { ideal: 480 },
+                    facingMode: 'user' // Use front camera
+                }
+            };
+
+            console.log('Requesting camera access with constraints:', constraints);
+            stream = await navigator.mediaDevices.getUserMedia(constraints);
+
+            console.log('Camera access granted, setting up video stream');
             faceVideo.srcObject = stream;
 
-            faceVideo.addEventListener('loadedmetadata', () => {
-                faceStatus.textContent = 'Starting validation...';
-                faceInstructions.style.display = 'block';
-                detectFaces();
+            // Wait for video to be ready
+            await new Promise((resolve) => {
+                faceVideo.addEventListener('loadedmetadata', () => {
+                    console.log('Video metadata loaded, dimensions:', faceVideo.videoWidth, 'x', faceVideo.videoHeight);
+                    resolve();
+                });
             });
+
+            faceStatus.textContent = 'Camera ready. Starting face detection...';
+            faceInstructions.style.display = 'block';
+
+            // Start face detection
+            detectFaces();
+
         } catch (error) {
+            console.error('Error in startFaceDetection:', error);
+
+            let errorMessage = 'Unknown error occurred';
+
             if (error.name === 'NotAllowedError') {
-                faceStatus.textContent = 'Camera permission denied. Please allow camera access.';
-            } else {
-                faceStatus.textContent = 'Error: ' + error.message;
+                errorMessage = 'Camera permission denied. Please allow camera access in your browser and try again.';
+            } else if (error.name === 'NotFoundError') {
+                errorMessage = 'No camera found. Please connect a camera and try again.';
+            } else if (error.name === 'NotReadableError') {
+                errorMessage = 'Camera is already in use by another application.';
+            } else if (error.name === 'OverconstrainedError') {
+                errorMessage = 'Camera does not support the requested video quality.';
+            } else if (error.name === 'SecurityError') {
+                errorMessage = 'Camera access blocked due to security restrictions.';
+            } else if (error.message) {
+                errorMessage = error.message;
             }
-            console.error(error);
+
+            faceStatus.textContent = '❌ ' + errorMessage;
+            faceStatus.style.color = 'red';
             startFaceButton.disabled = false;
+
+            // Show fallback option
+            document.getElementById('manualUploadSection').style.display = 'block';
+
+            // Stop any existing stream
+            if (stream) {
+                stream.getTracks().forEach(track => track.stop());
+                stream = null;
+            }
         }
     }
 
@@ -318,23 +431,109 @@ new #[Layout('components.layouts.auth')] class extends Component {
     }
 
     async function capturePhoto() {
-        const canvas = document.createElement('canvas');
-        canvas.width = faceVideo.videoWidth;
-        canvas.height = faceVideo.videoHeight;
-        const ctx = canvas.getContext('2d');
-        ctx.drawImage(faceVideo, 0, 0);
+        try {
+            console.log('Capturing photo');
 
-        // Convert canvas to data URL
-        const dataURL = canvas.toDataURL('image/png');
+            if (!faceVideo.videoWidth || !faceVideo.videoHeight) {
+                throw new Error('Video dimensions not available');
+            }
 
-        // Set the data URL to the hidden input
-        profileImageData.value = dataURL;
+            const canvas = document.createElement('canvas');
+            canvas.width = faceVideo.videoWidth;
+            canvas.height = faceVideo.videoHeight;
+            const ctx = canvas.getContext('2d');
 
-        // Show preview
-        capturedImage.src = dataURL;
-        profileImagePreview.style.display = 'block';
+            if (!ctx) {
+                throw new Error('Could not get canvas context');
+            }
 
-        faceStatus.textContent = 'Profile picture captured successfully!';
-        startFaceButton.style.display = 'none';
+            ctx.drawImage(faceVideo, 0, 0);
+
+            // Convert canvas to data URL
+            const dataURL = canvas.toDataURL('image/png');
+            console.log('Photo captured, data URL length:', dataURL.length);
+
+            // Set the data URL to the hidden input
+            profileImageData.value = dataURL;
+
+            // Show preview
+            capturedImage.src = dataURL;
+            profileImagePreview.style.display = 'block';
+
+            faceStatus.textContent = '✅ Profile picture captured successfully!';
+            faceStatus.style.color = 'green';
+            startFaceButton.style.display = 'none';
+
+            // Stop the camera stream after successful capture
+            stopCamera();
+
+        } catch (error) {
+            console.error('Error capturing photo:', error);
+            faceStatus.textContent = '❌ Failed to capture photo: ' + error.message;
+            faceStatus.style.color = 'red';
+            startFaceButton.disabled = false;
+        }
     }
+
+    function stopCamera() {
+        console.log('Stopping camera');
+        if (stream) {
+            stream.getTracks().forEach(track => {
+                track.stop();
+                console.log('Camera track stopped');
+            });
+            stream = null;
+        }
+        faceVideo.srcObject = null;
+    }
+
+    // Handle manual profile image upload
+    document.getElementById('manualProfileImage').addEventListener('change', function(event) {
+        const file = event.target.files[0];
+        if (file) {
+            console.log('Manual file selected:', file.name);
+
+            // Validate file type
+            if (!file.type.startsWith('image/')) {
+                alert('Please select a valid image file.');
+                return;
+            }
+
+            // Validate file size (2MB max)
+            if (file.size > 2 * 1024 * 1024) {
+                alert('File size must be less than 2MB.');
+                return;
+            }
+
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                const dataURL = e.target.result;
+                console.log('Manual file loaded, data URL length:', dataURL.length);
+
+                // Set the data URL to the hidden input
+                profileImageData.value = dataURL;
+
+                // Show preview
+                capturedImage.src = dataURL;
+                profileImagePreview.style.display = 'block';
+
+                faceStatus.textContent = '✅ Profile picture uploaded successfully!';
+                faceStatus.style.color = 'green';
+                startFaceButton.style.display = 'none';
+                document.getElementById('manualUploadSection').style.display = 'none';
+            };
+
+            reader.onerror = function() {
+                console.error('Error reading file');
+                alert('Error reading the selected file.');
+            };
+
+            reader.readAsDataURL(file);
+        }
+    });
+
+    // Cleanup on page unload
+    window.addEventListener('beforeunload', () => {
+        stopCamera();
+    });
 </script>
