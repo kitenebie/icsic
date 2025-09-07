@@ -644,12 +644,12 @@ new #[Layout('components.layouts.auth')] class extends Component {}; ?>
                 });
             });
 
-            faceStatus.textContent = '🎯 Camera ready. Calibrating blink detection...';
+            faceStatus.textContent = '🎯 Camera ready. Keep your face in view and blink when ready!';
             faceStatus.style.color = 'blue';
             faceInstructions.style.display = 'block';
 
             // Speak initial instruction
-            speak('Keep only one face in view');
+            speak('Camera is ready. Keep only one face in view');
 
             // Start face detection
             detectFaces();
@@ -795,36 +795,22 @@ new #[Layout('components.layouts.auth')] class extends Component {}; ?>
         debugDisplay.style.display = 'block';
 
         // Update EAR and threshold display
-        if (baselineEAR !== null) {
-            const earText = currentEAR !== null ? currentEAR.toFixed(3) : '--';
-            const thresholdText = earThreshold.toFixed(3);
-            const statusText = isBlinking ? 'BLINKING!' : 'Normal';
-            const statusColor = isBlinking ? 'red' : 'green';
+        const earText = currentEAR !== null ? currentEAR.toFixed(3) : '--';
+        const thresholdText = '0.250'; // Fixed threshold
+        const statusText = isBlinking ? 'BLINKING!' : 'Normal';
+        const statusColor = isBlinking ? 'red' : 'green';
 
-            earDisplay.innerHTML = `EAR: <span style="color: blue;">${earText}</span> | Threshold: <span style="color: orange;">${thresholdText}</span> | Status: <span style="color: ${statusColor};">${statusText}</span>`;
-        } else {
-            earDisplay.innerHTML = `EAR: -- | Threshold: -- | Status: Calibrating`;
-        }
-
-        // Update calibration display
-        if (blinkCalibrationFrames < 30) {
-            calibrationDisplay.innerHTML = `Calibration: ${blinkCalibrationFrames}/30 frames`;
-        } else {
-            calibrationDisplay.innerHTML = `Calibration: Complete (Baseline: ${baselineEAR ? baselineEAR.toFixed(3) : '--'})`;
-        }
+        earDisplay.innerHTML = `EAR: <span style="color: blue;">${earText}</span> | Threshold: <span style="color: orange;">${thresholdText}</span> | Status: <span style="color: ${statusColor};">${statusText}</span>`;
 
         // Update blink status
-        let blinkStatusText = 'Not calibrated';
-        if (blinkCalibrationFrames >= 30) {
-            if (blinkDetected) {
-                blinkStatusText = '✅ Blink detected!';
-            } else if (consecutiveBlinkFrames > 0) {
-                blinkStatusText = `🔄 Detecting... (${consecutiveBlinkFrames}/${requiredConsecutiveFrames})`;
-            } else {
-                blinkStatusText = '👁️ Ready - Blink your eyes';
-            }
+        let blinkStatusText = 'Ready';
+        if (blinkDetected) {
+            blinkStatusText = '✅ Blink detected!';
+        } else {
+            blinkStatusText = '👁️ Waiting for blink...';
         }
         blinkStatusDisplay.innerHTML = `Blink Status: ${blinkStatusText}`;
+        calibrationDisplay.innerHTML = `Using fixed threshold: 0.25`;
     }
 
     async function detectFaces() {
@@ -844,6 +830,10 @@ new #[Layout('components.layouts.auth')] class extends Component {}; ?>
                 const resizedDetections = faceapi.resizeResults(detections, displaySize);
                 canvas.getContext('2d').clearRect(0, 0, canvas.width, canvas.height);
 
+                // Remove overlay drawing - no visual overlay needed
+                // faceapi.draw.drawDetections(canvas, resizedDetections);
+                // faceapi.draw.drawFaceLandmarks(canvas, resizedDetections);
+
                 if (detections.length === 1) {
                     const detection = detections[0];
                     const landmarks = detection.landmarks;
@@ -853,46 +843,30 @@ new #[Layout('components.layouts.auth')] class extends Component {}; ?>
                     if (!singleFaceDetected) {
                         singleFaceDetected = true;
                         faceStep3.innerHTML = 'Step 3: Keep only one face in view ✅';
-                        speak('Blink your eyes');
+                        speak('Face detected. Now blink your eyes');
                     }
 
-                    // Enhanced blink detection with fallback
+                    // Check eye blink
                     const leftEye = landmarks.getLeftEye();
                     const rightEye = landmarks.getRightEye();
+                    const leftEAR = getEyeAspectRatio(leftEye);
+                    const rightEAR = getEyeAspectRatio(rightEye);
+                    const ear = (leftEAR + rightEAR) / 2.0;
 
-                    // Validate eye landmarks before processing
-                    if (leftEye && rightEye && leftEye.length >= 6 && rightEye.length >= 6) {
-                        if (detectBlink(leftEye, rightEye) && !blinkDetected) {
-                            blinkDetected = true;
-                            faceStep1.innerHTML = 'Step 1: Blink your eyes ✅';
-                            speak('Smile on the camera');
-                            console.log('👁️ Blink detected and confirmed!');
-                        }
-                    } else {
-                        console.warn('👁️ Eye landmarks not properly detected');
-                        // Fallback: simple blink detection based on face expression changes
-                        if (expressions.happy < 0.1 && !blinkDetected) {
-                            // If face is not happy and we're looking for blink, assume blink
-                            blinkDetected = true;
-                            faceStep1.innerHTML = 'Step 1: Blink your eyes ✅ (Fallback)';
-                            speak('Smile on the camera');
-                            console.log('👁️ Blink detected using fallback method!');
-                        }
-                    }
-
-                    // Additional fallback: if no blink detected after 5 seconds of calibration, enable manual trigger
-                    if (blinkCalibrationFrames >= 30 && !blinkDetected) {
-                        const timeSinceCalibration = Date.now() - (lastBlinkTime || Date.now());
-                        if (timeSinceCalibration > 5000) { // 5 seconds
-                            console.log('⏰ No blink detected, enabling manual trigger');
-                            faceStatus.textContent += ' (Try blinking or use Manual Blink button)';
-                        }
+                    if (ear < 0.25) {
+                        blinkDetected = true;
+                        faceStep1.innerHTML = 'Step 1: Blink your eyes ✅';
+                        speak('Smile on the camera');
+                        console.log('👁️ Blink detected with EAR:', ear.toFixed(3));
                     }
 
                     // Check smile
                     if (expressions.happy > 0.7) {
-                        smileDetected = true;
-                        faceStep2.innerHTML = 'Step 2: Smile ✅';
+                        if (!smileDetected) {
+                            smileDetected = true;
+                            faceStep2.innerHTML = 'Step 2: Smile ✅';
+                            speak('Smile detected. All validations complete');
+                        }
                     }
 
                     // Face detected successfully - no visual overlay needed
@@ -900,9 +874,13 @@ new #[Layout('components.layouts.auth')] class extends Component {}; ?>
                     // Check if all validations passed
                     if (blinkDetected && smileDetected && singleFaceDetected && !photoCaptured) {
                         validationCount++;
+                        if (validationCount === 1) {
+                            speak('Validation in progress');
+                        }
                         faceStatus.textContent = `🎯 Validating... ${validationCount}/5`;
                         if (validationCount >= 5) {
                             clearInterval(detectionInterval);
+                            speak('Capturing photo');
                             capturePhoto();
                             photoCaptured = true;
                         }
@@ -911,10 +889,13 @@ new #[Layout('components.layouts.auth')] class extends Component {}; ?>
                     }
                 } else if (detections.length === 0) {
                     faceStatus.textContent = '👤 No face detected. Please position your face in the camera view.';
+                    if (!singleFaceDetected) {
+                        speak('No face detected. Please position your face in the camera view');
+                    }
                     resetValidations();
                 } else {
                     faceStatus.textContent = `👥 Multiple faces detected (${detections.length}). Please ensure only one person is in view.`;
-                    speak('Keep only one face in view');
+                    speak('Multiple faces detected. Please ensure only one person is in view');
                     resetValidations();
                 }
             } catch (error) {
