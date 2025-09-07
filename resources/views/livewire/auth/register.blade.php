@@ -14,62 +14,33 @@ new #[Layout('components.layouts.auth')] class extends Component {}; ?>
 <style>
     #faceContainer {
         position: relative;
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        justify-content: center;
-        margin: 20px auto;
-        max-width: 600px;
-        width: 100%;
+        display: inline-block;
+        margin: 20px 0;
+        border: 1px solid #ccc;
+        padding: 10px;
+        border-radius: 8px;
+    }
+
+    #faceVideo {
+        border: 1px solid #ccc;
+        border-radius: 4px;
     }
 
     #faceVideoContainer {
         position: relative;
         display: inline-block;
-        border-radius: 12px;
-        overflow: hidden;
-        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
-    }
-
-    #faceVideo {
-        display: block;
-        border-radius: 12px;
     }
 
     #profileImagePreview {
         position: absolute;
-        top: 12px;
-        right: 12px;
+        top: 10px;
+        right: 10px;
         background: rgba(255, 255, 255, 0.95);
-        padding: 12px;
-        border-radius: 12px;
-        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-        backdrop-filter: blur(8px);
+        padding: 8px;
+        border-radius: 8px;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+        backdrop-filter: blur(2px);
         z-index: 10;
-        border: 2px solid rgba(34, 197, 94, 0.3);
-    }
-
-    #capturedImage {
-        width: 100px;
-        height: 75px;
-        object-fit: cover;
-        border: 2px solid #22c55e;
-        border-radius: 6px;
-        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-    }
-
-    #loadingOverlay {
-        position: absolute;
-        top: 0;
-        left: 0;
-        right: 0;
-        bottom: 0;
-        background: rgba(0, 0, 0, 0.7);
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        border-radius: 12px;
-        z-index: 20;
     }
 
     #faceOverlay {
@@ -178,92 +149,38 @@ new #[Layout('components.layouts.auth')] class extends Component {}; ?>
     </div>
 
     <!-- Face Detection Section -->
-    <div id="faceContainer" class="flex flex-col items-center justify-center p-8 bg-gradient-to-br from-blue-50 via-white to-indigo-50 rounded-2xl shadow-xl border-2 border-blue-100 max-w-2xl mx-auto">
-        <!-- Header Section -->
-        <div class="text-center mb-6">
-            <div class="inline-flex items-center justify-center w-16 h-16 bg-gradient-to-r from-blue-500 to-purple-600 rounded-full mb-4 shadow-lg">
-                <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
-                </svg>
-            </div>
-            <h3 class="text-2xl font-bold text-gray-800 mb-2">📸 Smart Profile Capture</h3>
-            <p class="text-gray-600 text-sm">AI-powered face detection for professional photos</p>
-        </div>
+    <div id="faceContainer">
+        <h3 class="text-lg font-semibold mb-2">Profile Picture Capture</h3>
 
-        <!-- Main Video Container -->
-        <div id="faceVideoContainer" class="relative mb-6 rounded-xl overflow-hidden shadow-2xl border-4 border-white bg-gray-900">
-            <video id="faceVideo" width="320" height="240" autoplay muted playsinline class="block"></video>
-            <canvas id="faceOverlay" class="absolute top-0 left-0"></canvas>
-
+        <div id="faceVideoContainer">
+            <video id="faceVideo" width="320" height="240" autoplay muted playsinline></video>
+            <canvas id="faceOverlay"></canvas>
             <!-- Profile Picture Preview Overlay -->
-            <div id="profileImagePreview" class="absolute top-3 right-3 bg-white bg-opacity-95 p-3 rounded-lg shadow-lg border-2 border-green-400 backdrop-blur-sm">
-                <div class="flex items-center space-x-2 mb-2">
-                    <div class="w-2 h-2 bg-green-500 rounded-full animate-pulse"></div>
-                    <p class="text-xs font-bold text-gray-700">Captured Photo</p>
-                </div>
-                <img id="capturedImage" src="" alt="Captured Profile Picture" class="rounded border-2 border-green-300 shadow-sm">
-            </div>
-
-            <!-- Loading Overlay -->
-            <div id="loadingOverlay" class="absolute inset-0 bg-black bg-opacity-50 flex items-center justify-center" style="display: none;">
-                <div class="text-center text-white">
-                    <div class="animate-spin rounded-full h-12 w-12 border-b-2 border-white mx-auto mb-2"></div>
-                    <p class="text-sm font-medium">Processing...</p>
-                </div>
+            <div id="profileImagePreview">
+                <p class="text-xs font-medium text-gray-700 mb-1">Profile Picture:</p>
+                <img id="capturedImage" src="" alt="Captured Profile Picture">
             </div>
         </div>
 
-        <!-- Status Display -->
-        <div id="faceStatus" class="text-center mb-4 p-3 bg-white rounded-lg shadow-md border border-blue-200 min-h-[3rem] flex items-center justify-center text-sm font-medium text-gray-700">
-            Click "Start Smart Capture" to begin face verification.
-        </div>
-
-        <!-- Instructions Panel -->
-        <div id="faceInstructions" class="bg-white p-4 rounded-lg shadow-md border border-blue-200 mb-4 w-full max-w-md">
-            <div class="flex items-center mb-3">
-                <svg class="w-5 h-5 text-blue-600 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
-                </svg>
-                <p class="font-semibold text-gray-800">Follow these steps:</p>
-            </div>
-            <ul class="space-y-2">
-                <li id="faceStep1" class="flex items-center p-2 rounded bg-gray-50">
-                    <span class="w-6 h-6 bg-blue-500 text-white text-xs rounded-full flex items-center justify-center mr-3 font-bold">1</span>
-                    <span class="text-sm">Keep only one face in view</span>
-                </li>
-                <li id="faceStep2" class="flex items-center p-2 rounded bg-gray-50">
-                    <span class="w-6 h-6 bg-green-500 text-white text-xs rounded-full flex items-center justify-center mr-3 font-bold">2</span>
-                    <span class="text-sm">Smile at the camera</span>
-                </li>
-                <li id="faceStep3" class="flex items-center p-2 rounded bg-gray-50">
-                    <span class="w-6 h-6 bg-purple-500 text-white text-xs rounded-full flex items-center justify-center mr-3 font-bold">3</span>
-                    <span class="text-sm">Blink your eyes</span>
-                </li>
+        <div id="faceStatus"></div>
+        <div id="faceInstructions">
+            <p class="font-medium">Follow these steps:</p>
+            <ul>
+                <li id="faceStep1">Step 1: Keep only one face in view</li>
+                <li id="faceStep2">Step 2: Smile</li>
+                <li id="faceStep3">Step 3: Blink your eyes</li>
             </ul>
         </div>
 
-        <!-- Action Buttons -->
-        <div class="flex flex-wrap gap-3 justify-center">
+        <div class="flex gap-2 flex-wrap">
             <button type="button" id="startFaceButton"
-                class="px-6 py-3 bg-gradient-to-r from-blue-500 to-blue-600 text-white font-semibold rounded-lg hover:from-blue-600 hover:to-blue-700 transform hover:scale-105 transition-all duration-200 shadow-lg flex items-center space-x-2">
-                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z"></path>
-                </svg>
-                <span>Start Smart Capture</span>
-            </button>
-
+                class="mt-2 px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600 text-sm">Start Face
+                Detection</button>
             <button type="button" id="toggleDebugBtn"
-                class="px-4 py-3 bg-gray-500 text-white font-medium rounded-lg hover:bg-gray-600 transition-all duration-200 shadow-md flex items-center space-x-2">
-                <span>🔍</span>
-                <span>Debug</span>
-            </button>
-
+                class="mt-2 px-4 py-2 bg-gray-500 text-white rounded hover:bg-gray-600 text-sm">🔍 Debug</button>
             <button type="button" id="manualBlinkBtn"
-                class="px-4 py-3 bg-orange-500 text-white font-medium rounded-lg hover:bg-orange-600 transition-all duration-200 shadow-md flex items-center space-x-2"
-                style="display: none;">
-                <span>👁️</span>
-                <span>Manual Blink</span>
-            </button>
+                class="mt-2 px-4 py-2 bg-orange-500 text-white rounded hover:bg-orange-600 text-sm"
+                style="display: none;">👁️ Manual Blink</button>
         </div>
 
 
