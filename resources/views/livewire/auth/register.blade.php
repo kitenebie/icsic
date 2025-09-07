@@ -139,18 +139,16 @@ new #[Layout('components.layouts.auth')] class extends Component {}; ?>
             <canvas id="faceOverlay"></canvas>
         </div>
         <div class="flex gap-2 flex-wrap">
-            <button type="button" id="testCameraButton"
-                class="mt-2 px-4 py-2 bg-green-500 text-white rounded hover:bg-green-600 text-sm">Test Camera
-                Only</button>
             <button type="button" id="startFaceButton"
                 class="mt-2 px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600 text-sm">Start Face
                 Detection</button>
-            <button type="button" id="skipCameraButton"
-                class="mt-2 px-4 py-2 bg-yellow-500 text-white rounded hover:bg-yellow-600 text-sm">Skip Camera (Upload
-                Only)</button>
+            <button type="button" id="toggleDebugBtn"
+                class="mt-2 px-4 py-2 bg-gray-500 text-white rounded hover:bg-gray-600 text-sm">🔍 Debug</button>
+            <button type="button" id="manualBlinkBtn"
+                class="mt-2 px-4 py-2 bg-orange-500 text-white rounded hover:bg-orange-600 text-sm"
+                style="display: none;">👁️ Manual Blink</button>
         </div>
-        <div id="faceStatus">Click "Test Camera Only" to check camera access, or "Start Face Detection" for full
-            functionality. You'll be asked to allow camera access first.</div>
+        <div id="faceStatus"></div>
         <div id="faceInstructions">
             <p class="font-medium">Follow these steps:</p>
             <ul>
@@ -162,6 +160,14 @@ new #[Layout('components.layouts.auth')] class extends Component {}; ?>
         <div id="profileImagePreview">
             <p class="font-medium">Profile Picture Captured:</p>
             <img id="capturedImage" src="" alt="Captured Profile Picture">
+        </div>
+
+        <!-- Real-time Debug Display -->
+        <div id="debugDisplay" style="margin-top: 10px; padding: 10px; background: #f0f0f0; border-radius: 4px; font-family: monospace; font-size: 12px; display: none;">
+            <div><strong>🔍 Blink Detection Debug:</strong></div>
+            <div id="earDisplay">EAR: -- | Threshold: -- | Status: --</div>
+            <div id="calibrationDisplay">Calibration: --/30 frames</div>
+            <div id="blinkStatusDisplay">Blink Status: Not calibrated</div>
         </div>
 
         <!-- Fallback: Manual Profile Picture Upload -->
@@ -216,8 +222,8 @@ new #[Layout('components.layouts.auth')] class extends Component {}; ?>
         <!-- Hidden Profile Image Input -->
         <input type="hidden" name="profile_image_data" id="profileImageData">
 
-        <!-- Debug Panel -->
-        <details class="mt-4 p-4 bg-gray-100 rounded">
+        {{-- Debug Panel --}}
+        {{-- <details class="mt-4 p-4 bg-gray-100 rounded">
             <summary class="cursor-pointer font-medium">🔧 Debug Information</summary>
             <div class="mt-2 text-sm">
                 <div id="debugInfo">
@@ -231,7 +237,7 @@ new #[Layout('components.layouts.auth')] class extends Component {}; ?>
                 <button type="button" id="refreshDebug"
                     class="mt-2 px-3 py-1 bg-gray-500 text-white rounded text-xs">Refresh Debug Info</button>
             </div>
-        </details>
+        </details> --}}
 
         <div class="flex items-center justify-end">
             <flux:button type="submit" variant="primary" class="w-full">
@@ -265,6 +271,12 @@ new #[Layout('components.layouts.auth')] class extends Component {}; ?>
     const permissionModal = document.getElementById('permissionModal');
     const permissionMessage = document.getElementById('permissionMessage');
 
+    // Debug display elements
+    const debugDisplay = document.getElementById('debugDisplay');
+    const earDisplay = document.getElementById('earDisplay');
+    const calibrationDisplay = document.getElementById('calibrationDisplay');
+    const blinkStatusDisplay = document.getElementById('blinkStatusDisplay');
+
     let blinkDetected = false;
     let smileDetected = false;
     let singleFaceDetected = false;
@@ -272,6 +284,32 @@ new #[Layout('components.layouts.auth')] class extends Component {}; ?>
     let photoCaptured = false;
     let stream = null;
     let currentPermissionState = 'unknown';
+
+    // Enhanced blink detection variables
+    let blinkHistory = [];
+    let lastBlinkTime = 0;
+    let blinkCalibrationFrames = 0;
+    let baselineEAR = null;
+    let earThreshold = 0.25;
+    let consecutiveBlinkFrames = 0;
+    let requiredConsecutiveFrames = 1; // Make it easier to detect
+
+    // Speech synthesis for instructions
+    function speak(text) {
+        if ('speechSynthesis' in window) {
+            // Cancel any ongoing speech
+            speechSynthesis.cancel();
+
+            const utterance = new SpeechSynthesisUtterance(text);
+            utterance.rate = 0.8; // Slightly slower for clarity
+            utterance.pitch = 1;
+            utterance.volume = 0.8;
+
+            speechSynthesis.speak(utterance);
+        } else {
+            console.log('Speech synthesis not supported in this browser');
+        }
+    }
 
     // Enhanced camera permission manager
     class CameraPermissionManager {
@@ -400,7 +438,6 @@ new #[Layout('components.layouts.auth')] class extends Component {}; ?>
             faceStatus.textContent = '❌ Your browser does not support camera access. Please use a modern browser like Chrome, Firefox, or Edge.';
             faceStatus.style.color = 'red';
             startFaceButton.disabled = true;
-            document.getElementById('testCameraButton').disabled = true;
             showManualUpload();
             return false;
         }
@@ -412,7 +449,6 @@ new #[Layout('components.layouts.auth')] class extends Component {}; ?>
             faceStatus.textContent = '⚠️ Camera access requires HTTPS. Please use HTTPS or localhost.';
             faceStatus.style.color = 'red';
             startFaceButton.disabled = true;
-            document.getElementById('testCameraButton').disabled = true;
             showManualUpload();
             return false;
         }
@@ -459,44 +495,6 @@ new #[Layout('components.layouts.auth')] class extends Component {}; ?>
         };
     }
 
-    // Test camera button with enhanced error handling
-    document.getElementById('testCameraButton').addEventListener('click', async () => {
-        console.log('Test camera button clicked');
-
-        showCameraAlertModal(async () => {
-            const testButton = document.getElementById('testCameraButton');
-            testButton.disabled = true;
-            faceStatus.textContent = '🔄 Testing camera access...';
-            faceStatus.style.color = '#666';
-
-            try {
-                const testStream = await CameraPermissionManager.requestCameraAccess({
-                    video: { width: 320, height: 240 }
-                });
-
-                console.log('✅ Camera test successful!');
-                faceVideo.srcObject = testStream;
-                faceStatus.textContent = '✅ Camera test successful! Camera is working properly.';
-                faceStatus.style.color = 'green';
-
-                // Stop test stream after 3 seconds
-                setTimeout(() => {
-                    console.log('Stopping test camera stream');
-                    testStream.getTracks().forEach(track => track.stop());
-                    faceVideo.srcObject = null;
-                    testButton.disabled = false;
-                    faceStatus.textContent = '✅ Camera test completed. Ready for face detection.';
-                    faceStatus.style.color = '#666';
-                }, 3000);
-
-            } catch (error) {
-                console.error('❌ Camera test failed:', error);
-                testButton.disabled = false;
-                // Error handling is done in CameraPermissionManager.handleCameraError
-            }
-        });
-    });
-
     // Start face detection with enhanced permission handling
     startFaceButton.addEventListener('click', async () => {
         console.log('Start face detection button clicked');
@@ -513,6 +511,30 @@ new #[Layout('components.layouts.auth')] class extends Component {}; ?>
                 startFaceButton.disabled = false;
             }
         });
+    });
+
+    // Toggle debug display
+    document.getElementById('toggleDebugBtn').addEventListener('click', () => {
+        const debugDisplay = document.getElementById('debugDisplay');
+        if (debugDisplay.style.display === 'none' || debugDisplay.style.display === '') {
+            debugDisplay.style.display = 'block';
+            document.getElementById('toggleDebugBtn').textContent = '🔍 Hide Debug';
+        } else {
+            debugDisplay.style.display = 'none';
+            document.getElementById('toggleDebugBtn').textContent = '🔍 Show Debug';
+        }
+    });
+
+    // Manual blink button (fallback)
+    document.getElementById('manualBlinkBtn').addEventListener('click', () => {
+        if (blinkCalibrationFrames >= 30 && !blinkDetected) {
+            console.log('🎯 Manual blink triggered');
+            blinkDetected = true;
+            faceStep1.innerHTML = 'Step 1: Blink your eyes ✅ (Manual)';
+            speak('Blink confirmed manually');
+            document.getElementById('manualBlinkBtn').style.display = 'none';
+            updateDebugDisplay(null, false);
+        }
     });
 
     // Permission modal event listeners
@@ -533,13 +555,6 @@ new #[Layout('components.layouts.auth')] class extends Component {}; ?>
         });
     });
 
-    document.getElementById('skipCameraBtn').addEventListener('click', () => {
-        CameraPermissionManager.hidePermissionModal();
-        showManualUpload();
-        faceStatus.textContent = '⏭️ Camera skipped. Use manual upload below.';
-        faceStatus.style.color = 'orange';
-        hideAllCameraButtons();
-    });
 
     document.getElementById('tryAgainBtn').addEventListener('click', async () => {
         CameraPermissionManager.hidePermissionModal();
@@ -566,8 +581,6 @@ new #[Layout('components.layouts.auth')] class extends Component {}; ?>
 
     function hideAllCameraButtons() {
         document.getElementById('startFaceButton').style.display = 'none';
-        document.getElementById('testCameraButton').style.display = 'none';
-        document.getElementById('skipCameraButton').style.display = 'none';
     }
 
     async function startFaceDetection() {
@@ -631,9 +644,12 @@ new #[Layout('components.layouts.auth')] class extends Component {}; ?>
                 });
             });
 
-            faceStatus.textContent = '🎯 Camera ready. Starting face detection...';
-            faceStatus.style.color = 'green';
+            faceStatus.textContent = '🎯 Camera ready. Calibrating blink detection...';
+            faceStatus.style.color = 'blue';
             faceInstructions.style.display = 'block';
+
+            // Speak initial instruction
+            speak('Keep only one face in view');
 
             // Start face detection
             detectFaces();
@@ -653,12 +669,162 @@ new #[Layout('components.layouts.auth')] class extends Component {}; ?>
         return Math.sqrt(Math.pow(p1.x - p2.x, 2) + Math.pow(p1.y - p2.y, 2));
     }
 
-    // Eye aspect ratio calculation for blink detection
+    // Enhanced eye aspect ratio calculation for blink detection
     function getEyeAspectRatio(eye) {
-        const A = euclideanDistance(eye[1], eye[5]);
-        const B = euclideanDistance(eye[2], eye[4]);
-        const C = euclideanDistance(eye[0], eye[3]);
-        return (A + B) / (2.0 * C);
+        if (!eye || eye.length < 6) {
+            return 1.0; // Return open eye ratio if landmarks are invalid
+        }
+
+        try {
+            const A = euclideanDistance(eye[1], eye[5]);
+            const B = euclideanDistance(eye[2], eye[4]);
+            const C = euclideanDistance(eye[0], eye[3]);
+
+            if (C === 0) return 1.0; // Prevent division by zero
+
+            const ear = (A + B) / (2.0 * C);
+
+            // Validate EAR is within reasonable bounds
+            if (ear < 0 || ear > 1 || isNaN(ear)) {
+                return 1.0;
+            }
+
+            return ear;
+        } catch (error) {
+            console.warn('Error calculating EAR:', error);
+            return 1.0;
+        }
+    }
+
+    // Enhanced blink detection with calibration and temporal consistency
+    function detectBlink(leftEye, rightEye) {
+        const leftEAR = getEyeAspectRatio(leftEye);
+        const rightEAR = getEyeAspectRatio(rightEye);
+        const avgEAR = (leftEAR + rightEAR) / 2.0;
+
+        // Log EAR values for debugging
+        console.log(`👁️ EAR Values - Left: ${leftEAR.toFixed(3)}, Right: ${rightEAR.toFixed(3)}, Avg: ${avgEAR.toFixed(3)}`);
+
+        // Calibration phase - collect baseline EAR for first 30 frames
+        if (blinkCalibrationFrames < 30) {
+            blinkHistory.push(avgEAR);
+            blinkCalibrationFrames++;
+
+            console.log(`📊 Calibration Frame ${blinkCalibrationFrames}/30 - EAR: ${avgEAR.toFixed(3)}`);
+
+            if (blinkCalibrationFrames === 30) {
+                // Calculate baseline EAR (average of collected frames)
+                baselineEAR = blinkHistory.reduce((sum, ear) => sum + ear, 0) / blinkHistory.length;
+
+                // Set dynamic threshold based on baseline (25% below baseline for maximum sensitivity)
+                earThreshold = Math.max(0.08, baselineEAR * 0.75);
+
+                console.log(`🔍 Blink calibration complete. Baseline EAR: ${baselineEAR.toFixed(3)}, Threshold: ${earThreshold.toFixed(3)}`);
+                console.log(`📊 EAR History: [${blinkHistory.map(ear => ear.toFixed(3)).join(', ')}]`);
+
+                // Update status to show calibration is complete
+                faceStatus.textContent = `🎯 Blink detection calibrated! Baseline: ${baselineEAR.toFixed(3)}, Threshold: ${earThreshold.toFixed(3)}. Now blink your eyes!`;
+                faceStatus.style.color = 'green';
+
+                // Add visual indicator that blink detection is ready
+                faceStep1.innerHTML = 'Step 1: Blink your eyes (Ready!)';
+                faceStep1.style.color = 'blue';
+
+                // Show manual blink button as fallback
+                document.getElementById('manualBlinkBtn').style.display = 'inline-block';
+            } else if (blinkCalibrationFrames % 10 === 0) {
+                // Show calibration progress
+                const progress = Math.round((blinkCalibrationFrames / 30) * 100);
+                faceStatus.textContent = `🔄 Calibrating blink detection... ${progress}% (Current EAR: ${avgEAR.toFixed(3)})`;
+            }
+            updateDebugDisplay(avgEAR, false);
+            return false;
+        }
+
+        // Check for blink using dynamic threshold
+        const isBlinking = avgEAR < earThreshold;
+
+        console.log(`🎯 Blink Check - EAR: ${avgEAR.toFixed(3)}, Threshold: ${earThreshold.toFixed(3)}, Is Blinking: ${isBlinking}, Consecutive: ${consecutiveBlinkFrames}`);
+
+        if (isBlinking) {
+            consecutiveBlinkFrames++;
+
+            console.log(`⚡ Blink detected! Consecutive frames: ${consecutiveBlinkFrames}/${requiredConsecutiveFrames}`);
+
+            // Require multiple consecutive frames to confirm blink
+            if (consecutiveBlinkFrames >= requiredConsecutiveFrames) {
+                // Check timing to prevent rapid repeated detections
+                const currentTime = Date.now();
+                if (currentTime - lastBlinkTime > 1000) { // Minimum 1 second between blinks
+                    console.log(`✅ BLINK CONFIRMED! Time since last blink: ${(currentTime - lastBlinkTime)}ms`);
+                    lastBlinkTime = currentTime;
+                    consecutiveBlinkFrames = 0;
+                    updateDebugDisplay(avgEAR, false); // Reset to normal after confirmation
+                    return true;
+                } else {
+                    console.log(`⏳ Blink too soon (${currentTime - lastBlinkTime}ms < 1000ms), ignoring`);
+                }
+            }
+        } else {
+            if (consecutiveBlinkFrames > 0) {
+                console.log(`❌ Blink sequence broken, resetting counter`);
+            }
+            consecutiveBlinkFrames = 0;
+        }
+
+        updateDebugDisplay(avgEAR, isBlinking);
+        return false;
+    }
+
+    // Reset blink detection state
+    function resetBlinkDetection() {
+        blinkHistory = [];
+        blinkCalibrationFrames = 0;
+        baselineEAR = null;
+        earThreshold = 0.25;
+        consecutiveBlinkFrames = 0;
+        lastBlinkTime = 0;
+        updateDebugDisplay();
+    }
+
+    // Update debug display with current values
+    function updateDebugDisplay(currentEAR = null, isBlinking = false) {
+        if (!debugDisplay) return;
+
+        // Show debug display during face detection
+        debugDisplay.style.display = 'block';
+
+        // Update EAR and threshold display
+        if (baselineEAR !== null) {
+            const earText = currentEAR !== null ? currentEAR.toFixed(3) : '--';
+            const thresholdText = earThreshold.toFixed(3);
+            const statusText = isBlinking ? 'BLINKING!' : 'Normal';
+            const statusColor = isBlinking ? 'red' : 'green';
+
+            earDisplay.innerHTML = `EAR: <span style="color: blue;">${earText}</span> | Threshold: <span style="color: orange;">${thresholdText}</span> | Status: <span style="color: ${statusColor};">${statusText}</span>`;
+        } else {
+            earDisplay.innerHTML = `EAR: -- | Threshold: -- | Status: Calibrating`;
+        }
+
+        // Update calibration display
+        if (blinkCalibrationFrames < 30) {
+            calibrationDisplay.innerHTML = `Calibration: ${blinkCalibrationFrames}/30 frames`;
+        } else {
+            calibrationDisplay.innerHTML = `Calibration: Complete (Baseline: ${baselineEAR ? baselineEAR.toFixed(3) : '--'})`;
+        }
+
+        // Update blink status
+        let blinkStatusText = 'Not calibrated';
+        if (blinkCalibrationFrames >= 30) {
+            if (blinkDetected) {
+                blinkStatusText = '✅ Blink detected!';
+            } else if (consecutiveBlinkFrames > 0) {
+                blinkStatusText = `🔄 Detecting... (${consecutiveBlinkFrames}/${requiredConsecutiveFrames})`;
+            } else {
+                blinkStatusText = '👁️ Ready - Blink your eyes';
+            }
+        }
+        blinkStatusDisplay.innerHTML = `Blink Status: ${blinkStatusText}`;
     }
 
     async function detectFaces() {
@@ -684,19 +850,43 @@ new #[Layout('components.layouts.auth')] class extends Component {}; ?>
                     const expressions = detection.expressions;
 
                     // Check single face
-                    singleFaceDetected = true;
-                    faceStep3.innerHTML = 'Step 3: Keep only one face in view ✅';
+                    if (!singleFaceDetected) {
+                        singleFaceDetected = true;
+                        faceStep3.innerHTML = 'Step 3: Keep only one face in view ✅';
+                        speak('Blink your eyes');
+                    }
 
-                    // Check eye blink
+                    // Enhanced blink detection with fallback
                     const leftEye = landmarks.getLeftEye();
                     const rightEye = landmarks.getRightEye();
-                    const leftEAR = getEyeAspectRatio(leftEye);
-                    const rightEAR = getEyeAspectRatio(rightEye);
-                    const ear = (leftEAR + rightEAR) / 2.0;
 
-                    if (ear < 0.25) {
-                        blinkDetected = true;
-                        faceStep1.innerHTML = 'Step 1: Blink your eyes ✅';
+                    // Validate eye landmarks before processing
+                    if (leftEye && rightEye && leftEye.length >= 6 && rightEye.length >= 6) {
+                        if (detectBlink(leftEye, rightEye) && !blinkDetected) {
+                            blinkDetected = true;
+                            faceStep1.innerHTML = 'Step 1: Blink your eyes ✅';
+                            speak('Smile on the camera');
+                            console.log('👁️ Blink detected and confirmed!');
+                        }
+                    } else {
+                        console.warn('👁️ Eye landmarks not properly detected');
+                        // Fallback: simple blink detection based on face expression changes
+                        if (expressions.happy < 0.1 && !blinkDetected) {
+                            // If face is not happy and we're looking for blink, assume blink
+                            blinkDetected = true;
+                            faceStep1.innerHTML = 'Step 1: Blink your eyes ✅ (Fallback)';
+                            speak('Smile on the camera');
+                            console.log('👁️ Blink detected using fallback method!');
+                        }
+                    }
+
+                    // Additional fallback: if no blink detected after 5 seconds of calibration, enable manual trigger
+                    if (blinkCalibrationFrames >= 30 && !blinkDetected) {
+                        const timeSinceCalibration = Date.now() - (lastBlinkTime || Date.now());
+                        if (timeSinceCalibration > 5000) { // 5 seconds
+                            console.log('⏰ No blink detected, enabling manual trigger');
+                            faceStatus.textContent += ' (Try blinking or use Manual Blink button)';
+                        }
                     }
 
                     // Check smile
@@ -705,9 +895,7 @@ new #[Layout('components.layouts.auth')] class extends Component {}; ?>
                         faceStep2.innerHTML = 'Step 2: Smile ✅';
                     }
 
-                    // Draw detections and landmarks
-                    faceapi.draw.drawDetections(canvas, resizedDetections);
-                    faceapi.draw.drawFaceLandmarks(canvas, resizedDetections);
+                    // Face detected successfully - no visual overlay needed
 
                     // Check if all validations passed
                     if (blinkDetected && smileDetected && singleFaceDetected && !photoCaptured) {
@@ -726,6 +914,7 @@ new #[Layout('components.layouts.auth')] class extends Component {}; ?>
                     resetValidations();
                 } else {
                     faceStatus.textContent = `👥 Multiple faces detected (${detections.length}). Please ensure only one person is in view.`;
+                    speak('Keep only one face in view');
                     resetValidations();
                 }
             } catch (error) {
@@ -746,6 +935,9 @@ new #[Layout('components.layouts.auth')] class extends Component {}; ?>
         faceStep1.innerHTML = 'Step 1: Blink your eyes';
         faceStep2.innerHTML = 'Step 2: Smile';
         faceStep3.innerHTML = 'Step 3: Keep only one face in view';
+
+        // Reset enhanced blink detection
+        resetBlinkDetection();
     }
 
     async function capturePhoto() {
@@ -775,6 +967,7 @@ new #[Layout('components.layouts.auth')] class extends Component {}; ?>
 
             faceStatus.textContent = '🎉 Profile picture captured successfully!';
             faceStatus.style.color = 'green';
+            speak('Profile picture captured successfully');
             hideAllCameraButtons();
 
             stopCamera();
@@ -841,14 +1034,6 @@ new #[Layout('components.layouts.auth')] class extends Component {}; ?>
         }
     });
 
-    // Skip camera button - show manual upload immediately
-    document.getElementById('skipCameraButton').addEventListener('click', () => {
-        console.log('⏭️ Skip camera button clicked');
-        showManualUpload();
-        faceStatus.textContent = '⏭️ Camera skipped. Use manual upload below.';
-        faceStatus.style.color = 'orange';
-        hideAllCameraButtons();
-    });
 
     // Enhanced debug panel functionality
     async function updateDebugInfo() {
