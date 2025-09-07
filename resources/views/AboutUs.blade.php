@@ -576,6 +576,54 @@
                     </div>
                 </div>
 
+                <!-- FAQ 19 -->
+                <div class="bg-white rounded-lg shadow overflow-hidden">
+                    <button class="w-full text-left p-5 flex justify-between items-center faq-toggle">
+                        <span class="text-lg font-medium text-gray-800">19. What is the face detection feature during
+                            registration and how does it work?</span>
+                        <svg class="w-5 h-5 text-gray-500 transition-transform transform rotate-0" fill="none"
+                            stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7" />
+                        </svg>
+                    </button>
+                    <div class="faq-content px-5 pb-5 text-gray-600 hidden">
+                        <strong>Face Detection</strong> is an advanced security feature used during user registration to
+                        capture and verify profile pictures. Here's how it works:<br><br>
+
+                        <strong>Process:</strong>
+                        <ul class="list-disc list-inside mt-2 space-y-1">
+                            <li><strong>Camera Access:</strong> Users grant camera permission to start the process</li>
+                            <li><strong>Liveness Detection:</strong> The system performs three validation steps:
+                                <ul class="list-disc list-inside ml-6 mt-1 space-y-1">
+                                    <li>👁️ <strong>Blink Detection:</strong> Users must blink their eyes</li>
+                                    <li>😊 <strong>Smile Detection:</strong> Users must smile at the camera</li>
+                                    <li>👤 <strong>Face Verification:</strong> Ensures only one face is in view</li>
+                                </ul>
+                            </li>
+                            <li><strong>Photo Capture:</strong> After successful validation, a profile picture is automatically captured</li>
+                            <li><strong>ID Verification:</strong> The captured photo is compared with uploaded ID images to ensure they match</li>
+                        </ul><br>
+
+                        <strong>Why Face Detection?</strong>
+                        <ul class="list-disc list-inside mt-2 space-y-1">
+                            <li>🔒 <strong>Security:</strong> Prevents fake accounts and ensures real user registration</li>
+                            <li>🎯 <strong>Verification:</strong> Confirms the person registering matches their ID documents</li>
+                            <li>🎤 <strong>Accessibility:</strong> Provides audio guidance throughout the process</li>
+                            <li>📱 <strong>User-Friendly:</strong> Works on modern browsers with camera support</li>
+                        </ul><br>
+
+                        <strong>Technical Requirements:</strong>
+                        <ul class="list-disc list-inside mt-1 space-y-1">
+                            <li>Modern web browser (Chrome, Firefox, Safari, Edge)</li>
+                            <li>Camera permission must be granted</li>
+                            <li>HTTPS connection required for security</li>
+                            <li>Stable internet connection for face detection models</li>
+                        </ul><br>
+
+                        <strong>Privacy & Security:</strong> All face detection happens locally in your browser. Images are only used for verification and are securely stored on our servers. No third-party services process your facial data.
+                    </div>
+                </div>
+
             </div>
         </div>
     </section>
