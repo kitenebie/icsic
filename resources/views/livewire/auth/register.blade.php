@@ -158,7 +158,7 @@ new #[Layout('components.layouts.auth')] class extends Component {}; ?>
             <!-- Profile Picture Preview Overlay -->
             <div id="profileImagePreview">
                 <p class="text-xs font-medium text-gray-700 mb-1">Profile Picture:</p>
-                <img id="capturedImage" width="320" height="240" src="" alt="Captured Profile Picture">
+                <img id="capturedImage" style="width: 320px; height: 240px;" width="320" height="240" src="" alt="Captured Profile Picture">
             </div>
         </div>
 
