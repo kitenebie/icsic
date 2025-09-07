@@ -158,7 +158,7 @@ new #[Layout('components.layouts.auth')] class extends Component {}; ?>
             <!-- Profile Picture Preview Overlay -->
             <div id="profileImagePreview">
                 <p class="text-xs font-medium text-gray-700 mb-1">Profile Picture:</p>
-                <img id="capturedImage" style="width: 320px; height: 240px;" width="320" height="240" src="" alt="Captured Profile Picture">
+                <img id="capturedImage" style="width: 320px !important; height: 240px !important;" width="320" height="240" src="" alt="Captured Profile Picture">
             </div>
         </div>
 
@@ -864,7 +864,7 @@ new #[Layout('components.layouts.auth')] class extends Component {}; ?>
                     if (!singleFaceDetected) {
                         singleFaceDetected = true;
                         faceStep1.innerHTML = 'Step 1: Keep only one face in view ✅';
-                        speak('Step 1 completed. Now proceed to Step 2: Blink your eyes');
+                        speak('Step 1 completed. Now proceed to Step 2: Smile at the camera');
                     }
 
                     // Check eye blink
@@ -878,7 +878,7 @@ new #[Layout('components.layouts.auth')] class extends Component {}; ?>
                         if (!blinkDetected) {
                             blinkDetected = true;
                             faceStep3.innerHTML = 'Step 3: Blink your eyes ✅';
-                            speak('Step 2 completed. Now proceed to Step 3: Smile at the camera');
+                            speak('Step 2 completed. Now proceed to Step 3: Blink your eyes');
                             console.log('👁️ Blink detected with EAR:', ear.toFixed(3));
                         }
                     }
