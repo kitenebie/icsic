@@ -14,6 +14,7 @@ return new class extends Migration
         Schema::table('users', function (Blueprint $table) {
             $table->string('front_id')->nullable();
             $table->string('back_id')->nullable();
+            $table->string('profile_image')->nullable();
         });
     }
 
@@ -23,7 +24,7 @@ return new class extends Migration
     public function down(): void
     {
         Schema::table('users', function (Blueprint $table) {
-            $table->dropColumn(['front_id', 'back_id']);
+            $table->dropColumn(['front_id', 'back_id', 'profile_image']);
         });
     }
 };

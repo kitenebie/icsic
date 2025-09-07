@@ -42,7 +42,8 @@ class User extends Authenticatable implements FilamentUser
         'section',
         'profile_picture',
         'front_id',
-        'back_id'
+        'back_id',
+        'profile_image'
     ];
     protected $casts = [
         'user_group' => 'array',

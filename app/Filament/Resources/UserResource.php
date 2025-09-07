@@ -154,6 +154,11 @@ class UserResource extends Resource
                     ->image()
                     ->directory('ids')
                     ->columnSpanFull(),
+                FileUpload::make('profile_image')
+                    ->label('Profile Image')
+                    ->image()
+                    ->directory('profiles')
+                    ->columnSpanFull(),
             ]);
     }
 
@@ -192,6 +197,12 @@ class UserResource extends Resource
                     ->openUrlInNewTab(),
                 ImageColumn::make('back_id')
                     ->label('Back ID')
+                    ->disk('public')
+                    ->height(50)
+                    ->width(50)
+                    ->openUrlInNewTab(),
+                ImageColumn::make('profile_image')
+                    ->label('Profile Image')
                     ->disk('public')
                     ->height(50)
                     ->width(50)
