@@ -198,8 +198,27 @@ new #[Layout('components.layouts.auth')] class extends Component {}; ?>
     <!-- Session Status -->
     <x-auth-session-status class="text-center" :status="session('status')" />
 
-    <form class="flex flex-col gap-6" method="POST" action="{{ route('register') }}" enctype="multipart/form-data">
-        @csrf
+    <form class="flex flex-col gap-6" method="POST" action="{{ route('register') }}" enctype="multipart/form-data" id="registrationForm">
+    @csrf
+
+    <!-- Draft Restore Section -->
+    <div id="draftSection" class="hidden bg-blue-50 border border-blue-200 rounded-lg p-4 mb-4">
+        <div class="flex items-center justify-between">
+            <div class="flex items-center space-x-2">
+                <svg class="w-5 h-5 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
+                </svg>
+                <div>
+                    <p class="text-sm font-medium text-blue-800">Draft Found</p>
+                    <p class="text-xs text-blue-600">You have unsaved form data from a previous session</p>
+                </div>
+            </div>
+            <button type="button" id="restoreDraftBtn"
+                class="px-4 py-2 bg-blue-600 text-white text-sm font-medium rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-colors duration-200">
+                Restore Draft
+            </button>
+        </div>
+    </div>
         <!-- First Name -->
         <flux:input name="FirstName" :label="__('First Name')" type="text" required autofocus
             autocomplete="FirstName" :placeholder="__('First name')" />
@@ -1236,4 +1255,136 @@ new #[Layout('components.layouts.auth')] class extends Component {}; ?>
     // Final initialization message
     console.log('🎬 Enhanced camera permission system initialized successfully');
     console.log('📱 System ready for camera access and face detection');
+
+    // ===== DRAFT FUNCTIONALITY =====
+    const DRAFT_KEY = 'registrationDraft';
+    const form = document.getElementById('registrationForm');
+    const draftSection = document.getElementById('draftSection');
+    const restoreDraftBtn = document.getElementById('restoreDraftBtn');
+
+    // Function to save form data to localStorage
+    function saveDraft() {
+        const formData = new FormData(form);
+        const data = {};
+
+        // Convert FormData to object
+        for (let [key, value] of formData.entries()) {
+            if (value instanceof File) {
+                // Skip file inputs for draft (can't store files in localStorage)
+                continue;
+            }
+            data[key] = value;
+        }
+
+        // Add profile image data if available
+        if (profileImageData && profileImageData.value) {
+            data['profile_image_data'] = profileImageData.value;
+        }
+
+        // Only save if there's actual data
+        if (Object.keys(data).length > 1) { // More than just _token
+            localStorage.setItem(DRAFT_KEY, JSON.stringify(data));
+            console.log('💾 Draft saved:', data);
+        }
+    }
+
+    // Function to load draft from localStorage
+    function loadDraft() {
+        const saved = localStorage.getItem(DRAFT_KEY);
+        if (saved) {
+            try {
+                const data = JSON.parse(saved);
+                console.log('📂 Draft loaded:', data);
+
+                // Populate form fields
+                Object.keys(data).forEach(key => {
+                    const element = document.querySelector(`[name="${key}"]`);
+                    if (element && key !== '_token' && key !== 'profile_image_data') {
+                        element.value = data[key];
+                    }
+                });
+
+                // Restore profile image if available
+                if (data.profile_image_data) {
+                    profileImageData.value = data.profile_image_data;
+                    capturedImage.src = data.profile_image_data;
+                    profileImagePreview.style.display = 'block';
+                    faceStatus.textContent = '✅ Profile picture restored from draft!';
+                    faceStatus.style.color = 'green';
+                }
+
+                return true;
+            } catch (error) {
+                console.error('❌ Error loading draft:', error);
+                return false;
+            }
+        }
+        return false;
+    }
+
+    // Function to clear draft
+    function clearDraft() {
+        localStorage.removeItem(DRAFT_KEY);
+        console.log('🗑️ Draft cleared');
+    }
+
+    // Check for existing draft on page load
+    document.addEventListener('DOMContentLoaded', function() {
+        const saved = localStorage.getItem(DRAFT_KEY);
+        if (saved) {
+            try {
+                const data = JSON.parse(saved);
+                if (Object.keys(data).length > 1) { // Has actual data
+                    draftSection.classList.remove('hidden');
+                    console.log('📋 Draft found, showing restore button');
+                }
+            } catch (error) {
+                console.error('❌ Error checking draft:', error);
+            }
+        }
+    });
+
+    // Handle restore draft button click
+    restoreDraftBtn.addEventListener('click', function() {
+        if (loadDraft()) {
+            draftSection.classList.add('hidden');
+            clearDraft(); // Clear after successful restore
+            console.log('✅ Draft restored successfully');
+        } else {
+            alert('❌ Failed to restore draft. The saved data may be corrupted.');
+        }
+    });
+
+    // Auto-save draft on form changes
+    let saveTimeout;
+    function scheduleSave() {
+        clearTimeout(saveTimeout);
+        saveTimeout = setTimeout(saveDraft, 1000); // Save after 1 second of inactivity
+    }
+
+    // Listen for input changes
+    document.addEventListener('input', function(e) {
+        if (e.target.closest('#registrationForm')) {
+            scheduleSave();
+        }
+    });
+
+    // Listen for file changes
+    document.addEventListener('change', function(e) {
+        if (e.target.closest('#registrationForm')) {
+            scheduleSave();
+        }
+    });
+
+    // Save draft when profile image is captured
+    const originalCapturePhoto = window.capturePhoto;
+    window.capturePhoto = function() {
+        if (originalCapturePhoto) {
+            originalCapturePhoto();
+        }
+        // Save draft after photo capture
+        setTimeout(saveDraft, 500);
+    };
+
+    console.log('📝 Draft functionality initialized');
 </script>
