@@ -367,9 +367,6 @@
         </div>
     </section>
     <script>
-        location.href = '/faq';
-    </script>
-    <script>
         document.querySelectorAll('.faq-toggle').forEach(button => {
             button.addEventListener('click', () => {
                 const content = button.nextElementSibling;
