@@ -242,6 +242,8 @@ new #[Layout('components.layouts.auth')] class extends Component {}; ?>
                 </div>
                 <button type="button" id="refreshDebug"
                     class="mt-2 px-3 py-1 bg-gray-500 text-white rounded text-xs">Refresh Debug Info</button>
+                <button type="button" id="clearCanvas"
+                    class="mt-2 ml-2 px-3 py-1 bg-red-500 text-white rounded text-xs">Clear Canvas</button>
             </div>
         </details>
 
@@ -669,6 +671,10 @@ new #[Layout('components.layouts.auth')] class extends Component {}; ?>
             canvas.style.left = '0';
             canvas.style.pointerEvents = 'none';
 
+            // Update debug info
+            document.getElementById('videoDimensions').textContent = `${faceVideo.videoWidth}x${faceVideo.videoHeight}`;
+            document.getElementById('canvasDimensions').textContent = `${canvas.width}x${canvas.height}`;
+
             console.log('🎨 Canvas positioned and sized:', canvas.width, 'x', canvas.height, 'display size:', videoRect.width, 'x', videoRect.height);
 
             faceStatus.textContent = '🎯 Camera ready. Starting face detection...';
@@ -739,6 +745,10 @@ new #[Layout('components.layouts.auth')] class extends Component {}; ?>
 
                     console.log('👤 Face detected at:', detection.box);
 
+                    // Update debug info
+                    document.getElementById('faceDetectionStatus').textContent = '✅ Face detected';
+                    document.getElementById('landmarksCount').textContent = landmarks.positions.length;
+
                     // Check single face
                     singleFaceDetected = true;
                     faceStep3.innerHTML = 'Step 3: Keep only one face in view ✅';
@@ -805,9 +815,13 @@ new #[Layout('components.layouts.auth')] class extends Component {}; ?>
                     }
                 } else if (detections.length === 0) {
                     faceStatus.textContent = '👤 No face detected. Please position your face in the camera view.';
+                    document.getElementById('faceDetectionStatus').textContent = '❌ No face detected';
+                    document.getElementById('landmarksCount').textContent = '0';
                     resetValidations();
                 } else {
                     faceStatus.textContent = `👥 Multiple faces detected (${detections.length}). Please ensure only one person is in view.`;
+                    document.getElementById('faceDetectionStatus').textContent = `❌ Multiple faces (${detections.length})`;
+                    document.getElementById('landmarksCount').textContent = '0';
                     resetValidations();
                 }
             } catch (error) {
@@ -987,6 +1001,16 @@ new #[Layout('components.layouts.auth')] class extends Component {}; ?>
 
     // Refresh debug info button
     document.getElementById('refreshDebug').addEventListener('click', updateDebugInfo);
+
+    // Clear canvas button
+    document.getElementById('clearCanvas').addEventListener('click', () => {
+        const canvas = faceOverlay;
+        const ctx = canvas.getContext('2d');
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        document.getElementById('faceDetectionStatus').textContent = 'Canvas cleared';
+        document.getElementById('landmarksCount').textContent = '0';
+        console.log('🧹 Canvas cleared');
+    });
 
     // Handle page visibility change (user switches tabs)
     document.addEventListener('visibilitychange', function() {
