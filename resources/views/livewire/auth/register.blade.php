@@ -139,18 +139,24 @@ new #[Layout('components.layouts.auth')] class extends Component {}; ?>
             <canvas id="faceOverlay"></canvas>
         </div>
         <div class="flex gap-2 flex-wrap">
+            <button type="button" id="testCameraButton"
+                class="mt-2 px-4 py-2 bg-green-500 text-white rounded hover:bg-green-600 text-sm">Test Camera
+                Only</button>
             <button type="button" id="startFaceButton"
                 class="mt-2 px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600 text-sm">Start Face
                 Detection</button>
+            <button type="button" id="skipCameraButton"
+                class="mt-2 px-4 py-2 bg-yellow-500 text-white rounded hover:bg-yellow-600 text-sm">Skip Camera (Upload
+                Only)</button>
         </div>
-        {{-- <div id="faceStatus">Click "Test Camera Only" to check camera access, or "Start Face Detection" for full
-            functionality. You'll be asked to allow camera access first.</div> --}}
+        <div id="faceStatus">Click "Test Camera Only" to check camera access, or "Start Face Detection" for full
+            functionality. You'll be asked to allow camera access first.</div>
         <div id="faceInstructions">
             <p class="font-medium">Follow these steps:</p>
             <ul>
-                <li id="faceStep3">Step 1: Keep only one face in view</li>
-                <li id="faceStep1">Step 2: Blink your eyes</li>
-                <li id="faceStep2">Step 3: Smile</li>
+                <li id="faceStep1">Step 1: Blink your eyes</li>
+                <li id="faceStep2">Step 2: Smile</li>
+                <li id="faceStep3">Step 3: Keep only one face in view</li>
             </ul>
         </div>
         <div id="profileImagePreview">
@@ -210,8 +216,8 @@ new #[Layout('components.layouts.auth')] class extends Component {}; ?>
         <!-- Hidden Profile Image Input -->
         <input type="hidden" name="profile_image_data" id="profileImageData">
 
-        {{-- Debug Panel --}}
-        {{-- <details class="mt-4 p-4 bg-gray-100 rounded">
+        <!-- Debug Panel -->
+        <details class="mt-4 p-4 bg-gray-100 rounded">
             <summary class="cursor-pointer font-medium">🔧 Debug Information</summary>
             <div class="mt-2 text-sm">
                 <div id="debugInfo">
@@ -225,7 +231,7 @@ new #[Layout('components.layouts.auth')] class extends Component {}; ?>
                 <button type="button" id="refreshDebug"
                     class="mt-2 px-3 py-1 bg-gray-500 text-white rounded text-xs">Refresh Debug Info</button>
             </div>
-        </details> --}}
+        </details>
 
         <div class="flex items-center justify-end">
             <flux:button type="submit" variant="primary" class="w-full">
@@ -266,23 +272,6 @@ new #[Layout('components.layouts.auth')] class extends Component {}; ?>
     let photoCaptured = false;
     let stream = null;
     let currentPermissionState = 'unknown';
-
-    // Speech synthesis for instructions
-    function speak(text) {
-        if ('speechSynthesis' in window) {
-            // Cancel any ongoing speech
-            speechSynthesis.cancel();
-
-            const utterance = new SpeechSynthesisUtterance(text);
-            utterance.rate = 0.8; // Slightly slower for clarity
-            utterance.pitch = 1;
-            utterance.volume = 0.8;
-
-            speechSynthesis.speak(utterance);
-        } else {
-            console.log('Speech synthesis not supported in this browser');
-        }
-    }
 
     // Enhanced camera permission manager
     class CameraPermissionManager {
@@ -411,6 +400,7 @@ new #[Layout('components.layouts.auth')] class extends Component {}; ?>
             faceStatus.textContent = '❌ Your browser does not support camera access. Please use a modern browser like Chrome, Firefox, or Edge.';
             faceStatus.style.color = 'red';
             startFaceButton.disabled = true;
+            document.getElementById('testCameraButton').disabled = true;
             showManualUpload();
             return false;
         }
@@ -422,6 +412,7 @@ new #[Layout('components.layouts.auth')] class extends Component {}; ?>
             faceStatus.textContent = '⚠️ Camera access requires HTTPS. Please use HTTPS or localhost.';
             faceStatus.style.color = 'red';
             startFaceButton.disabled = true;
+            document.getElementById('testCameraButton').disabled = true;
             showManualUpload();
             return false;
         }
@@ -468,6 +459,44 @@ new #[Layout('components.layouts.auth')] class extends Component {}; ?>
         };
     }
 
+    // Test camera button with enhanced error handling
+    document.getElementById('testCameraButton').addEventListener('click', async () => {
+        console.log('Test camera button clicked');
+
+        showCameraAlertModal(async () => {
+            const testButton = document.getElementById('testCameraButton');
+            testButton.disabled = true;
+            faceStatus.textContent = '🔄 Testing camera access...';
+            faceStatus.style.color = '#666';
+
+            try {
+                const testStream = await CameraPermissionManager.requestCameraAccess({
+                    video: { width: 320, height: 240 }
+                });
+
+                console.log('✅ Camera test successful!');
+                faceVideo.srcObject = testStream;
+                faceStatus.textContent = '✅ Camera test successful! Camera is working properly.';
+                faceStatus.style.color = 'green';
+
+                // Stop test stream after 3 seconds
+                setTimeout(() => {
+                    console.log('Stopping test camera stream');
+                    testStream.getTracks().forEach(track => track.stop());
+                    faceVideo.srcObject = null;
+                    testButton.disabled = false;
+                    faceStatus.textContent = '✅ Camera test completed. Ready for face detection.';
+                    faceStatus.style.color = '#666';
+                }, 3000);
+
+            } catch (error) {
+                console.error('❌ Camera test failed:', error);
+                testButton.disabled = false;
+                // Error handling is done in CameraPermissionManager.handleCameraError
+            }
+        });
+    });
+
     // Start face detection with enhanced permission handling
     startFaceButton.addEventListener('click', async () => {
         console.log('Start face detection button clicked');
@@ -504,6 +533,13 @@ new #[Layout('components.layouts.auth')] class extends Component {}; ?>
         });
     });
 
+    document.getElementById('skipCameraBtn').addEventListener('click', () => {
+        CameraPermissionManager.hidePermissionModal();
+        showManualUpload();
+        faceStatus.textContent = '⏭️ Camera skipped. Use manual upload below.';
+        faceStatus.style.color = 'orange';
+        hideAllCameraButtons();
+    });
 
     document.getElementById('tryAgainBtn').addEventListener('click', async () => {
         CameraPermissionManager.hidePermissionModal();
@@ -530,6 +566,8 @@ new #[Layout('components.layouts.auth')] class extends Component {}; ?>
 
     function hideAllCameraButtons() {
         document.getElementById('startFaceButton').style.display = 'none';
+        document.getElementById('testCameraButton').style.display = 'none';
+        document.getElementById('skipCameraButton').style.display = 'none';
     }
 
     async function startFaceDetection() {
@@ -597,9 +635,6 @@ new #[Layout('components.layouts.auth')] class extends Component {}; ?>
             faceStatus.style.color = 'green';
             faceInstructions.style.display = 'block';
 
-            // Speak initial instruction
-            speak('Keep only one face in view');
-
             // Start face detection
             detectFaces();
 
@@ -649,11 +684,8 @@ new #[Layout('components.layouts.auth')] class extends Component {}; ?>
                     const expressions = detection.expressions;
 
                     // Check single face
-                    if (!singleFaceDetected) {
-                        singleFaceDetected = true;
-                        faceStep3.innerHTML = 'Step 3: Keep only one face in view ✅';
-                        speak('Blink your eyes');
-                    }
+                    singleFaceDetected = true;
+                    faceStep3.innerHTML = 'Step 3: Keep only one face in view ✅';
 
                     // Check eye blink
                     const leftEye = landmarks.getLeftEye();
@@ -662,10 +694,9 @@ new #[Layout('components.layouts.auth')] class extends Component {}; ?>
                     const rightEAR = getEyeAspectRatio(rightEye);
                     const ear = (leftEAR + rightEAR) / 2.0;
 
-                    if (ear < 0.25 && !blinkDetected) {
+                    if (ear < 0.25) {
                         blinkDetected = true;
                         faceStep1.innerHTML = 'Step 1: Blink your eyes ✅';
-                        speak('Smile on the camera');
                     }
 
                     // Check smile
@@ -674,7 +705,9 @@ new #[Layout('components.layouts.auth')] class extends Component {}; ?>
                         faceStep2.innerHTML = 'Step 2: Smile ✅';
                     }
 
-                    // Face detected successfully - no visual overlay needed
+                    // Draw detections and landmarks
+                    faceapi.draw.drawDetections(canvas, resizedDetections);
+                    faceapi.draw.drawFaceLandmarks(canvas, resizedDetections);
 
                     // Check if all validations passed
                     if (blinkDetected && smileDetected && singleFaceDetected && !photoCaptured) {
@@ -693,7 +726,6 @@ new #[Layout('components.layouts.auth')] class extends Component {}; ?>
                     resetValidations();
                 } else {
                     faceStatus.textContent = `👥 Multiple faces detected (${detections.length}). Please ensure only one person is in view.`;
-                    speak('Keep only one face in view');
                     resetValidations();
                 }
             } catch (error) {
@@ -743,7 +775,6 @@ new #[Layout('components.layouts.auth')] class extends Component {}; ?>
 
             faceStatus.textContent = '🎉 Profile picture captured successfully!';
             faceStatus.style.color = 'green';
-            speak('Profile picture captured successfully');
             hideAllCameraButtons();
 
             stopCamera();
@@ -810,6 +841,14 @@ new #[Layout('components.layouts.auth')] class extends Component {}; ?>
         }
     });
 
+    // Skip camera button - show manual upload immediately
+    document.getElementById('skipCameraButton').addEventListener('click', () => {
+        console.log('⏭️ Skip camera button clicked');
+        showManualUpload();
+        faceStatus.textContent = '⏭️ Camera skipped. Use manual upload below.';
+        faceStatus.style.color = 'orange';
+        hideAllCameraButtons();
+    });
 
     // Enhanced debug panel functionality
     async function updateDebugInfo() {
