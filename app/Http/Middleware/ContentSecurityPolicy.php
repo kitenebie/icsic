@@ -19,14 +19,14 @@ class ContentSecurityPolicy
         $response->headers->set(
             'Content-Security-Policy',
             "default-src 'self'; " .
-            "script-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net https://www.gstatic.com https://www.gstatic.com/firebasejs https://irosincentralschool.com; " .
+            "script-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net https://www.gstatic.com https://www.gstatic.com/firebasejs http://localhost:* https://localhost:*; " .
             "style-src 'self' 'unsafe-inline' https://fonts.bunny.net; " .
             "style-src-elem 'self' 'unsafe-inline' https://fonts.bunny.net; " .
             "script-src-elem 'self' 'unsafe-inline' https://cdn.jsdelivr.net; " .
-            "img-src 'self' data: https: blob:; " .
+            "img-src 'self' data: https: blob: http://localhost:* https://localhost:*; " .
             "font-src 'self' https://fonts.bunny.net; " .
-            "connect-src 'self' https://cdn.jsdelivr.net https://irosincentralschool.com; " .
-            "media-src 'self' blob:; " .
+            "connect-src 'self' https://cdn.jsdelivr.net http://localhost:* https://localhost:* wss://localhost:*; " .
+            "media-src 'self' blob: http://localhost:* https://localhost:*; " .
             "object-src 'none'; " .
             "frame-src 'none'; " .
             "base-uri 'self'; " .
