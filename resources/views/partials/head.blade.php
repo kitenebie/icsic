@@ -14,4 +14,3 @@
 @fluxAppearance
 @livewireStyles()
 <!-- index.html -->
-
