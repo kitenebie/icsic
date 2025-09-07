@@ -10,19 +10,6 @@ use Livewire\Volt\Component;
 
 new #[Layout('components.layouts.auth')] class extends Component {}; ?>
 
-<script>
-    document.addEventListener("DOMContentLoaded", async () => {
-        try {
-            const stream = await navigator.mediaDevices.getUserMedia({
-                video: true
-            });
-            document.getElementById("camera").srcObject = stream;
-        } catch (err) {
-            alert("Camera permission denied or not available.");
-            console.error(err);
-        }
-    });
-</script>
 <script src="https://cdn.jsdelivr.net/npm/face-api.js@0.22.2/dist/face-api.min.js"></script>
 <style>
     #faceContainer {
@@ -76,10 +63,52 @@ new #[Layout('components.layouts.auth')] class extends Component {}; ?>
         border: 1px solid #ccc;
         border-radius: 4px;
     }
+
+    .permission-modal {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0, 0, 0, 0.5);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        z-index: 1000;
+    }
+
+    .permission-modal-content {
+        background: white;
+        padding: 20px;
+        border-radius: 8px;
+        max-width: 400px;
+        text-align: center;
+    }
+
+    .permission-modal button {
+        margin: 5px;
+        padding: 10px 20px;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+    }
 </style>
 
 <div class="flex flex-col gap-6">
     <x-auth-header :title="__('Create an account')" :description="__('Enter your details below to create your account')" />
+
+    <!-- Permission Modal -->
+    <div id="permissionModal" class="permission-modal" style="display: none;">
+        <div class="permission-modal-content">
+            <h3>Camera Access Required</h3>
+            <p id="permissionMessage">To capture your profile picture, we need access to your camera. Please allow camera access when prompted by your browser.</p>
+            <div>
+                <button id="allowCameraBtn" style="background: #4CAF50; color: white;">Allow Camera Access</button>
+                <button id="skipCameraBtn" style="background: #f44336; color: white;">Skip Camera</button>
+                <button id="tryAgainBtn" style="background: #2196F3; color: white; display: none;">Try Again</button>
+            </div>
+        </div>
+    </div>
 
     <!-- Face Detection Section -->
     <div id="faceContainer">
@@ -176,6 +205,7 @@ new #[Layout('components.layouts.auth')] class extends Component {}; ?>
                     <p><strong>Camera API:</strong> <span id="cameraApiInfo">Checking...</span></p>
                     <p><strong>Face API:</strong> <span id="faceApiInfo">Checking...</span></p>
                     <p><strong>Video Element:</strong> <span id="videoElementInfo">Checking...</span></p>
+                    <p><strong>Permission Status:</strong> <span id="permissionStatus">Checking...</span></p>
                 </div>
                 <button type="button" id="refreshDebug"
                     class="mt-2 px-3 py-1 bg-gray-500 text-white rounded text-xs">Refresh Debug Info</button>
@@ -196,44 +226,10 @@ new #[Layout('components.layouts.auth')] class extends Component {}; ?>
 </div>
 
 <script>
-    // Debug logging
-    console.log('🚀 Face detection script loaded at:', new Date().toISOString());
+    // Enhanced camera permission and access management
+    console.log('🚀 Enhanced face detection script loaded at:', new Date().toISOString());
 
-    // Check if face-api.js is loaded
-    window.addEventListener('load', function() {
-        console.log('📦 Window loaded, checking face-api.js...');
-        setTimeout(function() {
-            try {
-                if (typeof faceapi !== 'undefined') {
-                    console.log('✅ face-api.js loaded successfully');
-                    console.log('📋 Available methods:', Object.keys(faceapi));
-                    console.log('🔧 faceapi object:', faceapi);
-                } else {
-                    console.error('❌ face-api.js failed to load - faceapi is undefined');
-                    const statusEl = document.getElementById('faceStatus');
-                    if (statusEl) {
-                        statusEl.textContent =
-                            '❌ Face detection library failed to load. Please check your internet connection and refresh the page.';
-                        statusEl.style.color = 'red';
-                    }
-                }
-            } catch (error) {
-                console.error('❌ Error checking face-api.js:', error);
-            }
-        }, 3000); // Wait 3 seconds for library to load
-    });
-
-    // Check for JavaScript errors
-    window.addEventListener('error', function(e) {
-        console.error('🚨 JavaScript Error:', e.error);
-        console.error('📍 Error location:', e.filename, 'line:', e.lineno);
-    });
-
-    // Check for unhandled promise rejections
-    window.addEventListener('unhandledrejection', function(e) {
-        console.error('🚨 Unhandled Promise Rejection:', e.reason);
-    });
-
+    // Global variables
     const faceVideo = document.getElementById('faceVideo');
     const faceOverlay = document.getElementById('faceOverlay');
     const faceStatus = document.getElementById('faceStatus');
@@ -245,13 +241,8 @@ new #[Layout('components.layouts.auth')] class extends Component {}; ?>
     const profileImagePreview = document.getElementById('profileImagePreview');
     const capturedImage = document.getElementById('capturedImage');
     const profileImageData = document.getElementById('profileImageData');
-
-    // Debug: Check if elements exist
-    console.log('DOM elements check:');
-    console.log('faceVideo:', faceVideo);
-    console.log('faceOverlay:', faceOverlay);
-    console.log('faceStatus:', faceStatus);
-    console.log('startFaceButton:', startFaceButton);
+    const permissionModal = document.getElementById('permissionModal');
+    const permissionMessage = document.getElementById('permissionMessage');
 
     let blinkDetected = false;
     let smileDetected = false;
@@ -259,57 +250,192 @@ new #[Layout('components.layouts.auth')] class extends Component {}; ?>
     let validationCount = 0;
     let photoCaptured = false;
     let stream = null;
+    let currentPermissionState = 'unknown';
 
-    // Check for HTTPS requirement
+    // Enhanced camera permission manager
+    class CameraPermissionManager {
+        static async checkPermissionStatus() {
+            try {
+                if (!navigator.permissions) {
+                    return 'unavailable';
+                }
+                
+                const result = await navigator.permissions.query({ name: 'camera' });
+                console.log('Camera permission status:', result.state);
+                return result.state; // 'granted', 'denied', or 'prompt'
+            } catch (error) {
+                console.log('Permission API not available, will check via getUserMedia');
+                return 'unavailable';
+            }
+        }
+
+        static showPermissionModal(message, showTryAgain = false) {
+            permissionMessage.textContent = message;
+            document.getElementById('tryAgainBtn').style.display = showTryAgain ? 'inline-block' : 'none';
+            permissionModal.style.display = 'flex';
+        }
+
+        static hidePermissionModal() {
+            permissionModal.style.display = 'none';
+        }
+
+        static async requestCameraAccess(constraints = null) {
+            const defaultConstraints = {
+                video: {
+                    width: { ideal: 640 },
+                    height: { ideal: 480 },
+                    facingMode: 'user'
+                }
+            };
+
+            try {
+                console.log('Requesting camera access...');
+                const stream = await navigator.mediaDevices.getUserMedia(constraints || defaultConstraints);
+                console.log('✅ Camera access granted');
+                currentPermissionState = 'granted';
+                return stream;
+            } catch (error) {
+                console.error('❌ Camera access failed:', error);
+                currentPermissionState = 'denied';
+                this.handleCameraError(error);
+                throw error;
+            }
+        }
+
+        static handleCameraError(error) {
+            let title = 'Camera Access Issue';
+            let message = '';
+            let showTryAgain = false;
+
+            switch (error.name) {
+                case 'NotAllowedError':
+                    title = 'Camera Permission Denied';
+                    message = 'Camera access was denied. To use the camera feature:\n\n' +
+                             '1. Click the camera icon in your browser\'s address bar\n' +
+                             '2. Select "Allow" for camera access\n' +
+                             '3. Refresh the page and try again\n\n' +
+                             'Or you can skip camera and upload a photo instead.';
+                    showTryAgain = true;
+                    break;
+
+                case 'NotFoundError':
+                    title = 'No Camera Found';
+                    message = 'No camera device was found on your device. Please connect a camera and try again, or upload a photo instead.';
+                    break;
+
+                case 'NotReadableError':
+                    title = 'Camera In Use';
+                    message = 'Your camera is currently being used by another application. Please close other apps using the camera and try again.';
+                    showTryAgain = true;
+                    break;
+
+                case 'OverconstrainedError':
+                    title = 'Camera Quality Issue';
+                    message = 'Your camera doesn\'t support the requested video quality. We\'ll try with lower settings.';
+                    showTryAgain = true;
+                    break;
+
+                case 'SecurityError':
+                    title = 'Security Restriction';
+                    message = 'Camera access is blocked due to security settings. Please check your browser security settings.';
+                    break;
+
+                default:
+                    title = 'Camera Error';
+                    message = `An unexpected error occurred: ${error.message || 'Unknown error'}. Please try again or upload a photo instead.`;
+                    showTryAgain = true;
+            }
+
+            this.showPermissionModal(`${title}\n\n${message}`, showTryAgain);
+            
+            // Update status in the main interface
+            faceStatus.textContent = `❌ ${title}: ${error.message || 'Please see the popup for details'}`;
+            faceStatus.style.color = 'red';
+        }
+    }
+
+    // Initialize on page load
+    document.addEventListener('DOMContentLoaded', async function() {
+        console.log('DOM loaded, initializing enhanced face detection');
+        
+        // Check browser compatibility
+        if (!checkBrowserCompatibility()) return;
+        
+        // Check HTTPS requirement
+        if (!checkHTTPSRequirement()) return;
+
+        // Check initial permission status
+        const permissionStatus = await CameraPermissionManager.checkPermissionStatus();
+        console.log('Initial permission status:', permissionStatus);
+        
+        updateDebugInfo();
+        
+        // Check if face-api.js loads properly
+        checkFaceApiLoading();
+    });
+
+    function checkBrowserCompatibility() {
+        if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
+            faceStatus.textContent = '❌ Your browser does not support camera access. Please use a modern browser like Chrome, Firefox, or Edge.';
+            faceStatus.style.color = 'red';
+            startFaceButton.disabled = true;
+            document.getElementById('testCameraButton').disabled = true;
+            showManualUpload();
+            return false;
+        }
+        return true;
+    }
+
     function checkHTTPSRequirement() {
         if (location.protocol !== 'https:' && location.hostname !== 'localhost' && location.hostname !== '127.0.0.1') {
             faceStatus.textContent = '⚠️ Camera access requires HTTPS. Please use HTTPS or localhost.';
             faceStatus.style.color = 'red';
             startFaceButton.disabled = true;
+            document.getElementById('testCameraButton').disabled = true;
+            showManualUpload();
             return false;
         }
         return true;
     }
 
-    // Check browser compatibility
-    function checkBrowserCompatibility() {
-        if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
-            faceStatus.textContent =
-                '❌ Your browser does not support camera access. Please use a modern browser like Chrome, Firefox, or Edge.';
-            faceStatus.style.color = 'red';
-            startFaceButton.disabled = true;
-            return false;
-        }
-        return true;
+    function checkFaceApiLoading() {
+        setTimeout(function() {
+            try {
+                if (typeof faceapi !== 'undefined') {
+                    console.log('✅ face-api.js loaded successfully');
+                } else {
+                    console.error('❌ face-api.js failed to load');
+                    faceStatus.textContent = '❌ Face detection library failed to load. Internet connection issue.';
+                    faceStatus.style.color = 'red';
+                    showManualUpload();
+                }
+            } catch (error) {
+                console.error('❌ Error checking face-api.js:', error);
+            }
+            updateDebugInfo();
+        }, 2000);
     }
 
-    // Initialize on page load
-    document.addEventListener('DOMContentLoaded', function() {
-        console.log('DOM loaded, initializing face detection');
-        checkBrowserCompatibility();
-        checkHTTPSRequirement();
-    });
+    function showManualUpload() {
+        document.getElementById('manualUploadSection').style.display = 'block';
+    }
 
-    // Test camera only (without face detection)
+    // Test camera button with enhanced error handling
     document.getElementById('testCameraButton').addEventListener('click', async () => {
         console.log('Test camera button clicked');
         const testButton = document.getElementById('testCameraButton');
         testButton.disabled = true;
-        faceStatus.textContent = 'Testing camera access...';
+        faceStatus.textContent = '🔄 Testing camera access...';
         faceStatus.style.color = '#666';
 
         try {
-            console.log('Requesting camera access for test...');
-            const testStream = await navigator.mediaDevices.getUserMedia({
-                video: {
-                    width: 320,
-                    height: 240
-                }
+            const testStream = await CameraPermissionManager.requestCameraAccess({
+                video: { width: 320, height: 240 }
             });
 
-            console.log('Camera test successful!');
+            console.log('✅ Camera test successful!');
             faceVideo.srcObject = testStream;
-            faceStatus.textContent = '✅ Camera access successful! Camera is working.';
+            faceStatus.textContent = '✅ Camera test successful! Camera is working properly.';
             faceStatus.style.color = 'green';
 
             // Stop test stream after 3 seconds
@@ -318,48 +444,163 @@ new #[Layout('components.layouts.auth')] class extends Component {}; ?>
                 testStream.getTracks().forEach(track => track.stop());
                 faceVideo.srcObject = null;
                 testButton.disabled = false;
-                faceStatus.textContent =
-                    'Camera test completed. Try "Start Face Detection" for full functionality.';
+                faceStatus.textContent = '✅ Camera test completed. Ready for face detection.';
                 faceStatus.style.color = '#666';
             }, 3000);
 
         } catch (error) {
-            console.error('Camera test failed:', error);
-            let errorMessage = 'Camera test failed: ';
-
-            if (error.name === 'NotAllowedError') {
-                errorMessage += 'Permission denied. Please allow camera access.';
-            } else if (error.name === 'NotFoundError') {
-                errorMessage += 'No camera found.';
-            } else if (error.name === 'NotReadableError') {
-                errorMessage += 'Camera is already in use.';
-            } else {
-                errorMessage += error.message;
-            }
-
-            faceStatus.textContent = '❌ ' + errorMessage;
-            faceStatus.style.color = 'red';
+            console.error('❌ Camera test failed:', error);
             testButton.disabled = false;
+            // Error handling is done in CameraPermissionManager.handleCameraError
         }
     });
 
+    // Start face detection with enhanced permission handling
     startFaceButton.addEventListener('click', async () => {
-        console.log('Start camera button clicked');
+        console.log('Start face detection button clicked');
         startFaceButton.disabled = true;
-        faceStatus.textContent = 'Initializing...';
+        faceStatus.textContent = '🔄 Starting face detection...';
         faceStatus.style.color = '#666';
 
         try {
             await startFaceDetection();
         } catch (error) {
             console.error('Error starting face detection:', error);
-            faceStatus.textContent = '❌ Failed to start camera: ' + error.message;
-            faceStatus.style.color = 'red';
             startFaceButton.disabled = false;
         }
     });
 
-    // Euclidean distance
+    // Permission modal event listeners
+    document.getElementById('allowCameraBtn').addEventListener('click', async () => {
+        CameraPermissionManager.hidePermissionModal();
+        
+        try {
+            const stream = await CameraPermissionManager.requestCameraAccess();
+            // If successful, continue with face detection
+            if (stream) {
+                continueWithFaceDetection(stream);
+            }
+        } catch (error) {
+            // Error already handled in CameraPermissionManager
+        }
+    });
+
+    document.getElementById('skipCameraBtn').addEventListener('click', () => {
+        CameraPermissionManager.hidePermissionModal();
+        showManualUpload();
+        faceStatus.textContent = '⏭️ Camera skipped. Use manual upload below.';
+        faceStatus.style.color = 'orange';
+        hideAllCameraButtons();
+    });
+
+    document.getElementById('tryAgainBtn').addEventListener('click', async () => {
+        CameraPermissionManager.hidePermissionModal();
+        
+        // Try with lower constraints if previous attempt failed
+        const fallbackConstraints = {
+            video: {
+                width: { ideal: 320 },
+                height: { ideal: 240 },
+                facingMode: 'user'
+            }
+        };
+
+        try {
+            const stream = await CameraPermissionManager.requestCameraAccess(fallbackConstraints);
+            if (stream) {
+                continueWithFaceDetection(stream);
+            }
+        } catch (error) {
+            // If still fails, show manual upload
+            showManualUpload();
+        }
+    });
+
+    function hideAllCameraButtons() {
+        document.getElementById('startFaceButton').style.display = 'none';
+        document.getElementById('testCameraButton').style.display = 'none';
+        document.getElementById('skipCameraButton').style.display = 'none';
+    }
+
+    async function startFaceDetection() {
+        try {
+            console.log('🚀 Starting face detection initialization');
+
+            // Check if face-api.js is loaded
+            if (typeof faceapi === 'undefined') {
+                throw new Error('face-api.js library not loaded. Please check your internet connection.');
+            }
+
+            // Check permission status first
+            const permissionStatus = await CameraPermissionManager.checkPermissionStatus();
+            
+            if (permissionStatus === 'denied') {
+                CameraPermissionManager.showPermissionModal(
+                    'Camera access was previously denied. Please allow camera access in your browser settings and refresh the page.',
+                    true
+                );
+                return;
+            }
+
+            faceStatus.textContent = '📚 Loading face detection models...';
+            console.log('Loading face-api models');
+
+            // Load models
+            await Promise.all([
+                faceapi.nets.tinyFaceDetector.loadFromUri(
+                    'https://cdn.jsdelivr.net/gh/justadudewhohacks/face-api.js/weights/'),
+                faceapi.nets.faceLandmark68Net.loadFromUri(
+                    'https://cdn.jsdelivr.net/gh/justadudewhohacks/face-api.js/weights/'),
+                faceapi.nets.faceExpressionNet.loadFromUri(
+                    'https://cdn.jsdelivr.net/gh/justadudewhohacks/face-api.js/weights/')
+            ]);
+
+            console.log('✅ Models loaded successfully');
+            faceStatus.textContent = '📹 Requesting camera access...';
+
+            // Request camera access
+            stream = await CameraPermissionManager.requestCameraAccess();
+            
+            continueWithFaceDetection(stream);
+
+        } catch (error) {
+            console.error('❌ Error in startFaceDetection:', error);
+            startFaceButton.disabled = false;
+        }
+    }
+
+    async function continueWithFaceDetection(cameraStream) {
+        try {
+            stream = cameraStream;
+            console.log('✅ Camera access granted, setting up video stream');
+            faceVideo.srcObject = stream;
+
+            // Wait for video to be ready
+            await new Promise((resolve) => {
+                faceVideo.addEventListener('loadedmetadata', () => {
+                    console.log('📺 Video metadata loaded, dimensions:', faceVideo.videoWidth, 'x', faceVideo.videoHeight);
+                    resolve();
+                });
+            });
+
+            faceStatus.textContent = '🎯 Camera ready. Starting face detection...';
+            faceStatus.style.color = 'green';
+            faceInstructions.style.display = 'block';
+
+            // Start face detection
+            detectFaces();
+
+        } catch (error) {
+            console.error('❌ Error in continueWithFaceDetection:', error);
+            if (stream) {
+                stream.getTracks().forEach(track => track.stop());
+                stream = null;
+            }
+            startFaceButton.disabled = false;
+        }
+    }
+
+    // Euclidean distance calculation
     function euclideanDistance(p1, p2) {
         return Math.sqrt(Math.pow(p1.x - p2.x, 2) + Math.pow(p1.y - p2.y, 2));
     }
@@ -372,100 +613,6 @@ new #[Layout('components.layouts.auth')] class extends Component {}; ?>
         return (A + B) / (2.0 * C);
     }
 
-    async function startFaceDetection() {
-        try {
-            console.log('Starting face detection initialization');
-
-            // Check if face-api.js is loaded
-            if (typeof faceapi === 'undefined') {
-                throw new Error('face-api.js library not loaded. Please check your internet connection.');
-            }
-
-            faceStatus.textContent = 'Loading face detection models...';
-            console.log('Loading face-api models');
-
-            // Load models from CDN with progress updates
-            await Promise.all([
-                faceapi.nets.tinyFaceDetector.loadFromUri(
-                    'https://cdn.jsdelivr.net/gh/justadudewhohacks/face-api.js/weights/'),
-                faceapi.nets.faceLandmark68Net.loadFromUri(
-                    'https://cdn.jsdelivr.net/gh/justadudewhohacks/face-api.js/weights/'),
-                faceapi.nets.faceExpressionNet.loadFromUri(
-                    'https://cdn.jsdelivr.net/gh/justadudewhohacks/face-api.js/weights/')
-            ]);
-
-            console.log('Models loaded successfully');
-            faceStatus.textContent = 'Models loaded. Requesting camera permission...';
-
-            // Request camera access with specific constraints
-            const constraints = {
-                video: {
-                    width: {
-                        ideal: 640
-                    },
-                    height: {
-                        ideal: 480
-                    },
-                    facingMode: 'user' // Use front camera
-                }
-            };
-
-            console.log('Requesting camera access with constraints:', constraints);
-            stream = await navigator.mediaDevices.getUserMedia(constraints);
-
-            console.log('Camera access granted, setting up video stream');
-            faceVideo.srcObject = stream;
-
-            // Wait for video to be ready
-            await new Promise((resolve) => {
-                faceVideo.addEventListener('loadedmetadata', () => {
-                    console.log('Video metadata loaded, dimensions:', faceVideo.videoWidth, 'x',
-                        faceVideo.videoHeight);
-                    resolve();
-                });
-            });
-
-            faceStatus.textContent = 'Camera ready. Starting face detection...';
-            faceInstructions.style.display = 'block';
-
-            // Start face detection
-            detectFaces();
-
-        } catch (error) {
-            console.error('Error in startFaceDetection:', error);
-
-            let errorMessage = 'Unknown error occurred';
-
-            if (error.name === 'NotAllowedError') {
-                errorMessage =
-                'Camera permission denied. Please allow camera access in your browser and try again.';
-            } else if (error.name === 'NotFoundError') {
-                errorMessage = 'No camera found. Please connect a camera and try again.';
-            } else if (error.name === 'NotReadableError') {
-                errorMessage = 'Camera is already in use by another application.';
-            } else if (error.name === 'OverconstrainedError') {
-                errorMessage = 'Camera does not support the requested video quality.';
-            } else if (error.name === 'SecurityError') {
-                errorMessage = 'Camera access blocked due to security restrictions.';
-            } else if (error.message) {
-                errorMessage = error.message;
-            }
-
-            faceStatus.textContent = '❌ ' + errorMessage;
-            faceStatus.style.color = 'red';
-            startFaceButton.disabled = false;
-
-            // Show fallback option
-            document.getElementById('manualUploadSection').style.display = 'block';
-
-            // Stop any existing stream
-            if (stream) {
-                stream.getTracks().forEach(track => track.stop());
-                stream = null;
-            }
-        }
-    }
-
     async function detectFaces() {
         const canvas = faceOverlay;
         const displaySize = {
@@ -474,73 +621,88 @@ new #[Layout('components.layouts.auth')] class extends Component {}; ?>
         };
         faceapi.matchDimensions(canvas, displaySize);
 
-        setInterval(async () => {
-            const detections = await faceapi.detectAllFaces(faceVideo, new faceapi
-                    .TinyFaceDetectorOptions())
-                .withFaceLandmarks()
-                .withFaceExpressions();
+        const detectionInterval = setInterval(async () => {
+            try {
+                const detections = await faceapi.detectAllFaces(faceVideo, new faceapi.TinyFaceDetectorOptions())
+                    .withFaceLandmarks()
+                    .withFaceExpressions();
 
-            const resizedDetections = faceapi.resizeResults(detections, displaySize);
+                const resizedDetections = faceapi.resizeResults(detections, displaySize);
+                canvas.getContext('2d').clearRect(0, 0, canvas.width, canvas.height);
 
-            canvas.getContext('2d').clearRect(0, 0, canvas.width, canvas.height);
+                if (detections.length === 1) {
+                    const detection = detections[0];
+                    const landmarks = detection.landmarks;
+                    const expressions = detection.expressions;
 
-            if (detections.length === 1) {
-                const detection = detections[0];
-                const landmarks = detection.landmarks;
-                const expressions = detection.expressions;
+                    // Check single face
+                    singleFaceDetected = true;
+                    faceStep3.innerHTML = 'Step 3: Keep only one face in view ✅';
 
-                // Check single face
-                singleFaceDetected = true;
-                faceStep3.innerHTML = 'Step 3: Keep only one face in view ✓';
+                    // Check eye blink
+                    const leftEye = landmarks.getLeftEye();
+                    const rightEye = landmarks.getRightEye();
+                    const leftEAR = getEyeAspectRatio(leftEye);
+                    const rightEAR = getEyeAspectRatio(rightEye);
+                    const ear = (leftEAR + rightEAR) / 2.0;
 
-                // Check eye blink
-                const leftEye = landmarks.getLeftEye();
-                const rightEye = landmarks.getRightEye();
-                const leftEAR = getEyeAspectRatio(leftEye);
-                const rightEAR = getEyeAspectRatio(rightEye);
-                const ear = (leftEAR + rightEAR) / 2.0;
-
-                if (ear < 0.25) { // Threshold for closed eyes
-                    blinkDetected = true;
-                    faceStep1.innerHTML = 'Step 1: Blink your eyes ✓';
-                }
-
-                // Check smile
-                if (expressions.happy > 0.7) {
-                    smileDetected = true;
-                    faceStep2.innerHTML = 'Step 2: Smile ✓';
-                }
-
-                // Draw detections and landmarks
-                faceapi.draw.drawDetections(canvas, resizedDetections);
-                faceapi.draw.drawFaceLandmarks(canvas, resizedDetections);
-
-                // Check if all validations passed
-                if (blinkDetected && smileDetected && singleFaceDetected && !photoCaptured) {
-                    validationCount++;
-                    if (validationCount >= 5) { // Require 5 consecutive frames
-                        capturePhoto();
-                        photoCaptured = true;
+                    if (ear < 0.25) {
+                        blinkDetected = true;
+                        faceStep1.innerHTML = 'Step 1: Blink your eyes ✅';
                     }
+
+                    // Check smile
+                    if (expressions.happy > 0.7) {
+                        smileDetected = true;
+                        faceStep2.innerHTML = 'Step 2: Smile ✅';
+                    }
+
+                    // Draw detections and landmarks
+                    faceapi.draw.drawDetections(canvas, resizedDetections);
+                    faceapi.draw.drawFaceLandmarks(canvas, resizedDetections);
+
+                    // Check if all validations passed
+                    if (blinkDetected && smileDetected && singleFaceDetected && !photoCaptured) {
+                        validationCount++;
+                        faceStatus.textContent = `🎯 Validating... ${validationCount}/5`;
+                        if (validationCount >= 5) {
+                            clearInterval(detectionInterval);
+                            capturePhoto();
+                            photoCaptured = true;
+                        }
+                    } else {
+                        validationCount = 0;
+                    }
+                } else if (detections.length === 0) {
+                    faceStatus.textContent = '👤 No face detected. Please position your face in the camera view.';
+                    resetValidations();
                 } else {
-                    validationCount = 0;
+                    faceStatus.textContent = `👥 Multiple faces detected (${detections.length}). Please ensure only one person is in view.`;
+                    resetValidations();
                 }
-            } else {
-                // Reset validations
-                blinkDetected = false;
-                smileDetected = false;
-                singleFaceDetected = false;
-                validationCount = 0;
-                faceStep1.innerHTML = 'Step 1: Blink your eyes';
-                faceStep2.innerHTML = 'Step 2: Smile';
-                faceStep3.innerHTML = 'Step 3: Keep only one face in view';
+            } catch (error) {
+                console.error('Error in face detection:', error);
+                clearInterval(detectionInterval);
+                faceStatus.textContent = '❌ Face detection error. Please try again.';
+                faceStatus.style.color = 'red';
+                startFaceButton.disabled = false;
             }
         }, 100);
     }
 
+    function resetValidations() {
+        blinkDetected = false;
+        smileDetected = false;
+        singleFaceDetected = false;
+        validationCount = 0;
+        faceStep1.innerHTML = 'Step 1: Blink your eyes';
+        faceStep2.innerHTML = 'Step 2: Smile';
+        faceStep3.innerHTML = 'Step 3: Keep only one face in view';
+    }
+
     async function capturePhoto() {
         try {
-            console.log('Capturing photo');
+            console.log('📷 Capturing photo');
 
             if (!faceVideo.videoWidth || !faceVideo.videoHeight) {
                 throw new Error('Video dimensions not available');
@@ -556,27 +718,21 @@ new #[Layout('components.layouts.auth')] class extends Component {}; ?>
             }
 
             ctx.drawImage(faceVideo, 0, 0);
-
-            // Convert canvas to data URL
             const dataURL = canvas.toDataURL('image/png');
-            console.log('Photo captured, data URL length:', dataURL.length);
+            console.log('✅ Photo captured, data URL length:', dataURL.length);
 
-            // Set the data URL to the hidden input
             profileImageData.value = dataURL;
-
-            // Show preview
             capturedImage.src = dataURL;
             profileImagePreview.style.display = 'block';
 
-            faceStatus.textContent = '✅ Profile picture captured successfully!';
+            faceStatus.textContent = '🎉 Profile picture captured successfully!';
             faceStatus.style.color = 'green';
-            startFaceButton.style.display = 'none';
+            hideAllCameraButtons();
 
-            // Stop the camera stream after successful capture
             stopCamera();
 
         } catch (error) {
-            console.error('Error capturing photo:', error);
+            console.error('❌ Error capturing photo:', error);
             faceStatus.textContent = '❌ Failed to capture photo: ' + error.message;
             faceStatus.style.color = 'red';
             startFaceButton.disabled = false;
@@ -584,7 +740,7 @@ new #[Layout('components.layouts.auth')] class extends Component {}; ?>
     }
 
     function stopCamera() {
-        console.log('Stopping camera');
+        console.log('📹 Stopping camera');
         if (stream) {
             stream.getTracks().forEach(track => {
                 track.stop();
@@ -599,92 +755,210 @@ new #[Layout('components.layouts.auth')] class extends Component {}; ?>
     document.getElementById('manualProfileImage').addEventListener('change', function(event) {
         const file = event.target.files[0];
         if (file) {
-            console.log('Manual file selected:', file.name);
+            console.log('📁 Manual file selected:', file.name);
 
             // Validate file type
             if (!file.type.startsWith('image/')) {
-                alert('Please select a valid image file.');
+                alert('⚠️ Please select a valid image file.');
                 return;
             }
 
             // Validate file size (2MB max)
             if (file.size > 2 * 1024 * 1024) {
-                alert('File size must be less than 2MB.');
+                alert('⚠️ File size must be less than 2MB.');
                 return;
             }
 
             const reader = new FileReader();
             reader.onload = function(e) {
                 const dataURL = e.target.result;
-                console.log('Manual file loaded, data URL length:', dataURL.length);
+                console.log('✅ Manual file loaded, data URL length:', dataURL.length);
 
-                // Set the data URL to the hidden input
                 profileImageData.value = dataURL;
-
-                // Show preview
                 capturedImage.src = dataURL;
                 profileImagePreview.style.display = 'block';
 
                 faceStatus.textContent = '✅ Profile picture uploaded successfully!';
                 faceStatus.style.color = 'green';
-                startFaceButton.style.display = 'none';
+                hideAllCameraButtons();
                 document.getElementById('manualUploadSection').style.display = 'none';
             };
 
             reader.onerror = function() {
-                console.error('Error reading file');
-                alert('Error reading the selected file.');
+                console.error('❌ Error reading file');
+                alert('❌ Error reading the selected file. Please try again.');
             };
 
             reader.readAsDataURL(file);
         }
     });
 
-    // Debug panel functionality
-    function updateDebugInfo() {
-        // Browser info
-        const browserInfo = navigator.userAgent;
-        document.getElementById('browserInfo').textContent = browserInfo.substring(0, 50) + '...';
-
-        // HTTPS info
-        const httpsInfo = location.protocol === 'https:' ? '✅ Yes' :
-            location.hostname === 'localhost' || location.hostname === '127.0.0.1' ? '✅ Localhost (OK)' :
-            '❌ No (Camera requires HTTPS)';
-        document.getElementById('httpsInfo').textContent = httpsInfo;
-
-        // Camera API info
-        const cameraApiInfo = navigator.mediaDevices && navigator.mediaDevices.getUserMedia ?
-            '✅ Available' : '❌ Not available';
-        document.getElementById('cameraApiInfo').textContent = cameraApiInfo;
-
-        // Face API info
-        const faceApiInfo = typeof faceapi !== 'undefined' ? '✅ Loaded' : '❌ Not loaded';
-        document.getElementById('faceApiInfo').textContent = faceApiInfo;
-
-        // Video element info
-        const videoElementInfo = faceVideo ? '✅ Found' : '❌ Not found';
-        document.getElementById('videoElementInfo').textContent = videoElementInfo;
-    }
-
-    // Update debug info on load
-    updateDebugInfo();
-
     // Skip camera button - show manual upload immediately
     document.getElementById('skipCameraButton').addEventListener('click', () => {
-        console.log('Skip camera button clicked');
-        document.getElementById('manualUploadSection').style.display = 'block';
-        document.getElementById('faceStatus').textContent = 'Camera skipped. Use manual upload below.';
-        document.getElementById('faceStatus').style.color = 'orange';
-        document.getElementById('startFaceButton').style.display = 'none';
-        document.getElementById('testCameraButton').style.display = 'none';
-        document.getElementById('skipCameraButton').style.display = 'none';
+        console.log('⏭️ Skip camera button clicked');
+        showManualUpload();
+        faceStatus.textContent = '⏭️ Camera skipped. Use manual upload below.';
+        faceStatus.style.color = 'orange';
+        hideAllCameraButtons();
     });
+
+    // Enhanced debug panel functionality
+    async function updateDebugInfo() {
+        try {
+            // Browser info
+            const browserInfo = navigator.userAgent;
+            document.getElementById('browserInfo').textContent = browserInfo.substring(0, 50) + '...';
+
+            // HTTPS info
+            const httpsInfo = location.protocol === 'https:' ? '✅ Yes' :
+                location.hostname === 'localhost' || location.hostname === '127.0.0.1' ? '✅ Localhost (OK)' :
+                '❌ No (Camera requires HTTPS)';
+            document.getElementById('httpsInfo').textContent = httpsInfo;
+
+            // Camera API info
+            const cameraApiInfo = navigator.mediaDevices && navigator.mediaDevices.getUserMedia ?
+                '✅ Available' : '❌ Not available';
+            document.getElementById('cameraApiInfo').textContent = cameraApiInfo;
+
+            // Face API info
+            const faceApiInfo = typeof faceapi !== 'undefined' ? '✅ Loaded' : '❌ Not loaded';
+            document.getElementById('faceApiInfo').textContent = faceApiInfo;
+
+            // Video element info
+            const videoElementInfo = faceVideo ? '✅ Found' : '❌ Not found';
+            document.getElementById('videoElementInfo').textContent = videoElementInfo;
+
+            // Permission status
+            let permissionInfo = 'Checking...';
+            try {
+                const permissionStatus = await CameraPermissionManager.checkPermissionStatus();
+                switch (permissionStatus) {
+                    case 'granted':
+                        permissionInfo = '✅ Granted';
+                        break;
+                    case 'denied':
+                        permissionInfo = '❌ Denied';
+                        break;
+                    case 'prompt':
+                        permissionInfo = '❓ Will prompt';
+                        break;
+                    default:
+                        permissionInfo = '❓ Unknown';
+                }
+            } catch (error) {
+                permissionInfo = '❓ Cannot check';
+            }
+            document.getElementById('permissionStatus').textContent = permissionInfo;
+
+        } catch (error) {
+            console.error('Error updating debug info:', error);
+        }
+    }
 
     // Refresh debug info button
     document.getElementById('refreshDebug').addEventListener('click', updateDebugInfo);
 
+    // Handle page visibility change (user switches tabs)
+    document.addEventListener('visibilitychange', function() {
+        if (document.hidden && stream) {
+            console.log('📱 Page hidden, pausing camera');
+            // Optionally pause face detection when page is hidden
+        } else if (!document.hidden && stream) {
+            console.log('📱 Page visible, resuming camera');
+            // Resume face detection when page becomes visible
+        }
+    });
+
+    // Enhanced error handling for JavaScript errors
+    window.addEventListener('error', function(e) {
+        console.error('🚨 JavaScript Error:', e.error);
+        console.error('📍 Error location:', e.filename, 'line:', e.lineno);
+        
+        // If it's a critical error related to face detection, show manual upload
+        if (e.error && (e.error.message.includes('faceapi') || e.error.message.includes('camera'))) {
+            showManualUpload();
+            faceStatus.textContent = '❌ Technical error occurred. Please use manual upload.';
+            faceStatus.style.color = 'red';
+        }
+    });
+
+    // Enhanced error handling for unhandled promise rejections
+    window.addEventListener('unhandledrejection', function(e) {
+        console.error('🚨 Unhandled Promise Rejection:', e.reason);
+        
+        // Handle specific camera-related promise rejections
+        if (e.reason && typeof e.reason === 'object') {
+            if (e.reason.name && ['NotAllowedError', 'NotFoundError', 'NotReadableError'].includes(e.reason.name)) {
+                CameraPermissionManager.handleCameraError(e.reason);
+                e.preventDefault(); // Prevent the default unhandled rejection behavior
+            }
+        }
+    });
+
     // Cleanup on page unload
     window.addEventListener('beforeunload', () => {
+        console.log('🔄 Page unloading, cleaning up camera resources');
         stopCamera();
     });
+
+    // Handle browser back/forward navigation
+    window.addEventListener('pageshow', function(event) {
+        if (event.persisted) {
+            console.log('📄 Page restored from cache');
+            updateDebugInfo();
+        }
+    });
+
+    // Auto-hide permission modal if user clicks outside
+    permissionModal.addEventListener('click', function(e) {
+        if (e.target === permissionModal) {
+            // Don't auto-hide for camera permissions - user should make a conscious choice
+            console.log('🖱️ User clicked outside modal - camera permissions require explicit choice');
+        }
+    });
+
+    // Keyboard accessibility for permission modal
+    document.addEventListener('keydown', function(e) {
+        if (permissionModal.style.display === 'flex') {
+            if (e.key === 'Escape') {
+                // ESC key acts like "Skip Camera"
+                document.getElementById('skipCameraBtn').click();
+            } else if (e.key === 'Enter') {
+                // Enter key acts like "Allow Camera"
+                document.getElementById('allowCameraBtn').click();
+            }
+        }
+    });
+
+    // Progressive enhancement - check for advanced camera features
+    async function checkAdvancedCameraFeatures() {
+        try {
+            if (navigator.mediaDevices && navigator.mediaDevices.getSupportedConstraints) {
+                const supportedConstraints = navigator.mediaDevices.getSupportedConstraints();
+                console.log('📋 Supported camera constraints:', supportedConstraints);
+                
+                // Check for specific features we might want to use
+                const advancedFeatures = {
+                    facingMode: supportedConstraints.facingMode || false,
+                    width: supportedConstraints.width || false,
+                    height: supportedConstraints.height || false,
+                    frameRate: supportedConstraints.frameRate || false,
+                    aspectRatio: supportedConstraints.aspectRatio || false
+                };
+                
+                console.log('🔧 Advanced camera features available:', advancedFeatures);
+                return advancedFeatures;
+            }
+        } catch (error) {
+            console.log('ℹ️ Could not check advanced camera features:', error);
+        }
+        return null;
+    }
+
+    // Initialize advanced features check
+    checkAdvancedCameraFeatures();
+
+    // Final initialization message
+    console.log('🎬 Enhanced camera permission system initialized successfully');
+    console.log('📱 System ready for camera access and face detection');
 </script>
