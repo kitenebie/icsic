@@ -170,7 +170,7 @@ class UserResource extends Resource
                     ->image()
                     ->directory('ids')
                     ->columnSpanFull(),
-                FileUpload::make('profile_image')
+                FileUpload::make('profile_picture')
                     ->label('Profile Image')
                     ->image()
                     ->directory('profiles')
@@ -217,7 +217,7 @@ class UserResource extends Resource
                     ->height(50)
                     ->width(50)
                     ->openUrlInNewTab(),
-                ImageColumn::make('profile_image')
+                ImageColumn::make('profile_picture')
                     ->label('Profile Image')
                     ->disk('public')
                     ->height(50)
