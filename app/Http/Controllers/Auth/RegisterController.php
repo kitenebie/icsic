@@ -10,110 +10,9 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Validation\Rules;
-use Intervention\Image\Facades\Image;
 
 class RegisterController extends Controller
 {
-    /**
-     * METHOD 1: Direct File Storage (Fastest)
-     * Skip base64 conversion entirely - directly store uploaded files
-     */
-    private function storeImageDirect($file, $folder)
-    {
-        // Generate unique filename
-        $filename = 'profile_' . time() . '_' . uniqid() . '.' . $file->getClientOriginalExtension();
-        
-        // Store directly using Laravel's storage
-        $path = $file->storeAs($folder, $filename, 'public');
-        
-        return $path;
-    }
-
-    /**
-     * METHOD 2: Optimized Base64 with Compression (Current method improved)
-     * For when you must use base64 (camera capture)
-     */
-    private function saveBase64ImageOptimized($base64Data, $folder, $quality = 85)
-    {
-        // Remove data URL prefix more efficiently
-        $imageData = preg_replace('/^data:image\/[^;]+;base64,/', '', $base64Data);
-        
-        // Decode
-        $decodedData = base64_decode($imageData);
-        if ($decodedData === false) {
-            throw new \InvalidArgumentException('Invalid base64 image data');
-        }
-        
-        // Generate filename
-        $filename = 'profile_' . time() . '_' . uniqid() . '.jpg'; // Always use JPG for smaller size
-        
-        // Use Intervention Image for compression and optimization
-        $image = Image::make($decodedData);
-        
-        // Optimize: resize if too large, compress
-        $image->resize(800, 800, function ($constraint) {
-            $constraint->aspectRatio();
-            $constraint->upsize(); // Don't upsize smaller images
-        });
-        
-        // Save compressed image
-        $path = storage_path('app/public/' . $folder);
-        if (!is_dir($path)) {
-            mkdir($path, 0755, true);
-        }
-        
-        $image->save($path . '/' . $filename, $quality);
-        
-        return $folder . '/' . $filename;
-    }
-
-    /**
-     * METHOD 3: Stream-based Storage (Memory Efficient)
-     * Best for large images
-     */
-    private function saveBase64ImageStream($base64Data, $folder)
-    {
-        // Remove prefix
-        $imageData = preg_replace('/^data:image\/[^;]+;base64,/', '', $base64Data);
-        
-        // Generate filename
-        $filename = 'profile_' . time() . '_' . uniqid() . '.jpg';
-        $fullPath = $folder . '/' . $filename;
-        
-        // Use Laravel Storage for streaming
-        $stream = fopen('php://temp', 'w+');
-        fwrite($stream, base64_decode($imageData));
-        rewind($stream);
-        
-        Storage::disk('public')->writeStream($fullPath, $stream);
-        fclose($stream);
-        
-        return $fullPath;
-    }
-
-    /**
-     * METHOD 4: Queue-based Async Processing (Fastest Response)
-     * Move heavy processing to background
-     */
-    private function saveBase64ImageAsync($base64Data, $folder)
-    {
-        // Store temporarily with minimal processing
-        $tempFilename = 'temp_' . time() . '_' . uniqid() . '.tmp';
-        $tempPath = storage_path('app/temp/' . $tempFilename);
-        
-        if (!is_dir(dirname($tempPath))) {
-            mkdir(dirname($tempPath), 0755, true);
-        }
-        
-        // Just decode and save temporarily
-        file_put_contents($tempPath, base64_decode(preg_replace('/^data:image\/[^;]+;base64,/', '', $base64Data)));
-        
-        // Queue the optimization job
-        \App\Jobs\ProcessImageUpload::dispatch($tempPath, $folder);
-        
-        // Return temporary path (will be replaced by job)
-        return 'temp/' . $tempFilename;
-    }
 
     public function store(Request $request)
     {
@@ -132,27 +31,36 @@ class RegisterController extends Controller
                 'profile_picture' => ['nullable', 'string'],
             ]);
 
-            // OPTIMIZED IMAGE PROCESSING
+            // Handle image uploads
             $frontIdPath = null;
             $backIdPath = null;
             $profileImagePath = null;
 
-            // Process ID uploads with direct storage (fastest)
+            // Process ID uploads
             if ($request->hasFile('front_id')) {
-                $frontIdPath = $this->storeImageDirect($request->file('front_id'), 'ids');
+                $frontIdPath = $request->file('front_id')->store('ids', 'public');
             }
 
             if ($request->hasFile('back_id')) {
-                $backIdPath = $this->storeImageDirect($request->file('back_id'), 'ids');
+                $backIdPath = $request->file('back_id')->store('ids', 'public');
             }
 
-            // Process profile image based on source
+            // Process profile image
             if ($request->has('profile_image_data') && !empty($request->profile_image_data)) {
-                // Camera capture - use optimized base64 method
-                $profileImagePath = $this->saveBase64ImageOptimized($request->profile_image_data, 'profiles', 80);
+                // Handle base64 image data
+                $imageData = preg_replace('/^data:image\/[^;]+;base64,/', '', $request->profile_image_data);
+                $decodedData = base64_decode($imageData);
+                if ($decodedData !== false) {
+                    $filename = 'profile_' . time() . '_' . uniqid() . '.png';
+                    $path = storage_path('app/public/profiles/' . $filename);
+                    if (!is_dir(dirname($path))) {
+                        mkdir(dirname($path), 0755, true);
+                    }
+                    file_put_contents($path, $decodedData);
+                    $profileImagePath = 'profiles/' . $filename;
+                }
             } elseif ($request->hasFile('manual_profile_image')) {
-                // Manual upload - use direct storage
-                $profileImagePath = $this->storeImageDirect($request->file('manual_profile_image'), 'profiles');
+                $profileImagePath = $request->file('manual_profile_image')->store('profiles', 'public');
             }
 
             $user = User::create([
@@ -172,7 +80,7 @@ class RegisterController extends Controller
             if ($user) {
                 event(new Registered($user));
                 Auth::login($user);
-                
+
                 return redirect('/waiting')->with('status', '✅ Account created successfully!');
             }
 
