@@ -31,7 +31,7 @@ use Filament\Forms\Components\Fieldset;
 use App\Services\XSSai;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Log;
-use Filament\Forms\Components\Actions\Action;
+use Filament\Forms\Components\ToggleButtons;
 
 class News extends Component implements HasForms, HasTable
 {
@@ -193,29 +193,60 @@ class News extends Component implements HasForms, HasTable
         $audienceService = app(AudienceService::class);
         return $form
             ->extraAttributes([
-                'x-data' => '{}',
+                'x-data' => '{
+            hasDraft: false,
+            showDraftOptions: false
+        }',
                 'x-init' => "
-                let saved = JSON.parse(localStorage.getItem('NewsDraft') ?? '{}');
-                
-                if (Object.keys(saved).length > 0) {
-                    if (confirm('A saved draft was found. Do you want to restore it?')) {
-                        for (let key in saved) {
-                            if (saved[key] !== null && saved[key] !== undefined) {
-                                \$wire.set('data.' + key, saved[key]);
-                            }
-                        }
-                    } else {
-                        localStorage.removeItem('NewsDraft');
-                    }
-                }
-
-                \$watch('\$wire.data', value => {
+            let saved = JSON.parse(localStorage.getItem('NewsDraft') ?? '{}');
+            this.hasDraft = Object.keys(saved).length > 0;
+            this.showDraftOptions = this.hasDraft;
+            
+            \$watch('\$wire.data', value => {
+                if (value && Object.keys(value).length > 0) {
                     localStorage.setItem('NewsDraft', JSON.stringify(value));
-                });
-            ",
+                }
+            });
+        ",
             ])
-
             ->schema([
+                ToggleButtons::make('draft_action')
+                    ->label('Draft Options')
+                    ->options([
+                        'restore' => 'Restore Draft',
+                        'delete' => 'Delete Draft',
+                    ])
+                    ->inline()
+                    ->reactive()
+                    ->afterStateUpdated(function ($state, callable $set) {
+                        if ($state === 'restore') {
+                            // Get saved data from localStorage via JavaScript
+                            $this->dispatch('restore-draft');
+                            $set('draft_action', null); // Reset the toggle
+                        } elseif ($state === 'delete') {
+                            // Clear localStorage via JavaScript
+                            $this->dispatch('delete-draft');
+                            $set('draft_action', null); // Reset the toggle
+                        }
+                    })
+                    ->extraAttributes([
+                        'x-show' => 'showDraftOptions',
+                        'x-on:restore-draft.window' => "
+                    let saved = JSON.parse(localStorage.getItem('NewsDraft') ?? '{}');
+                    for (let key in saved) {
+                        if (saved[key] !== null && saved[key] !== undefined) {
+                            \$wire.set('data.' + key, saved[key]);
+                        }
+                    }
+                    showDraftOptions = false;
+                ",
+                        'x-on:delete-draft.window' => "
+                    localStorage.removeItem('NewsDraft');
+                    showDraftOptions = false;
+                "
+                    ])
+                    ->hiddenLabel(fn() => !$this->hasDraftInLocalStorage()),
+
                 Wizard::make([
                     Wizard\Step::make('News Topic')
                         ->schema([
@@ -288,7 +319,12 @@ class News extends Component implements HasForms, HasTable
             ])
             ->statePath('data');
     }
-
+    public function hasDraftInLocalStorage(): bool
+    {
+        // This is just a placeholder since we can't directly access localStorage from PHP
+        // The actual visibility is controlled by Alpine.js x-show
+        return true;
+    }
     public function create(): void
     {
         $XSSai = new XSSai();
