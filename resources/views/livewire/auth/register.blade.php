@@ -164,11 +164,11 @@ new #[Layout('components.layouts.auth')] class extends Component {}; ?>
 
         <div id="faceStatus">💡 Click "Start Face Detection" to begin, or "Test Camera" to check camera access first.</div>
         <div id="faceInstructions">
-            <p class="font-medium">Follow these steps:</p>
+            <p class="font-medium">Follow these steps in order:</p>
             <ul>
                 <li id="faceStep1">Step 1: Keep only one face in view</li>
-                <li id="faceStep2">Step 2: Smile</li>
-                <li id="faceStep3">Step 3: Blink your eyes</li>
+                <li id="faceStep2">Step 2: Smile (required before blinking)</li>
+                <li id="faceStep3">Step 3: Blink your eyes (after smiling)</li>
             </ul>
         </div>
 
@@ -186,15 +186,6 @@ new #[Layout('components.layouts.auth')] class extends Component {}; ?>
         </div>
 
 
-        <!-- Fallback: Manual Profile Picture Upload -->
-        <div id="manualUploadSection"
-            style="display: none; margin-top: 10px; padding: 10px; border: 1px solid #ccc; border-radius: 4px; background-color: #f9f9f9;">
-            <p class="font-medium text-gray-700">Alternative: Upload Profile Picture</p>
-            <input type="file" name="manual_profile_image" id="manualProfileImage" accept="image/*"
-                class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm" />
-            <p class="text-sm text-gray-600 mt-1">If camera is not available, you can upload a profile picture manually.
-            </p>
-        </div>
     </div>
 
     <!-- Session Status -->
@@ -775,7 +766,7 @@ new #[Layout('components.layouts.auth')] class extends Component {}; ?>
                 });
             });
 
-            faceStatus.textContent = '🎯 Camera ready. Keep your face in view and follow the steps!';
+            faceStatus.textContent = '🎯 Camera ready. Keep your face in view, smile first, then blink to complete validation!';
             faceStatus.style.color = 'blue';
             faceInstructions.style.display = 'block';
 
@@ -974,10 +965,10 @@ new #[Layout('components.layouts.auth')] class extends Component {}; ?>
                     if (!singleFaceDetected) {
                         singleFaceDetected = true;
                         faceStep1.innerHTML = 'Step 1: Keep only one face in view ✅';
-                        speak('Step 1 completed. Now smile and blink to complete validation');
+                        speak('Step 1 completed. Now smile first, then blink your eyes to complete validation');
                     }
 
-                    // Check eye blink
+                    // Check eye blink (only after smile is detected)
                     const leftEye = landmarks.getLeftEye();
                     const rightEye = landmarks.getRightEye();
                     const leftEAR = getEyeAspectRatio(leftEye);
@@ -985,15 +976,20 @@ new #[Layout('components.layouts.auth')] class extends Component {}; ?>
                     const ear = (leftEAR + rightEAR) / 2.0;
 
                     if (ear < 0.25) {
-                        if (!blinkDetected) {
-                            blinkDetected = true;
-                            if (smileDetected) {
+                        if (smileDetected) {
+                            if (!blinkDetected) {
+                                blinkDetected = true;
                                 faceStep3.innerHTML = 'Step 3: Blink your eyes ✅';
                                 speak('Blink detected. All validations complete');
-                            } else {
-                                faceStep3.innerHTML = 'Step 3: Blink your eyes ✅ (waiting for smile)';
+                                console.log('👁️ Blink detected with EAR:', ear.toFixed(3));
                             }
-                            console.log('👁️ Blink detected with EAR:', ear.toFixed(3));
+                        } else {
+                            // User tried to blink before smiling
+                            if (!blinkDetected) {
+                                faceStatus.textContent = '😊 Please smile first before blinking your eyes!';
+                                speak('Please smile first');
+                                console.log('👁️ Blink attempted before smile - rejected');
+                            }
                         }
                     }
 
@@ -1126,47 +1122,6 @@ new #[Layout('components.layouts.auth')] class extends Component {}; ?>
         faceVideo.srcObject = null;
     }
 
-    // Handle manual profile image upload
-    document.getElementById('manualProfileImage').addEventListener('change', function(event) {
-        const file = event.target.files[0];
-        if (file) {
-            console.log('📁 Manual file selected:', file.name);
-
-            // Validate file type
-            if (!file.type.startsWith('image/')) {
-                alert('⚠️ Please select a valid image file.');
-                return;
-            }
-
-            // Validate file size (2MB max)
-            if (file.size > 2 * 1024 * 1024) {
-                alert('⚠️ File size must be less than 2MB.');
-                return;
-            }
-
-            const reader = new FileReader();
-            reader.onload = function(e) {
-                const dataURL = e.target.result;
-                console.log('✅ Manual file loaded, data URL length:', dataURL.length);
-
-                profileImageData.value = dataURL;
-                capturedImage.src = dataURL;
-                profileImagePreview.style.display = 'block';
-
-                faceStatus.textContent = '✅ Profile picture uploaded successfully!';
-                faceStatus.style.color = 'green';
-                hideAllCameraButtons();
-                document.getElementById('manualUploadSection').style.display = 'none';
-            };
-
-            reader.onerror = function() {
-                console.error('❌ Error reading file');
-                alert('❌ Error reading the selected file. Please try again.');
-            };
-
-            reader.readAsDataURL(file);
-        }
-    });
 
 
     // Enhanced debug panel functionality

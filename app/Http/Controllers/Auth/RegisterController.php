@@ -26,7 +26,6 @@ class RegisterController extends Controller
                 'email'           => ['required', 'string', 'lowercase', 'email', 'max:255', 'unique:' . User::class],
                 'front_id'        => ['nullable', 'image', 'mimes:jpeg,png,jpg,gif', 'max:2048'],
                 'back_id'         => ['nullable', 'image', 'mimes:jpeg,png,jpg,gif', 'max:2048'],
-                'manual_profile_image' => ['nullable', 'image', 'mimes:jpeg,png,jpg,gif', 'max:2048'],
                 'profile_image_data' => ['nullable', 'string'],
                 'profile_picture' => ['nullable', 'string'],
             ]);
@@ -59,8 +58,6 @@ class RegisterController extends Controller
                     file_put_contents($path, $decodedData);
                     $profileImagePath = 'profiles/' . $filename;
                 }
-            } elseif ($request->hasFile('manual_profile_image')) {
-                $profileImagePath = $request->file('manual_profile_image')->store('profiles', 'public');
             }
 
             $user = User::create([
