@@ -214,13 +214,16 @@ class News extends Component implements HasForms, HasTable
                 Wizard::make([
                     Wizard\Step::make('News Topic')
                         ->schema([
-                            TextInput::make('actions')
+                            TextInput::make('action')
+                                ->readOnly()
+                                ->default('Restore Draft')
                                 ->suffixAction(
                                     Action::make('draft_action')
-                                        ->label('Restore Draft')
+                                        ->icon('heroicon-m-clipboard')
+                                        ->requiresConfirmation()
                                         ->action(function ($state, callable $set) {
-                                                $this->dispatch('restore-draft');
-                                                $set('draft_action', null); // Reset the toggle
+                                            $this->dispatch('restore-draft');
+                                            $set('draft_action', null); // Reset the toggle
                                         })
                                         ->extraAttributes([
                                             'x-show' => 'showDraftOptions',
@@ -233,7 +236,7 @@ class News extends Component implements HasForms, HasTable
                                                 }
                                                 showDraftOptions = false;
                                             ",
-                                                                        'x-on:delete-draft.window' => "
+                                            'x-on:delete-draft.window' => "
                                                 localStorage.removeItem('NewsDraft');
                                                 showDraftOptions = false;
                                             "
