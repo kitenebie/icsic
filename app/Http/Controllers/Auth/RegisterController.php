@@ -70,7 +70,6 @@ class RegisterController extends Controller
                 'password'       => Hash::make(str()->random(16)),
                 'front_id'       => $frontIdPath,
                 'back_id'        => $backIdPath,
-                'profile_image'  => $profileImagePath,
                 'profile_picture' => $profileImagePath,
             ]);
 
