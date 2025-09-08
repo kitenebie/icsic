@@ -68,6 +68,28 @@ class Main extends Component implements HasForms, HasActions
     public function form(Form $form): Form
     {
         return $form
+            ->extraAttributes([
+                'x-data' => '{}',
+                'x-init' => "
+                let saved = JSON.parse(localStorage.getItem('eventsDraft') ?? '{}');
+                
+                if (Object.keys(saved).length > 0) {
+                    if (confirm('A saved draft was found. Do you want to restore it?')) {
+                        for (let key in saved) {
+                            if (saved[key] !== null && saved[key] !== undefined) {
+                                \$wire.set('data.' + key, saved[key]);
+                            }
+                        }
+                    } else {
+                        localStorage.removeItem('eventsDraft');
+                    }
+                }
+
+                \$watch('\$wire.data', value => {
+                    localStorage.setItem('eventsDraft', JSON.stringify(value));
+                });
+            ",
+            ])
             ->columns([
                 'sm' => 1,
                 'xl' => 2,
