@@ -214,34 +214,27 @@ class News extends Component implements HasForms, HasTable
                 Wizard::make([
                     Wizard\Step::make('News Topic')
                         ->schema([
-                            TextInput::make('action')
-                                ->readOnly()
-                                ->default('Restore Draft')
-                                ->suffixAction(
-                                    Action::make('draft_action')
-                                        ->icon('heroicon-m-clipboard')
-                                        ->requiresConfirmation()
-                                        ->action(function ($state, callable $set) {
-                                            $this->dispatch('restore-draft');
-                                            $set('draft_action', null); // Reset the toggle
-                                        })
-                                        ->extraAttributes([
-                                            'x-show' => 'showDraftOptions',
-                                            'x-on:restore-draft.window' => "
-                                                let saved = JSON.parse(localStorage.getItem('NewsDraft') ?? '{}');
-                                                for (let key in saved) {
-                                                    if (saved[key] !== null && saved[key] !== undefined) {
-                                                        \$wire.set('data.' + key, saved[key]);
-                                                    }
-                                                }
-                                                showDraftOptions = false;
-                                            ",
-                                            'x-on:delete-draft.window' => "
-                                                localStorage.removeItem('NewsDraft');
-                                                showDraftOptions = false;
-                                            "
-                                        ]),
-                                ),
+                            Checkbox::make('restore_draft')
+                                ->label('Restore Draft')
+                                ->reactive()
+                                ->afterStateUpdated(function ($state, callable $set) {
+                                    if ($state) {
+                                        $this->dispatch('restore-draft');
+                                        $set('restore_draft', false); // Reset checkbox
+                                    }
+                                })
+                                ->extraAttributes([
+                                    'x-on:restore-draft.window' => "
+                                        let saved = JSON.parse(localStorage.getItem('NewsDraft') ?? '{}');
+                                        for (let key in saved) {
+                                            if (saved[key] !== null && saved[key] !== undefined) {
+                                                \$wire.set('data.' + key, saved[key]);
+                                            }
+                                        }
+                                        showDraftOptions = false;
+                                    "
+                                ]),
+
                             FileUpload::make('image')
                                 ->acceptedFileTypes([
                                     'image/png',
