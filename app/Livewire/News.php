@@ -196,34 +196,33 @@ class News extends Component implements HasForms, HasTable
         return $form
             ->extraAttributes([
                 'x-data' => '{
-                hasDraft: false,
-                restoreDraft() {
-                    let saved = JSON.parse(localStorage.getItem("NewsDraft") ?? "{}");
-                    for (let key in saved) {
-                        if (saved[key] !== null && saved[key] !== undefined) {
-                            $wire.set("data." + key, saved[key]);
-                        }
+            hasDraft: false,
+            restoreDraft() {
+                let saved = JSON.parse(localStorage.getItem("NewsDraft") ?? "{}");
+                for (let key in saved) {
+                    if (saved[key] !== null && saved[key] !== undefined) {
+                        $wire.set("data." + key, saved[key]);
                     }
-                    this.hasDraft = false;
-                },
-                clearDraft() {
-                    localStorage.removeItem("NewsDraft");
-                    this.hasDraft = false;
                 }
-            }',
+                this.hasDraft = false;
+            },
+            clearDraft() {
+                localStorage.removeItem("NewsDraft");
+                this.hasDraft = false;
+            }
+        }',
                 'x-init' => "
-                let saved = JSON.parse(localStorage.getItem('NewsDraft') ?? '{}');
-                this.hasDraft = Object.keys(saved).length > 0;
-                
-                \$watch('\$wire.data', value => {
-                    localStorage.setItem('NewsDraft', JSON.stringify(value));
-                });
-            ",
+            let saved = JSON.parse(localStorage.getItem('NewsDraft') ?? '{}');
+            this.hasDraft = Object.keys(saved).length > 0;
+            
+            \$watch('\$wire.data', value => {
+                localStorage.setItem('NewsDraft', JSON.stringify(value));
+            });
+        ",
             ])
             ->schema([
-                Group::make([
-                    Placeholder::make('draft_restore')
-                        ->content(new HtmlString('
+                Placeholder::make('draft_restore')
+                    ->content(new HtmlString('
                 <div x-show="hasDraft" class="mb-4 p-4 bg-blue-50 border border-blue-200 rounded-lg">
                     <div class="flex items-center justify-between">
                         <div>
@@ -241,8 +240,8 @@ class News extends Component implements HasForms, HasTable
                     </div>
                 </div>
             '))
-                        ->hiddenLabel(),
-                ])->columnSpanFull(),
+                    ->hiddenLabel(),
+
                 Wizard::make([
                     Wizard\Step::make('News Topic')
                         ->schema([
