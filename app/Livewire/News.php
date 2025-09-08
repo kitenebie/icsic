@@ -216,6 +216,10 @@ class News extends Component implements HasForms, HasTable
                         'restore' => 'Restore Draft',
                         'delete' => 'Delete Draft',
                     ])
+                    ->colors([
+                        'restore' => 'warning',
+                        'delete' => 'danger',
+                    ])
                     ->inline()
                     ->reactive()
                     ->afterStateUpdated(function ($state, callable $set) {
