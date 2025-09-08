@@ -184,31 +184,6 @@ class News extends Component implements HasForms, HasTable
     public function mount(): void
     {
         $this->form->fill();
-        $saved = json_decode(localStorage()->get('NewsDraft') ?? '{}', true);
-
-        if (! empty($saved)) {
-            Notification::make()
-                ->title('Draft Found')
-                ->body('A saved draft was found. Do you want to restore it?')
-                ->warning()
-                ->persistent() // stays until dismissed
-                ->actions([
-                    \Filament\Notifications\Actions\Action::make('restore')
-                        ->label('Restore')
-                        ->button()
-                        ->color('success')
-                        ->close()
-                        ->action(fn() => $this->restoreDraft($saved)),
-
-                    \Filament\Notifications\Actions\Action::make('discard')
-                        ->label('Discard')
-                        ->button()
-                        ->color('danger')
-                        ->close()
-                        ->action(fn() => $this->discardDraft()),
-                ])
-                ->send();
-        }
     }
 
 
@@ -358,7 +333,7 @@ class News extends Component implements HasForms, HasTable
     public function table(Table $table): Table
     {
         return $table
-            ->query(NewsDB::query()->OrderByDesc('id'))->poll('10s')
+            ->query(NewsDB::query()->orderByDesc('id'))->poll('10s')
             ->columns([
                 Tables\Columns\ImageColumn::make('image')->label('Image')->size(50),
                 Tables\Columns\TextColumn::make('title')->searchable()->label('Title')->limit(50),
