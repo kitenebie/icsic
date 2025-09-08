@@ -28,11 +28,9 @@ use Filament\Forms\Components\Checkbox;
 use Filament\Forms\Components\Section;
 use Filament\Forms\Components\Toggle;
 use Filament\Forms\Components\Fieldset;
-use Filament\Forms\Components\Group;
 use App\Services\XSSai;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Log;
-use Filament\Forms\Components\Actions\Action;
 
 class News extends Component implements HasForms, HasTable
 {
@@ -190,69 +188,32 @@ class News extends Component implements HasForms, HasTable
 
     public function form(Form $form): Form
     {
+
         $audienceService = app(AudienceService::class);
         return $form
             ->extraAttributes([
-                'x-data' => '{
-                    hasDraft: false,
-                    showDraftOptions: false
-                }',
+                'x-data' => '{}',
                 'x-init' => "
-                    let saved = JSON.parse(localStorage.getItem('NewsDraft') ?? '{}');
-                    this.hasDraft = Object.keys(saved).length > 0;
-                    this.showDraftOptions = this.hasDraft;
-                    
-                    \$watch('\$wire.data', value => {
-                        if (value && Object.keys(value).length > 0) {
-                            localStorage.setItem('NewsDraft', JSON.stringify(value));
+                let saved = JSON.parse(localStorage.getItem('NewsDraft') ?? '{}');
+                
+                if (Object.keys(saved).length > 0) {
+                    if (confirm('A saved draft was found. Do you want to restore it?')) {
+                        for (let key in saved) {
+                            if (saved[key] !== null && saved[key] !== undefined) {
+                                \$wire.set('data.' + key, saved[key]);
+                            }
                         }
-                    });
-                ",
+                    } else {
+                        localStorage.removeItem('NewsDraft');
+                    }
+                }
+
+                \$watch('\$wire.data', value => {
+                    localStorage.setItem('NewsDraft', JSON.stringify(value));
+                });
+            ",
             ])
             ->schema([
-                // Draft management section
-                Group::make([
-                    Checkbox::make('restore_draft')
-                        ->label('Restore Draft')
-                        ->reactive()
-                        ->afterStateUpdated(function ($state, callable $set) {
-                            if ($state) {
-                                $this->dispatch('restore-draft');
-                                $set('restore_draft', false); // Reset checkbox
-                            }
-                        })
-                        ->extraAttributes([
-                            'x-on:restore-draft.window' => "
-                                let saved = JSON.parse(localStorage.getItem('NewsDraft') ?? '{}');
-                                for (let key in saved) {
-                                    if (saved[key] !== null && saved[key] !== undefined) {
-                                        \$wire.set('data.' + key, saved[key]);
-                                    }
-                                }
-                                showDraftOptions = false;
-                            "
-                        ]),
-                    
-                    Checkbox::make('delete_draft')
-                        ->label('Delete Draft')
-                        ->reactive()
-                        ->afterStateUpdated(function ($state, callable $set) {
-                            if ($state) {
-                                $this->dispatch('delete-draft');
-                                $set('delete_draft', false); // Reset checkbox
-                            }
-                        })
-                        ->extraAttributes([
-                            'x-on:delete-draft.window' => "
-                                localStorage.removeItem('NewsDraft');
-                                showDraftOptions = false;
-                            "
-                        ]),
-                ])
-                ->extraAttributes(['x-show' => 'showDraftOptions'])
-                ->columnSpanFull()
-                ->columns(2),
-
                 Wizard::make([
                     Wizard\Step::make('News Topic')
                         ->schema([
@@ -326,13 +287,6 @@ class News extends Component implements HasForms, HasTable
             ->statePath('data');
     }
 
-    public function hasDraftInLocalStorage(): bool
-    {
-        // This is just a placeholder since we can't directly access localStorage from PHP
-        // The actual visibility is controlled by Alpine.js x-show
-        return true;
-    }
-
     public function create(): void
     {
         $XSSai = new XSSai();
@@ -361,10 +315,6 @@ class News extends Component implements HasForms, HasTable
         if ($json && isset($json['safe']) && $json['safe'] === true) {
             NewsDB::create($data);
             $this->form->fill([]);
-            
-            // Clear draft after successful submission
-            $this->dispatch('clear-draft-after-submit');
-            
             Notification::make()
                 ->title('Saved successfully')
                 ->success()
@@ -377,6 +327,7 @@ class News extends Component implements HasForms, HasTable
                 ->send();
         }
     }
+
 
     public function table(Table $table): Table
     {
@@ -507,6 +458,7 @@ class News extends Component implements HasForms, HasTable
                 Tables\Actions\DeleteBulkAction::make(),
             ]);
     }
+
 
     public function render()
     {
