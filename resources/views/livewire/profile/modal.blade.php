@@ -1,5 +1,5 @@
 <div id="modalProfile" class="fixed z-50 inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 hidden">
-    <div id="modalContent" class="bg-white w-full max-w-2xl max-h-[90vh] rounded-lg relative shadow-xl transform translate-y-10 opacity-0 transition-all duration-300 overflow-hidden flex flex-col">
+    <div id="modalContent" class="bg-white w-full max-w-2xl max-h-[80vh] rounded-lg relative shadow-xl transform translate-y-10 opacity-0 transition-all duration-300 overflow-hidden flex flex-col">
 
         <!-- Close Button -->
         <button onclick="closemodalProfile()"
