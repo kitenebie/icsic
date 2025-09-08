@@ -220,7 +220,6 @@ class News extends Component implements HasForms, HasTable
                         'restore' => 'warning',
                         'delete' => 'danger',
                     ])
-                    ->inline()
                     ->reactive()
                     ->afterStateUpdated(function ($state, callable $set) {
                         if ($state === 'restore') {
