@@ -31,9 +31,7 @@ use Filament\Forms\Components\Fieldset;
 use App\Services\XSSai;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Log;
-use Filament\Forms\Components\Group;
-use Filament\Forms\Components\Placeholder;
-use Illuminate\Support\HtmlString;
+use Filament\Forms\Components\Actions\Action;
 
 class News extends Component implements HasForms, HasTable
 {
@@ -195,53 +193,35 @@ class News extends Component implements HasForms, HasTable
         $audienceService = app(AudienceService::class);
         return $form
             ->extraAttributes([
-                'x-data' => '{
-            hasDraft: false,
-            restoreDraft() {
-                let saved = JSON.parse(localStorage.getItem("NewsDraft") ?? "{}");
-                for (let key in saved) {
-                    if (saved[key] !== null && saved[key] !== undefined) {
-                        $wire.set("data." + key, saved[key]);
+                'x-data' => '{}',
+                'x-init' => "
+                let saved = JSON.parse(localStorage.getItem('NewsDraft') ?? '{}');
+                
+                if (Object.keys(saved).length > 0) {
+                    if (confirm('A saved draft was found. Do you want to restore it?')) {
+                        for (let key in saved) {
+                            if (saved[key] !== null && saved[key] !== undefined) {
+                                \$wire.set('data.' + key, saved[key]);
+                            }
+                        }
+                    } else {
+                        localStorage.removeItem('NewsDraft');
                     }
                 }
-                this.hasDraft = false;
-            },
-            clearDraft() {
-                localStorage.removeItem("NewsDraft");
-                this.hasDraft = false;
-            }
-        }',
-                'x-init' => "
-            let saved = JSON.parse(localStorage.getItem('NewsDraft') ?? '{}');
-            this.hasDraft = Object.keys(saved).length > 0;
-            
-            \$watch('\$wire.data', value => {
-                localStorage.setItem('NewsDraft', JSON.stringify(value));
-            });
-        ",
-            ])
-            ->schema([
-                Placeholder::make('draft_restore')
-                    ->content(new HtmlString('
-                <div x-show="hasDraft" class="mb-4 p-4 bg-blue-50 border border-blue-200 rounded-lg">
-                    <div class="flex items-center justify-between">
-                        <div>
-                            <h4 class="font-medium text-blue-900">Draft Found</h4>
-                            <p class="text-sm text-blue-700">You have an unsaved draft from a previous session.</p>
-                        </div>
-                        <div class="flex gap-2">
-                            <button type="button" @click="restoreDraft()" class="px-3 py-1 bg-blue-600 text-white rounded text-sm hover:bg-blue-700">
-                                Restore Draft
-                            </button>
-                            <button type="button" @click="clearDraft()" class="px-3 py-1 bg-gray-400 text-white rounded text-sm hover:bg-gray-500">
-                                Discard
-                            </button>
-                        </div>
-                    </div>
-                </div>
-            '))
-                    ->hiddenLabel(),
 
+                \$watch('\$wire.data', value => {
+                    localStorage.setItem('NewsDraft', JSON.stringify(value));
+                });
+            ",
+            ])
+
+            ->schema([
+                Action::make('RestoreDraft')
+                    ->icon('heroicon-m-x-mark')
+                    ->color('warning')
+                    ->action(function () {
+                        
+                    }),
                 Wizard::make([
                     Wizard\Step::make('News Topic')
                         ->schema([
