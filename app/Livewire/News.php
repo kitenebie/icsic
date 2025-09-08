@@ -216,12 +216,6 @@ class News extends Component implements HasForms, HasTable
             ])
 
             ->schema([
-                Action::make('RestoreDraft')
-                    ->icon('heroicon-m-x-mark')
-                    ->color('warning')
-                    ->action(function () {
-                        
-                    }),
                 Wizard::make([
                     Wizard\Step::make('News Topic')
                         ->schema([
