@@ -210,31 +210,35 @@ class News extends Component implements HasForms, HasTable
         ",
             ])
             ->schema([
-                ToggleButtons::make('draft_action')
-                    ->label('Draft Options')
-                    ->options([
-                        'restore' => 'Restore Draft',
-                        'delete' => 'Delete Draft',
-                    ])
-                    ->colors([
-                        'restore' => 'warning',
-                        'delete' => 'danger',
-                    ])
-                    ->reactive()
-                    ->afterStateUpdated(function ($state, callable $set) {
-                        if ($state === 'restore') {
-                            // Get saved data from localStorage via JavaScript
-                            $this->dispatch('restore-draft');
-                            $set('draft_action', null); // Reset the toggle
-                        } elseif ($state === 'delete') {
-                            // Clear localStorage via JavaScript
-                            $this->dispatch('delete-draft');
-                            $set('draft_action', null); // Reset the toggle
-                        }
-                    })
-                    ->extraAttributes([
-                        'x-show' => 'showDraftOptions',
-                        'x-on:restore-draft.window' => "
+
+                Wizard::make([
+                    Wizard\Step::make('News Topic')
+                        ->schema([
+                            ToggleButtons::make('draft_action')
+                                ->label('Draft Options')
+                                ->options([
+                                    'restore' => 'Restore Draft',
+                                    'delete' => 'Delete Draft',
+                                ])
+                                ->colors([
+                                    'restore' => 'warning',
+                                    'delete' => 'danger',
+                                ])
+                                ->reactive()
+                                ->afterStateUpdated(function ($state, callable $set) {
+                                    if ($state === 'restore') {
+                                        // Get saved data from localStorage via JavaScript
+                                        $this->dispatch('restore-draft');
+                                        $set('draft_action', null); // Reset the toggle
+                                    } elseif ($state === 'delete') {
+                                        // Clear localStorage via JavaScript
+                                        $this->dispatch('delete-draft');
+                                        $set('draft_action', null); // Reset the toggle
+                                    }
+                                })
+                                ->extraAttributes([
+                                    'x-show' => 'showDraftOptions',
+                                    'x-on:restore-draft.window' => "
                     let saved = JSON.parse(localStorage.getItem('NewsDraft') ?? '{}');
                     for (let key in saved) {
                         if (saved[key] !== null && saved[key] !== undefined) {
@@ -243,16 +247,11 @@ class News extends Component implements HasForms, HasTable
                     }
                     showDraftOptions = false;
                 ",
-                        'x-on:delete-draft.window' => "
+                                    'x-on:delete-draft.window' => "
                     localStorage.removeItem('NewsDraft');
                     showDraftOptions = false;
                 "
-                    ])
-                    ->hiddenLabel(fn() => !$this->hasDraftInLocalStorage()),
-
-                Wizard::make([
-                    Wizard\Step::make('News Topic')
-                        ->schema([
+                                ]),
                             FileUpload::make('image')
                                 ->acceptedFileTypes([
                                     'image/png',
