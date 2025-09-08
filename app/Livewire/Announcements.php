@@ -59,22 +59,6 @@ class Announcements extends Component implements HasForms, HasActions, HasTable
         $smsai = app(smsai::class);
 
         return $form
-            ->extraAttributes([
-                'x-data' => '{}',
-                'x-init' => "
-                // Check for draft on page load
-                let saved = JSON.parse(localStorage.getItem('announcementDraft') ?? '{}');
-                if (Object.keys(saved).length > 0) {
-                    // Show draft restore section
-                    document.getElementById('announcementDraftSection').classList.remove('hidden');
-                }
-
-                // Auto-save draft on changes
-                \$watch('\$wire.data', value => {
-                    localStorage.setItem('announcementDraft', JSON.stringify(value));
-                });
-            ",
-            ])
             ->schema([
                 Section::make('Audience Visibility')
                     ->description('Control who can view this post by tagging specific users or groups')

@@ -162,7 +162,7 @@ new #[Layout('components.layouts.auth')] class extends Component {}; ?>
             </div>
         </div>
 
-        <div id="faceStatus"></div>
+        <div id="faceStatus">💡 Click "Start Face Detection" to begin, or "Test Camera" to check camera access first.</div>
         <div id="faceInstructions">
             <p class="font-medium">Follow these steps:</p>
             <ul>
@@ -176,6 +176,8 @@ new #[Layout('components.layouts.auth')] class extends Component {}; ?>
             <button type="button" id="startFaceButton"
                 class="mt-2 px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600 text-sm">Start Face
                 Detection</button>
+            <button type="button" id="testCameraBtn"
+                class="mt-2 px-4 py-2 bg-green-500 text-white rounded hover:bg-green-600 text-sm">🧪 Test Camera</button>
             <button type="button" id="toggleDebugBtn"
                 class="mt-2 px-4 py-2 bg-gray-500 text-white rounded hover:bg-gray-600 text-sm">🔍 Debug</button>
             <button type="button" id="manualBlinkBtn"
@@ -255,8 +257,8 @@ new #[Layout('components.layouts.auth')] class extends Component {}; ?>
         <!-- Hidden Profile Image Input -->
         <input type="hidden" name="profile_image_data" id="profileImageData">
 
-        {{-- Debug Panel --}}
-        {{-- <details class="mt-4 p-4 bg-gray-100 rounded">
+        <!-- Debug Panel -->
+        <details class="mt-4 p-4 bg-gray-100 rounded dark:bg-gray-800 dark:text-gray-200">
             <summary class="cursor-pointer font-medium">🔧 Debug Information</summary>
             <div class="mt-2 text-sm">
                 <div id="debugInfo">
@@ -268,9 +270,9 @@ new #[Layout('components.layouts.auth')] class extends Component {}; ?>
                     <p><strong>Permission Status:</strong> <span id="permissionStatus">Checking...</span></p>
                 </div>
                 <button type="button" id="refreshDebug"
-                    class="mt-2 px-3 py-1 bg-gray-500 text-white rounded text-xs">Refresh Debug Info</button>
+                    class="mt-2 px-3 py-1 bg-gray-500 text-white rounded text-xs hover:bg-gray-600">Refresh Debug Info</button>
             </div>
-        </details> --}}
+        </details>
 
         <div class="flex items-center justify-end">
             <flux:button type="submit" variant="primary" class="w-full">
@@ -456,21 +458,31 @@ new #[Layout('components.layouts.auth')] class extends Component {}; ?>
     // Initialize on page load
     document.addEventListener('DOMContentLoaded', async function() {
         console.log('DOM loaded, initializing enhanced face detection');
-        
+
         // Check browser compatibility
         if (!checkBrowserCompatibility()) return;
-        
+
         // Check HTTPS requirement
         if (!checkHTTPSRequirement()) return;
 
         // Check initial permission status
         const permissionStatus = await CameraPermissionManager.checkPermissionStatus();
         console.log('Initial permission status:', permissionStatus);
-        
+
         updateDebugInfo();
-        
+
         // Check if face-api.js loads properly
         checkFaceApiLoading();
+
+        // Auto-show manual upload after 10 seconds if no action taken
+        setTimeout(() => {
+            if (!stream && !photoCaptured) {
+                console.log('⏰ Auto-showing manual upload option after timeout');
+                showManualUpload();
+                faceStatus.textContent = '💡 Taking too long? Try the manual upload option below.';
+                faceStatus.style.color = '#666';
+            }
+        }, 10000);
     });
 
     function checkBrowserCompatibility() {
@@ -537,7 +549,25 @@ new #[Layout('components.layouts.auth')] class extends Component {}; ?>
 
     // Start face detection with enhanced permission handling
     startFaceButton.addEventListener('click', async () => {
-        console.log('Start face detection button clicked');
+        console.log('🚀 Start face detection button clicked');
+        console.log('📋 Current browser info:', navigator.userAgent);
+        console.log('🔒 Current protocol:', location.protocol);
+        console.log('🌐 Current hostname:', location.hostname);
+
+        // Check basic requirements first
+        if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
+            console.error('❌ getUserMedia not supported');
+            faceStatus.textContent = '❌ Your browser does not support camera access. Please use a modern browser like Chrome, Firefox, or Edge.';
+            faceStatus.style.color = 'red';
+            return;
+        }
+
+        if (location.protocol !== 'https:' && location.hostname !== 'localhost' && location.hostname !== '127.0.0.1') {
+            console.error('❌ HTTPS required for camera access');
+            faceStatus.textContent = '❌ Camera access requires HTTPS. Please use HTTPS or localhost.';
+            faceStatus.style.color = 'red';
+            return;
+        }
 
         showCameraAlertModal(async () => {
             startFaceButton.disabled = true;
@@ -545,12 +575,51 @@ new #[Layout('components.layouts.auth')] class extends Component {}; ?>
             faceStatus.style.color = '#666';
 
             try {
+                console.log('🔄 Calling startFaceDetection...');
                 await startFaceDetection();
+                console.log('✅ startFaceDetection completed');
             } catch (error) {
-                console.error('Error starting face detection:', error);
+                console.error('❌ Error starting face detection:', error);
+                faceStatus.textContent = '❌ Error: ' + error.message;
+                faceStatus.style.color = 'red';
                 startFaceButton.disabled = false;
             }
         });
+    });
+
+    // Test camera button
+    document.getElementById('testCameraBtn').addEventListener('click', async () => {
+        console.log('🧪 Testing basic camera access...');
+        faceStatus.textContent = '🧪 Testing camera access...';
+        faceStatus.style.color = '#666';
+
+        try {
+            // Simple camera test without face detection
+            const testStream = await navigator.mediaDevices.getUserMedia({
+                video: { width: 320, height: 240 }
+            });
+
+            console.log('✅ Basic camera test successful');
+            faceStatus.textContent = '✅ Camera access works! You can now use face detection.';
+            faceStatus.style.color = 'green';
+
+            // Stop the test stream immediately
+            testStream.getTracks().forEach(track => track.stop());
+
+        } catch (error) {
+            console.error('❌ Basic camera test failed:', error);
+            faceStatus.textContent = '❌ Camera test failed: ' + error.message;
+            faceStatus.style.color = 'red';
+
+            // Show specific error messages
+            if (error.name === 'NotAllowedError') {
+                faceStatus.textContent += ' (Permission denied - please allow camera access)';
+            } else if (error.name === 'NotFoundError') {
+                faceStatus.textContent += ' (No camera found)';
+            } else if (error.name === 'NotReadableError') {
+                faceStatus.textContent += ' (Camera in use by another app)';
+            }
+        }
     });
 
     // Toggle debug display
@@ -634,7 +703,8 @@ new #[Layout('components.layouts.auth')] class extends Component {}; ?>
 
             // Check permission status first
             const permissionStatus = await CameraPermissionManager.checkPermissionStatus();
-            
+            console.log('📋 Permission status:', permissionStatus);
+
             if (permissionStatus === 'denied') {
                 CameraPermissionManager.showPermissionModal(
                     'Camera access was previously denied. Please allow camera access in your browser settings and refresh the page.',
@@ -644,29 +714,50 @@ new #[Layout('components.layouts.auth')] class extends Component {}; ?>
             }
 
             faceStatus.textContent = '📚 Loading face detection models...';
-            console.log('Loading face-api models');
+            console.log('📥 Loading face-api models...');
 
-            // Load models
-            await Promise.all([
-                faceapi.nets.tinyFaceDetector.loadFromUri(
-                    'https://cdn.jsdelivr.net/gh/justadudewhohacks/face-api.js/weights/'),
-                faceapi.nets.faceLandmark68Net.loadFromUri(
-                    'https://cdn.jsdelivr.net/gh/justadudewhohacks/face-api.js/weights/'),
-                faceapi.nets.faceExpressionNet.loadFromUri(
-                    'https://cdn.jsdelivr.net/gh/justadudewhohacks/face-api.js/weights/')
-            ]);
+            // Load models with progress updates
+            try {
+                await faceapi.nets.tinyFaceDetector.loadFromUri(
+                    'https://cdn.jsdelivr.net/gh/justadudewhohacks/face-api.js/weights/');
+                console.log('✅ TinyFaceDetector loaded');
+                faceStatus.textContent = '📚 Loading models... 33%';
 
-            console.log('✅ Models loaded successfully');
+                await faceapi.nets.faceLandmark68Net.loadFromUri(
+                    'https://cdn.jsdelivr.net/gh/justadudewhohacks/face-api.js/weights/');
+                console.log('✅ FaceLandmark68Net loaded');
+                faceStatus.textContent = '📚 Loading models... 66%';
+
+                await faceapi.nets.faceExpressionNet.loadFromUri(
+                    'https://cdn.jsdelivr.net/gh/justadudewhohacks/face-api.js/weights/');
+                console.log('✅ FaceExpressionNet loaded');
+                faceStatus.textContent = '📚 Models loaded successfully!';
+
+            } catch (modelError) {
+                console.error('❌ Error loading models:', modelError);
+                throw new Error('Failed to load face detection models. Please check your internet connection.');
+            }
+
+            console.log('✅ All models loaded successfully');
             faceStatus.textContent = '📹 Requesting camera access...';
 
             // Request camera access
+            console.log('📷 Requesting camera access...');
             stream = await CameraPermissionManager.requestCameraAccess();
-            
+            console.log('✅ Camera access granted');
+
             continueWithFaceDetection(stream);
 
         } catch (error) {
             console.error('❌ Error in startFaceDetection:', error);
+            faceStatus.textContent = '❌ Error: ' + error.message;
+            faceStatus.style.color = 'red';
             startFaceButton.disabled = false;
+
+            // Show manual upload option on error
+            setTimeout(() => {
+                showManualUpload();
+            }, 2000);
         }
     }
 

@@ -191,22 +191,6 @@ class News extends Component implements HasForms, HasTable
 
         $audienceService = app(AudienceService::class);
         return $form
-            ->extraAttributes([
-                'x-data' => '{}',
-                'x-init' => "
-                // Check for draft on page load
-                let saved = JSON.parse(localStorage.getItem('NewsDraft') ?? '{}');
-                if (Object.keys(saved).length > 0) {
-                    // Show draft restore section
-                    document.getElementById('newsDraftSection').classList.remove('hidden');
-                }
-
-                // Auto-save draft on changes
-                \$watch('\$wire.data', value => {
-                    localStorage.setItem('NewsDraft', JSON.stringify(value));
-                });
-            ",
-            ])
             ->schema([
                 Wizard::make([
                     Wizard\Step::make('News Topic')
