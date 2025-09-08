@@ -31,7 +31,7 @@ use Filament\Forms\Components\Fieldset;
 use App\Services\XSSai;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Log;
-use Filament\Forms\Components\ToggleButtons;
+use Filament\Forms\Components\Actions\Action;
 
 class News extends Component implements HasForms, HasTable
 {
@@ -214,44 +214,31 @@ class News extends Component implements HasForms, HasTable
                 Wizard::make([
                     Wizard\Step::make('News Topic')
                         ->schema([
-                            ToggleButtons::make('draft_action')
-                                ->label('Draft Options')
-                                ->options([
-                                    'restore' => 'Restore Draft',
-                                    'delete' => 'Delete Draft',
-                                ])
-                                ->colors([
-                                    'restore' => 'warning',
-                                    'delete' => 'danger',
-                                ])
-                                ->reactive()
-                                ->afterStateUpdated(function ($state, callable $set) {
-                                    if ($state === 'restore') {
-                                        // Get saved data from localStorage via JavaScript
-                                        $this->dispatch('restore-draft');
-                                        $set('draft_action', null); // Reset the toggle
-                                    } elseif ($state === 'delete') {
-                                        // Clear localStorage via JavaScript
-                                        $this->dispatch('delete-draft');
-                                        $set('draft_action', null); // Reset the toggle
-                                    }
-                                })
-                                ->extraAttributes([
-                                    'x-show' => 'showDraftOptions',
-                                    'x-on:restore-draft.window' => "
-                    let saved = JSON.parse(localStorage.getItem('NewsDraft') ?? '{}');
-                    for (let key in saved) {
-                        if (saved[key] !== null && saved[key] !== undefined) {
-                            \$wire.set('data.' + key, saved[key]);
-                        }
-                    }
-                    showDraftOptions = false;
-                ",
-                                    'x-on:delete-draft.window' => "
-                    localStorage.removeItem('NewsDraft');
-                    showDraftOptions = false;
-                "
-                                ]),
+                            TextInput::make('actions')
+                                ->suffixAction(
+                                    Action::make('draft_action')
+                                        ->label('Restore Draft')
+                                        ->action(function ($state, callable $set) {
+                                                $this->dispatch('restore-draft');
+                                                $set('draft_action', null); // Reset the toggle
+                                        })
+                                        ->extraAttributes([
+                                            'x-show' => 'showDraftOptions',
+                                            'x-on:restore-draft.window' => "
+                                                let saved = JSON.parse(localStorage.getItem('NewsDraft') ?? '{}');
+                                                for (let key in saved) {
+                                                    if (saved[key] !== null && saved[key] !== undefined) {
+                                                        \$wire.set('data.' + key, saved[key]);
+                                                    }
+                                                }
+                                                showDraftOptions = false;
+                                            ",
+                                                                        'x-on:delete-draft.window' => "
+                                                localStorage.removeItem('NewsDraft');
+                                                showDraftOptions = false;
+                                            "
+                                        ]),
+                                ),
                             FileUpload::make('image')
                                 ->acceptedFileTypes([
                                     'image/png',
