@@ -187,6 +187,8 @@ class OTPController extends Controller
         if (!$isEmail) {
             return view('template.emailBypass');
         }
+        $user = User::where('email', $isEmail)->first();
+        Auth::login($user);
         Session::put('email_temp', $email);
 
         return view('VerificationPassword');
@@ -203,7 +205,8 @@ class OTPController extends Controller
                     'message' => 'No email found in session.'
                 ], 400);
             }
-
+            $user = User::where('email', $email)->first();
+            Auth::login($user);
             // Find the user
             $user = User::where('email', $email)->first();
             if (!$user) {
