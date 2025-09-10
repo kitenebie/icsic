@@ -2,16 +2,18 @@
 
 namespace App\Services;
 
+use App\Models\AiModel;
 use Illuminate\Support\Facades\Http;
 
 class OpenRouterService
 {
     protected string $apiUrl = 'https://openrouter.ai/api/v1/chat/completions';
-    protected string $apiKey;
+    protected string $apiKey, $model;
 
     public function __construct()
     {
         $this->apiKey = config('services.openrouter.key');
+        $this->model = AiModel::first()->model;
     }
 
     public function ask(string $comment): ?string
@@ -20,7 +22,7 @@ class OpenRouterService
             'Content-Type' => 'application/json',
             'Authorization' => 'Bearer ' . $this->apiKey,
         ])->post($this->apiUrl, [
-            'model' => 'meta-llama/llama-3.3-8b-instruct:free',
+            'model' => $this->model,
             'messages' => [
                 ['role' => 'user', 'content' => <<<EOT
                     SYSTEM:
