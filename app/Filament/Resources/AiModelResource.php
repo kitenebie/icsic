@@ -218,14 +218,31 @@ class AiModelResource extends Resource
     private static function getFallbackModelOptions(): array
     {
         return [
-            'google/gemma-2-9b-it:free' => 'Google: Gemma 2 9B (free)',
-            'microsoft/phi-3-mini-128k-instruct:free' => 'Microsoft: Phi-3 Mini 128K Instruct (free)',
-            'meta-llama/llama-3.2-3b-instruct:free' => 'Meta: Llama 3.2 3B Instruct (free)',
-            'qwen/qwen-2-7b-instruct:free' => 'Qwen: Qwen 2 7B Instruct (free)',
-            'huggingfaceh4/zephyr-7b-beta:free' => 'Hugging Face: Zephyr 7B Beta (free)',
-            'openchat/openchat-7b:free' => 'OpenChat: OpenChat 7B (free)',
-            'gryphe/mythomist-7b:free' => 'Gryphe: MythoMist 7B (free)',
-            'undi95/toppy-m-7b:free' => 'Undi95: Toppy M 7B (free)'
+            'deepseek/deepseek-chat-v3.1:free' => 'deepseek/deepseek-chat-v3.1:free',
+            'deepseek/deepseek-chat-v3-0324:free' => 'deepseek/deepseek-chat-v3-0324:free',
+            'deepseek/deepseek-r1-0528:free' => 'deepseek/deepseek-r1-0528:free',
+            'qwen/qwen3-coder:free' => 'qwen/qwen3-coder:free',
+            'z-ai/glm-4.5-air:free' => 'z-ai/glm-4.5-air:free',
+            'qwen/qwen3-235b-a22b:free' => 'qwen/qwen3-235b-a22b:free',
+            'meta-llama/llama-3.3-70b-instruct:free' => 'meta-llama/llama-3.3-70b-instruct:free',
+            'google/gemini-2.0-flash-exp:free' => 'google/gemini-2.0-flash-exp:free',
+            'mistralai/mistral-small-3.2-24b-instruct:free' => 'mistralai/mistral-small-3.2-24b-instruct:free',
+            'openai/gpt-oss-20b:free' => 'openai/gpt-oss-20b:free',
+            'qwen/qwen2.5-vl-72b-instruct:free' => 'qwen/qwen2.5-vl-72b-instruct:free',
+            'meta-llama/llama-4-maverick:free' => 'meta-llama/llama-4-maverick:free',
+            'qwen/qwen3-14b:free' => 'qwen/qwen3-14b:free',
+            'mistralai/mistral-nemo:free' => 'mistralai/mistral-nemo:free',
+            'deepseek/deepseek-r1-distill-llama-70b:free' => 'deepseek/deepseek-r1-distill-llama-70b:free',
+            'google/gemma-3-27b-it:free' => 'google/gemma-3-27b-it:free',
+            'qwen/qwen-2.5-coder-32b-instruct:free' => 'qwen/qwen-2.5-coder-32b-instruct:free',
+            'moonshotai/kimi-dev-72b:free' => 'moonshotai/kimi-dev-72b:free',
+            'agentica-org/deepcoder-14b-preview:free' => 'agentica-org/deepcoder-14b-preview:free',
+            'qwen/qwen3-30b-a3b:free' => 'qwen/qwen3-30b-a3b:free',
+            'mistralai/mistral-7b-instruct:free' => 'mistralai/mistral-7b-instruct:free',
+            'meta-llama/llama-3.3-8b-instruct:free' => 'meta-llama/llama-3.3-8b-instruct:free',
+            'meta-llama/llama-4-scout:free' => 'meta-llama/llama-4-scout:free',
+            'cognitivecomputations/dolphin3.0-mistral-24b:free' => 'cognitivecomputations/dolphin3.0-mistral-24b:free',
+            'openai/gpt-oss-120b:free' => 'openai/gpt-oss-120b:free',
         ];
     }
 
