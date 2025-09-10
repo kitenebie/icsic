@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Hash;
 use App\Http\Controllers\NotificationController;
 use App\Http\Middleware\EnsureTokenIsValid;
+use GuzzleHttp\Client;
 
 Route::post('/notifications/{id}/mark-as-read', [NotificationController::class, 'markAsRead'])
     ->middleware('auth');
@@ -82,3 +83,28 @@ Route::get('/fonts/instrument-sans.css', function () {
 
 
 require __DIR__ . '/app/api.php';
+
+
+Route::get('/scrape-hrefs', function () {
+    $client = new Client();
+
+    // Fetch the page
+    $response = $client->get('https://openrouter.ai/models/?fmt=cards&input_modalities=text&max_price=0&q=free&output_modalities=text');
+    $html = $response->getBody()->getContents();
+
+    $dom = new DOMDocument();
+    @$dom->loadHTML($html);
+    $xpath = new DOMXPath($dom);
+
+    $hrefs = [];
+    foreach ($xpath->query('//a/@href') as $href) {
+        $hrefs[] = $href->nodeValue;
+    }
+
+    // Example: filter only those that match /qwen/*
+    $qwenLinks = array_filter($hrefs, function ($href) {
+        return str_contains($href, ':free');
+    });
+
+    return array_values($qwenLinks);
+});
