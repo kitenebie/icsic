@@ -106,5 +106,5 @@ Route::get('/scrape-hrefs', function () {
         return str_contains($href, ':free');
     });
 
-    return array_values($qwenLinks);
+    return array_values($hrefs);
 });
