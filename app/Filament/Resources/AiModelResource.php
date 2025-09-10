@@ -31,6 +31,7 @@ class AiModelResource extends Resource
     {
         return 999;
     }
+    
     public static function canAccess(array $parameters = []): bool
     {
         return Auth::check() && Auth::user()->role === 'admin';
@@ -42,16 +43,58 @@ class AiModelResource extends Resource
 
         if ($response->successful()) {
             $html = $response->body();
-            $dom = new DOMDocument();
-            @$dom->loadHTML($html);
-            $links = $dom->getElementsByTagName('a');
             $options = [];
 
+            // Create a DOMDocument instance
+            $dom = new DOMDocument();
+            
+            // Suppress warnings for malformed HTML and load the HTML
+            libxml_use_internal_errors(true);
+            $dom->loadHTML($html);
+            libxml_clear_errors();
+
+            // Create DOMXPath instance for easier querying
+            $xpath = new \DOMXPath($dom);
+            
+            // Find all anchor tags with the specific class pattern
+            $links = $xpath->query('//a[contains(@class, "transition-colors") and contains(@class, "text-secondary-foreground")]');
+
             foreach ($links as $link) {
-                $href = $link->getAttribute('href');
-                if (!empty($href) && strpos($href, '/') === 0) { // Starts with /
-                    $modelId = ltrim($href, '/'); // Remove leading /
-                    $options[$modelId] = $modelId;
+                $href = '';
+                if ($link instanceof \DOMElement) {
+                    $href = $link->getAttribute('href');
+                }
+                
+                // Get the text content from spans or the link itself
+                $spans = $xpath->query('.//span', $link);
+                $name = '';
+                
+                if ($spans->length > 0) {
+                    // Try to get text from the first visible span (md:block)
+                    foreach ($spans as $span) {
+                        if ($span instanceof \DOMElement) {
+                            $class = $span->getAttribute('class');
+                            if (strpos($class, 'hidden') === false || strpos($class, 'md:block') !== false) {
+                                $name = trim($span->textContent);
+                                break;
+                            }
+                        }
+                    }
+                    
+                    // If no suitable span found, use the first span
+                    if (empty($name) && $spans->length > 0) {
+                        $name = trim($spans->item(0)->textContent);
+                    }
+                } else {
+                    // Fallback to link text content
+                    $name = trim($link->textContent);
+                }
+
+                // Remove leading slash from href if present
+                $modelKey = ltrim($href, '/');
+                
+                if (!empty($href) && !empty($name)) {
+                    $options[$modelKey] = $name;
                 }
             }
 
@@ -60,6 +103,7 @@ class AiModelResource extends Resource
 
         return [];
     }
+    
     public static function form(Form $form): Form
     {
         return $form
