@@ -60,10 +60,7 @@ class AiModelResource extends Resource
             $links = $xpath->query('//a[contains(@class, "transition-colors") and contains(@class, "text-secondary-foreground")]');
 
             foreach ($links as $link) {
-                $href = '';
-                if ($link instanceof \DOMElement) {
-                    $href = $link->getAttribute('href');
-                }
+                $href = $link->getAttribute('href');
                 
                 // Get the text content from spans or the link itself
                 $spans = $xpath->query('.//span', $link);
@@ -72,12 +69,10 @@ class AiModelResource extends Resource
                 if ($spans->length > 0) {
                     // Try to get text from the first visible span (md:block)
                     foreach ($spans as $span) {
-                        if ($span instanceof \DOMElement) {
-                            $class = $span->getAttribute('class');
-                            if (strpos($class, 'hidden') === false || strpos($class, 'md:block') !== false) {
-                                $name = trim($span->textContent);
-                                break;
-                            }
+                        $class = $span->getAttribute('class');
+                        if (strpos($class, 'hidden') === false || strpos($class, 'md:block') !== false) {
+                            $name = trim($span->textContent);
+                            break;
                         }
                     }
                     
