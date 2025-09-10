@@ -8,7 +8,7 @@ use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Hash;
 use App\Http\Controllers\NotificationController;
 use App\Http\Middleware\EnsureTokenIsValid;
-use GuzzleHttp\Client;
+use Illuminate\Support\Facades\Http;
 
 Route::post('/notifications/{id}/mark-as-read', [NotificationController::class, 'markAsRead'])
     ->middleware('auth');
@@ -85,28 +85,27 @@ Route::get('/fonts/instrument-sans.css', function () {
 require __DIR__ . '/app/api.php';
 
 
-Route::get('/scrape-hrefs', function () {
-    $client = new Client();
 
-    // Fetch the page
-    $response = $client->get('https://openrouter.ai/models/?fmt=cards&input_modalities=text&max_price=0&q=free&output_modalities=text');
-    $html = $response->getBody()->getContents();
+Route::get('/free-models', function () {
+    $response = Http::get('https://openrouter.ai/api/v1/models');
 
-    $dom = new DOMDocument();
-    @$dom->loadHTML($html);
-    $xpath = new DOMXPath($dom);
-
-    $hrefs = [];
-    $nodes = $xpath->query('//a[@class="transition-colors text-secondary-foreground hover:text-foreground hover:underline underline-offset-2 text-base font-medium md:text-xl"]/@href');
-
-    foreach ($nodes as $href) {
-        $hrefs[] = $href->nodeValue;
+    if ($response->failed()) {
+        return response()->json(['error' => 'Failed to fetch models'], 500);
     }
 
-    // Example: filter only those that match /qwen/*
-    $qwenLinks = array_filter($hrefs, function ($href) {
-        return str_contains($href, ':free');
+    $models = $response->json('data', []);
+
+    // filter models with all pricing set to "0"
+    $freeModels = array_filter($models, function ($model) {
+        if (!isset($model['pricing'])) {
+            return false;
+        }
+        $pricing = $model['pricing'];
+        return ($pricing['prompt'] === '0'
+            && $pricing['completion'] === '0'
+            && ($pricing['request'] ?? '0') === '0');
     });
 
-    return array_values($hrefs);
+    // return only IDs for simplicity
+    return response()->json(array_map(fn($m) => $m['id'], $freeModels));
 });
