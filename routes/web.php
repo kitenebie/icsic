@@ -105,7 +105,12 @@ Route::get('/free-models', function () {
             && $pricing['completion'] === '0'
             && ($pricing['request'] ?? '0') === '0');
     });
-    $result = array_map(fn($m) => $m['id'], $freeModels);
-    // return only IDs for simplicity
+
+    // build ['id' => 'id'] style array
+    $result = [];
+    foreach ($freeModels as $model) {
+        $result[$model['id']] = $model['id'];
+    }
+
     return $result;
 });
