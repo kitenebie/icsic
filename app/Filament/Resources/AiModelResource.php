@@ -284,15 +284,25 @@ class AiModelResource extends Resource
                             ->placeholder('Choose a model...'),
                     ])
                     ->action(function (array $data): void {
-                        $updated = AiModel::whereNotNull('id')->update([
-                            'model' => $data['model_name']
-                        ]);
-                        
-                        Notification::make()
-                            ->title('Model Updated')
-                            ->success()
-                            ->body("Successfully updated {$updated} record(s) to use model: {$data['model_name']}")
-                            ->send();
+                        try {
+                            $updated = AiModel::whereNotNull('id')->update([
+                                'model' => $data['model_name']
+                            ]);
+                            
+                            Notification::make()
+                                ->title('Model Updated')
+                                ->success()
+                                ->body("Successfully updated {$updated} record(s) to use model: {$data['model_name']}")
+                                ->send();
+                        } catch (\Exception $e) {
+                            Log::error('Error updating AI model: ' . $e->getMessage());
+                            
+                            Notification::make()
+                                ->title('Update Failed')
+                                ->danger()
+                                ->body('Failed to update model. Please try again.')
+                                ->send();
+                        }
                     })
             ])
             ->actions([])
