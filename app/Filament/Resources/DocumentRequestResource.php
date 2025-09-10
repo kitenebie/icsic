@@ -29,6 +29,8 @@ class DocumentRequestResource extends Resource
 {
     protected static ?string $model = DocumentRequest::class;
 
+    protected static bool $shouldRegisterNavigation = false;
+
     public static function getNavigationGroup(): ?string
     {
         return 'Forms & Requests';

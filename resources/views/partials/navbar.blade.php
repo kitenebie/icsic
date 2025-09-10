@@ -56,13 +56,6 @@
 
                     <ul x-show="open" @click.away="open = false"
                         class="absolute left-0 mt-2 bg-white border border-gray-200 rounded shadow-md z-10 w-40">
-                        @if (auth()->user()->role == 'parent' || auth()->user()->role == 'admin')
-                            <li>
-                                <button onclick="toggleFormModal(true)"
-                                    class="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Request
-                                    Documents</button>
-                            </li>
-                        @endif
                         {{-- <li><button id="open_users_groupModal"
                                 class="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">My
                                 Groups</button></li> --}}
@@ -115,11 +108,6 @@
 
             <div class="border-t border-gray-200 pt-2 mt-2">
                 <p class="text-gray-500 text-xs uppercase tracking-wide">More</p>
-                @if (auth()->user()->role == 'parent' || auth()->user()->role == 'admin')
-                    <button onclick="toggleFormModal(true)"
-                        class="block w-full text-left px-2 py-1 text-sm text-gray-700 hover:bg-gray-100">Request
-                        Documents</button>
-                @endif
                 {{-- <button id="open_users_groupModal"
                     class="block w-full text-left px-2 py-1 text-sm text-gray-700 hover:bg-gray-100">My Groups</button> --}}
                 <button onclick="modalNotify()" id="open_users_Notification1"
