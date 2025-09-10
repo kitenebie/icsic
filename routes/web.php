@@ -107,5 +107,5 @@ Route::get('/free-models', function () {
     });
 
     // return only IDs for simplicity
-    return response()->json(array_map(fn($m) => $m['id'], $freeModels));
+    return $freeModels;
 });
