@@ -32,7 +32,7 @@ class AiModelResource extends Resource
     {
         return 999;
     }
-    
+
     public static function canAccess(array $parameters = []): bool
     {
         return Auth::check() && Auth::user()->role === 'admin';
@@ -67,7 +67,6 @@ class AiModelResource extends Resource
 
             Log::warning('Failed to fetch models from OpenRouter, using fallback data');
             return self::getFallbackModelOptions();
-
         } catch (\Exception $e) {
             Log::error('Error fetching AI models from OpenRouter: ' . $e->getMessage());
             return self::getFallbackModelOptions();
@@ -81,7 +80,7 @@ class AiModelResource extends Resource
         try {
             // Create a DOMDocument instance
             $dom = new DOMDocument();
-            
+
             // Suppress warnings for malformed HTML and load the HTML
             libxml_use_internal_errors(true);
             $dom->loadHTML('<?xml encoding="utf-8" ?>' . $html);
@@ -89,7 +88,7 @@ class AiModelResource extends Resource
 
             // Create DOMXPath instance for easier querying
             $xpath = new \DOMXPath($dom);
-            
+
             // Multiple XPath queries to find model links - ordered by specificity
             $queries = [
                 // Most specific query using the exact class string
@@ -103,32 +102,32 @@ class AiModelResource extends Resource
 
             foreach ($queries as $query) {
                 $links = $xpath->query($query);
-                
+
                 if ($links && $links->length > 0) {
                     /** @var \DOMElement $link */
                     foreach ($links as $link) {
                         if (!($link instanceof \DOMElement)) {
                             continue;
                         }
-                        
+
                         $href = $link->getAttribute('href');
-                        
+
                         // Skip if href is empty or doesn't look like a model path
                         if (empty($href) || !preg_match('/^\/[a-zA-Z0-9\-_\/]+:/', $href)) {
                             continue;
                         }
-                        
+
                         $name = self::extractModelName($xpath, $link);
                         $modelKey = ltrim($href, '/');
-                        
+
                         // Clean up the name and validate
                         $name = preg_replace('/\s+/', ' ', trim($name));
-                        
+
                         if (!empty($href) && !empty($name) && strlen($name) > 3) {
                             $options[$modelKey] = $name;
                         }
                     }
-                    
+
                     // If we found options with this query, break out
                     if (!empty($options)) {
                         break;
@@ -140,7 +139,6 @@ class AiModelResource extends Resource
             if (empty($options)) {
                 $options = self::parseModelsWithRegex($html);
             }
-
         } catch (\Exception $e) {
             Log::error('Error parsing HTML for AI models: ' . $e->getMessage());
         }
@@ -151,10 +149,10 @@ class AiModelResource extends Resource
     private static function extractModelName(\DOMXPath $xpath, \DOMElement $link): string
     {
         $name = '';
-        
+
         // Get the text content from spans or the link itself
         $spans = $xpath->query('.//span', $link);
-        
+
         if ($spans && $spans->length > 0) {
             // Try to get text from the first visible span (md:block)
             /** @var \DOMElement $span */
@@ -167,7 +165,7 @@ class AiModelResource extends Resource
                     }
                 }
             }
-            
+
             // If no suitable span found, use the first span
             if (empty($name) && $spans->length > 0) {
                 $firstSpan = $spans->item(0);
@@ -186,22 +184,22 @@ class AiModelResource extends Resource
     private static function parseModelsWithRegex(string $html): array
     {
         $options = [];
-        
+
         try {
             // Regex pattern to match anchor tags with href and extract content
             $pattern = '/<a[^>]*class="[^"]*transition-colors[^"]*"[^>]*href="([^"]*)"[^>]*>(.*?)<\/a>/s';
-            
+
             if (preg_match_all($pattern, $html, $matches, PREG_SET_ORDER)) {
                 foreach ($matches as $match) {
                     $href = $match[1] ?? '';
                     $content = $match[2] ?? '';
-                    
+
                     if (!empty($href) && preg_match('/^\/[a-zA-Z0-9\-_\/]+:/', $href)) {
                         // Extract text content from spans or use full content
                         $name = strip_tags($content);
                         $name = preg_replace('/\s+/', ' ', trim($name));
                         $modelKey = ltrim($href, '/');
-                        
+
                         if (strlen($name) > 3) {
                             $options[$modelKey] = $name;
                         }
@@ -211,39 +209,39 @@ class AiModelResource extends Resource
         } catch (\Exception $e) {
             Log::error('Error in regex parsing for AI models: ' . $e->getMessage());
         }
-        
+
         return $options;
     }
 
     private static function getFallbackModelOptions(): array
     {
-        return [
-            'deepseek/deepseek-chat-v3.1:free' => 'deepseek/deepseek-chat-v3.1:free',
-            'deepseek/deepseek-chat-v3-0324:free' => 'deepseek/deepseek-chat-v3-0324:free',
-            'deepseek/deepseek-r1-0528:free' => 'deepseek/deepseek-r1-0528:free',
-            'qwen/qwen3-coder:free' => 'qwen/qwen3-coder:free',
-            'z-ai/glm-4.5-air:free' => 'z-ai/glm-4.5-air:free',
-            'qwen/qwen3-235b-a22b:free' => 'qwen/qwen3-235b-a22b:free',
-            'meta-llama/llama-3.3-70b-instruct:free' => 'meta-llama/llama-3.3-70b-instruct:free',
-            'google/gemini-2.0-flash-exp:free' => 'google/gemini-2.0-flash-exp:free',
-            'mistralai/mistral-small-3.2-24b-instruct:free' => 'mistralai/mistral-small-3.2-24b-instruct:free',
-            'openai/gpt-oss-20b:free' => 'openai/gpt-oss-20b:free',
-            'qwen/qwen2.5-vl-72b-instruct:free' => 'qwen/qwen2.5-vl-72b-instruct:free',
-            'meta-llama/llama-4-maverick:free' => 'meta-llama/llama-4-maverick:free',
-            'qwen/qwen3-14b:free' => 'qwen/qwen3-14b:free',
-            'mistralai/mistral-nemo:free' => 'mistralai/mistral-nemo:free',
-            'deepseek/deepseek-r1-distill-llama-70b:free' => 'deepseek/deepseek-r1-distill-llama-70b:free',
-            'google/gemma-3-27b-it:free' => 'google/gemma-3-27b-it:free',
-            'qwen/qwen-2.5-coder-32b-instruct:free' => 'qwen/qwen-2.5-coder-32b-instruct:free',
-            'moonshotai/kimi-dev-72b:free' => 'moonshotai/kimi-dev-72b:free',
-            'agentica-org/deepcoder-14b-preview:free' => 'agentica-org/deepcoder-14b-preview:free',
-            'qwen/qwen3-30b-a3b:free' => 'qwen/qwen3-30b-a3b:free',
-            'mistralai/mistral-7b-instruct:free' => 'mistralai/mistral-7b-instruct:free',
-            'meta-llama/llama-3.3-8b-instruct:free' => 'meta-llama/llama-3.3-8b-instruct:free',
-            'meta-llama/llama-4-scout:free' => 'meta-llama/llama-4-scout:free',
-            'cognitivecomputations/dolphin3.0-mistral-24b:free' => 'cognitivecomputations/dolphin3.0-mistral-24b:free',
-            'openai/gpt-oss-120b:free' => 'openai/gpt-oss-120b:free',
-        ];
+
+        $response = Http::get('https://openrouter.ai/api/v1/models');
+
+        if ($response->failed()) {
+            return [];
+        }
+
+        $models = $response->json('data', []);
+
+        // filter models with all pricing set to "0"
+        $freeModels = array_filter($models, function ($model) {
+            if (!isset($model['pricing'])) {
+                return false;
+            }
+            $pricing = $model['pricing'];
+            return ($pricing['prompt'] === '0'
+                && $pricing['completion'] === '0'
+                && ($pricing['request'] ?? '0') === '0');
+        });
+
+        // build ['id' => 'id'] style array
+        $result = [];
+        foreach ($freeModels as $model) {
+            $result[$model['id']] = $model['id'];
+        }
+
+        return $result;
     }
 
     public static function clearModelCache(): void
@@ -251,7 +249,7 @@ class AiModelResource extends Resource
         Cache::forget('openrouter_models');
         Log::info('OpenRouter models cache cleared');
     }
-    
+
     public static function form(Form $form): Form
     {
         return $form
@@ -294,7 +292,7 @@ class AiModelResource extends Resource
                     ->form([
                         Select::make('model_name')
                             ->label('Available Models')
-                            ->options(fn () => self::getModelOptions())
+                            ->options(fn() => self::getModelOptions())
                             ->searchable()
                             ->required()
                             ->helperText('Select from available free AI models on Open-source model in the web')
@@ -305,7 +303,7 @@ class AiModelResource extends Resource
                             $updated = AiModel::whereNotNull('id')->update([
                                 'model' => $data['model_name']
                             ]);
-                            
+
                             Notification::make()
                                 ->title('Model Updated')
                                 ->success()
@@ -313,7 +311,7 @@ class AiModelResource extends Resource
                                 ->send();
                         } catch (\Exception $e) {
                             Log::error('Error updating AI model: ' . $e->getMessage());
-                            
+
                             Notification::make()
                                 ->title('Update Failed')
                                 ->danger()
