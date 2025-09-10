@@ -251,7 +251,7 @@
                     <div class="faq-content px-5 pb-5 text-gray-600 hidden">
                         ICSIS is an online platform designed to make school information and communication easier for
                         students, parents, teachers, graduates, and school staff. It centralizes important features like
-                        school news, announcements, calendar events, document requests, community groups, and more—all
+                        school news, announcements, calendar events, community groups, and more—all
                         in one secure place.
                     </div>
                 </div>
@@ -361,43 +361,11 @@
                     </div>
                 </div>
 
+
                 <!-- FAQ 7 -->
                 <div class="bg-white rounded-lg shadow overflow-hidden">
                     <button class="w-full text-left p-5 flex justify-between items-center faq-toggle">
-                        <span class="text-lg font-medium text-gray-800">7. How do I request official school documents
-                            through ICSIS?</span>
-                        <svg class="w-5 h-5 text-gray-500 transition-transform transform rotate-0" fill="none"
-                            stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7" />
-                        </svg>
-                    </button>
-                    <div class="faq-content px-5 pb-5 text-gray-600 hidden">
-                        <b>(Parent)</b> can request documents like Form 137 (Student Permanent Record), Form 138 (Report
-                        Card), and
-                        Certificate of Good Moral by filling out an online form. The school will process your request
-                        and notify you when your document is ready.
-                    </div>
-                </div>
-
-                <!-- FAQ 8 -->
-                <div class="bg-white rounded-lg shadow overflow-hidden">
-                    <button class="w-full text-left p-5 flex justify-between items-center faq-toggle">
-                        <span class="text-lg font-medium text-gray-800">8. Who can request documents?</span>
-                        <svg class="w-5 h-5 text-gray-500 transition-transform transform rotate-0" fill="none"
-                            stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7" />
-                        </svg>
-                    </button>
-                    <div class="faq-content px-5 pb-5 text-gray-600 hidden">
-                        Parents can submit document requests. Requests must come
-                        from authorized users and contact details should be kept updated for smooth processing.
-                    </div>
-                </div>
-
-                <!-- FAQ 9 -->
-                <div class="bg-white rounded-lg shadow overflow-hidden">
-                    <button class="w-full text-left p-5 flex justify-between items-center faq-toggle">
-                        <span class="text-lg font-medium text-gray-800">9. What are the groups in ICSIS, and how do
+                        <span class="text-lg font-medium text-gray-800">7. What are the groups in ICSIS, and how do
                             they work?</span>
                         <svg class="w-5 h-5 text-gray-500 transition-transform transform rotate-0" fill="none"
                             stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
@@ -415,10 +383,10 @@
                     </div>
                 </div>
 
-                <!-- FAQ 10 -->
+                <!-- FAQ 8 -->
                 <div class="bg-white rounded-lg shadow overflow-hidden">
                     <button class="w-full text-left p-5 flex justify-between items-center faq-toggle">
-                        <span class="text-lg font-medium text-gray-800">10. How do I join or create a group?</span>
+                        <span class="text-lg font-medium text-gray-800">8. How do I join or create a group?</span>
                         <svg class="w-5 h-5 text-gray-500 transition-transform transform rotate-0" fill="none"
                             stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7" />
@@ -435,10 +403,10 @@
                 </div>
 
 
-                <!-- FAQ 11 -->
+                <!-- FAQ 9 -->
                 <div class="bg-white rounded-lg shadow overflow-hidden">
                     <button class="w-full text-left p-5 flex justify-between items-center faq-toggle">
-                        <span class="text-lg font-medium text-gray-800">11. How does ICSIS protect my personal
+                        <span class="text-lg font-medium text-gray-800">9. How does ICSIS protect my personal
                             information and keep interactions safe?</span>
                         <svg class="w-5 h-5 text-gray-500 transition-transform transform rotate-0" fill="none"
                             stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
@@ -451,10 +419,10 @@
                     </div>
                 </div>
 
-                <!-- FAQ 12 -->
+                <!-- FAQ 10 -->
                 <div class="bg-white rounded-lg shadow overflow-hidden">
                     <button class="w-full text-left p-5 flex justify-between items-center faq-toggle">
-                        <span class="text-lg font-medium text-gray-800">12. Can I access ICSIS on mobile
+                        <span class="text-lg font-medium text-gray-800">10. Can I access ICSIS on mobile
                             devices?</span>
                         <svg class="w-5 h-5 text-gray-500 transition-transform transform rotate-0" fill="none"
                             stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
@@ -467,10 +435,10 @@
                     </div>
                 </div>
 
-                <!-- FAQ 13 -->
+                <!-- FAQ 11 -->
                 <div class="bg-white rounded-lg shadow overflow-hidden">
                     <button class="w-full text-left p-5 flex justify-between items-center faq-toggle">
-                        <span class="text-lg font-medium text-gray-800">13. What should I do if I forget my
+                        <span class="text-lg font-medium text-gray-800">11. What should I do if I forget my
                             password?</span>
                         <svg class="w-5 h-5 text-gray-500 transition-transform transform rotate-0" fill="none"
                             stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
@@ -485,10 +453,10 @@
                     </div>
                 </div>
 
-                <!-- FAQ 14 -->
+                <!-- FAQ 12 -->
                 <div class="bg-white rounded-lg shadow overflow-hidden">
                     <button class="w-full text-left p-5 flex justify-between items-center faq-toggle">
-                        <span class="text-lg font-medium text-gray-800">14. What if I encounter technical problems or
+                        <span class="text-lg font-medium text-gray-800">12. What if I encounter technical problems or
                             have questions about ICSIS?</span>
                         <svg class="w-5 h-5 text-gray-500 transition-transform transform rotate-0" fill="none"
                             stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
@@ -502,10 +470,10 @@
                     </div>
                 </div>
 
-                <!-- FAQ 15 -->
+                <!-- FAQ 13 -->
                 <div class="bg-white rounded-lg shadow overflow-hidden">
                     <button class="w-full text-left p-5 flex justify-between items-center faq-toggle">
-                        <span class="text-lg font-medium text-gray-800">15. Where can I learn more about Irosin Central
+                        <span class="text-lg font-medium text-gray-800">13. Where can I learn more about Irosin Central
                             School?</span>
                         <svg class="w-5 h-5 text-gray-500 transition-transform transform rotate-0" fill="none"
                             stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
@@ -518,10 +486,10 @@
                     </div>
                 </div>
 
-                <!-- FAQ 16 -->
+                <!-- FAQ 14 -->
                 <div class="bg-white rounded-lg shadow overflow-hidden">
                     <button class="w-full text-left p-5 flex justify-between items-center faq-toggle">
-                        <span class="text-lg font-medium text-gray-800">16. Can I update my profile information?</span>
+                        <span class="text-lg font-medium text-gray-800">14. Can I update my profile information?</span>
                         <svg class="w-5 h-5 text-gray-500 transition-transform transform rotate-0" fill="none"
                             stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7" />
@@ -537,10 +505,10 @@
                     </div>
                 </div>
 
-                <!-- FAQ 17 -->
+                <!-- FAQ 15 -->
                 <div class="bg-white rounded-lg shadow overflow-hidden">
                     <button class="w-full text-left p-5 flex justify-between items-center faq-toggle">
-                        <span class="text-lg font-medium text-gray-800">17. Will I receive notifications for new
+                        <span class="text-lg font-medium text-gray-800">15. Will I receive notifications for new
                             updates?</span>
                         <svg class="w-5 h-5 text-gray-500 transition-transform transform rotate-0" fill="none"
                             stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
@@ -555,10 +523,10 @@
                     </div>
                 </div>
 
-                <!-- FAQ 18 -->
+                <!-- FAQ 16 -->
                 <div class="bg-white rounded-lg shadow overflow-hidden">
                     <button class="w-full text-left p-5 flex justify-between items-center faq-toggle">
-                        <span class="text-lg font-medium text-gray-800">18. Why are all members of the school displayed
+                        <span class="text-lg font-medium text-gray-800">16. Why are all members of the school displayed
                             on the Irosin Central School Information System?</span>
                         <svg class="w-5 h-5 text-gray-500 transition-transform transform rotate-0" fill="none"
                             stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
@@ -576,10 +544,10 @@
                     </div>
                 </div>
 
-                <!-- FAQ 19 -->
+                <!-- FAQ 17 -->
                 <div class="bg-white rounded-lg shadow overflow-hidden">
                     <button class="w-full text-left p-5 flex justify-between items-center faq-toggle">
-                        <span class="text-lg font-medium text-gray-800">19. What is the face detection feature during
+                        <span class="text-lg font-medium text-gray-800">17. What is the face detection feature during
                             registration and how does it work?</span>
                         <svg class="w-5 h-5 text-gray-500 transition-transform transform rotate-0" fill="none"
                             stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">

@@ -50,7 +50,7 @@
                         </svg>
                     </button>
                     <div class="faq-content px-5 pb-5 text-gray-600 hidden">
-                        ICSIS is an online platform designed to make school information and communication easier for students, parents, teachers, graduates, and school staff. It centralizes important features like school news, announcements, calendar events, document requests, community groups, and more—all in one secure place.
+                        ICSIS is an online platform designed to make school information and communication easier for students, parents, teachers, graduates, and school staff. It centralizes important features like school news, announcements, calendar events, community groups, and more—all in one secure place.
                     </div>
                 </div>
 
@@ -141,91 +141,91 @@
                 <!-- FAQ 7 -->
                 <div class="bg-white rounded-lg shadow overflow-hidden">
                     <button class="w-full text-left p-5 flex justify-between items-center faq-toggle">
-                        <span class="text-lg font-medium text-gray-800">7. How do I request official school documents through ICSIS?</span>
+                        <span class="text-lg font-medium text-gray-800">7. What are the groups in ICSIS, and how do they work?</span>
                         <svg class="w-5 h-5 text-gray-500 transition-transform transform rotate-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7" />
                         </svg>
                     </button>
                     <div class="faq-content px-5 pb-5 text-gray-600 hidden">
-                        <b>(Parent)</b> can request documents like Form 137 (Student Permanent Record), Form 138 (Report Card), and Certificate of Good Moral by filling out an online form. The school will process your request and notify you when your document is ready.
+                        Visit the About Us section on the ICSIS portal or the official school website to learn about the school's history, vision, mission, and more.
                     </div>
                 </div>
 
                 <!-- FAQ 8 -->
                 <div class="bg-white rounded-lg shadow overflow-hidden">
                     <button class="w-full text-left p-5 flex justify-between items-center faq-toggle">
-                        <span class="text-lg font-medium text-gray-800">8. Who can request documents?</span>
+                        <span class="text-lg font-medium text-gray-800">8. How do I join or create a group?</span>
                         <svg class="w-5 h-5 text-gray-500 transition-transform transform rotate-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7" />
                         </svg>
                     </button>
                     <div class="faq-content px-5 pb-5 text-gray-600 hidden">
-                        Parents can submit document requests. Requests must come from authorized users and contact details should be kept updated for smooth processing.
+                        Contact the ICSIS Help Desk or your school's IT coordinator. Their contact info is in the About Us section or on the login page. They can assist with account issues, technical problems, and general questions.
                     </div>
                 </div>
 
                 <!-- FAQ 9 -->
                 <div class="bg-white rounded-lg shadow overflow-hidden">
                     <button class="w-full text-left p-5 flex justify-between items-center faq-toggle">
-                        <span class="text-lg font-medium text-gray-800">9. What are the groups in ICSIS, and how do they work?</span>
+                        <span class="text-lg font-medium text-gray-800">9. How does ICSIS protect my personal information and keep interactions safe?</span>
                         <svg class="w-5 h-5 text-gray-500 transition-transform transform rotate-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7" />
                         </svg>
                     </button>
                     <div class="faq-content px-5 pb-5 text-gray-600 hidden">
-                        <b>Groups</b> are community spaces where parents, students, and graduates connect based on shared classes, interests, or activities. They help organize discussions, resource sharing, announcements, and events. A <b>"My Groups"</b> button is available for users to quickly access the groups they have already joined. Within these groups, users can easily stay updated with the latest announcements and upcoming events relevant to their communities.
+                        Visit the About Us section on the ICSIS portal or the official school website to learn about the school's history, vision, mission, and more.
                     </div>
                 </div>
 
                 <!-- FAQ 10 -->
                 <div class="bg-white rounded-lg shadow overflow-hidden">
                     <button class="w-full text-left p-5 flex justify-between items-center faq-toggle">
-                        <span class="text-lg font-medium text-gray-800">10. How do I join or create a group?</span>
+                        <span class="text-lg font-medium text-gray-800">10. Can I access ICSIS on mobile devices?</span>
                         <svg class="w-5 h-5 text-gray-500 transition-transform transform rotate-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7" />
                         </svg>
                     </button>
                     <div class="faq-content px-5 pb-5 text-gray-600 hidden">
-                        Only school administrators and teachers can create groups to avoid redundancy and maintain organization within ICSIS. Users can request to join groups, but group membership requires admin approval. Groups filter access so that only members can view updates in announcements and calendar events related to that group. Please note that news posts are public and visible to all users regardless of group membership.
+                        Contact the ICSIS Help Desk or your school's IT coordinator. Their contact info is in the About Us section or on the login page. They can assist with account issues, technical problems, and general questions.
                     </div>
                 </div>
 
                 <!-- FAQ 11 -->
                 <div class="bg-white rounded-lg shadow overflow-hidden">
                     <button class="w-full text-left p-5 flex justify-between items-center faq-toggle">
-                        <span class="text-lg font-medium text-gray-800">11. How does ICSIS protect my personal information and keep interactions safe?</span>
+                        <span class="text-lg font-medium text-gray-800">11. What should I do if I forget my password?</span>
                         <svg class="w-5 h-5 text-gray-500 transition-transform transform rotate-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7" />
                         </svg>
                     </button>
                     <div class="faq-content px-5 pb-5 text-gray-600 hidden">
-                        ICSIS employs secure login, role-based access control, AI comment moderation, and regular system updates to safeguard your data and maintain a respectful community.
+                        Visit the About Us section on the ICSIS portal or the official school website to learn about the school's history, vision, mission, and more.
                     </div>
                 </div>
 
                 <!-- FAQ 12 -->
                 <div class="bg-white rounded-lg shadow overflow-hidden">
                     <button class="w-full text-left p-5 flex justify-between items-center faq-toggle">
-                        <span class="text-lg font-medium text-gray-800">12. Can I access ICSIS on mobile devices?</span>
+                        <span class="text-lg font-medium text-gray-800">12. What if I encounter technical problems or have questions about ICSIS?</span>
                         <svg class="w-5 h-5 text-gray-500 transition-transform transform rotate-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7" />
                         </svg>
                     </button>
                     <div class="faq-content px-5 pb-5 text-gray-600 hidden">
-                        Yes! ICSIS is mobile-friendly and works smoothly on smartphones and tablets via web browsers, letting you stay connected wherever you go.
+                        Contact the ICSIS Help Desk or your school's IT coordinator. Their contact info is in the About Us section or on the login page. They can assist with account issues, technical problems, and general questions.
                     </div>
                 </div>
 
                 <!-- FAQ 13 -->
                 <div class="bg-white rounded-lg shadow overflow-hidden">
                     <button class="w-full text-left p-5 flex justify-between items-center faq-toggle">
-                        <span class="text-lg font-medium text-gray-800">13. What should I do if I forget my password?</span>
+                        <span class="text-lg font-medium text-gray-800">13. Where can I learn more about Irosin Central School?</span>
                         <svg class="w-5 h-5 text-gray-500 transition-transform transform rotate-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7" />
                         </svg>
                     </button>
                     <div class="faq-content px-5 pb-5 text-gray-600 hidden">
-                        Click the <b>"Forgot Password?"</b> link on the login page, enter your registered email or username, and follow the instructions sent to your email to reset your password. For issues, contact the school IT office.
+                        Visit the About Us section on the ICSIS portal or the official school website to learn about the school's history, vision, mission, and more.
                     </div>
                 </div>
 
