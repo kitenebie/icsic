@@ -297,7 +297,7 @@ class AiModelResource extends Resource
                             ->options(fn () => self::getModelOptions())
                             ->searchable()
                             ->required()
-                            ->helperText('Select from available free AI models on OpenRouter')
+                            ->helperText('Select from available free AI models on Open-source model in the web')
                             ->placeholder('Choose a model...'),
                     ])
                     ->action(function (array $data): void {
