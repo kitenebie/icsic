@@ -49,9 +49,9 @@ class AiModelResource extends Resource
 
             foreach ($links as $link) {
                 $href = $link->getAttribute('href');
-                if (preg_match('#^/([^/]+/[^/]+)$#', $href, $matches)) {
-                    $modelId = $matches[1];
-                    $options[$modelId] = $modelId; // Use modelId as both key and label
+                if (!empty($href) && strpos($href, '/') === 0) { // Starts with /
+                    $modelId = ltrim($href, '/'); // Remove leading /
+                    $options[$modelId] = $modelId;
                 }
             }
 
