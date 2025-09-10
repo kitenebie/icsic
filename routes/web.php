@@ -97,7 +97,9 @@ Route::get('/scrape-hrefs', function () {
     $xpath = new DOMXPath($dom);
 
     $hrefs = [];
-    foreach ($xpath->query('//a/@href') as $href) {
+    $nodes = $xpath->query('//a[@class="transition-colors text-secondary-foreground hover:text-foreground hover:underline underline-offset-2 text-base font-medium md:text-xl"]/@href');
+
+    foreach ($nodes as $href) {
         $hrefs[] = $href->nodeValue;
     }
 
