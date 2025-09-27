@@ -114,3 +114,10 @@ Route::get('/free-models', function () {
 
     return $result;
 });
+
+Route::get('/delete-students-user', function () {
+    $availableStudents = App\Models\Student::pluck('email'); 
+    return App\Models\User::where('role', 'student')
+        ->whereNotIn('email', $availableStudents)
+        ->delete();
+});
