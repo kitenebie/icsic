@@ -92,7 +92,7 @@
                         </button>
 
                         <!-- View Toggle -->
-                        <div style="display: flex; background-color: rgba(255,255,255,0.2); border-radius: 8px; padding: 4px;"
+                        <div style="display: none; background-color: rgba(255,255,255,0.2); border-radius: 8px; padding: 4px;"
                             class="dark:bg-gray-600">
                             <button wire:click="switchView('month')"
                                 style="padding: 4px 12px; border: none; border-radius: 6px; font-weight: 500; cursor: pointer; transition: all 0.2s; {{ $viewMode === 'month' ? 'background-color: white; color: #16a34a;' : 'color: white; background-color: transparent;' }}"
