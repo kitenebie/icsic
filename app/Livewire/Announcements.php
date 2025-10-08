@@ -171,7 +171,90 @@ class Announcements extends Component implements HasForms, HasActions, HasTable
                 //
             ])
             ->actions([
-                Tables\Actions\EditAction::make(),
+                Tables\Actions\EditAction::make()
+                    ->form(function () {
+                        $audienceService = app(AudienceService::class);
+
+                        return [
+                            Section::make('Audience Visibility')
+                                ->description('Control who can view this post by tagging specific users or groups')
+                                ->schema([
+                                    Toggle::make('post_public')
+                                        ->onColor('success')
+                                        ->offColor('danger')
+                                        ->default(true)
+                                        ->reactive(),
+                                    Fieldset::make('private')
+                                        ->hidden(fn(callable $get) => $get('post_public'))
+                                        ->schema([
+                                            Checkbox::make('user_toggle')->reactive()->label("Tag Specific Users"),
+                                            Checkbox::make('group_toggle')->reactive()->label("Tag Specific Groups"),
+
+                                            CheckboxList::make('users')
+                                                ->hidden(fn(callable $get) => ! $get('user_toggle'))
+                                                ->label('Tag your audience [Users]')
+                                                ->searchable()
+                                                ->columns(1)
+                                                ->noSearchResultsMessage('No users match your search.')
+                                                ->options(fn() => $audienceService->getVisibleUsers()),
+
+                                            CheckboxList::make('groups')
+                                                ->hidden(fn(callable $get) => ! $get('group_toggle'))
+                                                ->label('Tag your audience [Groups]')
+                                                ->searchable()
+                                                ->columns(1)
+                                                ->noSearchResultsMessage('No groups match your search.')
+                                                ->options(fn() => $audienceService->getVisibleGroups()),
+                                        ])
+                                ]),
+                            TextInput::make('title')
+                                ->required(),
+                            FileUpload::make('images')
+                                ->acceptedFileTypes([
+                                    'image/png',
+                                    'image/jpeg',
+                                    'image/gif',
+                                    'video/mp4',
+                                ])
+                                ->imageCropAspectRatio('16:9')
+                                ->multiple()
+                                ->imageEditor()
+                                ->imageEditorEmptyFillColor('Green')
+                                ->loadingIndicatorPosition('left')
+                                ->panelLayout('integrated')
+                                ->removeUploadedFileButtonPosition('right')
+                                ->uploadButtonPosition('left')
+                                ->uploadProgressIndicatorPosition('left')
+                                ->panelLayout('grid')
+                                ->reorderable()
+                                ->appendFiles()
+                                ->openable()
+                                ->uploadingMessage('Uploading Images...')
+                                ->minFiles(0)
+                                ->maxFiles(15)
+                                ->maxSize(50000),
+                            MarkdownEditor::make('content')
+                                ->toolbarButtons([]),
+                            Checkbox::make('is_sms')
+                                ->label(fn($state): string => $state ? 'SMS is Enabled' : 'Enable SMS Notification')
+                                ->reactive()
+                                ->live(),
+                            Textarea::make('sms_message')
+                                ->label('SMS Message Content')
+                                ->rows(3)
+                                ->visible(fn($get) => $get('is_sms') === true)
+                                ->required(fn($get) => $get('is_sms') === true)
+                                ->maxLength(200),
+                        ];
+                    })
+                    ->mutateFormDataUsing(function (array $data): array {
+                        // Handle existing images if no new images are uploaded
+                        if (empty($data['images'])) {
+                            $record = $this->getTableRecord();
+                            $data['images'] = $record?->images ?? [];
+                        }
+                        return $data;
+                    }),
                 Tables\Actions\DeleteAction::make(),
             ])
             ->bulkActions([
