@@ -1,6 +1,6 @@
 <x-layouts.custome.header>
     <section class="relative bg-green-700 text-white px-6 py-20 sm:py-28 md:py-32 lg:py-40 bg-cover bg-center"
-        style="background-image: url('/home.jpg'); min-height: 600px;">
+        style="background-image: url('/home.png'); min-height: 600px;">
 
         <!-- Dark overlay -->
         <div class="absolute inset-0 bg-black/40"></div>
@@ -37,7 +37,7 @@
 
     <style>
         .hero-section {
-            background-image: url('/home.jpg');
+            background-image: url('/home.png');
             background-size: cover;
             background-position: center;
         }

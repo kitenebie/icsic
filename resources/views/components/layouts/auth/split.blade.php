@@ -10,7 +10,7 @@
                 <div class="absolute inset-0">
                     <div class="absolute inset-0 bg-green-700 opacity-50">
                     </div>
-                    <img class="w-full h-full"  src="/home.jpg" />
+                    <img class="w-full h-full"  src="/home.png" />
                 </div>
                 
                 <a href="{{ route('home') }}" class="relative z-20 flex items-center text-lg font-medium" wire:navigate>
