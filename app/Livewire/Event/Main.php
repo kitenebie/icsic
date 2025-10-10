@@ -232,7 +232,7 @@ class Main extends Component implements HasForms, HasActions
             'event_images' => $event->event_images,
             'event_discription' => $event->event_discription,
         ]);
-
+        $this->dispatch('open-modal', id: 'open-modal-edit');
         $this->editingEventId = $eventId;
         $this->showEditModal = true;
     }

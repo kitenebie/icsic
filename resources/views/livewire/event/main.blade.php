@@ -27,7 +27,7 @@
     </x-filament::modal>
 
     <!-- Edit Event Modal -->
-    <x-filament::modal width="3xl" wire:model="showEditModal" style="z-index: 99999;">
+    <x-filament::modal width="3xl" id="open-modal-edit" style="z-index: 99999;">
         <x-slot name="heading">
             Edit Event
         </x-slot>
