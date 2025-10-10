@@ -160,7 +160,7 @@ class Main extends Component implements HasForms, HasActions
                     ->visible(fn($get) => $get('event_category') === 'Other')
                     ->required(fn($get) => $get('event_category') === 'Other'),
                 TextInput::make('event_location')->required(),
-                DatePicker::make('event_date')->required()->minDate(now()),
+                DatePicker::make('event_date')->required(),
                 TimePicker::make('event_time')->required(),
                 TextInput::make('event_duration')->required(),
                 FileUpload::make('event_images')
