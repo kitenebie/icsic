@@ -54,6 +54,7 @@ class Main extends Component implements HasForms, HasActions
 
     // Edit modal property
     public $showEditModal = false;
+    public $editingEventId = null;
 
     // Bulk selection properties
     public $selectedEvents = [];
@@ -232,14 +233,23 @@ class Main extends Component implements HasForms, HasActions
             'event_discription' => $event->event_discription,
         ]);
 
+        $this->editingEventId = $eventId;
         $this->showEditModal = true;
     }
 
-    public function update($eventId): void
+    public function update(): void
     {
+        if (!$this->editingEventId) {
+            Notification::make()
+                ->title('No event selected for editing')
+                ->error()
+                ->send();
+            return;
+        }
+
         $validatedData = $this->form->getState();
 
-        $event = event::findOrFail($eventId);
+        $event = event::findOrFail($this->editingEventId);
 
         $event->update([
             'event_name'        => $validatedData['event_name'],
@@ -255,6 +265,7 @@ class Main extends Component implements HasForms, HasActions
         // Reset form and close modal
         $this->form->fill([]);
         $this->showEditModal = false;
+        $this->editingEventId = null;
 
         Notification::make()
             ->title('Event updated successfully!')
