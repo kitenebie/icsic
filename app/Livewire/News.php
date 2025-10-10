@@ -28,7 +28,6 @@ use Filament\Forms\Components\Checkbox;
 use Filament\Forms\Components\Section;
 use Filament\Forms\Components\Toggle;
 use Filament\Forms\Components\Fieldset;
-use App\Services\XSSai;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Log;
 
@@ -290,40 +289,24 @@ class News extends Component implements HasForms, HasTable
 
     public function create(): void
     {
-        $XSSai = new XSSai();
-        $data = $this->form->getState();
+        try {
+            $data = $this->form->getState();
 
-        $ask = collect(['title', 'topic_category', 'content'])
-            ->map(function ($field) use ($data) {
-                return is_array($data[$field])
-                    ? implode(', ', Arr::flatten($data[$field]))
-                    : $data[$field];
-            })
-            ->implode('. ');
-
-        $result = $XSSai->ask($ask);
-
-        // Clean up markdown formatting (```json ... ```)
-        $cleanResult = trim($result);
-        $cleanResult = preg_replace('/^```json|```$/', '', $cleanResult);
-        $cleanResult = trim($cleanResult);
-
-        $json = json_decode($cleanResult, true);
-
-        Log::info("JSON:", $json ?? []);
-        Log::info("RAW RESULT: " . $result);
-
-        if ($json && isset($json['safe']) && $json['safe'] === true) {
+            // Create the news record directly without XSSai validation
             NewsDB::create($data);
+
             $this->form->fill([]);
             Notification::make()
                 ->title('Saved successfully')
                 ->success()
                 ->send();
-        } else {
+
+        } catch (\Exception $e) {
+            Log::error('Error creating news: ' . $e->getMessage());
+
             Notification::make()
-                ->title('Input rejected due to security risks')
-                ->body(($json['explanation'] ?? 'No explanation') . " - " . ($json['context'] ?? 'No context'))
+                ->title('Error saving news')
+                ->body('An error occurred while saving the news: ' . $e->getMessage())
                 ->danger()
                 ->send();
         }
