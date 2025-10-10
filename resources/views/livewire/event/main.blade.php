@@ -250,6 +250,21 @@
                                                     <h4 style="font-weight: 600; color: #111827; margin: 0;"
                                                         class="dark:text-white">{{ $event->event_name }}</h4>
                                                 </div>
+                                                <!-- Edit Button -->
+                                                <button wire:click="editEvent({{ $event->id }})"
+                                                    style="padding: 6px 12px; background-color: #16a34a; color: white; border: none; border-radius: 6px; font-size: 12px; font-weight: 500; cursor: pointer; transition: background-color 0.2s; display: flex; align-items: center; gap: 4px;"
+                                                    class="dark:bg-green-700 dark:hover:bg-green-600"
+                                                    onmouseover="this.style.backgroundColor='#15803d'"
+                                                    onmouseout="this.style.backgroundColor='#16a34a'">
+                                                    <svg style="width: 14px; height: 14px;" fill="none"
+                                                        stroke="currentColor" viewBox="0 0 24 24">
+                                                        <path stroke-linecap="round" stroke-linejoin="round"
+                                                            stroke-width="2"
+                                                            d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z">
+                                                        </path>
+                                                    </svg>
+                                                    Edit
+                                                </button>
                                             </div>
                                             <p style="font-size: 14px; color: #4b5563; margin: 4px 0 0 0;"
                                                 class="dark:text-gray-300">{{ $event->event_category }}</p>
