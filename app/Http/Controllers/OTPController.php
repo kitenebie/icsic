@@ -187,7 +187,24 @@ class OTPController extends Controller
         if (!$isEmail) {
             return view('template.emailBypass');
         }
-        $user = User::where('email', $isEmail)->first();
+        $user = User::where('email', $isEmail->email)->first();
+
+        // Log for debugging
+        Log::info('createNewPassword attempt', [
+            'email' => $email,
+            'isEmail_found' => $isEmail ? true : false,
+            'user_found' => $user ? true : false,
+            'user_id' => $user ? $user->id : null
+        ]);
+
+        if (!$user) {
+            Log::warning('User not found for password creation', [
+                'email' => $email,
+                'isEmail_id' => $isEmail ? $isEmail->id : null
+            ]);
+            return view('template.emailBypass');
+        }
+
         Auth::login($user);
         Session::put('email_temp', $email);
 
