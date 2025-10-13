@@ -63,6 +63,10 @@ class Main extends Component implements HasForms, HasActions
     public $selectedEvents = [];
     public $selectAll = false;
 
+    public function createModalShow()
+    {
+        $this->modalOpen = true;
+    }
     public function mount(): void
     {
         $this->form->fill();

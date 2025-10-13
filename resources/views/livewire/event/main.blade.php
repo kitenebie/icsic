@@ -3,7 +3,7 @@
     <!-- Create Event Button -->
     <x-filament::modal width="3xl" style="z-index: 999 !important;">
         <x-slot name="trigger">
-            <x-filament::button
+            <x-filament::button wire:click="createModalShow"
                 style="background-color:#a5f8c5; color: #054721; display: flex; border: none; padding: 8px 16px; border-radius: 8px; font-weight: 500; cursor: pointer; display: flex; align-items: center; gap: 8px; transition: background-color 0.2s; width: fit-content;"
                 class="dark:bg-gray-700 dark:text-green-400 dark:hover:bg-gray-600"
                 onmouseover="this.style.backgroundColor='#62E489FF'" onmouseout="this.style.backgroundColor='#a5f8c5'">
