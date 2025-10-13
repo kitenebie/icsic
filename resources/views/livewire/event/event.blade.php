@@ -716,7 +716,7 @@
                                     font-weight: 600;
                                     border: 2px solid rgba(255, 255, 255, 0.3);
                                     position: absolute;
-                                    top: ${currentHeight}px;
+                                    top: ${currentHeight + 2}px;
                                     left: -8px;
                                     box-shadow: 0 3px 6px rgba(0, 0, 0, 0.3);
                                     overflow: hidden;

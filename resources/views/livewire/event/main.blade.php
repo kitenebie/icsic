@@ -256,6 +256,32 @@
                             <div style="display: flex; flex-direction: column; gap: 4px;">
                                 @if($cellMultiDayEvents->count() > 0)
                                     @php
+                                        // Find the event with the longest date range to use as base width
+                                        $longestRangeEvent = $cellMultiDayEvents->sort(function($a, $b) {
+                                            $startA = \Carbon\Carbon::parse($a->event_date);
+                                            $endA = \Carbon\Carbon::parse($a->event_end);
+                                            $startB = \Carbon\Carbon::parse($b->event_date);
+                                            $endB = \Carbon\Carbon::parse($b->event_end);
+                                            $rangeA = $startA->diffInDays($endA) + 1;
+                                            $rangeB = $startB->diffInDays($endB) + 1;
+                                            return $rangeB <=> $rangeA; // Sort descending
+                                        })->first();
+
+                                        // Calculate the maximum span width based on the longest range event
+                                        $maxStartDate = \Carbon\Carbon::parse($longestRangeEvent->event_date);
+                                        $maxEndDate = \Carbon\Carbon::parse($longestRangeEvent->event_end);
+                                        $maxDaysDiff = $maxStartDate->diffInDays($maxEndDate) + 1;
+
+                                        // Calculate remaining days in current week row
+                                        $currentDayOfWeek = $dayIndex % 7;
+                                        $remainingDaysInRow = 7 - $currentDayOfWeek;
+
+                                        // Calculate how many days are left in this longest event from current date
+                                        $remainingEventDays = $currentDate->diffInDays($maxEndDate) + 1;
+
+                                        // Use the maximum span width for this row and store in cellSpanWidth
+                                        $cellSpanWidth = min($remainingEventDays, $remainingDaysInRow);
+
                                         // Get current height for this cell, or initialize to base height
                                         $currentHeight = $cellHeights[$dayIndex] ?? 24;
                                         // Increment height for next span bar in this cell
