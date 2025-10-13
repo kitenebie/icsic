@@ -1,7 +1,7 @@
 <!-- Single root container for Livewire component -->
 <div>
     <!-- Create Event Button -->
-    <x-filament::modal width="3xl" style="z-index: 999;">
+    <x-filament::modal width="3xl" style="z-index: 999 !important;">
         <x-slot name="trigger">
             <x-filament::button
                 style="background-color:#a5f8c5; color: #054721; display: flex; border: none; padding: 8px 16px; border-radius: 8px; font-weight: 500; cursor: pointer; display: flex; align-items: center; gap: 8px; transition: background-color 0.2s; width: fit-content;"
@@ -27,7 +27,7 @@
     </x-filament::modal>
 
     <!-- Edit Event Modal -->
-    <x-filament::modal width="3xl" id="open-modal-edit" style="z-index: 999;">
+    <x-filament::modal width="3xl" id="open-modal-edit" style="z-index: 999 !important;">
         <x-slot name="heading">
             Edit Event
         </x-slot>
