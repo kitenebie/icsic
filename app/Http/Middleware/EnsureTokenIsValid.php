@@ -23,7 +23,7 @@ class EnsureTokenIsValid
         }
         // Allow OTP route without redirection
         if ($request->is('events') ||  $request->is('announcements')) {
-            if(!Auth::check()){
+            if (!Auth::check()) {
                 return redirect('/');
             }
             if (Auth::user()->role == 'pending') {
@@ -46,7 +46,9 @@ class EnsureTokenIsValid
         // if($request->is('waiting')){
         //     return $next($request);
         // }
-
+        if ($request->is('restart')) {
+            return $next($request);
+        }
         // If logged in but not verified
         if (Auth::user()->email_verified_at === null) {
             return redirect('/otp');
