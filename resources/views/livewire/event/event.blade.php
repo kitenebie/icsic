@@ -609,8 +609,6 @@
 
                             const eventStartDay = event.day; // Day of month (1-31)
                             const eventEndDay = event.endDay;
-                            const eventStartDate = new Date(event.year, event.month - 1, eventStartDay);
-                            const eventEndDate = new Date(event.endYear, event.endMonth - 1, eventEndDay);
                             
                             // Only show if both start and end are in current month
                             if (event.year !== year || event.month - 1 !== month) return;
@@ -619,7 +617,7 @@
                             const totalDays = eventEndDay - eventStartDay + 1;
 
                             // Calculate position in calendar grid
-                            // Grid position = offset (startDay from outer scope) + (day_of_month - 1)
+                            // Grid position = offset (startDay from empty cells) + (day_of_month - 1)
                             const gridPosition = startDay + (eventStartDay - 1);
                             const startWeekRow = Math.floor(gridPosition / 7);
                             const startDayOfWeek = gridPosition % 7;
@@ -634,25 +632,35 @@
                                 const dayOfWeek = currentGridPos % 7;
                                 const daysInThisRow = Math.min(7 - dayOfWeek, remainingDays);
 
-                                // Create spanning bar for this row
-                                const spanBar = document.createElement("div");
-                                spanBar.className = "absolute bg-blue-500 text-white text-xs px-3 py-1.5 rounded-md shadow-md z-20 font-medium flex items-center";
-                                spanBar.style.left = `${(dayOfWeek / 7) * 100}%`;
-                                spanBar.style.top = `${68 + currentRow * 164}px`;
-                                spanBar.style.width = `calc(${(daysInThisRow / 7) * 100}% - 2px)`;
-                                spanBar.style.height = "28px";
-                                spanBar.style.marginLeft = "1px";
+                                // Calculate the cell element to get its actual position
+                                const cellIndex = currentGridPos;
+                                const cellElements = calendar.children;
                                 
-                                // Only show event name on first bar
-                                if (currentDay === eventStartDay) {
-                                    spanBar.textContent = `${event.raw.event_name}`;
-                                } else {
-                                    spanBar.textContent = `${event.raw.event_name} (continued)`;
-                                }
-                                
-                                spanBar.title = `${event.raw.event_name} (${eventStartDay} - ${eventEndDay})`;
+                                if (cellIndex < cellElements.length) {
+                                    const cellElement = cellElements[cellIndex];
+                                    const cellRect = cellElement.getBoundingClientRect();
+                                    const calendarRect = calendar.getBoundingClientRect();
+                                    
+                                    // Create spanning bar for this row
+                                    const spanBar = document.createElement("div");
+                                    spanBar.className = "absolute bg-blue-500 text-white text-xs px-3 py-1.5 rounded-md shadow-md z-20 font-medium flex items-center";
+                                    spanBar.style.left = `${(dayOfWeek / 7) * 100}%`;
+                                    spanBar.style.top = `${cellRect.top - calendarRect.top + 35}px`; // Position relative to cell
+                                    spanBar.style.width = `calc(${(daysInThisRow / 7) * 100}% - 2px)`;
+                                    spanBar.style.height = "28px";
+                                    spanBar.style.marginLeft = "1px";
+                                    
+                                    // Only show event name on first bar
+                                    if (currentDay === eventStartDay) {
+                                        spanBar.textContent = `${event.raw.event_name}`;
+                                    } else {
+                                        spanBar.textContent = `${event.raw.event_name} (continued)`;
+                                    }
+                                    
+                                    spanBar.title = `${event.raw.event_name} (${eventStartDay} - ${eventEndDay})`;
 
-                                calendar.appendChild(spanBar);
+                                    calendar.appendChild(spanBar);
+                                }
 
                                 currentDay += daysInThisRow;
                                 remainingDays -= daysInThisRow;
