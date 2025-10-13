@@ -253,7 +253,7 @@
                             </div>
 
                             <!-- Events for this day -->
-                            <div style="width: fit-content; border: 1px solid #054721; flex; flex-direction: column; gap: 4px;">
+                            <div style="width: auto border: 1px solid #054721; flex; flex-direction: column; gap: 4px;">
                                 @if($cellHasMultiDayStart && $cellMultiDayEvent)
                                     @php
                                         $startDate = \Carbon\Carbon::parse($cellMultiDayEvent->event_date);
