@@ -664,30 +664,11 @@
                             processedEvents.push(event.raw.id);
                         });
 
-                        // Second pass: Create span bars using maximum width per cell
+                        // Create span bars for each event with their exact width
                         eventsByCell.forEach((cellEvents, cellIndex) => {
                             if (cellEvents.length === 0) return;
 
-                            // Find the event with the longest date range in this cell
-                            let longestRangeEvent = cellEvents[0];
-                            let maxDaysInRow = 0;
-
-                            cellEvents.forEach(cellEvent => {
-                                const dayOfWeek = cellEvent.currentGridPos % 7;
-                                const remainingDaysInRow = 7 - dayOfWeek;
-                                const remainingDaysInEvent = Math.ceil((cellEvent.actualEndDate - new Date(year, month, cellEvent.currentGridPos - startDay + 1)) / (1000 * 60 * 60 * 24)) + 1;
-                                const daysInThisRow = Math.min(remainingDaysInRow, remainingDaysInEvent);
-
-                                if (daysInThisRow > maxDaysInRow) {
-                                    maxDaysInRow = daysInThisRow;
-                                    longestRangeEvent = cellEvent;
-                                }
-                            });
-
-                            // Use the maximum span width for all events in this cell
-                            const maxSpanCols = maxDaysInRow;
-
-                            // Create span bars for all events in this cell
+                            // Create span bars for all events in this cell with their individual widths
                             cellEvents.forEach(cellEvent => {
                                 const cellElements = calendar.children;
                                 if (cellEvent.currentGridPos >= cellElements.length) return;
@@ -696,6 +677,12 @@
                                 if (getComputedStyle(cellElement).position === 'static') {
                                     cellElement.style.position = 'relative';
                                 }
+
+                                // Calculate the exact width for this specific event
+                                const dayOfWeek = cellEvent.currentGridPos % 7;
+                                const remainingDaysInRow = 7 - dayOfWeek;
+                                const remainingDaysInEvent = Math.ceil((cellEvent.actualEndDate - new Date(year, month, cellEvent.currentGridPos - startDay + 1)) / (1000 * 60 * 60 * 24)) + 1;
+                                const eventSpanWidth = Math.min(remainingDaysInRow, remainingDaysInEvent);
 
                                 // Get current height for this cell, or initialize to base height
                                 const currentHeight = cellHeights.get(cellEvent.currentGridPos) || 42;
@@ -724,7 +711,7 @@
                                     white-space: nowrap;
                                     margin-bottom: 2px;
                                 `;
-                                spanBar.style.width = `calc(${maxSpanCols} * 100% + ${(maxSpanCols - 1) * 2}px)`;
+                                spanBar.style.width = `calc(${eventSpanWidth} * 100% + ${(eventSpanWidth - 1) * 2}px)`;
 
                                 const totalDaysThisEvent = Math.ceil((cellEvent.eventEndDate - cellEvent.eventStartDate) / (1000 * 60 * 60 * 24)) + 1;
                                 spanBar.title = `${cellEvent.event.raw.event_name} (${cellEvent.event.day}/${cellEvent.event.month}/${cellEvent.event.year} - ${cellEvent.event.endDay}/${cellEvent.event.endMonth}/${cellEvent.event.endYear}, ${totalDaysThisEvent} days)`;
