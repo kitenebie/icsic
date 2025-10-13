@@ -382,6 +382,12 @@ class Main extends Component implements HasForms, HasActions
         $this->selectedDate = now()->format('Y-m-d');
     }
 
+    public function refreshCalendar()
+    {
+        // Reset search and reload calendar data
+        return redirect('/administrator/events');
+    }
+
     public function switchView($view)
     {
         $this->viewMode = $view;
