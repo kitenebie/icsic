@@ -654,20 +654,21 @@
 
                                     // Multi-day event spanning bar overlaying cells (style copied from main.blade.php and adapted)
                                     const spanBar = document.createElement('div');
-                                    spanBar.className = "dark:bg-gradient-to-r dark:from-blue-800 dark:to-blue-900 dark:text-blue-200 dark:border-blue-700 dark:shadow-lg dark:shadow-blue-900/20";
+                                    const eventColor = getEventColor(event.raw.event_category);
+                                    spanBar.className = "dark:text-blue-200 dark:shadow-lg dark:shadow-blue-900/20";
                                     spanBar.style.cssText = `
                                         z-index: 9999;
-                                        background: linear-gradient(135deg, #2D9152FF 0%, #15843E 100%);
-                                        color: rgb(226, 226, 226);
+                                        background: ${eventColor};
+                                        color: white;
                                         font-size: 13px;
                                         padding: 4px 8px;
                                         border-radius: 6px;
                                         font-weight: 600;
-                                        border: 2px solid rgba(59, 130, 246, 0.4);
+                                        border: 2px solid rgba(255, 255, 255, 0.3);
                                         position: absolute;
                                         top: ${currentHeight}px;
                                         left: -8px;
-                                        box-shadow: 0 3px 6px rgba(59, 130, 246, 0.3);
+                                        box-shadow: 0 3px 6px rgba(0, 0, 0, 0.3);
                                         overflow: hidden;
                                         text-overflow: ellipsis;
                                         white-space: nowrap;
