@@ -658,7 +658,7 @@
                                         font-weight: 600;
                                         border: 2px solid rgba(59, 130, 246, 0.4);
                                         position: absolute;
-                                        top: 24px;
+                                        top: 32px;
                                         left: -8px;
                                         box-shadow: 0 3px 6px rgba(59, 130, 246, 0.3);
                                         overflow: hidden;
