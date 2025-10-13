@@ -148,10 +148,41 @@
             <!-- Calendar Days -->
             <div style="display: grid; grid-template-columns: repeat(7, 1fr); gap: 1px; background: linear-gradient(135deg, #e2e8f0 0%, #cbd5e1 100%); border-radius: 8px; overflow: hidden; min-width: 500px; max-width: 100%; box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1); position: relative;"
                 class="dark:bg-gradient-to-br dark:from-gray-700 dark:to-gray-800 dark:shadow-2xl dark:shadow-gray-900/50">
-                @foreach ($calendarDays as $day)
+                @php
+                    $multiDayEvents = collect();
+                @endphp
+                @foreach ($calendarDays as $dayIndex => $day)
                     @if ($day)
+                        @php
+                            $currentDate = \Carbon\Carbon::parse($day['date']);
+                            $cellHasMultiDayStart = false;
+                            $cellMultiDayEvent = null;
+                            $cellSpanWidth = 1;
+                        @endphp
+
+                        <!-- Check for multi-day events starting on this day -->
+                        @foreach ($day['events'] as $event)
+                            @php
+                                $isMultiDay = $event->event_end && $event->event_date != $event->event_end;
+                                if ($isMultiDay) {
+                                    $startDate = \Carbon\Carbon::parse($event->event_date);
+                                    $endDate = \Carbon\Carbon::parse($event->event_end);
+                                    $isFirstDay = $currentDate->isSameDay($startDate);
+
+                                    if ($isFirstDay && !$multiDayEvents->contains('id', $event->id)) {
+                                        $cellHasMultiDayStart = true;
+                                        $cellMultiDayEvent = $event;
+                                        $daysDiff = $startDate->diffInDays($endDate) + 1;
+                                        $cellSpanWidth = min($daysDiff, 7 - ($dayIndex % 7)); // Don't span beyond row
+                                        $multiDayEvents->push($event);
+                                        break;
+                                    }
+                                }
+                            @endphp
+                        @endforeach
+
                         <div wire:click="selectDate('{{ $day['date'] }}')"
-                            style="background: linear-gradient(135deg, #ffffff 0%, #fefefe 100%); min-height: 120px; padding: 8px; cursor: pointer; transition: all 0.3s ease; border-radius: 6px; {{ $day['is_today'] ? 'background: linear-gradient(135deg, #dcfce7 0%, #bbf7d0 100%); box-shadow: 0 3px 8px rgba(34, 197, 94, 0.3);' : '' }} {{ $day['is_selected'] ? 'box-shadow: 0 0 0 2px #16a34a, 0 3px 8px rgba(22, 163, 74, 0.4);' : '' }}"
+                            style="background: linear-gradient(135deg, #ffffff 0%, #fefefe 100%); min-height: 120px; padding: 8px; cursor: pointer; transition: all 0.3s ease; border-radius: 6px; {{ $day['is_today'] ? 'background: linear-gradient(135deg, #dcfce7 0%, #bbf7d0 100%); box-shadow: 0 3px 8px rgba(34, 197, 94, 0.3);' : '' }} {{ $day['is_selected'] ? 'box-shadow: 0 0 0 2px #16a34a, 0 3px 8px rgba(22, 163, 74, 0.4);' : '' }} {{ $cellHasMultiDayStart ? 'grid-column: span ' . $cellSpanWidth . ';' : '' }}"
                             class="dark:bg-gradient-to-br dark:from-gray-700 dark:to-gray-800 dark:text-white {{ $day['is_today'] ? 'dark:bg-gradient-to-br dark:from-green-800 dark:to-green-900 dark:shadow-2xl dark:shadow-green-900/50' : '' }} dark:hover:shadow-lg dark:hover:shadow-gray-900/30"
                             onmouseover="this.style.transform='translateY(-1px)'; this.style.boxShadow='{{ $day['is_selected'] ? '0 0 0 2px #16a34a, ' : '' }}0 6px 16px rgba(0, 0, 0, 0.15)'"
                             onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='{{ $day['is_selected'] ? '0 0 0 2px #16a34a' : ($day['is_today'] ? '0 3px 8px rgba(34, 197, 94, 0.3)' : 'none') }}'">
@@ -162,31 +193,36 @@
 
                             <!-- Events for this day -->
                             <div style="display: flex; flex-direction: column; gap: 4px; position: relative;">
-                                @foreach ($day['events'] as $event)
+                                @if($cellHasMultiDayStart && $cellMultiDayEvent)
                                     @php
-                                        $isMultiDay = $event->event_end && $event->event_date != $event->event_end;
-                                        $startDate = \Carbon\Carbon::parse($event->event_date);
-                                        $endDate = $event->event_end ? \Carbon\Carbon::parse($event->event_end) : $startDate;
-                                        $currentDate = \Carbon\Carbon::parse($day['date']);
-                                        $isFirstDay = $currentDate->isSameDay($startDate);
+                                        $startDate = \Carbon\Carbon::parse($cellMultiDayEvent->event_date);
+                                        $endDate = \Carbon\Carbon::parse($cellMultiDayEvent->event_end);
                                         $daysDiff = $startDate->diffInDays($endDate) + 1;
                                     @endphp
-                                    @if($isMultiDay && $isFirstDay)
-                                        <!-- Multi-day event spanning bar inside the cell -->
-                                        <div style="background: linear-gradient(135deg, #dcfce7 0%, #bbf7d0 100%); color: #166534; font-size: 10px; padding: 4px 8px; border-radius: 6px; font-weight: 600; border: 2px solid rgba(34, 197, 94, 0.4); position: relative; white-space: nowrap; box-shadow: 0 3px 6px rgba(34, 197, 94, 0.3); z-index: 10; overflow: hidden; text-overflow: ellipsis; width: 100%;"
-                                            class="dark:bg-gradient-to-r dark:from-green-800 dark:to-green-900 dark:text-green-200 dark:border-green-700 dark:shadow-lg dark:shadow-green-900/20"
-                                            title="{{ $event->event_name }} ({{ $startDate->format('M j') }} - {{ $endDate->format('M j') }}, {{ $daysDiff }} days)">
-                                            📅 {{ $event->event_name }} ({{ $daysDiff }}d)
-                                        </div>
-                                    @elseif(!$isMultiDay)
-                                        <!-- Single day event -->
-                                        <div style="background: linear-gradient(135deg, #dcfce7 0%, #bbf7d0 100%); color: #166534; font-size: 10px; padding: 4px 6px; border-radius: 4px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-weight: 500; border: 1px solid rgba(34, 197, 94, 0.2);"
-                                            class="dark:bg-gradient-to-r dark:from-green-800 dark:to-green-900 dark:text-green-200 dark:border-green-700 dark:shadow-lg dark:shadow-green-900/20"
-                                            title="{{ $event->event_name }}">
-                                            {{ Str::limit($event->event_name, 12) }}
-                                        </div>
-                                    @endif
-                                @endforeach
+                                    <!-- Multi-day event spanning bar overlaying cells -->
+                                    <div style="background: linear-gradient(135deg, #dcfce7 0%, #bbf7d0 100%); color: #166534; font-size: 10px; padding: 4px 8px; border-radius: 6px; font-weight: 600; border: 2px solid rgba(34, 197, 94, 0.4); position: absolute; top: 24px; left: -8px; right: -8px; box-shadow: 0 3px 6px rgba(34, 197, 94, 0.3); z-index: 15; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; width: calc({{ $cellSpanWidth }} * 100% + {{ ($cellSpanWidth - 1) * 2 }}px);"
+                                        class="dark:bg-gradient-to-r dark:from-green-800 dark:to-green-900 dark:text-green-200 dark:border-green-700 dark:shadow-lg dark:shadow-green-900/20"
+                                        title="{{ $cellMultiDayEvent->event_name }} ({{ $startDate->format('M j') }} - {{ $endDate->format('M j') }}, {{ $daysDiff }} days)">
+                                        📅 {{ $cellMultiDayEvent->event_name }} ({{ $daysDiff }} days)
+                                    </div>
+                                @else
+                                    @foreach ($day['events'] as $event)
+                                        @php
+                                            $isMultiDay = $event->event_end && $event->event_date != $event->event_end;
+                                            $startDate = \Carbon\Carbon::parse($event->event_date);
+                                            $endDate = $event->event_end ? \Carbon\Carbon::parse($event->event_end) : $startDate;
+                                            $isFirstDay = $currentDate->isSameDay($startDate);
+                                        @endphp
+                                        @if(!$isMultiDay)
+                                            <!-- Single day event -->
+                                            <div style="background: linear-gradient(135deg, #dcfce7 0%, #bbf7d0 100%); color: #166534; font-size: 10px; padding: 4px 6px; border-radius: 4px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-weight: 500; border: 1px solid rgba(34, 197, 94, 0.2);"
+                                                class="dark:bg-gradient-to-r dark:from-green-800 dark:to-green-900 dark:text-green-200 dark:border-green-700 dark:shadow-lg dark:shadow-green-900/20"
+                                                title="{{ $event->event_name }}">
+                                                {{ Str::limit($event->event_name, 12) }}
+                                            </div>
+                                        @endif
+                                    @endforeach
+                                @endif
                             </div>
                         </div>
                     @else
