@@ -171,22 +171,32 @@
                                         $isFirstDay = $currentDate->isSameDay($startDate);
                                         $isLastDay = $currentDate->isSameDay($endDate);
                                         $isMiddleDay = $currentDate->between($startDate, $endDate) && !$isFirstDay && !$isLastDay;
+                                        $daysDiff = $startDate->diffInDays($endDate) + 1;
                                     @endphp
-                                    <div style="background: linear-gradient(135deg, #dcfce7 0%, #bbf7d0 100%); color: #166534; font-size: 10px; padding: 4px 6px; border-radius: 4px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-weight: 500; border: 1px solid rgba(34, 197, 94, 0.2); {{ $isMultiDay ? 'position: relative;' : '' }}"
-                                        class="dark:bg-gradient-to-r dark:from-green-800 dark:to-green-900 dark:text-green-200 dark:border-green-700 dark:shadow-lg dark:shadow-green-900/20"
-                                        title="{{ $event->event_name }} @if($isMultiDay) ({{ $startDate->format('M j') }} - {{ $endDate->format('M j') }}) @endif">
-                                        @if($isMultiDay)
-                                            @if($isFirstDay)
-                                                {{ Str::limit($event->event_name, 8) }} →
-                                            @elseif($isLastDay)
-                                                ← {{ Str::limit($event->event_name, 8) }}
-                                            @else
-                                                → {{ Str::limit($event->event_name, 8) }} →
-                                            @endif
-                                        @else
+                                    @if($isMultiDay && $isFirstDay)
+                                        <!-- Multi-day event spanning bar -->
+                                        <div style="background: linear-gradient(135deg, #dcfce7 0%, #bbf7d0 100%); color: #166534; font-size: 10px; padding: 4px 6px; border-radius: 4px; font-weight: 600; border: 1px solid rgba(34, 197, 94, 0.3); position: relative; overflow: visible; white-space: nowrap; box-shadow: 0 2px 4px rgba(34, 197, 94, 0.2);"
+                                            class="dark:bg-gradient-to-r dark:from-green-800 dark:to-green-900 dark:text-green-200 dark:border-green-700 dark:shadow-lg dark:shadow-green-900/20"
+                                            title="{{ $event->event_name }} ({{ $startDate->format('M j') }} - {{ $endDate->format('M j') }}, {{ $daysDiff }} days)">
+                                            📅 {{ Str::limit($event->event_name, 10) }} ({{ $daysDiff }}d)
+                                            <!-- Visual span indicator -->
+                                            <div style="position: absolute; top: 0; right: -2px; bottom: 0; width: 4px; background: linear-gradient(135deg, #16a34a 0%, #15803d 100%); border-radius: 0 2px 2px 0;"></div>
+                                        </div>
+                                    @elseif($isMultiDay && ($isMiddleDay || $isLastDay))
+                                        <!-- Continuation of multi-day event -->
+                                        <div style="background: linear-gradient(135deg, #f0fdf4 0%, #dcfce7 100%); color: #166534; font-size: 9px; padding: 2px 4px; border-radius: 3px; font-weight: 500; border: 1px solid rgba(34, 197, 94, 0.2); border-left: 3px solid #16a34a; opacity: 0.8;"
+                                            class="dark:bg-gradient-to-r dark:from-green-900/50 dark:to-green-800/50 dark:text-green-300 dark:border-green-700"
+                                            title="{{ $event->event_name }} continues ({{ $startDate->format('M j') }} - {{ $endDate->format('M j') }})">
+                                            ⟵ {{ Str::limit($event->event_name, 8) }} @if($isLastDay) ✓ @endif
+                                        </div>
+                                    @else
+                                        <!-- Single day event -->
+                                        <div style="background: linear-gradient(135deg, #dcfce7 0%, #bbf7d0 100%); color: #166534; font-size: 10px; padding: 4px 6px; border-radius: 4px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-weight: 500; border: 1px solid rgba(34, 197, 94, 0.2);"
+                                            class="dark:bg-gradient-to-r dark:from-green-800 dark:to-green-900 dark:text-green-200 dark:border-green-700 dark:shadow-lg dark:shadow-green-900/20"
+                                            title="{{ $event->event_name }}">
                                             {{ Str::limit($event->event_name, 12) }}
-                                        @endif
-                                    </div>
+                                        </div>
+                                    @endif
                                 @endforeach
 
                                 @if ($day['events']->count() > 2)
