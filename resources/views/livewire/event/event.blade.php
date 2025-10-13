@@ -600,24 +600,36 @@
                             calendar.appendChild(div);
                         }
 
-                        // Add multi-day event spanning bars
+                        // Multi-day event spanning bar overlaying cells
+                        const processedEvents = [];
                         multiDayEvents.forEach(event => {
-                            const startDay = event.day;
-                            const endDay = event.endDay;
-                            const spanDays = Math.min(endDay - startDay + 1, 7 - startDay + 1); // Don't span beyond row
+                            if (processedEvents.includes(event.raw.id)) return;
 
-                            if (spanDays > 1) {
+                            const startDate = new Date(event.year, event.month - 1, event.day);
+                            const endDate = new Date(event.endYear, event.endMonth - 1, event.endDay);
+                            const totalDays = Math.ceil((endDate - startDate) / (1000 * 60 * 60 * 24)) + 1;
+
+                            // Calculate position in current month
+                            const currentMonthStart = new Date(year, month, 1);
+                            const daysFromMonthStart = Math.floor((startDate - currentMonthStart) / (1000 * 60 * 60 * 24));
+                            const startPosition = Math.max(0, daysFromMonthStart);
+
+                            // Calculate span width (limit to current row)
+                            const remainingInRow = 7 - (startPosition % 7);
+                            const spanWidth = Math.min(totalDays, remainingInRow);
+
+                            if (spanWidth > 1) {
                                 const spanBar = document.createElement("div");
-                                spanBar.className = "absolute bg-blue-600 text-white text-xs px-2 py-1 rounded shadow-lg z-10 border-2 border-blue-700";
-                                spanBar.style.left = `${(startDay - 1) * (100/7)}%`;
-                                spanBar.style.top = "24px";
-                                spanBar.style.width = `${(spanDays) * (100/7)}%`;
+                                spanBar.className = "absolute bg-blue-600 text-white text-xs px-2 py-1 rounded shadow-lg z-10 border-2 border-blue-700 overflow-hidden text-overflow-ellipsis whitespace-nowrap";
+                                spanBar.style.left = `${(startPosition % 7) * (100/7)}%`;
+                                spanBar.style.top = `${32 + Math.floor(startPosition / 7) * 140}px`;
+                                spanBar.style.width = `${spanWidth * (100/7)}%`;
                                 spanBar.style.height = "24px";
-                                spanBar.textContent = `📅 ${event.raw.event_name} (${spanDays}d)`;
+                                spanBar.textContent = `📅 ${event.raw.event_name} (${totalDays}d)`;
                                 spanBar.title = `${event.raw.event_name} (${event.day}-${event.endDay})`;
 
-                                // Add to the calendar container
                                 calendar.appendChild(spanBar);
+                                processedEvents.push(event.raw.id);
                             }
                         });
                     }
