@@ -73,7 +73,7 @@ class StudentResource extends Resource
                 TextInput::make('guardian_email')->email(),
 
                 Select::make('grade')->reactive()->options([
-                    'Kender' => 'Kender',
+                    'Kinder' => 'Kinder',
                     'Grade 1' => 'Grade 1',
                     'Grade 2' => 'Grade 2',
                     'Grade 3' => 'Grade 3',
@@ -92,8 +92,8 @@ class StudentResource extends Resource
                         5,
                         6
                     ])
-                    ->required(fn(\Filament\Forms\Get $get) => $get('grade') !== 'Kender')
-                    ->hidden(fn(\Filament\Forms\Get $get) => $get('grade') === 'Kender'),
+                    ->required(fn(\Filament\Forms\Get $get) => $get('grade') !== 'Kinder')
+                    ->hidden(fn(\Filament\Forms\Get $get) => $get('grade') === 'Kinder'),
 
                 TextInput::make('year_graduated'),
             ]);
@@ -285,7 +285,7 @@ class StudentResource extends Resource
                                     ->label('Grade')
                                     ->prefixIcon('heroicon-m-academic-cap')
                                     ->options([
-                                        'Kender' => 'Kender',
+                                        'Kinder' => 'Kinder',
                                         'Grade 1' => 'Grade 1',
                                         'Grade 2' => 'Grade 2',
                                         'Grade 3' => 'Grade 3',
@@ -305,8 +305,8 @@ class StudentResource extends Resource
                                         '5' => '5',
                                         '6' => '6',
                                     ])
-                                    ->required(fn(\Filament\Forms\Get $get) => $get('grade') !== 'Kender')
-                                    ->hidden(fn(\Filament\Forms\Get $get) => $get('grade') === 'Kender'),
+                                    ->required(fn(\Filament\Forms\Get $get) => $get('grade') !== 'Kinder')
+                                    ->hidden(fn(\Filament\Forms\Get $get) => $get('grade') === 'Kinder'),
 
 
                                 TextInput::make('year_graduated')
@@ -396,7 +396,7 @@ class StudentResource extends Resource
 
                 Tables\Filters\SelectFilter::make('grade')
                     ->options([
-                        'Kender' => 'Kender',
+                        'Kinder' => 'Kinder',
                         'Grade 1' => 'Grade 1',
                         'Grade 2' => 'Grade 2',
                         'Grade 3' => 'Grade 3',
@@ -543,7 +543,7 @@ class StudentResource extends Resource
                                     ->label('Grade')
                                     ->prefixIcon('heroicon-m-academic-cap')
                                     ->options([
-                                        'Kender' => 'Kender',
+                                        'Kinder' => 'Kinder',
                                         'Grade 1' => 'Grade 1',
                                         'Grade 2' => 'Grade 2',
                                         'Grade 3' => 'Grade 3',
@@ -563,8 +563,8 @@ class StudentResource extends Resource
                                         '5' => '5',
                                         '6' => '6',
                                     ])
-                                    ->required(fn(\Filament\Forms\Get $get) => $get('grade') !== 'Kender')
-                                    ->hidden(fn(\Filament\Forms\Get $get) => $get('grade') === 'Kender'),
+                                    ->required(fn(\Filament\Forms\Get $get) => $get('grade') !== 'Kinder')
+                                    ->hidden(fn(\Filament\Forms\Get $get) => $get('grade') === 'Kinder'),
 
 
                                 TextInput::make('year_graduated')

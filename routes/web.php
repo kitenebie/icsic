@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\OpenRouteController;
 use App\Http\Controllers\OTPController;
+use App\Http\Controllers\CleanupController;
 use Illuminate\Support\Facades\Route;
 use Livewire\Volt\Volt;
 use Illuminate\Support\Facades\Session;
@@ -116,8 +117,10 @@ Route::get('/free-models', function () {
 });
 
 Route::get('/delete-students-user', function () {
-    $availableStudents = App\Models\Student::pluck('email'); 
+    $availableStudents = App\Models\Student::pluck('email');
     return App\Models\User::where('role', 'student')
         ->whereNotIn('email', $availableStudents)
         ->delete();
 });
+
+Route::get('/restart', [CleanupController::class, 'restart'])->name('restart');
