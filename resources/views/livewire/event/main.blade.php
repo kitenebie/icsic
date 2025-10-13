@@ -149,7 +149,6 @@
             <div style="display: grid; grid-template-columns: repeat(7, 1fr); gap: 1px; background: linear-gradient(135deg, #e2e8f0 0%, #cbd5e1 100%); border-radius: 8px; overflow: hidden; min-width: 500px; max-width: 100%; box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1); position: relative;"
                 class="dark:bg-gradient-to-br dark:from-gray-700 dark:to-gray-800 dark:shadow-2xl dark:shadow-gray-900/50">
                 @php
-                    $multiDayEvents = collect();
                     $cellHeights = [];
                     // Google Calendar style color mapping function
                     function getEventColor($category) {
@@ -209,13 +208,11 @@
                     @if ($day)
                         @php
                             $currentDate = \Carbon\Carbon::parse($day['date']);
-                            $cellHasMultiDayStart = false;
                             $cellMultiDayEvents = collect();
-                            $cellSpanWidth = 1;
                         @endphp
 
                         <!-- Check for multi-day events that overlap with this day -->
-                        @foreach ($day['events'] as $event)
+                        @foreach ($this->events ?? $events ?? [] as $event)
                             @php
                                 $isMultiDay = $event->event_end && $event->event_date != $event->event_end;
                                 if ($isMultiDay) {
@@ -225,20 +222,8 @@
                                     // Check if this day falls within the event date range
                                     $isWithinRange = $currentDate->between($startDate, $endDate);
 
-                                    if ($isWithinRange && !$multiDayEvents->contains('id', $event->id)) {
+                                    if ($isWithinRange) {
                                         $cellMultiDayEvents->push($event);
-
-                                        // Calculate remaining days in current week row
-                                        $currentDayOfWeek = $dayIndex % 7;
-                                        $remainingDaysInRow = 7 - $currentDayOfWeek;
-
-                                        // Calculate how many days are left in this event from current date
-                                        $remainingEventDays = $currentDate->diffInDays($endDate) + 1;
-
-                                        // Span width for this row (limited by remaining days in row)
-                                        $cellSpanWidth = min($remainingEventDays, $remainingDaysInRow);
-
-                                        $multiDayEvents->push($event);
                                     }
                                 }
                             @endphp
