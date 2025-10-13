@@ -607,53 +607,56 @@
                         multiDayEvents.forEach(event => {
                             if (processedEvents.includes(event.raw.id)) return;
 
-                            const startDay = event.day;
-                            const endDay = event.endDay;
-                            const startDate = new Date(event.year, event.month - 1, startDay);
-                            const endDate = new Date(event.endYear, event.endMonth - 1, endDay);
+                            const eventStartDay = event.day; // Day of month (1-31)
+                            const eventEndDay = event.endDay;
+                            const eventStartDate = new Date(event.year, event.month - 1, eventStartDay);
+                            const eventEndDate = new Date(event.endYear, event.endMonth - 1, eventEndDay);
                             
                             // Only show if both start and end are in current month
                             if (event.year !== year || event.month - 1 !== month) return;
                             if (event.endYear !== year || event.endMonth - 1 !== month) return;
 
-                            const totalDays = endDay - startDay + 1;
+                            const totalDays = eventEndDay - eventStartDay + 1;
 
-                            // Calculate week row for start day (accounting for offset days)
-                            const startDayPosition = startDay + startDay - 1; // Adjust for 0-based and offset
-                            const startWeekRow = Math.floor((startDay + startDay - 1) / 7);
-                            const startDayOfWeek = (startDay + startDay - 1) % 7;
+                            // Calculate position in calendar grid
+                            // Grid position = offset (startDay from outer scope) + (day_of_month - 1)
+                            const gridPosition = startDay + (eventStartDay - 1);
+                            const startWeekRow = Math.floor(gridPosition / 7);
+                            const startDayOfWeek = gridPosition % 7;
 
                             // Create span for each row the event occupies
-                            let currentDay = startDay;
+                            let currentDay = eventStartDay;
                             let remainingDays = totalDays;
                             let currentRow = startWeekRow;
+                            let currentGridPos = gridPosition;
 
-                            while (remainingDays > 0 && currentDay <= endDay) {
-                                const dayOfWeek = (currentDay + startDay - 1) % 7;
+                            while (remainingDays > 0 && currentDay <= eventEndDay) {
+                                const dayOfWeek = currentGridPos % 7;
                                 const daysInThisRow = Math.min(7 - dayOfWeek, remainingDays);
 
                                 // Create spanning bar for this row
                                 const spanBar = document.createElement("div");
                                 spanBar.className = "absolute bg-blue-500 text-white text-xs px-3 py-1.5 rounded-md shadow-md z-20 font-medium flex items-center";
                                 spanBar.style.left = `${(dayOfWeek / 7) * 100}%`;
-                                spanBar.style.top = `${68 + currentRow * 164}px`; // Adjusted for proper row height
+                                spanBar.style.top = `${68 + currentRow * 164}px`;
                                 spanBar.style.width = `calc(${(daysInThisRow / 7) * 100}% - 2px)`;
                                 spanBar.style.height = "28px";
                                 spanBar.style.marginLeft = "1px";
                                 
                                 // Only show event name on first bar
-                                if (currentDay === startDay) {
+                                if (currentDay === eventStartDay) {
                                     spanBar.textContent = `${event.raw.event_name}`;
                                 } else {
                                     spanBar.textContent = `${event.raw.event_name} (continued)`;
                                 }
                                 
-                                spanBar.title = `${event.raw.event_name} (${startDay} - ${endDay})`;
+                                spanBar.title = `${event.raw.event_name} (${eventStartDay} - ${eventEndDay})`;
 
                                 calendar.appendChild(spanBar);
 
                                 currentDay += daysInThisRow;
                                 remainingDays -= daysInThisRow;
+                                currentGridPos += daysInThisRow;
                                 currentRow++;
                             }
 
