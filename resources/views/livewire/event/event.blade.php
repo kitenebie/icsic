@@ -602,14 +602,16 @@
 
                         // Multi-day event spanning bars overlaying cells
                         const processedEvents = [];
-                        
+                        // Track used heights for each cell to stack multiple events vertically
+                        const cellHeights = new Map();
+
                         // Group multi-day events by rows they occupy
                         multiDayEvents.forEach(event => {
                             if (processedEvents.includes(event.raw.id)) return;
 
                             const eventStartDay = event.day; // Day of month (1-31)
                             const eventEndDay = event.endDay;
-                            
+
                             // Only show if both start and end are in current month
                             if (event.year !== year || event.month - 1 !== month) return;
                             if (event.endYear !== year || event.endMonth - 1 !== month) return;
@@ -643,6 +645,11 @@
                                         cellElement.style.position = 'relative';
                                     }
 
+                                    // Get current height for this cell, or initialize to base height
+                                    const currentHeight = cellHeights.get(cellIndex) || 42;
+                                    // Increment height for next span bar in this cell
+                                    cellHeights.set(cellIndex, currentHeight + 32);
+
                                     const spanCols = daysInThisRow; // columns (days) to span in this row
 
                                     // Multi-day event spanning bar overlaying cells (style copied from main.blade.php and adapted)
@@ -658,7 +665,7 @@
                                         font-weight: 600;
                                         border: 2px solid rgba(59, 130, 246, 0.4);
                                         position: absolute;
-                                        top: 40px;
+                                        top: ${currentHeight}px;
                                         left: -8px;
                                         box-shadow: 0 3px 6px rgba(59, 130, 246, 0.3);
                                         overflow: hidden;
