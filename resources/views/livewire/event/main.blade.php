@@ -161,7 +161,10 @@
                             </div>
 
                             <!-- Events for this day -->
-                            <div style="display: flex; flex-direction: column; gap: 4px;">
+                            <div style="display: flex; flex-direction: column; gap: 4px; position: relative;">
+                                @php
+                                    $displayedEvents = collect();
+                                @endphp
                                 @foreach ($day['events']->take(2) as $event)
                                     @php
                                         $isMultiDay = $event->event_end && $event->event_date != $event->event_end;
@@ -169,25 +172,26 @@
                                         $endDate = $event->event_end ? \Carbon\Carbon::parse($event->event_end) : $startDate;
                                         $currentDate = \Carbon\Carbon::parse($day['date']);
                                         $isFirstDay = $currentDate->isSameDay($startDate);
-                                        $isLastDay = $currentDate->isSameDay($endDate);
-                                        $isMiddleDay = $currentDate->between($startDate, $endDate) && !$isFirstDay && !$isLastDay;
                                         $daysDiff = $startDate->diffInDays($endDate) + 1;
+
+                                        // Skip if this is a middle/last day of a multi-day event (we only show on first day)
+                                        if ($isMultiDay && !$isFirstDay) {
+                                            continue;
+                                        }
+
+                                        $displayedEvents->push($event);
                                     @endphp
-                                    @if($isMultiDay && $isFirstDay)
+                                    @if($isMultiDay)
                                         <!-- Multi-day event spanning bar -->
-                                        <div style="background: linear-gradient(135deg, #dcfce7 0%, #bbf7d0 100%); color: #166534; font-size: 10px; padding: 4px 6px; border-radius: 4px; font-weight: 600; border: 1px solid rgba(34, 197, 94, 0.3); position: relative; overflow: visible; white-space: nowrap; box-shadow: 0 2px 4px rgba(34, 197, 94, 0.2);"
+                                        @php
+                                            $spanWidth = min($daysDiff * 100, 700); // Approximate width calculation (adjust as needed)
+                                        @endphp
+                                        <div style="background: linear-gradient(135deg, #dcfce7 0%, #bbf7d0 100%); color: #166534; font-size: 10px; padding: 4px 8px; border-radius: 6px; font-weight: 600; border: 2px solid rgba(34, 197, 94, 0.4); position: relative; white-space: nowrap; box-shadow: 0 3px 6px rgba(34, 197, 94, 0.3); z-index: 10; overflow: hidden; text-overflow: ellipsis; min-width: {{ $spanWidth }}px; max-width: {{ $spanWidth }}px;"
                                             class="dark:bg-gradient-to-r dark:from-green-800 dark:to-green-900 dark:text-green-200 dark:border-green-700 dark:shadow-lg dark:shadow-green-900/20"
                                             title="{{ $event->event_name }} ({{ $startDate->format('M j') }} - {{ $endDate->format('M j') }}, {{ $daysDiff }} days)">
-                                            📅 {{ Str::limit($event->event_name, 10) }} ({{ $daysDiff }}d)
-                                            <!-- Visual span indicator -->
-                                            <div style="position: absolute; top: 0; right: -2px; bottom: 0; width: 4px; background: linear-gradient(135deg, #16a34a 0%, #15803d 100%); border-radius: 0 2px 2px 0;"></div>
-                                        </div>
-                                    @elseif($isMultiDay && ($isMiddleDay || $isLastDay))
-                                        <!-- Continuation of multi-day event -->
-                                        <div style="background: linear-gradient(135deg, #f0fdf4 0%, #dcfce7 100%); color: #166534; font-size: 9px; padding: 2px 4px; border-radius: 3px; font-weight: 500; border: 1px solid rgba(34, 197, 94, 0.2); border-left: 3px solid #16a34a; opacity: 0.8;"
-                                            class="dark:bg-gradient-to-r dark:from-green-900/50 dark:to-green-800/50 dark:text-green-300 dark:border-green-700"
-                                            title="{{ $event->event_name }} continues ({{ $startDate->format('M j') }} - {{ $endDate->format('M j') }})">
-                                            ⟵ {{ Str::limit($event->event_name, 8) }} @if($isLastDay) ✓ @endif
+                                            📅 {{ $event->event_name }} ({{ $daysDiff }} days)
+                                            <!-- Span continuation indicator -->
+                                            <div style="position: absolute; top: 0; right: 0; bottom: 0; width: 20px; background: linear-gradient(90deg, transparent 0%, rgba(34, 197, 94, 0.8) 100%); border-radius: 0 4px 4px 0;"></div>
                                         </div>
                                     @else
                                         <!-- Single day event -->
@@ -199,10 +203,10 @@
                                     @endif
                                 @endforeach
 
-                                @if ($day['events']->count() > 2)
+                                @if ($day['events']->count() > $displayedEvents->count())
                                     <div style="font-size: 10px; color: #6b7280; font-weight: 500; background: rgba(107, 114, 128, 0.1); padding: 3px 6px; border-radius: 3px; text-align: center;"
                                         class="dark:text-gray-400 dark:bg-gray-600/50">
-                                        +{{ $day['events']->count() - 2 }} more
+                                        +{{ $day['events']->count() - $displayedEvents->count() }} more
                                     </div>
                                 @endif
                             </div>
