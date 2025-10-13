@@ -263,9 +263,9 @@
                                             @endphp
 
                                             <!-- Multi-day event spanning bar -->
-                                            <div style="z-index: 100; background: {{ $eventColor }}; color: white; font-size: 10px; padding: 4px 8px; border-radius: 6px; font-weight: 600; border: 2px solid rgba(255, 255, 255, 0.3); position: absolute; top: {{ $topOffset }}px; left: -8px; width: calc({{ $spanWidth }} * 100% + {{ ($spanWidth - 1) * 2 }}px); box-shadow: 0 3px 6px rgba(0, 0, 0, 0.3); overflow: hidden; text-overflow: ellipsis; white-space: nowrap;"
+                                            <div style="z-index: {{ $modalOpen ? 0 : 100 }}; background: {{ $eventColor }}; color: white; font-size: 10px; padding: 4px 8px; border-radius: 6px; font-weight: 600; border: 2px solid rgba(255, 255, 255, 0.3); position: absolute; top: {{ $topOffset }}px; left: -8px; width: calc({{ $spanWidth }} * 100% + {{ ($spanWidth - 1) * 2 }}px); box-shadow: 0 3px 6px rgba(0, 0, 0, 0.3); overflow: hidden; text-overflow: ellipsis; white-space: nowrap;"
                                                 title="{{ $event->event_name }} ({{ $startDate->format('M j') }} - {{ $endDate->format('M j') }}, {{ $totalDays }} days)">
-                                                📅 {{ $event->event_name }} ({{ $totalDays }} days)
+                                                {{ $event->event_name }} ({{ $totalDays }} days)
                                             </div>
 
                                             @php
@@ -520,7 +520,7 @@
         </div>
     @endif
 
-    <!-- JavaScript for keyboard navigation -->
+    <!-- JavaScript for keyboard navigation and modal state management -->
     <script>
         // Handle keyboard navigation
         document.addEventListener('keydown', function(e) {
@@ -532,6 +532,48 @@
             }
             if (e.key === 'ArrowRight') {
                 @this.nextImage();
+            }
+        });
+
+        // Listen for modal events to manage z-index
+        document.addEventListener('DOMContentLoaded', function() {
+            // Listen for create modal open/close events
+            const createModal = document.querySelector('[x-filament\\\\:modal]');
+            if (createModal) {
+                // Listen for modal open event
+                createModal.addEventListener('click', function(e) {
+                    if (e.target.matches('[x-filament\\\\:button]') || e.target.closest('[x-filament\\\\:button]')) {
+                        // Delay to ensure modal is fully opened
+                        setTimeout(() => {
+                            @this.set('modalOpen', true);
+                        }, 100);
+                    }
+                });
+
+                // Listen for modal close events (clicking outside or close button)
+                createModal.addEventListener('mousedown', function(e) {
+                    if (e.target === createModal || e.target.matches('[wire\\\\:click\\\\*=\"close\"]') || e.target.closest('[wire\\\\:click\\\\*=\"close\"]')) {
+                        @this.set('modalOpen', false);
+                    }
+                });
+            }
+
+            // Listen for edit modal events
+            const editModal = document.getElementById('open-modal-edit');
+            if (editModal) {
+                const observer = new MutationObserver(function(mutations) {
+                    mutations.forEach(function(mutation) {
+                        if (mutation.type === 'attributes' && mutation.attributeName === 'style') {
+                            const isVisible = editModal.style.display !== 'none';
+                            @this.set('modalOpen', isVisible);
+                        }
+                    });
+                });
+
+                observer.observe(editModal, {
+                    attributes: true,
+                    attributeFilter: ['style']
+                });
             }
         });
     </script>

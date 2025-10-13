@@ -694,7 +694,7 @@
                                 const eventColor = getEventColor(cellEvent.event.raw.event_category);
                                 spanBar.className = "dark:text-blue-200 dark:shadow-lg dark:shadow-blue-900/20";
                                 spanBar.style.cssText = `
-                                    z-index: 100;
+                                    z-index: 30;
                                     background: ${eventColor};
                                     color: white;
                                     font-size: 13px;

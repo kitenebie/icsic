@@ -56,6 +56,9 @@ class Main extends Component implements HasForms, HasActions
     public $showEditModal = false;
     public $editingEventId = null;
 
+    // Modal state for z-index management
+    public $modalOpen = false;
+
     // Bulk selection properties
     public $selectedEvents = [];
     public $selectAll = false;
@@ -235,6 +238,7 @@ class Main extends Component implements HasForms, HasActions
         $this->dispatch('open-modal', id: 'open-modal-edit');
         $this->editingEventId = $eventId;
         $this->showEditModal = true;
+        $this->modalOpen = true;
     }
 
     public function update(): void
@@ -267,6 +271,7 @@ class Main extends Component implements HasForms, HasActions
         $this->form->fill([]);
         $this->showEditModal = false;
         $this->editingEventId = null;
+        $this->modalOpen = false;
 
         Notification::make()
             ->title('Event updated successfully!')
