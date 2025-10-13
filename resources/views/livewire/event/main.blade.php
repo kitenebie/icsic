@@ -149,106 +149,78 @@
             <div style="display: grid; grid-template-columns: repeat(7, 1fr); gap: 1px; background: linear-gradient(135deg, #e2e8f0 0%, #cbd5e1 100%); border-radius: 8px; overflow: hidden; min-width: 500px; max-width: 100%; box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1); position: relative;"
                 class="dark:bg-gradient-to-br dark:from-gray-700 dark:to-gray-800 dark:shadow-2xl dark:shadow-gray-900/50">
                 @php
-                    $multiDayEvents = collect();
-                    $cellHeights = [];
                     // Google Calendar style color mapping function
-                    function getEventColor($category) {
+                    function getEventColor($category)
+                    {
                         $colors = [
-                            "Exams & Quizzes" => "#ea4335",
-                            "Science Fair" => "#34a853",
-                            "Math Olympiad" => "#4285f4",
-                            "Spelling Bee" => "#fbbc04",
-                            "Debate/Essay Contests" => "#ea4335",
-                            "Parent-Teacher Conferences" => "#34a853",
-                            "Report Card Distribution" => "#4285f4",
-                            "Clubs (e.g., Journalism, Robotics)" => "#fbbc04",
-                            "Student Council Elections" => "#ea4335",
-                            "Leadership Training" => "#34a853",
-                            "Educational Field Trips" => "#4285f4",
-                            "Intramurals" => "#fbbc04",
-                            "Sports Fest" => "#ea4335",
-                            "Tryouts and Practice Sessions" => "#34a853",
-                            "Cheerleading Competitions" => "#4285f4",
-                            "P.E. Demonstrations" => "#fbbc04",
-                            "Foundation Day" => "#ea4335",
-                            "Linggo ng Wika" => "#34a853",
-                            "Buwan ng Sining" => "#4285f4",
-                            "Christmas Program" => "#fbbc04",
-                            "School Play or Musical" => "#ea4335",
-                            "Art Exhibits" => "#34a853",
-                            "Cultural Shows" => "#4285f4",
-                            "Mass or Worship Services" => "#fbbc04",
-                            "Retreats & Recollections" => "#ea4335",
-                            "Religious Holidays" => "#34a853",
-                            "Moral Instruction Sessions" => "#4285f4",
-                            "Medical/Dental Missions" => "#fbbc04",
-                            "Mental Health Week" => "#ea4335",
-                            "Anti-Bullying Campaigns" => "#34a853",
-                            "Nutrition Month" => "#4285f4",
-                            "Blood Donation Drives" => "#fbbc04",
-                            "Tree Planting" => "#ea4335",
-                            "Community Clean-Up Drives" => "#34a853",
-                            "Charity Events" => "#4285f4",
-                            "School Caravan" => "#fbbc04",
-                            "Brigada Eskwela" => "#ea4335",
-                            "General Assembly" => "#34a853",
-                            "Faculty Development" => "#4285f4",
-                            "Student/Parent Orientation" => "#fbbc04",
-                            "Enrollment Days" => "#ea4335",
-                            "Accreditation Visits" => "#34a853",
-                            "Awarding Ceremonies" => "#4285f4",
-                            "Recognition Day" => "#fbbc04",
-                            "Graduation/Moving-Up" => "#ea4335",
-                            "Inter-School Competitions" => "#34a853",
-                            "Other" => "#4285f4"
+                            'Exams & Quizzes' => '#ea4335',
+                            'Science Fair' => '#34a853',
+                            'Math Olympiad' => '#4285f4',
+                            'Spelling Bee' => '#fbbc04',
+                            'Debate/Essay Contests' => '#ea4335',
+                            'Parent-Teacher Conferences' => '#34a853',
+                            'Report Card Distribution' => '#4285f4',
+                            'Clubs (e.g., Journalism, Robotics)' => '#fbbc04',
+                            'Student Council Elections' => '#ea4335',
+                            'Leadership Training' => '#34a853',
+                            'Educational Field Trips' => '#4285f4',
+                            'Intramurals' => '#fbbc04',
+                            'Sports Fest' => '#ea4335',
+                            'Tryouts and Practice Sessions' => '#34a853',
+                            'Cheerleading Competitions' => '#4285f4',
+                            'P.E. Demonstrations' => '#fbbc04',
+                            'Foundation Day' => '#ea4335',
+                            'Linggo ng Wika' => '#34a853',
+                            'Buwan ng Sining' => '#4285f4',
+                            'Christmas Program' => '#fbbc04',
+                            'School Play or Musical' => '#ea4335',
+                            'Art Exhibits' => '#34a853',
+                            'Cultural Shows' => '#4285f4',
+                            'Mass or Worship Services' => '#fbbc04',
+                            'Retreats & Recollections' => '#ea4335',
+                            'Religious Holidays' => '#34a853',
+                            'Moral Instruction Sessions' => '#4285f4',
+                            'Medical/Dental Missions' => '#fbbc04',
+                            'Mental Health Week' => '#ea4335',
+                            'Anti-Bullying Campaigns' => '#34a853',
+                            'Nutrition Month' => '#4285f4',
+                            'Blood Donation Drives' => '#fbbc04',
+                            'Tree Planting' => '#ea4335',
+                            'Community Clean-Up Drives' => '#34a853',
+                            'Charity Events' => '#4285f4',
+                            'School Caravan' => '#fbbc04',
+                            'Brigada Eskwela' => '#ea4335',
+                            'General Assembly' => '#34a853',
+                            'Faculty Development' => '#4285f4',
+                            'Student/Parent Orientation' => '#fbbc04',
+                            'Enrollment Days' => '#ea4335',
+                            'Accreditation Visits' => '#34a853',
+                            'Awarding Ceremonies' => '#4285f4',
+                            'Recognition Day' => '#fbbc04',
+                            'Graduation/Moving-Up' => '#ea4335',
+                            'Inter-School Competitions' => '#34a853',
+                            'Other' => '#4285f4',
                         ];
-                        return $colors[$category] ?? "#4285f4";
+                        return $colors[$category] ?? '#4285f4';
                     }
+
+                    // Track which multi-day events have been rendered to avoid duplicates
+                    $renderedMultiDayEvents = [];
                 @endphp
+
                 @foreach ($calendarDays as $dayIndex => $day)
                     @if ($day)
                         @php
                             $currentDate = \Carbon\Carbon::parse($day['date']);
-                            $cellHasMultiDayStart = false;
-                            $cellMultiDayEvents = collect();
-                            $cellSpanWidth = 1;
+                            $currentDayOfWeek = $dayIndex % 7;
                         @endphp
-
-                        <!-- Check for multi-day events that overlap with this day -->
-                        @foreach ($day['events'] as $event)
-                            @php
-                                $isMultiDay = $event->event_end && $event->event_date != $event->event_end;
-                                if ($isMultiDay) {
-                                    $startDate = \Carbon\Carbon::parse($event->event_date);
-                                    $endDate = \Carbon\Carbon::parse($event->event_end);
-
-                                    // Check if this day falls within the event date range
-                                    $isWithinRange = $currentDate->between($startDate, $endDate);
-
-                                    if ($isWithinRange && !$multiDayEvents->contains('id', $event->id)) {
-                                        $cellMultiDayEvents->push($event);
-
-                                        // Calculate remaining days in current week row
-                                        $currentDayOfWeek = $dayIndex % 7;
-                                        $remainingDaysInRow = 7 - $currentDayOfWeek;
-
-                                        // Calculate how many days are left in this event from current date
-                                        $remainingEventDays = $currentDate->diffInDays($endDate) + 1;
-
-                                        // Span width for this row (limited by remaining days in row)
-                                        $cellSpanWidth = min($remainingEventDays, $remainingDaysInRow);
-
-                                        $multiDayEvents->push($event);
-                                    }
-                                }
-                            @endphp
-                        @endforeach
 
                         <div wire:click="selectDate('{{ $day['date'] }}')"
                             style="background: linear-gradient(135deg, #ffffff 0%, #fefefe 100%); min-height: 120px; padding: 8px; cursor: pointer; transition: all 0.3s ease; border-radius: 6px; position: relative; {{ $day['is_today'] ? 'background: linear-gradient(135deg, #dcfce7 0%, #bbf7d0 100%); box-shadow: 0 3px 8px rgba(34, 197, 94, 0.3);' : '' }} {{ $day['is_selected'] ? 'box-shadow: 0 0 0 2px #16a34a, 0 3px 8px rgba(22, 163, 74, 0.4);' : '' }}"
                             class="dark:bg-gradient-to-br dark:from-gray-700 dark:to-gray-800 dark:text-white {{ $day['is_today'] ? 'dark:bg-gradient-to-br dark:from-green-800 dark:to-green-900 dark:shadow-2xl dark:shadow-green-900/50' : '' }} dark:hover:shadow-lg dark:hover:shadow-gray-900/30"
                             onmouseover="this.style.transform='translateY(1px)'; this.style.boxShadow='{{ $day['is_selected'] ? '0 0 0 2px #16a34a, ' : '' }}0 6px 16px rgba(0, 0, 0, 0.15)'"
-                            onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='{{ $day['is_selected'] ? '0 0 0 2px #16a34a' : ($day['is_today'] ? '0 3px 8px rgba(34, 197, 94, 0.3)' : 'none') }}">
+                            onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='{{ $day['is_selected'] ? '0 0 0 2px #16a34a' : ($day['is_today'] ? '0 3px 8px rgba(34, 197, 94, 0.3)' : 'none') }}'">
+
                             <div style="font-size: 14px; font-weight: 600; color: #111827; margin-bottom: 6px; text-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);"
                                 class="dark:text-gray-100">
                                 {{ $day['day'] }}
@@ -256,56 +228,65 @@
 
                             <!-- Events for this day -->
                             <div style="display: flex; flex-direction: column; gap: 4px;">
-                                @if($cellMultiDayEvents->count() > 0)
-                                    @php
-                                        // Get current height for this cell, or initialize to base height
-                                        $currentHeight = $cellHeights[$dayIndex] ?? 24;
-                                        // Increment height for next span bar in this cell
-                                        $cellHeights[$dayIndex] = $currentHeight + 32;
-                                    @endphp
-
-                                    @foreach($cellMultiDayEvents as $cellMultiDayEvent)
-                                        @php
-                                            $startDate = \Carbon\Carbon::parse($cellMultiDayEvent->event_date);
-                                            $endDate = \Carbon\Carbon::parse($cellMultiDayEvent->event_end);
-                                            $daysDiff = $startDate->diffInDays($endDate) + 1;
-
-                                            // Calculate remaining days in current week row
-                                            $currentDayOfWeek = $dayIndex % 7;
-                                            $remainingDaysInRow = 7 - $currentDayOfWeek;
-
-                                            // Calculate how many days are left in this event from current date
-                                            $remainingEventDays = $currentDate->diffInDays($endDate) + 1;
-
-                                            // Use the exact span width for this specific event
-                                            $eventSpanWidth = min($remainingEventDays, $remainingDaysInRow);
-
-                                            $eventColor = getEventColor($cellMultiDayEvent->event_category);
-                                        @endphp
-                                        <!-- Multi-day event spanning bar overlaying cells -->
-                                        <div style="z-index:9999; background: {{ $eventColor }}; color: white; font-size: 10px; padding: 4px 8px; border-radius: 6px; font-weight: 600; border: 2px solid rgba(255, 255, 255, 0.3); position: absolute; top: {{ $currentHeight }}px; left: -8px; width: calc({{ $eventSpanWidth }} * 100% + {{ ($eventSpanWidth - 1) * 2 }}px); box-shadow: 0 3px 6px rgba(0, 0, 0, 0.3); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; margin-bottom: 2px;"
-                                            title="{{ $cellMultiDayEvent->event_name }} ({{ $startDate->format('M j') }} - {{ $endDate->format('M j') }}, {{ $daysDiff }} days)">
-                                            📅 {{ $cellMultiDayEvent->event_name }} ({{ $daysDiff }} days)
-                                        </div>
-                                        @php
-                                            // Increment height for next event in this cell
-                                            $currentHeight += 32;
-                                        @endphp
-                                    @endforeach
-
-                                    <!-- Spacer for single-day events -->
-                                    <div style="height: {{ $cellMultiDayEvents->count() * 32 }}px;"></div>
-                                @endif
+                                @php
+                                    $topOffset = 24;
+                                    $multiDayEventsForCell = [];
+                                @endphp
 
                                 @foreach ($day['events'] as $event)
                                     @php
                                         $isMultiDay = $event->event_end && $event->event_date != $event->event_end;
                                         $startDate = \Carbon\Carbon::parse($event->event_date);
-                                        $endDate = $event->event_end ? \Carbon\Carbon::parse($event->event_end) : $startDate;
-                                        $isFirstDay = $currentDate->isSameDay($startDate);
+                                        $endDate = $event->event_end
+                                            ? \Carbon\Carbon::parse($event->event_end)
+                                            : $startDate;
+
+                                        // Check if this is the first day this event appears in the current week row
+                                        $isFirstDayInWeek =
+                                            $currentDate->isSameDay($startDate) ||
+                                            ($currentDayOfWeek == 0 && $currentDate->between($startDate, $endDate));
                                     @endphp
-                                    @if(!$isMultiDay)
-                                        <!-- Single day event -->
+
+                                    @if ($isMultiDay)
+                                        @if ($isFirstDayInWeek && !in_array($event->id . '-' . floor($dayIndex / 7), $renderedMultiDayEvents))
+                                            @php
+                                                // Calculate span width for this week row
+                                                $remainingDaysInRow = 7 - $currentDayOfWeek;
+                                                $remainingEventDays = $currentDate->diffInDays($endDate) + 1;
+                                                $spanWidth = min($remainingEventDays, $remainingDaysInRow);
+
+                                                $eventColor = getEventColor($event->event_category);
+                                                $totalDays = $startDate->diffInDays($endDate) + 1;
+
+                                                // Mark this event as rendered for this week row
+                                                $renderedMultiDayEvents[] = $event->id . '-' . floor($dayIndex / 7);
+                                            @endphp
+
+                                            <!-- Multi-day event spanning bar -->
+                                            <div style="z-index: 9999; background: {{ $eventColor }}; color: white; font-size: 10px; padding: 4px 8px; border-radius: 6px; font-weight: 600; border: 2px solid rgba(255, 255, 255, 0.3); position: absolute; top: {{ $topOffset }}px; left: -8px; width: calc({{ $spanWidth }} * 100% + {{ ($spanWidth - 1) * 2 }}px); box-shadow: 0 3px 6px rgba(0, 0, 0, 0.3); overflow: hidden; text-overflow: ellipsis; white-space: nowrap;"
+                                                title="{{ $event->event_name }} ({{ $startDate->format('M j') }} - {{ $endDate->format('M j') }}, {{ $totalDays }} days)">
+                                                📅 {{ $event->event_name }} ({{ $totalDays }} days)
+                                            </div>
+
+                                            @php
+                                                $topOffset += 32;
+                                                $multiDayEventsForCell[] = $event;
+                                            @endphp
+                                        @endif
+                                    @endif
+                                @endforeach
+
+                                <!-- Spacer for multi-day events -->
+                                @if (count($multiDayEventsForCell) > 0)
+                                    <div style="height: {{ count($multiDayEventsForCell) * 32 }}px;"></div>
+                                @endif
+
+                                <!-- Single day events -->
+                                @foreach ($day['events'] as $event)
+                                    @php
+                                        $isMultiDay = $event->event_end && $event->event_date != $event->event_end;
+                                    @endphp
+                                    @if (!$isMultiDay)
                                         <div style="background: linear-gradient(135deg, #dcfce7 0%, #bbf7d0 100%); color: #166534; font-size: 10px; padding: 4px 6px; border-radius: 4px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-weight: 500; border: 1px solid rgba(34, 197, 94, 0.2);"
                                             class="dark:bg-gradient-to-r dark:from-green-800 dark:to-green-900 dark:text-green-200 dark:border-green-700 dark:shadow-lg dark:shadow-green-900/20"
                                             title="{{ $event->event_name }}">
@@ -319,7 +300,6 @@
                         <div style="background-color: #f9fafb; min-height: 120px;" class="dark:bg-gray-800"></div>
                     @endif
                 @endforeach
-
             </div>
         </div>
 
@@ -554,7 +534,5 @@
                 @this.nextImage();
             }
         });
-    
     </script>
-    </div>
-
+</div>
