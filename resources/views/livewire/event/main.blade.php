@@ -1,7 +1,7 @@
 <!-- Single root container for Livewire component -->
 <div>
     <!-- Create Event Button -->
-    <x-filament::modal width="3xl" style="z-index: 99999;">
+    <x-filament::modal width="3xl" style="z-index: 999;">
         <x-slot name="trigger">
             <x-filament::button
                 style="background-color:#a5f8c5; color: #054721; display: flex; border: none; padding: 8px 16px; border-radius: 8px; font-weight: 500; cursor: pointer; display: flex; align-items: center; gap: 8px; transition: background-color 0.2s; width: fit-content;"
@@ -27,7 +27,7 @@
     </x-filament::modal>
 
     <!-- Edit Event Modal -->
-    <x-filament::modal width="3xl" id="open-modal-edit" style="z-index: 99999;">
+    <x-filament::modal width="3xl" id="open-modal-edit" style="z-index: 999;">
         <x-slot name="heading">
             Edit Event
         </x-slot>
@@ -263,7 +263,7 @@
                                             @endphp
 
                                             <!-- Multi-day event spanning bar -->
-                                            <div style="z-index: 999; background: {{ $eventColor }}; color: white; font-size: 10px; padding: 4px 8px; border-radius: 6px; font-weight: 600; border: 2px solid rgba(255, 255, 255, 0.3); position: absolute; top: {{ $topOffset }}px; left: -8px; width: calc({{ $spanWidth }} * 100% + {{ ($spanWidth - 1) * 2 }}px); box-shadow: 0 3px 6px rgba(0, 0, 0, 0.3); overflow: hidden; text-overflow: ellipsis; white-space: nowrap;"
+                                            <div style="z-index: 100; background: {{ $eventColor }}; color: white; font-size: 10px; padding: 4px 8px; border-radius: 6px; font-weight: 600; border: 2px solid rgba(255, 255, 255, 0.3); position: absolute; top: {{ $topOffset }}px; left: -8px; width: calc({{ $spanWidth }} * 100% + {{ ($spanWidth - 1) * 2 }}px); box-shadow: 0 3px 6px rgba(0, 0, 0, 0.3); overflow: hidden; text-overflow: ellipsis; white-space: nowrap;"
                                                 title="{{ $event->event_name }} ({{ $startDate->format('M j') }} - {{ $endDate->format('M j') }}, {{ $totalDays }} days)">
                                                 📅 {{ $event->event_name }} ({{ $totalDays }} days)
                                             </div>
