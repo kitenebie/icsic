@@ -605,97 +605,139 @@
                         // Track used heights for each cell to stack multiple events vertically
                         const cellHeights = new Map();
 
-                        // Group multi-day events by rows they occupy
-                        multiDayEvents.forEach(event => {
+                        // Group events by cell position for width calculation
+                        const eventsByCell = new Map();
+
+                        // First pass: Group all multi-day events by their cell positions
+                        events.forEach(event => {
                             if (processedEvents.includes(event.raw.id)) return;
+                            if (!event.isMultiDay) return;
 
-                            const eventStartDay = event.day; // Day of month (1-31)
-                            const eventEndDay = event.endDay;
+                            const eventStartDate = new Date(event.year, event.month - 1, event.day);
+                            const eventEndDate = new Date(event.endYear, event.endMonth - 1, event.endDay);
 
-                            // Only show if both start and end are in current month
-                            if (event.year !== year || event.month - 1 !== month) return;
-                            if (event.endYear !== year || event.endMonth - 1 !== month) return;
+                            // Check if this event overlaps with current month
+                            const monthStart = new Date(year, month, 1);
+                            const monthEnd = new Date(year, month + 1, 0);
+                            const eventOverlapsMonth = eventStartDate <= monthEnd && eventEndDate >= monthStart;
 
-                            const totalDays = eventEndDay - eventStartDay + 1;
+                            if (!eventOverlapsMonth) return;
+
+                            // Calculate the actual date range for this month
+                            const actualStartDate = eventStartDate > monthStart ? eventStartDate : monthStart;
+                            const actualEndDate = eventEndDate < monthEnd ? eventEndDate : monthEnd;
+
+                            // Calculate grid positions for the actual date range
+                            const startDayNum = actualStartDate.getDate();
+                            const endDayNum = actualEndDate.getDate();
 
                             // Calculate position in calendar grid
-                            // Grid position = offset (startDay from empty cells) + (day_of_month - 1)
-                            const gridPosition = startDay + (eventStartDay - 1);
-                            const startWeekRow = Math.floor(gridPosition / 7);
-                            const startDayOfWeek = gridPosition % 7;
+                            const gridStartPos = startDay + (startDayNum - 1);
+                            const gridEndPos = startDay + (endDayNum - 1);
 
-                            // Create span for each row the event occupies
-                            let currentDay = eventStartDay;
-                            let remainingDays = totalDays;
-                            let currentRow = startWeekRow;
-                            let currentGridPos = gridPosition;
+                            // Create span for each row the event occupies in current month
+                            let currentGridPos = gridStartPos;
+                            let currentDate = new Date(actualStartDate);
 
-                            while (remainingDays > 0 && currentDay <= eventEndDay) {
-                                const dayOfWeek = currentGridPos % 7;
-                                const daysInThisRow = Math.min(7 - dayOfWeek, remainingDays);
-
-                                // Calculate the cell element to attach the overlay INSIDE the cell (like in main.blade.php)
-                                const cellIndex = currentGridPos;
-                                const cellElements = calendar.children;
-
-                                if (cellIndex < cellElements.length) {
-                                    const cellElement = cellElements[cellIndex];
-                                    // Ensure the cell is a positioning context
-                                    if (getComputedStyle(cellElement).position === 'static') {
-                                        cellElement.style.position = 'relative';
-                                    }
-
-                                    // Get current height for this cell, or initialize to base height
-                                    const currentHeight = cellHeights.get(cellIndex) || 42;
-                                    // Increment height for next span bar in this cell
-                                    cellHeights.set(cellIndex, currentHeight + 32);
-
-                                    const spanCols = daysInThisRow; // columns (days) to span in this row
-
-                                    // Multi-day event spanning bar overlaying cells (style copied from main.blade.php and adapted)
-                                    const spanBar = document.createElement('div');
-                                    const eventColor = getEventColor(event.raw.event_category);
-                                    spanBar.className = "dark:text-blue-200 dark:shadow-lg dark:shadow-blue-900/20";
-                                    spanBar.style.cssText = `
-                                        z-index: 9999;
-                                        background: ${eventColor};
-                                        color: white;
-                                        font-size: 13px;
-                                        padding: 4px 8px;
-                                        border-radius: 6px;
-                                        font-weight: 600;
-                                        border: 2px solid rgba(255, 255, 255, 0.3);
-                                        position: absolute;
-                                        top: ${currentHeight}px;
-                                        left: -8px;
-                                        box-shadow: 0 3px 6px rgba(0, 0, 0, 0.3);
-                                        overflow: hidden;
-                                        text-overflow: ellipsis;
-                                        white-space: nowrap;
-                                        margin-bottom: 2px;
-                                    `;
-                                    spanBar.style.width = `calc(${spanCols} * 100% + ${(spanCols - 1) * 2}px)`;
-
-                                    const totalDaysThisEvent = (eventEndDay - eventStartDay + 1);
-                                    spanBar.title = `${event.raw.event_name} (${eventStartDay} - ${eventEndDay}, ${totalDaysThisEvent} days)`;
-                                    spanBar.textContent = `📅 ${event.raw.event_name} (${totalDaysThisEvent} days)`;
-
-                                    // Append the overlay inside the cell
-                                    cellElement.appendChild(spanBar);
-
-                                    // Spacer for single-day events under the bar, as in main.blade.php
-                                    const spacer = document.createElement('div');
-                                    spacer.style.height = '32px';
-                                    cellElement.appendChild(spacer);
+                            while (currentGridPos <= gridEndPos && currentDate <= actualEndDate) {
+                                if (!eventsByCell.has(currentGridPos)) {
+                                    eventsByCell.set(currentGridPos, []);
                                 }
+                                eventsByCell.get(currentGridPos).push({
+                                    event: event,
+                                    currentGridPos: currentGridPos,
+                                    actualEndDate: actualEndDate,
+                                    eventStartDate: eventStartDate,
+                                    eventEndDate: eventEndDate
+                                });
 
-                                currentDay += daysInThisRow;
-                                remainingDays -= daysInThisRow;
+                                // Move to next position
+                                const dayOfWeek = currentGridPos % 7;
+                                const remainingDaysInRow = 7 - dayOfWeek;
+                                const remainingDaysInEvent = Math.ceil((actualEndDate - currentDate) / (1000 * 60 * 60 * 24)) + 1;
+                                const daysInThisRow = Math.min(remainingDaysInRow, remainingDaysInEvent);
+
                                 currentGridPos += daysInThisRow;
-                                currentRow++;
+                                currentDate.setDate(currentDate.getDate() + daysInThisRow);
                             }
 
                             processedEvents.push(event.raw.id);
+                        });
+
+                        // Second pass: Create span bars using maximum width per cell
+                        eventsByCell.forEach((cellEvents, cellIndex) => {
+                            if (cellEvents.length === 0) return;
+
+                            // Find the event with the longest date range in this cell
+                            let longestRangeEvent = cellEvents[0];
+                            let maxDaysInRow = 0;
+
+                            cellEvents.forEach(cellEvent => {
+                                const dayOfWeek = cellEvent.currentGridPos % 7;
+                                const remainingDaysInRow = 7 - dayOfWeek;
+                                const remainingDaysInEvent = Math.ceil((cellEvent.actualEndDate - new Date(year, month, cellEvent.currentGridPos - startDay + 1)) / (1000 * 60 * 60 * 24)) + 1;
+                                const daysInThisRow = Math.min(remainingDaysInRow, remainingDaysInEvent);
+
+                                if (daysInThisRow > maxDaysInRow) {
+                                    maxDaysInRow = daysInThisRow;
+                                    longestRangeEvent = cellEvent;
+                                }
+                            });
+
+                            // Use the maximum span width for all events in this cell
+                            const maxSpanCols = maxDaysInRow;
+
+                            // Create span bars for all events in this cell
+                            cellEvents.forEach(cellEvent => {
+                                const cellElements = calendar.children;
+                                if (cellEvent.currentGridPos >= cellElements.length) return;
+
+                                const cellElement = cellElements[cellEvent.currentGridPos];
+                                if (getComputedStyle(cellElement).position === 'static') {
+                                    cellElement.style.position = 'relative';
+                                }
+
+                                // Get current height for this cell, or initialize to base height
+                                const currentHeight = cellHeights.get(cellEvent.currentGridPos) || 42;
+                                // Increment height for next span bar in this cell
+                                cellHeights.set(cellEvent.currentGridPos, currentHeight + 32);
+
+                                // Multi-day event spanning bar overlaying cells
+                                const spanBar = document.createElement('div');
+                                const eventColor = getEventColor(cellEvent.event.raw.event_category);
+                                spanBar.className = "dark:text-blue-200 dark:shadow-lg dark:shadow-blue-900/20";
+                                spanBar.style.cssText = `
+                                    z-index: 100;
+                                    background: ${eventColor};
+                                    color: white;
+                                    font-size: 13px;
+                                    padding: 4px 8px;
+                                    border-radius: 6px;
+                                    font-weight: 600;
+                                    border: 2px solid rgba(255, 255, 255, 0.3);
+                                    position: absolute;
+                                    top: ${currentHeight}px;
+                                    left: -8px;
+                                    box-shadow: 0 3px 6px rgba(0, 0, 0, 0.3);
+                                    overflow: hidden;
+                                    text-overflow: ellipsis;
+                                    white-space: nowrap;
+                                    margin-bottom: 2px;
+                                `;
+                                spanBar.style.width = `calc(${maxSpanCols} * 100% + ${(maxSpanCols - 1) * 2}px)`;
+
+                                const totalDaysThisEvent = Math.ceil((cellEvent.eventEndDate - cellEvent.eventStartDate) / (1000 * 60 * 60 * 24)) + 1;
+                                spanBar.title = `${cellEvent.event.raw.event_name} (${cellEvent.event.day}/${cellEvent.event.month}/${cellEvent.event.year} - ${cellEvent.event.endDay}/${cellEvent.event.endMonth}/${cellEvent.event.endYear}, ${totalDaysThisEvent} days)`;
+                                spanBar.textContent = `📅 ${cellEvent.event.raw.event_name} (${totalDaysThisEvent} days)`;
+
+                                // Append the overlay inside the cell
+                                cellElement.appendChild(spanBar);
+
+                                // Spacer for single-day events under the bar
+                                const spacer = document.createElement('div');
+                                spacer.style.height = '32px';
+                                cellElement.appendChild(spacer);
+                            });
                         });
                     }
 
