@@ -271,7 +271,7 @@
                                             $eventColor = getEventColor($cellMultiDayEvent->event_category);
                                         @endphp
                                         <!-- Multi-day event spanning bar overlaying cells -->
-                                        <div style="z-index:9999; background: {{ $eventColor }}; color: white; font-size: 10px; padding: 4px 8px; border-radius: 6px; font-weight: 600; border: 2px solid rgba(255, 255, 255, 0.3); position: absolute; top: {{ $currentHeight }}px; left: -8px; width: calc({{ $cellSpanWidth }} * 100% + {{ ($cellSpanWidth - 1) * 2 }}px); box-shadow: 0 3px 6px rgba(0, 0, 0, 0.3); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; margin-bottom: 2px;"
+                                    <div style="z-index:9999;background: linear-gradient(135deg, #2D9152FF 0%, #15843E 100%); color: rgb(226, 226, 226); font-size: 10px; padding: 4px 8px; border-radius: 6px; font-weight: 600; border: 2px solid rgba(59, 130, 246, 0.4); position: absolute; top: 24px; left: -8px; width: calc({{ $cellSpanWidth }} * 100% + {{ ($cellSpanWidth - 1) * 2 }}px); box-shadow: 0 3px 6px rgba(59, 130, 246, 0.3); z-index: 10; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;"
                                             title="{{ $cellMultiDayEvent->event_name }} ({{ $startDate->format('M j') }} - {{ $endDate->format('M j') }}, {{ $daysDiff }} days)">
                                             📅 {{ $cellMultiDayEvent->event_name }} ({{ $daysDiff }} days)
                                         </div>
