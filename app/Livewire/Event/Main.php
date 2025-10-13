@@ -161,6 +161,9 @@ class Main extends Component implements HasForms, HasActions
                     ->required(fn($get) => $get('event_category') === 'Other'),
                 TextInput::make('event_location')->required(),
                 DatePicker::make('event_date')->required(),
+                DatePicker::make('event_end')
+                    ->label('Event End Date')
+                    ->minDate(fn ($get) => $get('event_date')),
                 TimePicker::make('event_time')->required(),
                 TextInput::make('event_duration')->required(),
                 FileUpload::make('event_images')
@@ -191,6 +194,7 @@ class Main extends Component implements HasForms, HasActions
             'event_name'        => $validatedData['event_name'],
             'event_category'    => $validatedData['event_category'],
             'event_date'        => $validatedData['event_date'],
+            'event_end'         => $validatedData['event_end'] ?? null,
             'event_time'        => $validatedData['event_time'],
             'event_duration'    => $validatedData['event_duration'],
             'event_discription' => $validatedData['event_discription'],
@@ -227,6 +231,7 @@ class Main extends Component implements HasForms, HasActions
             'event_category' => $event->event_category,
             'event_location' => $event->event_location,
             'event_date' => $event->event_date,
+            'event_end' => $event->event_end,
             'event_time' => $event->event_time,
             'event_duration' => $event->event_duration,
             'event_images' => $event->event_images,
@@ -255,6 +260,7 @@ class Main extends Component implements HasForms, HasActions
             'event_name'        => $validatedData['event_name'],
             'event_category'    => $validatedData['event_category'],
             'event_date'        => $validatedData['event_date'],
+            'event_end'         => $validatedData['event_end'] ?? null,
             'event_time'        => $validatedData['event_time'],
             'event_duration'    => $validatedData['event_duration'],
             'event_discription' => $validatedData['event_discription'],
@@ -384,7 +390,13 @@ class Main extends Component implements HasForms, HasActions
 
     public function getEventsForDate($date)
     {
-        $query = event::whereDate('event_date', $date);
+        $query = event::where(function($q) use ($date) {
+            $q->whereDate('event_date', $date)
+              ->orWhere(function($subQ) use ($date) {
+                  $subQ->where('event_date', '<=', $date)
+                       ->where('event_end', '>=', $date);
+              });
+        });
 
         if (!empty($this->searchQuery)) {
             $query->where(function($q) {
@@ -597,6 +609,10 @@ class Main extends Component implements HasForms, HasActions
                                         ->label('Date')
                                         ->disabled()
                                         ->default($record->event_date),
+                                    DatePicker::make('event_end')
+                                        ->label('End Date')
+                                        ->disabled()
+                                        ->default($record->event_end),
                                     TimePicker::make('event_time')
                                         ->label('Time')
                                         ->disabled()
@@ -682,6 +698,9 @@ class Main extends Component implements HasForms, HasActions
                                     ->required(),
                                 TextInput::make('event_location')->required(),
                                 DatePicker::make('event_date')->required(),
+                                DatePicker::make('event_end')
+                                    ->label('Event End Date')
+                                    ->minDate(fn ($get) => $get('event_date')),
                                 TimePicker::make('event_time')->required(),
                                 TextInput::make('event_duration')->required(),
                                 FileUpload::make('event_images')

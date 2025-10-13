@@ -163,10 +163,29 @@
                             <!-- Events for this day -->
                             <div style="display: flex; flex-direction: column; gap: 4px;">
                                 @foreach ($day['events']->take(2) as $event)
-                                    <div style="background: linear-gradient(135deg, #dcfce7 0%, #bbf7d0 100%); color: #166534; font-size: 10px; padding: 4px 6px; border-radius: 4px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-weight: 500; border: 1px solid rgba(34, 197, 94, 0.2);"
+                                    @php
+                                        $isMultiDay = $event->event_end && $event->event_date != $event->event_end;
+                                        $startDate = \Carbon\Carbon::parse($event->event_date);
+                                        $endDate = $event->event_end ? \Carbon\Carbon::parse($event->event_end) : $startDate;
+                                        $currentDate = \Carbon\Carbon::parse($day['date']);
+                                        $isFirstDay = $currentDate->isSameDay($startDate);
+                                        $isLastDay = $currentDate->isSameDay($endDate);
+                                        $isMiddleDay = $currentDate->between($startDate, $endDate) && !$isFirstDay && !$isLastDay;
+                                    @endphp
+                                    <div style="background: linear-gradient(135deg, #dcfce7 0%, #bbf7d0 100%); color: #166534; font-size: 10px; padding: 4px 6px; border-radius: 4px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-weight: 500; border: 1px solid rgba(34, 197, 94, 0.2); {{ $isMultiDay ? 'position: relative;' : '' }}"
                                         class="dark:bg-gradient-to-r dark:from-green-800 dark:to-green-900 dark:text-green-200 dark:border-green-700 dark:shadow-lg dark:shadow-green-900/20"
-                                        title="{{ $event->event_name }}">
-                                        {{ Str::limit($event->event_name, 12) }}
+                                        title="{{ $event->event_name }} @if($isMultiDay) ({{ $startDate->format('M j') }} - {{ $endDate->format('M j') }}) @endif">
+                                        @if($isMultiDay)
+                                            @if($isFirstDay)
+                                                {{ Str::limit($event->event_name, 8) }} →
+                                            @elseif($isLastDay)
+                                                ← {{ Str::limit($event->event_name, 8) }}
+                                            @else
+                                                → {{ Str::limit($event->event_name, 8) }} →
+                                            @endif
+                                        @else
+                                            {{ Str::limit($event->event_name, 12) }}
+                                        @endif
                                     </div>
                                 @endforeach
 
