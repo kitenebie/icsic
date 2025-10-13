@@ -47,10 +47,8 @@ class CleanupController extends Controller
         // Clear email field from students table - set to empty string instead of null
         student::where('email', '!=', '')->update(['email' => '']);
 
-        // Clear email field from emails table (if it has an email column) - set to empty string instead of null
-        if (Email::where('email', '!=', '')->exists()) {
-            Email::where('email', '!=', '')->update(['email' => '']);
-        }
+        // Remove all email records to avoid unique constraint conflicts
+        Email::query()->delete();
     }
 
     private function deleteOrphanedUsers()
