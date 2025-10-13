@@ -72,7 +72,7 @@ class StudentResource extends Resource
                 TextInput::make('guardian_contact_number')->tel()->required(),
                 TextInput::make('guardian_email')->email(),
 
-                Select::make('grade')->options([
+                Select::make('grade')->reactive()->options([
                     'Kender' => 'Kender',
                     'Grade 1' => 'Grade 1',
                     'Grade 2' => 'Grade 2',
@@ -281,7 +281,7 @@ class StudentResource extends Resource
                         Section::make('Education Information')
                             ->description('Previous education background of the learner.')
                             ->schema([
-                                Select::make('grade')
+                                Select::make('grade')->reactive()
                                     ->label('Grade')
                                     ->prefixIcon('heroicon-m-academic-cap')
                                     ->options([
@@ -539,7 +539,7 @@ class StudentResource extends Resource
                             ->description('Previous education background of the learner.')
                             ->schema([
 
-                                Select::make('grade')
+                                Select::make('grade')->reactive()
                                     ->label('Grade')
                                     ->prefixIcon('heroicon-m-academic-cap')
                                     ->options([
