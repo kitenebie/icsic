@@ -209,7 +209,7 @@
                                         $daysDiff = $startDate->diffInDays($endDate) + 1;
                                     @endphp
                                     <!-- Multi-day event spanning bar overlaying cells -->
-                                    <div style="background: linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%); color: white; font-size: 10px; padding: 4px 8px; border-radius: 6px; font-weight: 600; border: 2px solid rgba(59, 130, 246, 0.4); position: absolute; top: 24px; left: -8px; width: calc({{ $cellSpanWidth }} * 100% + {{ ($cellSpanWidth - 1) * 2 }}px); box-shadow: 0 3px 6px rgba(59, 130, 246, 0.3); z-index: 10; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;"
+                                    <div style="z-index:9999;background: linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%); color: white; font-size: 10px; padding: 4px 8px; border-radius: 6px; font-weight: 600; border: 2px solid rgba(59, 130, 246, 0.4); position: absolute; top: 24px; left: -8px; width: calc({{ $cellSpanWidth }} * 100% + {{ ($cellSpanWidth - 1) * 2 }}px); box-shadow: 0 3px 6px rgba(59, 130, 246, 0.3); z-index: 10; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;"
                                         class="dark:bg-gradient-to-r dark:from-blue-800 dark:to-blue-900 dark:text-blue-200 dark:border-blue-700 dark:shadow-lg dark:shadow-blue-900/20"
                                         title="{{ $cellMultiDayEvent->event_name }} ({{ $startDate->format('M j') }} - {{ $endDate->format('M j') }}, {{ $daysDiff }} days)">
                                         📅 {{ $cellMultiDayEvent->event_name }} ({{ $daysDiff }} days)
