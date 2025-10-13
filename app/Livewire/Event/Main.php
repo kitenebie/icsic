@@ -154,11 +154,6 @@ class Main extends Component implements HasForms, HasActions
                     ->required()
                     ->reactive(),
 
-                TextInput::make('custom_event_category')
-                    ->label('Other Category')
-                    ->placeholder('Enter your custom category')
-                    ->visible(fn($get) => $get('event_category') === 'Other')
-                    ->required(fn($get) => $get('event_category') === 'Other'),
                 TextInput::make('event_location')->required(),
                 DatePicker::make('event_date')->required(),
                 DatePicker::make('event_end')

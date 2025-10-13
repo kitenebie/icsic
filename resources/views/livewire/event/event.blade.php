@@ -27,7 +27,7 @@
                     </div>
                 </div>
                 <div class="flex items-center space-x-3">
-                    <button class="px-4 py-2 text-sm font-medium text-blue-600 bg-blue-50 border border-blue-200 rounded-lg hover:bg-blue-100 transition-colors duration-200">
+                    {{-- <button class="px-4 py-2 text-sm font-medium text-blue-600 bg-blue-50 border border-blue-200 rounded-lg hover:bg-blue-100 transition-colors duration-200">
                         Today
                     </button>
                     <div class="flex rounded-lg shadow-sm border border-gray-200">
@@ -37,7 +37,7 @@
                         <button class="px-4 py-2 text-sm font-medium text-gray-700 bg-white border-l border-gray-200 rounded-r-lg hover:bg-gray-50 transition-colors duration-200">
                             Week
                         </button>
-                    </div>
+                    </div> --}}
                 </div>
             </div>
         </div>
