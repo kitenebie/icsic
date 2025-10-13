@@ -256,32 +256,6 @@
                             <div style="display: flex; flex-direction: column; gap: 4px;">
                                 @if($cellMultiDayEvents->count() > 0)
                                     @php
-                                        // Find the event with the longest date range to use as base width
-                                        $longestRangeEvent = $cellMultiDayEvents->sort(function($a, $b) {
-                                            $startA = \Carbon\Carbon::parse($a->event_date);
-                                            $endA = \Carbon\Carbon::parse($a->event_end);
-                                            $startB = \Carbon\Carbon::parse($b->event_date);
-                                            $endB = \Carbon\Carbon::parse($b->event_end);
-                                            $rangeA = $startA->diffInDays($endA) + 1;
-                                            $rangeB = $startB->diffInDays($endB) + 1;
-                                            return $rangeB <=> $rangeA; // Sort descending
-                                        })->first();
-
-                                        // Calculate the maximum span width based on the longest range event
-                                        $maxStartDate = \Carbon\Carbon::parse($longestRangeEvent->event_date);
-                                        $maxEndDate = \Carbon\Carbon::parse($longestRangeEvent->event_end);
-                                        $maxDaysDiff = $maxStartDate->diffInDays($maxEndDate) + 1;
-
-                                        // Calculate remaining days in current week row
-                                        $currentDayOfWeek = $dayIndex % 7;
-                                        $remainingDaysInRow = 7 - $currentDayOfWeek;
-
-                                        // Calculate how many days are left in this longest event from current date
-                                        $remainingEventDays = $currentDate->diffInDays($maxEndDate) + 1;
-
-                                        // Use the maximum span width for this row and store in cellSpanWidth
-                                        $cellSpanWidth = min($remainingEventDays, $remainingDaysInRow);
-
                                         // Get current height for this cell, or initialize to base height
                                         $currentHeight = $cellHeights[$dayIndex] ?? 24;
                                         // Increment height for next span bar in this cell
@@ -293,10 +267,21 @@
                                             $startDate = \Carbon\Carbon::parse($cellMultiDayEvent->event_date);
                                             $endDate = \Carbon\Carbon::parse($cellMultiDayEvent->event_end);
                                             $daysDiff = $startDate->diffInDays($endDate) + 1;
+
+                                            // Calculate remaining days in current week row
+                                            $currentDayOfWeek = $dayIndex % 7;
+                                            $remainingDaysInRow = 7 - $currentDayOfWeek;
+
+                                            // Calculate how many days are left in this event from current date
+                                            $remainingEventDays = $currentDate->diffInDays($endDate) + 1;
+
+                                            // Use the exact span width for this specific event
+                                            $eventSpanWidth = min($remainingEventDays, $remainingDaysInRow);
+
                                             $eventColor = getEventColor($cellMultiDayEvent->event_category);
                                         @endphp
                                         <!-- Multi-day event spanning bar overlaying cells -->
-                                        <div style="z-index:9999; background: {{ $eventColor }}; color: white; font-size: 10px; padding: 4px 8px; border-radius: 6px; font-weight: 600; border: 2px solid rgba(255, 255, 255, 0.3); position: absolute; top: {{ $currentHeight }}px; left: -8px; width: calc({{ $cellSpanWidth }} * 100% + {{ ($cellSpanWidth - 1) * 2 }}px); box-shadow: 0 3px 6px rgba(0, 0, 0, 0.3); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; margin-bottom: 2px;"
+                                        <div style="z-index:9999; background: {{ $eventColor }}; color: white; font-size: 10px; padding: 4px 8px; border-radius: 6px; font-weight: 600; border: 2px solid rgba(255, 255, 255, 0.3); position: absolute; top: {{ $currentHeight }}px; left: -8px; width: calc({{ $eventSpanWidth }} * 100% + {{ ($eventSpanWidth - 1) * 2 }}px); box-shadow: 0 3px 6px rgba(0, 0, 0, 0.3); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; margin-bottom: 2px;"
                                             title="{{ $cellMultiDayEvent->event_name }} ({{ $startDate->format('M j') }} - {{ $endDate->format('M j') }}, {{ $daysDiff }} days)">
                                             📅 {{ $cellMultiDayEvent->event_name }} ({{ $daysDiff }} days)
                                         </div>
