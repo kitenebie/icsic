@@ -716,7 +716,7 @@
                                     font-weight: 600;
                                     border: 2px solid rgba(255, 255, 255, 0.3);
                                     position: absolute;
-                                    top: ${currentHeight + 2}px;
+                                    top: ${currentHeight}px;
                                     left: -8px;
                                     box-shadow: 0 3px 6px rgba(0, 0, 0, 0.3);
                                     overflow: hidden;
@@ -728,7 +728,7 @@
 
                                 const totalDaysThisEvent = Math.ceil((cellEvent.eventEndDate - cellEvent.eventStartDate) / (1000 * 60 * 60 * 24)) + 1;
                                 spanBar.title = `${cellEvent.event.raw.event_name} (${cellEvent.event.day}/${cellEvent.event.month}/${cellEvent.event.year} - ${cellEvent.event.endDay}/${cellEvent.event.endMonth}/${cellEvent.event.endYear}, ${totalDaysThisEvent} days)`;
-                                spanBar.textContent = `${cellEvent.event.raw.event_name} (${totalDaysThisEvent} days)`;
+                                spanBar.textContent = `📅 ${cellEvent.event.raw.event_name} (${totalDaysThisEvent} days)`;
 
                                 // Append the overlay inside the cell
                                 cellElement.appendChild(spanBar);
