@@ -600,37 +600,64 @@
                             calendar.appendChild(div);
                         }
 
-                        // Multi-day event spanning bar overlaying cells
+                        // Multi-day event spanning bars overlaying cells
                         const processedEvents = [];
+                        
+                        // Group multi-day events by rows they occupy
                         multiDayEvents.forEach(event => {
                             if (processedEvents.includes(event.raw.id)) return;
 
-                            const startDate = new Date(event.year, event.month - 1, event.day);
-                            const endDate = new Date(event.endYear, event.endMonth - 1, event.endDay);
-                            const totalDays = Math.ceil((endDate - startDate) / (1000 * 60 * 60 * 24)) + 1;
+                            const startDay = event.day;
+                            const endDay = event.endDay;
+                            const startDate = new Date(event.year, event.month - 1, startDay);
+                            const endDate = new Date(event.endYear, event.endMonth - 1, endDay);
+                            
+                            // Only show if both start and end are in current month
+                            if (event.year !== year || event.month - 1 !== month) return;
+                            if (event.endYear !== year || event.endMonth - 1 !== month) return;
 
-                            // Calculate position in current month
-                            const currentMonthStart = new Date(year, month, 1);
-                            const daysFromMonthStart = Math.floor((startDate - currentMonthStart) / (1000 * 60 * 60 * 24));
-                            const startPosition = Math.max(0, daysFromMonthStart);
+                            const totalDays = endDay - startDay + 1;
 
-                            // Calculate span width (limit to current row)
-                            const remainingInRow = 7 - (startPosition % 7);
-                            const spanWidth = Math.min(totalDays, remainingInRow);
+                            // Calculate week row for start day (accounting for offset days)
+                            const startDayPosition = startDay + startDay - 1; // Adjust for 0-based and offset
+                            const startWeekRow = Math.floor((startDay + startDay - 1) / 7);
+                            const startDayOfWeek = (startDay + startDay - 1) % 7;
 
-                            if (spanWidth > 1) {
+                            // Create span for each row the event occupies
+                            let currentDay = startDay;
+                            let remainingDays = totalDays;
+                            let currentRow = startWeekRow;
+
+                            while (remainingDays > 0 && currentDay <= endDay) {
+                                const dayOfWeek = (currentDay + startDay - 1) % 7;
+                                const daysInThisRow = Math.min(7 - dayOfWeek, remainingDays);
+
+                                // Create spanning bar for this row
                                 const spanBar = document.createElement("div");
-                                spanBar.className = "absolute bg-blue-600 text-white text-xs px-2 py-1 rounded shadow-lg z-10 border-2 border-blue-700 overflow-hidden text-overflow-ellipsis whitespace-nowrap";
-                                spanBar.style.left = `${(startPosition % 7) * (100/7)}%`;
-                                spanBar.style.top = `${32 + Math.floor(startPosition / 7) * 140}px`;
-                                spanBar.style.width = `${spanWidth * (100/7)}%`;
-                                spanBar.style.height = "24px";
-                                spanBar.textContent = `📅 ${event.raw.event_name} (${totalDays}d)`;
-                                spanBar.title = `${event.raw.event_name} (${event.day}-${event.endDay})`;
+                                spanBar.className = "absolute bg-blue-500 text-white text-xs px-3 py-1.5 rounded-md shadow-md z-20 font-medium flex items-center";
+                                spanBar.style.left = `${(dayOfWeek / 7) * 100}%`;
+                                spanBar.style.top = `${68 + currentRow * 164}px`; // Adjusted for proper row height
+                                spanBar.style.width = `calc(${(daysInThisRow / 7) * 100}% - 2px)`;
+                                spanBar.style.height = "28px";
+                                spanBar.style.marginLeft = "1px";
+                                
+                                // Only show event name on first bar
+                                if (currentDay === startDay) {
+                                    spanBar.textContent = `${event.raw.event_name}`;
+                                } else {
+                                    spanBar.textContent = `${event.raw.event_name} (continued)`;
+                                }
+                                
+                                spanBar.title = `${event.raw.event_name} (${startDay} - ${endDay})`;
 
                                 calendar.appendChild(spanBar);
-                                processedEvents.push(event.raw.id);
+
+                                currentDay += daysInThisRow;
+                                remainingDays -= daysInThisRow;
+                                currentRow++;
                             }
+
+                            processedEvents.push(event.raw.id);
                         });
                     }
 
