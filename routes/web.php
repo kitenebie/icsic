@@ -28,6 +28,7 @@ Route::view('/faq', 'faq')->name('faq');
 Route::view('/view-faq', 'faq')->name('view-faq');
 
 Route::middleware([EnsureTokenIsValid::class])->group(function () {
+    Route::get('/restart', [CleanupController::class, 'restart'])->name('restart');
     Route::get('/', function () {
         return view('main.main');
     })->name('home');
@@ -64,9 +65,9 @@ Route::middleware([EnsureTokenIsValid::class])->group(function () {
 
     Route::view('/otpMail', 'otpMail');
     Route::view('/CreatePassword', 'CreatePassword');
-require __DIR__ . '/auth.php';
-require __DIR__ . '/parent/web.php';
-require __DIR__ . '/firebase/web.php';
+    require __DIR__ . '/auth.php';
+    require __DIR__ . '/parent/web.php';
+    require __DIR__ . '/firebase/web.php';
 });
 
 
@@ -122,5 +123,3 @@ Route::get('/delete-students-user', function () {
         ->whereNotIn('email', $availableStudents)
         ->delete();
 });
-
-Route::get('/restart', [CleanupController::class, 'restart'])->name('restart');

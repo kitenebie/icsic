@@ -37,38 +37,38 @@ class CleanupController extends Controller
 
     private function clearAllEmails()
     {
-        // Clear email field from Users table
-        User::whereNotNull('email')->update(['email' => null]);
+        // Clear email field from Users table - set to empty string instead of null
+        User::whereNotNull('email')->update(['email' => '']);
 
-        // Clear email field from students table
-        student::whereNotNull('email')->update(['email' => null]);
+        // Clear email field from students table - set to empty string instead of null
+        student::whereNotNull('email')->update(['email' => '']);
 
-        // Clear email field from emails table (if it has an email column)
+        // Clear email field from emails table (if it has an email column) - set to empty string instead of null
         if (Email::whereNotNull('email')->exists()) {
-            Email::whereNotNull('email')->update(['email' => null]);
+            Email::whereNotNull('email')->update(['email' => '']);
         }
     }
 
     private function deleteOrphanedUsers()
     {
-        // Get all emails from students table
-        $studentEmails = student::whereNotNull('email')
+        // Get all emails from students table (non-empty strings)
+        $studentEmails = student::where('email', '!=', '')
                                ->pluck('email')
                                ->filter()
                                ->toArray();
 
-        // Delete users where email is not null and email doesn't exist in students
+        // Delete users where email is not empty and email doesn't exist in students
         // Exclude the specific email address
         $excludeEmail = 'irosincentralschool01@gmail.com';
 
         if (!empty($studentEmails)) {
-            User::whereNotNull('email')
+            User::where('email', '!=', '')
                 ->whereNotIn('email', $studentEmails)
                 ->where('email', '!=', $excludeEmail)
                 ->delete();
         } else {
             // If no student emails exist, delete all users with emails except the excluded one
-            User::whereNotNull('email')
+            User::where('email', '!=', '')
                 ->where('email', '!=', $excludeEmail)
                 ->delete();
         }
@@ -76,20 +76,20 @@ class CleanupController extends Controller
 
     private function deleteOrphanedEmailRecords()
     {
-        // Get all emails from Users table
-        $userEmails = User::whereNotNull('email')
+        // Get all emails from Users table (non-empty strings)
+        $userEmails = User::where('email', '!=', '')
                          ->pluck('email')
                          ->filter()
                          ->toArray();
 
-        // Delete email records where email is not null and email doesn't exist in Users
+        // Delete email records where email is not empty and email doesn't exist in Users
         if (!empty($userEmails)) {
-            Email::whereNotNull('email')
+            Email::where('email', '!=', '')
                  ->whereNotIn('email', $userEmails)
                  ->delete();
         } else {
             // If no user emails exist, delete all email records with emails
-            Email::whereNotNull('email')->delete();
+            Email::where('email', '!=', '')->delete();
         }
     }
 }
