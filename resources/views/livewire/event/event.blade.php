@@ -632,34 +632,53 @@
                                 const dayOfWeek = currentGridPos % 7;
                                 const daysInThisRow = Math.min(7 - dayOfWeek, remainingDays);
 
-                                // Calculate the cell element to get its actual position
+                                // Calculate the cell element to attach the overlay INSIDE the cell (like in main.blade.php)
                                 const cellIndex = currentGridPos;
                                 const cellElements = calendar.children;
-                                
+
                                 if (cellIndex < cellElements.length) {
                                     const cellElement = cellElements[cellIndex];
-                                    const cellRect = cellElement.getBoundingClientRect();
-                                    const calendarRect = calendar.getBoundingClientRect();
-                                    
-                                    // Create spanning bar for this row
-                                    const spanBar = document.createElement("div");
-                                    spanBar.className = "absolute bg-blue-500 text-white text-xs px-3 py-1.5 rounded-md shadow-md z-20 font-medium flex items-center";
-                                    spanBar.style.left = `${(dayOfWeek / 7) * 100}%`;
-                                    spanBar.style.top = `${cellRect.top - calendarRect.top + 35}px`; // Position relative to cell
-                                    spanBar.style.width = `calc(${(daysInThisRow / 7) * 100}% - 2px)`;
-                                    spanBar.style.height = "28px";
-                                    spanBar.style.marginLeft = "1px";
-                                    
-                                    // Only show event name on first bar
-                                    if (currentDay === eventStartDay) {
-                                        spanBar.textContent = `${event.raw.event_name}`;
-                                    } else {
-                                        spanBar.textContent = `${event.raw.event_name} (continued)`;
+                                    // Ensure the cell is a positioning context
+                                    if (getComputedStyle(cellElement).position === 'static') {
+                                        cellElement.style.position = 'relative';
                                     }
-                                    
-                                    spanBar.title = `${event.raw.event_name} (${eventStartDay} - ${eventEndDay})`;
 
-                                    calendar.appendChild(spanBar);
+                                    const spanCols = daysInThisRow; // columns (days) to span in this row
+
+                                    // Multi-day event spanning bar overlaying cells (style copied from main.blade.php and adapted)
+                                    const spanBar = document.createElement('div');
+                                    spanBar.className = "dark:bg-gradient-to-r dark:from-blue-800 dark:to-blue-900 dark:text-blue-200 dark:border-blue-700 dark:shadow-lg dark:shadow-blue-900/20";
+                                    spanBar.style.cssText = `
+                                        z-index: 9999;
+                                        background: linear-gradient(135deg, #2D9152FF 0%, #15843E 100%);
+                                        color: rgb(226, 226, 226);
+                                        font-size: 10px;
+                                        padding: 4px 8px;
+                                        border-radius: 6px;
+                                        font-weight: 600;
+                                        border: 2px solid rgba(59, 130, 246, 0.4);
+                                        position: absolute;
+                                        top: 24px;
+                                        left: -8px;
+                                        box-shadow: 0 3px 6px rgba(59, 130, 246, 0.3);
+                                        overflow: hidden;
+                                        text-overflow: ellipsis;
+                                        white-space: nowrap;
+                                    `;
+                                    // width: calc({{ $cellSpanWidth }} * 100% + {{ ($cellSpanWidth - 1) * 2 }}px)
+                                    spanBar.style.width = `calc(${spanCols} * 100% + ${(spanCols - 1) * 2}px)`;
+
+                                    const totalDaysThisEvent = (eventEndDay - eventStartDay + 1);
+                                    spanBar.title = `${event.raw.event_name} (${eventStartDay} - ${eventEndDay}, ${totalDaysThisEvent} days)`;
+                                    spanBar.textContent = `📅 ${event.raw.event_name} (${totalDaysThisEvent} days)`;
+
+                                    // Append the overlay inside the cell
+                                    cellElement.appendChild(spanBar);
+
+                                    // Spacer for single-day events under the bar, as in main.blade.php
+                                    const spacer = document.createElement('div');
+                                    spacer.style.height = '32px';
+                                    cellElement.appendChild(spacer);
                                 }
 
                                 currentDay += daysInThisRow;
