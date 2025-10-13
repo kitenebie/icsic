@@ -652,7 +652,7 @@
                                         z-index: 9999;
                                         background: linear-gradient(135deg, #2D9152FF 0%, #15843E 100%);
                                         color: rgb(226, 226, 226);
-                                        font-size: 10px;
+                                        font-size: 16px;
                                         padding: 4px 8px;
                                         border-radius: 6px;
                                         font-weight: 600;
