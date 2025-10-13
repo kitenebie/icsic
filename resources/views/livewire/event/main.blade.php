@@ -214,27 +214,29 @@
                             $cellSpanWidth = 1;
                         @endphp
 
-                        <!-- Check for multi-day events starting on this day -->
+                        <!-- Check for multi-day events that overlap with this day -->
                         @foreach ($day['events'] as $event)
                             @php
                                 $isMultiDay = $event->event_end && $event->event_date != $event->event_end;
                                 if ($isMultiDay) {
                                     $startDate = \Carbon\Carbon::parse($event->event_date);
                                     $endDate = \Carbon\Carbon::parse($event->event_end);
-                                    $isFirstDay = $currentDate->isSameDay($startDate);
 
-                                    if ($isFirstDay && !$multiDayEvents->contains('id', $event->id)) {
+                                    // Check if this day falls within the event date range
+                                    $isWithinRange = $currentDate->between($startDate, $endDate);
+
+                                    if ($isWithinRange && !$multiDayEvents->contains('id', $event->id)) {
                                         $cellMultiDayEvents->push($event);
-
-                                        // Calculate total days
-                                        $daysDiff = $startDate->diffInDays($endDate) + 1;
 
                                         // Calculate remaining days in current week row
                                         $currentDayOfWeek = $dayIndex % 7;
                                         $remainingDaysInRow = 7 - $currentDayOfWeek;
 
-                                        // Span width for this row
-                                        $cellSpanWidth = min($daysDiff, $remainingDaysInRow);
+                                        // Calculate how many days are left in this event from current date
+                                        $remainingEventDays = $currentDate->diffInDays($endDate) + 1;
+
+                                        // Span width for this row (limited by remaining days in row)
+                                        $cellSpanWidth = min($remainingEventDays, $remainingDaysInRow);
 
                                         $multiDayEvents->push($event);
                                     }
