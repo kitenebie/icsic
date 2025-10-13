@@ -252,12 +252,17 @@
                     // Transform $events for calendar use
                     events = (events ?? []).map(e => {
                         const date = new Date(e.event_date);
+                        const endDate = e.event_end ? new Date(e.event_end) : date;
                         return {
                             label: `${e.event_name} (${e.event_category}) at ${e.event_location} - ${e.event_time} (${e.event_duration})`,
                             description: e.event_discription,
                             year: date.getFullYear(),
                             month: date.getMonth() + 1,
                             day: date.getDate(),
+                            endYear: endDate.getFullYear(),
+                            endMonth: endDate.getMonth() + 1,
+                            endDay: endDate.getDate(),
+                            isMultiDay: e.event_end && e.event_date !== e.event_end,
                             raw: e
                         };
                     });
@@ -429,11 +434,16 @@
                         const lastDay = new Date(year, month + 1, 0);
                         const startDay = firstDay.getDay();
                         const totalDays = lastDay.getDate();
-                        // Count events per day for the current month/year
+                        // Count events per day for the current month/year (including multi-day events)
                         const eventCountByDay = {};
+                        const multiDayEvents = [];
                         events.forEach(e => {
                             if (e.year === year && e.month - 1 === month) {
                                 eventCountByDay[e.day] = (eventCountByDay[e.day] || 0) + 1;
+                            }
+                            // Track multi-day events that start in this month
+                            if (e.isMultiDay && e.year === year && e.month - 1 === month) {
+                                multiDayEvents.push(e);
                             }
                         });
                         const today = new Date();
@@ -589,6 +599,27 @@
 
                             calendar.appendChild(div);
                         }
+
+                        // Add multi-day event spanning bars
+                        multiDayEvents.forEach(event => {
+                            const startDay = event.day;
+                            const endDay = event.endDay;
+                            const spanDays = Math.min(endDay - startDay + 1, 7 - startDay + 1); // Don't span beyond row
+
+                            if (spanDays > 1) {
+                                const spanBar = document.createElement("div");
+                                spanBar.className = "absolute bg-blue-600 text-white text-xs px-2 py-1 rounded shadow-lg z-10 border-2 border-blue-700";
+                                spanBar.style.left = `${(startDay - 1) * (100/7)}%`;
+                                spanBar.style.top = "24px";
+                                spanBar.style.width = `${(spanDays) * (100/7)}%`;
+                                spanBar.style.height = "24px";
+                                spanBar.textContent = `📅 ${event.raw.event_name} (${spanDays}d)`;
+                                spanBar.title = `${event.raw.event_name} (${event.day}-${event.endDay})`;
+
+                                // Add to the calendar container
+                                calendar.appendChild(spanBar);
+                            }
+                        });
                     }
 
                     function renderEventList() {
