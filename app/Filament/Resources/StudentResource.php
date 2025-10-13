@@ -82,15 +82,18 @@ class StudentResource extends Resource
                     'Grade 6' => 'Grade 6',
                 ])->required(),
 
-                Select::make('section')->options([
-                    0 => 'N/A',
-                    1,
-                    2,
-                    3,
-                    4,
-                    5,
-                    6
-                ])->required(),
+                Select::make('section')
+                    ->options([
+                        0 => 'N/A',
+                        1,
+                        2,
+                        3,
+                        4,
+                        5,
+                        6
+                    ])
+                    ->required(fn(\Filament\Forms\Get $get) => $get('grade') !== 'Kender')
+                    ->hidden(fn(\Filament\Forms\Get $get) => $get('grade') === 'Kender'),
 
                 TextInput::make('year_graduated'),
             ]);
@@ -301,7 +304,9 @@ class StudentResource extends Resource
                                         '4' => '4',
                                         '5' => '5',
                                         '6' => '6',
-                                    ])->required(true),
+                                    ])
+                                    ->required(fn(\Filament\Forms\Get $get) => $get('grade') !== 'Kender')
+                                    ->hidden(fn(\Filament\Forms\Get $get) => $get('grade') === 'Kender'),
 
 
                                 TextInput::make('year_graduated')
@@ -557,7 +562,9 @@ class StudentResource extends Resource
                                         '4' => '4',
                                         '5' => '5',
                                         '6' => '6',
-                                    ])->required(true),
+                                    ])
+                                    ->required(fn(\Filament\Forms\Get $get) => $get('grade') !== 'Kender')
+                                    ->hidden(fn(\Filament\Forms\Get $get) => $get('grade') === 'Kender'),
 
 
                                 TextInput::make('year_graduated')
