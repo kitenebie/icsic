@@ -146,7 +146,7 @@
             </div>
 
             <!-- Calendar Days -->
-            <div style="display: grid; grid-template-columns: repeat(7, 1fr); gap: 1px; background: linear-gradient(135deg, #e2e8f0 0%, #cbd5e1 100%); border-radius: 8px; overflow: hidden; min-width: 500px; max-width: 100%; box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1);"
+            <div style="display: grid; grid-template-columns: repeat(7, 1fr); gap: 1px; background: linear-gradient(135deg, #e2e8f0 0%, #cbd5e1 100%); border-radius: 8px; overflow: hidden; min-width: 500px; max-width: 100%; box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1); position: relative;"
                 class="dark:bg-gradient-to-br dark:from-gray-700 dark:to-gray-800 dark:shadow-2xl dark:shadow-gray-900/50">
                 @foreach ($calendarDays as $day)
                     @if ($day)
@@ -174,26 +174,14 @@
                                         $isFirstDay = $currentDate->isSameDay($startDate);
                                         $daysDiff = $startDate->diffInDays($endDate) + 1;
 
-                                        // Skip if this is a middle/last day of a multi-day event (we only show on first day)
+                                        // For multi-day events, only show if it's the first day
                                         if ($isMultiDay && !$isFirstDay) {
                                             continue;
                                         }
 
                                         $displayedEvents->push($event);
                                     @endphp
-                                    @if($isMultiDay)
-                                        <!-- Multi-day event spanning bar -->
-                                        @php
-                                            $spanWidth = min($daysDiff * 100, 700); // Approximate width calculation (adjust as needed)
-                                        @endphp
-                                        <div style="background: linear-gradient(135deg, #dcfce7 0%, #bbf7d0 100%); color: #166534; font-size: 10px; padding: 4px 8px; border-radius: 6px; font-weight: 600; border: 2px solid rgba(34, 197, 94, 0.4); position: relative; white-space: nowrap; box-shadow: 0 3px 6px rgba(34, 197, 94, 0.3); z-index: 10; overflow: hidden; text-overflow: ellipsis; min-width: {{ $spanWidth }}px; max-width: {{ $spanWidth }}px;"
-                                            class="dark:bg-gradient-to-r dark:from-green-800 dark:to-green-900 dark:text-green-200 dark:border-green-700 dark:shadow-lg dark:shadow-green-900/20"
-                                            title="{{ $event->event_name }} ({{ $startDate->format('M j') }} - {{ $endDate->format('M j') }}, {{ $daysDiff }} days)">
-                                            📅 {{ $event->event_name }} ({{ $daysDiff }} days)
-                                            <!-- Span continuation indicator -->
-                                            <div style="position: absolute; top: 0; right: 0; bottom: 0; width: 20px; background: linear-gradient(90deg, transparent 0%, rgba(34, 197, 94, 0.8) 100%); border-radius: 0 4px 4px 0;"></div>
-                                        </div>
-                                    @else
+                                    @if(!$isMultiDay)
                                         <!-- Single day event -->
                                         <div style="background: linear-gradient(135deg, #dcfce7 0%, #bbf7d0 100%); color: #166534; font-size: 10px; padding: 4px 6px; border-radius: 4px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-weight: 500; border: 1px solid rgba(34, 197, 94, 0.2);"
                                             class="dark:bg-gradient-to-r dark:from-green-800 dark:to-green-900 dark:text-green-200 dark:border-green-700 dark:shadow-lg dark:shadow-green-900/20"
@@ -213,6 +201,60 @@
                         </div>
                     @else
                         <div style="background-color: #f9fafb; min-height: 120px;" class="dark:bg-gray-800"></div>
+                    @endif
+                @endforeach
+
+                <!-- Multi-day event spans -->
+                @php
+                    $processedEvents = [];
+                @endphp
+                @foreach ($calendarDays as $dayIndex => $day)
+                    @if ($day && $day['events'])
+                        @foreach ($day['events'] as $event)
+                            @php
+                                $eventId = $event->id;
+                                if (in_array($eventId, $processedEvents)) continue;
+
+                                $isMultiDay = $event->event_end && $event->event_date != $event->event_end;
+                                if (!$isMultiDay) continue;
+
+                                $startDate = \Carbon\Carbon::parse($event->event_date);
+                                $endDate = \Carbon\Carbon::parse($event->event_end);
+                                $currentMonthStart = \Carbon\Carbon::create($currentYear, $currentMonth, 1);
+                                $currentMonthEnd = \Carbon\Carbon::create($currentYear, $currentMonth, 1)->endOfMonth();
+
+                                // Only show if event starts in current month
+                                if (!$startDate->between($currentMonthStart, $currentMonthEnd)) continue;
+
+                                // Calculate span position and width
+                                $startDayOfMonth = $startDate->day;
+                                $endDayOfMonth = min($endDate->day, $currentMonthEnd->day);
+                                $spanStart = max(1, $startDayOfMonth);
+                                $spanEnd = min($currentMonthEnd->day, $endDayOfMonth);
+                                $spanDays = $spanEnd - $spanStart + 1;
+
+                                // Calculate grid position (0-based index)
+                                $gridStart = $startDate->dayOfWeek;
+                                $daysFromStart = $startDayOfMonth - 1;
+                                $actualGridStart = ($gridStart + $daysFromStart) % 7;
+
+                                // Calculate width as percentage of total grid width
+                                $totalCells = 7;
+                                $spanWidth = ($spanDays / $totalCells) * 100;
+
+                                $processedEvents[] = $eventId;
+                                $daysDiff = $startDate->diffInDays($endDate) + 1;
+                            @endphp
+                            @if($isMultiDay)
+                                <!-- Multi-day event spanning bar -->
+                                <div style="position: absolute; top: {{ 40 + ($dayIndex % 7) * 2 }}px; left: {{ ($actualGridStart / 7) * 100 }}%; width: {{ $spanWidth }}%; height: 24px; background: linear-gradient(135deg, #dcfce7 0%, #bbf7d0 100%); color: #166534; font-size: 10px; padding: 4px 8px; border-radius: 6px; font-weight: 600; border: 2px solid rgba(34, 197, 94, 0.4); box-shadow: 0 3px 6px rgba(34, 197, 94, 0.3); z-index: 20; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; display: flex; align-items: center;"
+                                    class="dark:bg-gradient-to-r dark:from-green-800 dark:to-green-900 dark:text-green-200 dark:border-green-700 dark:shadow-lg dark:shadow-green-900/20"
+                                    title="{{ $event->event_name }} ({{ $startDate->format('M j') }} - {{ $endDate->format('M j') }}, {{ $daysDiff }} days)">
+                                    <span style="flex: 1; overflow: hidden; text-overflow: ellipsis;">📅 {{ $event->event_name }}</span>
+                                    <span style="font-size: 8px; margin-left: 4px; opacity: 0.8;">({{ $daysDiff }}d)</span>
+                                </div>
+                            @endif
+                        @endforeach
                     @endif
                 @endforeach
             </div>
