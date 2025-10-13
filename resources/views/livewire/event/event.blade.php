@@ -665,7 +665,6 @@
                                         text-overflow: ellipsis;
                                         white-space: nowrap;
                                     `;
-                                    // width: calc({{ $cellSpanWidth }} * 100% + {{ ($cellSpanWidth - 1) * 2 }}px)
                                     spanBar.style.width = `calc(${spanCols} * 100% + ${(spanCols - 1) * 2}px)`;
 
                                     const totalDaysThisEvent = (eventEndDay - eventStartDay + 1);
