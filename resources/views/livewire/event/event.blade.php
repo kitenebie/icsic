@@ -659,7 +659,7 @@
                                         z-index: 9999;
                                         background: linear-gradient(135deg, #2D9152FF 0%, #15843E 100%);
                                         color: rgb(226, 226, 226);
-                                        font-size: 14px;
+                                        font-size: 13px;
                                         padding: 4px 8px;
                                         border-radius: 6px;
                                         font-weight: 600;
@@ -671,6 +671,7 @@
                                         overflow: hidden;
                                         text-overflow: ellipsis;
                                         white-space: nowrap;
+                                        margin-bottom: 2px;
                                     `;
                                     spanBar.style.width = `calc(${spanCols} * 100% + ${(spanCols - 1) * 2}px)`;
 
