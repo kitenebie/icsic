@@ -209,33 +209,32 @@
                     @if ($day)
                         @php
                             $currentDate = \Carbon\Carbon::parse($day['date']);
+                            $cellHasMultiDayStart = false;
                             $cellMultiDayEvents = collect();
                             $cellSpanWidth = 1;
                         @endphp
 
-                        <!-- Check for multi-day events that span this day -->
+                        <!-- Check for multi-day events starting on this day -->
                         @foreach ($day['events'] as $event)
                             @php
                                 $isMultiDay = $event->event_end && $event->event_date != $event->event_end;
                                 if ($isMultiDay) {
                                     $startDate = \Carbon\Carbon::parse($event->event_date);
                                     $endDate = \Carbon\Carbon::parse($event->event_end);
+                                    $isFirstDay = $currentDate->isSameDay($startDate);
 
-                                    // Check if this day falls within the event date range
-                                    $isWithinRange = $currentDate->between($startDate, $endDate);
-
-                                    if ($isWithinRange && !$multiDayEvents->contains('id', $event->id)) {
+                                    if ($isFirstDay && !$multiDayEvents->contains('id', $event->id)) {
                                         $cellMultiDayEvents->push($event);
+
+                                        // Calculate total days
+                                        $daysDiff = $startDate->diffInDays($endDate) + 1;
 
                                         // Calculate remaining days in current week row
                                         $currentDayOfWeek = $dayIndex % 7;
                                         $remainingDaysInRow = 7 - $currentDayOfWeek;
 
-                                        // Calculate how many days are left in this event from current date
-                                        $remainingEventDays = $currentDate->diffInDays($endDate) + 1;
-
-                                        // Span width for this row (limited by remaining days in row)
-                                        $cellSpanWidth = min($remainingEventDays, $remainingDaysInRow);
+                                        // Span width for this row
+                                        $cellSpanWidth = min($daysDiff, $remainingDaysInRow);
 
                                         $multiDayEvents->push($event);
                                     }
@@ -254,35 +253,21 @@
                             </div>
 
                             <!-- Events for this day -->
-                            <div style="display: flex; flex-direction: column; gap: 4px;">
-                                @if($cellMultiDayEvents->count() > 0)
+                            <div style="width: fit-content; border: 1px solid #054721; flex; flex-direction: column; gap: 4px;">
+                                @if($cellHasMultiDayStart && $cellMultiDayEvent)
                                     @php
-                                        // Get current height for this cell, or initialize to base height
-                                        $currentHeight = $cellHeights[$dayIndex] ?? 24;
-                                        // Increment height for next span bar in this cell
-                                        $cellHeights[$dayIndex] = $currentHeight + 32;
+                                        $startDate = \Carbon\Carbon::parse($cellMultiDayEvent->event_date);
+                                        $endDate = \Carbon\Carbon::parse($cellMultiDayEvent->event_end);
+                                        $daysDiff = $startDate->diffInDays($endDate) + 1;
                                     @endphp
-
-                                    @foreach($cellMultiDayEvents as $cellMultiDayEvent)
-                                        @php
-                                            $startDate = \Carbon\Carbon::parse($cellMultiDayEvent->event_date);
-                                            $endDate = \Carbon\Carbon::parse($cellMultiDayEvent->event_end);
-                                            $daysDiff = $startDate->diffInDays($endDate) + 1;
-                                            $eventColor = getEventColor($cellMultiDayEvent->event_category);
-                                        @endphp
-                                        <!-- Multi-day event spanning bar overlaying cells -->
-                                        <div style="z-index:9999; background: {{ $eventColor }}; color: white; font-size: 10px; padding: 4px 8px; border-radius: 6px; font-weight: 600; border: 2px solid rgba(255, 255, 255, 0.3); position: absolute; top: {{ $currentHeight }}px; left: -8px; width: calc({{ $cellSpanWidth }} * 100% + {{ ($cellSpanWidth - 1) * 2 }}px); box-shadow: 0 3px 6px rgba(0, 0, 0, 0.3); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; margin-bottom: 2px;"
-                                            title="{{ $cellMultiDayEvent->event_name }} ({{ $startDate->format('M j') }} - {{ $endDate->format('M j') }}, {{ $daysDiff }} days)">
-                                            📅 {{ $cellMultiDayEvent->event_name }} ({{ $daysDiff }} days)
-                                        </div>
-                                        @php
-                                            // Increment height for next event in this cell
-                                            $currentHeight += 32;
-                                        @endphp
-                                    @endforeach
-
+                                    <!-- Multi-day event spanning bar overlaying cells -->
+                                    <div style="z-index:9999;background: linear-gradient(135deg, #2D9152FF 0%, #15843E 100%); color: rgb(226, 226, 226); font-size: 10px; padding: 4px 8px; border-radius: 6px; font-weight: 600; border: 2px solid rgba(59, 130, 246, 0.4); position: absolute; top: 24px; left: -8px; width: calc({{ $cellSpanWidth }} * 100% + {{ ($cellSpanWidth - 1) * 2 }}px); box-shadow: 0 3px 6px rgba(59, 130, 246, 0.3); z-index: 10; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;"
+                                        class="dark:bg-gradient-to-r dark:from-blue-800 dark:to-blue-900 dark:text-blue-200 dark:border-blue-700 dark:shadow-lg dark:shadow-blue-900/20"
+                                        title="{{ $cellMultiDayEvent->event_name }} ({{ $startDate->format('M j') }} - {{ $endDate->format('M j') }}, {{ $daysDiff }} days)">
+                                        📅 {{ $cellMultiDayEvent->event_name }} ({{ $daysDiff }} days)
+                                    </div>
                                     <!-- Spacer for single-day events -->
-                                    <div style="height: {{ $cellMultiDayEvents->count() * 32 }}px;"></div>
+                                    <div style="height: 32px;"></div>
                                 @endif
 
                                 @foreach ($day['events'] as $event)
