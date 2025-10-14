@@ -274,7 +274,8 @@ new #[Layout('components.layouts.auth')] class extends Component {}; ?>
         </details> --}}
 
         <div class="flex items-center justify-end">
-            <flux:button type="submit" variant="primary" class="w-full">
+            <flux:button class="g-recaptcha" data-sitekey="6Le6puorAAAAAD8P1onJLx41YSORJRxjNwH0eCM8" data-callback='onSubmit'
+                data-action='submit' type="submit" variant="primary" class="w-full">
                 {{ __('Create account') }}
             </flux:button>
         </div>
@@ -293,7 +294,11 @@ new #[Layout('components.layouts.auth')] class extends Component {}; ?>
         </flux:link>
     </div>
 </div>
-
+<script>
+    function onSubmit(token) {
+        document.getElementById("demo-form").submit();
+    }
+</script>
 <script>
     // Enhanced camera permission and access management
     console.log('🚀 Enhanced face detection script loaded at:', new Date().toISOString());
@@ -860,7 +865,7 @@ new #[Layout('components.layouts.auth')] class extends Component {}; ?>
         // Log EAR values for debugging
         console.log(
             `👁️ EAR Values - Left: ${leftEAR.toFixed(3)}, Right: ${rightEAR.toFixed(3)}, Avg: ${avgEAR.toFixed(3)}`
-            );
+        );
 
         // Calibration phase - collect baseline EAR for first 30 frames
         if (blinkCalibrationFrames < 30) {
@@ -878,7 +883,7 @@ new #[Layout('components.layouts.auth')] class extends Component {}; ?>
 
                 console.log(
                     `🔍 Blink calibration complete. Baseline EAR: ${baselineEAR.toFixed(3)}, Threshold: ${earThreshold.toFixed(3)}`
-                    );
+                );
                 console.log(`📊 EAR History: [${blinkHistory.map(ear => ear.toFixed(3)).join(', ')}]`);
 
                 // Update status to show calibration is complete
@@ -907,7 +912,7 @@ new #[Layout('components.layouts.auth')] class extends Component {}; ?>
 
         console.log(
             `🎯 Blink Check - EAR: ${avgEAR.toFixed(3)}, Threshold: ${earThreshold.toFixed(3)}, Is Blinking: ${isBlinking}, Consecutive: ${consecutiveBlinkFrames}`
-            );
+        );
 
         if (isBlinking) {
             consecutiveBlinkFrames++;
@@ -1009,7 +1014,8 @@ new #[Layout('components.layouts.auth')] class extends Component {}; ?>
                         singleFaceDetected = true;
                         faceStep1.innerHTML = 'Step 1: Keep only one face in view ✅';
                         speak(
-                            'Step 1 completed. Now smile first, then blink your eyes to complete validation');
+                            'Step 1 completed. Now smile first, then blink your eyes to complete validation'
+                            );
                     }
 
                     // Check eye blink (only after smile is detected)
