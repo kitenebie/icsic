@@ -975,40 +975,238 @@
 
                 // Update main calendar (integrate with existing calendar logic)
                 function updateMainCalendar() {
-                    const newDate = new Date(currentYear, currentMonth, 1);
+                    const selectedDate = new Date(currentYear, currentMonth, 1);
 
                     // Update the main month/year display
                     if (monthYear) {
-                        monthYear.textContent = newDate.toLocaleString('default', {
+                        monthYear.textContent = selectedDate.toLocaleString('default', {
                             month: 'long',
                             year: 'numeric'
                         });
                     }
 
                     // Update event cards visibility if they exist
-                    updateEventCardsVisibility(newDate);
+                    updateEventCardsVisibility(selectedDate);
 
                     // Close the dropdown after selection
                     monthYearDropdown.classList.add('hidden');
 
-                    // Re-render the calendar if events exist
+                    // Re-render the calendar with the selected date
                     if (window.events && window.events.length > 0) {
-                        // Re-run the entire calendar setup with new date
-                        if (typeof executeAll === 'function') {
-                            // Temporarily modify currentDate and re-run
-                            const originalCurrentDate = window.currentDate;
-                            window.currentDate = newDate;
-                            executeAll();
-                            // Restore original date after execution
-                            if (originalCurrentDate) {
-                                window.currentDate = originalCurrentDate;
+                        // Use the custom render function for the selected date
+                        renderCalendarForSelectedDate(selectedDate);
+                    } else {
+                        // Fallback for when no events exist
+                        if (typeof setupCalendar === 'function') {
+                            // Create a simple calendar for the selected date
+                            const calendar = document.getElementById("calendar");
+                            const year = selectedDate.getFullYear();
+                            const month = selectedDate.getMonth();
+
+                            const firstDay = new Date(year, month, 1).getDay();
+                            const totalDays = new Date(year, month + 1, 0).getDate();
+
+                            if (monthYear) {
+                                monthYear.textContent = selectedDate.toLocaleString("default", {
+                                    month: "long",
+                                    year: "numeric",
+                                });
+                            }
+
+                            calendar.innerHTML = "";
+
+                            // Empty cells for alignment
+                            for (let i = 0; i < firstDay; i++) {
+                                calendar.innerHTML += `<div></div>`;
+                            }
+
+                            // Day cells
+                            for (let i = 1; i <= totalDays; i++) {
+                                const div = document.createElement("div");
+                                div.className = "p-2 rounded-lg text-center border hover:bg-gray-200 transition";
+                                div.textContent = i;
+                                calendar.appendChild(div);
                             }
                         }
-                    } else {
-                        // Fallback for when no events exist - use the basic calendar
-                        if (typeof setupCalendar === 'function') {
-                            setupCalendar();
+                    }
+                }
+
+                // Custom function to render calendar for selected date with events
+                function renderCalendarForSelectedDate(selectedDate) {
+                    const calendar = document.getElementById("calendar");
+                    const year = selectedDate.getFullYear();
+                    const month = selectedDate.getMonth();
+
+                    const firstDay = new Date(year, month, 1);
+                    const lastDay = new Date(year, month + 1, 0);
+                    const startDay = firstDay.getDay();
+                    const totalDays = lastDay.getDate();
+
+                    // Count events per day for the selected month/year
+                    const eventCountByDay = {};
+                    const multiDayEvents = [];
+                    window.events.forEach(e => {
+                        if (e.year === year && e.month - 1 === month) {
+                            eventCountByDay[e.day] = (eventCountByDay[e.day] || 0) + 1;
                         }
+                        if (e.isMultiDay && e.year === year && e.month - 1 === month) {
+                            multiDayEvents.push(e);
+                        }
+                    });
+
+                    const today = new Date();
+                    today.setHours(0, 0, 0, 0);
+                    const isCurrentMonth = today.getFullYear() === year && today.getMonth() === month;
+
+                    // Update month/year header
+                    if (monthYear) {
+                        monthYear.textContent = selectedDate.toLocaleString("default", {
+                            month: "long",
+                            year: "numeric",
+                        });
+                    }
+
+                    calendar.innerHTML = "";
+
+                    for (let i = 0; i < startDay; i++) {
+                        calendar.innerHTML += `<div></div>`;
+                    }
+
+                    for (let i = 1; i <= totalDays; i++) {
+                        const hasEvent = window.events.find(e => e.day === i && e.month - 1 === month && e.year === year);
+                        const isToday = isCurrentMonth && i === today.getDate();
+
+                        const count = window.events.filter(e => e.day === i && e.month - 1 === month && e.year === year).length;
+
+                        const div = document.createElement("div");
+                        div.className = `min-h-[140px] p-4 border-r border-b border-gray-200 hover:bg-blue-50 hover:shadow-md transition-all duration-200 relative ${
+                            isToday ? 'bg-blue-100 shadow-inner' : 'bg-white'
+                        }`;
+
+                        // Date number
+                        const dateDiv = document.createElement("div");
+                        dateDiv.className = `text-lg font-bold mb-2 ${
+                            isToday ? 'text-blue-700' : 'text-gray-900'
+                        }`;
+                        dateDiv.textContent = i;
+                        div.appendChild(dateDiv);
+
+                        // Today indicator
+                        if (isToday) {
+                            const todayBadge = document.createElement("div");
+                            todayBadge.className = "absolute top-2 right-2 w-2 h-2 bg-blue-600 rounded-full";
+                            div.appendChild(todayBadge);
+                        }
+
+                        // Add event indicators
+                        if (hasEvent) {
+                            const dayEvents = window.events.filter(e => e.day === i && e.month - 1 === month && e.year === year);
+
+                            // Show up to 3 event indicators
+                            const eventsToShow = dayEvents.slice(0, 3);
+                            eventsToShow.forEach((event, index) => {
+                                const eventDiv = document.createElement("div");
+                                eventDiv.className = "text-xs p-1 mb-1 rounded text-white truncate";
+                                eventDiv.style.backgroundColor = getEventColor(event.raw.event_category);
+                                eventDiv.textContent = event.raw.event_name;
+                                eventDiv.title = event.raw.event_name;
+                                div.appendChild(eventDiv);
+                            });
+
+                            // If more events, show "+N more"
+                            if (dayEvents.length > 3) {
+                                const moreDiv = document.createElement("div");
+                                moreDiv.className = "text-xs text-gray-500 mt-1";
+                                moreDiv.textContent = `+${dayEvents.length - 3} more`;
+                                div.appendChild(moreDiv);
+                            }
+                        }
+
+                        if (hasEvent) {
+                            div.classList.add("font-semibold", "text-green-900", "dark:text-green-200");
+                            const badge = document.createElement("span");
+                            badge.className =
+                                "absolute top-[-3px] right-[-3px] sm:text-[12px]  sm:top-[-10px] sm:right-[-10px]  bg-green-500 text-white text-xs font-bold px-2 py-0.5 rounded-full z-[30]";
+                            badge.textContent = count;
+                            div.appendChild(badge);
+
+                            div.addEventListener("click", () => {
+                                const dayEvents = window.events.filter(e => e.day === i && e.month - 1 === month && e.year === year);
+                                const eventDate = new Date(year, month, i);
+                                const title = dayEvents.length === 1 && dayEvents[0].raw.event_end && dayEvents[0].raw.event_end !== dayEvents[0].raw.event_date
+                                    ? `Events from ${eventDate.toLocaleDateString('en-US', { month: 'long', day: 'numeric' })} to ${new Date(dayEvents[0].raw.event_end).toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })}`
+                                    : `Events on ${eventDate.toLocaleDateString('en-US', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })}`;
+                                const body = dayEvents.map(e => `
+                                    <div class="bg-gray-50 rounded-xl p-6 border border-gray-200">
+                                        <div class="flex items-start space-x-4">
+                                            <div class="flex-shrink-0">
+                                                ${e.raw.event_images && e.raw.event_images.length > 0 ? `
+                                                    <img src="/storage/${e.raw.event_images[0]}" alt="${e.raw.event_name}" class="w-16 h-16 rounded-lg object-cover border-2 border-white shadow-sm">
+                                                ` : `
+                                                    <div class="w-16 h-16 bg-gradient-to-r from-blue-400 to-purple-500 rounded-lg flex items-center justify-center">
+                                                        <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
+                                                        </svg>
+                                                    </div>
+                                                `}
+                                            </div>
+
+                                            <div class="flex-1 min-w-0">
+                                                <h4 class="text-lg font-bold text-gray-900 mb-2">${e.raw.event_name}</h4>
+
+                                                <div class="flex items-center space-x-4 mb-3">
+                                                    <div class="flex items-center space-x-1 text-sm text-gray-600">
+                                                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"></path>
+                                                        </svg>
+                                                        <span>${e.raw.event_category}</span>
+                                                    </div>
+                                                    <div class="flex items-center space-x-1 text-sm text-gray-600">
+                                                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"></path>
+                                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"></path>
+                                                        </svg>
+                                                        <span>${e.raw.event_location}</span>
+                                                    </div>
+                                                </div>
+
+                                                <div class="flex items-center space-x-1 text-sm text-gray-600 mb-3">
+                                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                                                    </svg>
+                                                    <span>${new Date(e.raw.event_date).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })} | ${e.raw.event_time}${e.raw.event_duration ? ' – ' + e.raw.event_duration : ''}</span>
+                                                </div>
+
+                                                <div class="text-sm text-gray-700 leading-relaxed">
+                                                    ${e.raw.event_discription.replace(/\n/g, '<br>')}
+                                                </div>
+
+                                                ${e.raw.event_images && e.raw.event_images.length > 1 ? `
+                                                    <div class="mt-4 pt-4 border-t border-gray-200">
+                                                        <div class="flex items-center space-x-2">
+                                                            <svg class="w-4 h-4 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
+                                                            </svg>
+                                                            <span class="text-sm text-gray-600">${e.raw.event_images.length} photos</span>
+                                                        </div>
+                                                    </div>
+                                                ` : ''}
+                                            </div>
+                                        </div>
+                                    </div>
+                                `).join('');
+                                if (typeof openModal === 'function') {
+                                    openModal(title, body);
+                                }
+                            });
+
+                            const dot = document.createElement("span");
+                            dot.className =
+                                "absolute bottom-1 left-1/2 transform -translate-x-1/2 h-1.5 w-1.5 rounded hover:bg-green-400 bg-green-500";
+                            div.appendChild(dot);
+                        }
+
+                        calendar.appendChild(div);
                     }
                 }
 
