@@ -250,7 +250,7 @@ class Announcements extends Component implements HasForms, HasActions, HasTable
                     ->mutateFormDataUsing(function (array $data): array {
                         // Handle existing images if no new images are uploaded
                         if (empty($data['images'])) {
-                            $record = $this->getTableRecord();
+                            $record = $this->record;
                             $data['images'] = $record?->images ?? [];
                         }
                         return $data;
