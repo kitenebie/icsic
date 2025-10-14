@@ -151,7 +151,7 @@
                                         onmouseout="this.style.backgroundColor='transparent'">
                                         <div style="font-weight: 500;">{{ $match['name'] }}</div>
                                         <div style="color: #6b7280; font-size: 11px;" class="dark:text-gray-400">
-                                            {{ $match['date'] }} • {{ $match['category'] }}
+                                            {{ \Carbon\Carbon::parse($match['date'])->format('F j, Y') }} • {{ $match['category'] }}
                                         </div>
                                     </button>
                                 @endforeach

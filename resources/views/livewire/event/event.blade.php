@@ -182,6 +182,9 @@
                                         <div class="text-sm font-semibold text-gray-900">
                                             {{ \Carbon\Carbon::parse($event->event_date)->format('M j') }}
                                         </div>
+                                        <div class="text-xs text-gray-700">
+                                            {{ \Carbon\Carbon::parse($event->event_date)->format('Y') }}
+                                        </div>
                                     </div>
                                 </div>
                                 <div class="absolute top-3 right-3">
@@ -199,6 +202,9 @@
                                     </div>
                                     <div class="text-sm opacity-90">
                                         {{ \Carbon\Carbon::parse($event->event_date)->format('M') }}
+                                    </div>
+                                    <div class="text-xs opacity-75">
+                                        {{ \Carbon\Carbon::parse($event->event_date)->format('Y') }}
                                     </div>
                                 </div>
                             </div>
@@ -254,7 +260,7 @@
                         const date = new Date(e.event_date);
                         const endDate = e.event_end ? new Date(e.event_end) : date;
                         return {
-                            label: `${e.event_name} (${e.event_category}) at ${e.event_location} - ${e.event_time} (${e.event_duration})`,
+                            label: `${e.event_name} (${e.event_category}) at ${e.event_location} - ${new Date(e.event_date).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })} ${e.event_time} (${e.event_duration})`,
                             description: e.event_discription,
                             year: date.getFullYear(),
                             month: date.getMonth() + 1,
@@ -527,7 +533,7 @@
                                     const dayEvents = events.filter(e => e.day === i && e.month - 1 === month && e.year ===
                                         year);
                                     const title =
-                                        `Events on ${year}-${String(month + 1).padStart(2, '0')}-${String(i).padStart(2, '0')}`;
+                                        `Events on ${new Date(year, month, i).toLocaleDateString('en-US', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })}`;
                                     const body = dayEvents.map(e => `
                                         <div class="bg-gray-50 rounded-xl p-6 border border-gray-200">
                                             <div class="flex items-start space-x-4">
@@ -568,7 +574,7 @@
                                                         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
                                                         </svg>
-                                                        <span>${e.raw.event_date} | ${e.raw.event_time}${e.raw.event_duration ? ' – ' + e.raw.event_duration : ''}</span>
+                                                        <span>${new Date(e.raw.event_date).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })} | ${e.raw.event_time}${e.raw.event_duration ? ' – ' + e.raw.event_duration : ''}</span>
                                                     </div>
 
                                                     <div class="text-sm text-gray-700 leading-relaxed">
