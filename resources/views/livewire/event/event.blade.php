@@ -949,6 +949,9 @@
                 // Update the selector button display
                 function updateSelectorDisplay() {
                     selectorDisplay.textContent = `${months[currentMonth]} ${currentYear}`;
+                    NewDate = new Date(currentYear, currentMonth, 1);
+                    // Update the main calendar if it exists
+                    renderCalendar(NewDate);
                 }
 
                 // Render month grid
