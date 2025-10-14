@@ -24,3 +24,4 @@ firebase.json
 /public/firebase-messaging-sw.js
 /public_html
 .history
+firebase_credentials.json
