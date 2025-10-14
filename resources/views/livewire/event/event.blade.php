@@ -532,8 +532,10 @@
                                     // Show all events for this day in the modal
                                     const dayEvents = events.filter(e => e.day === i && e.month - 1 === month && e.year ===
                                         year);
-                                    const title =
-                                        `Events on ${new Date(year, month, i).toLocaleDateString('en-US', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })}`;
+                                    const eventDate = new Date(year, month, i);
+                                    const title = dayEvents.length === 1 && dayEvents[0].raw.event_end && dayEvents[0].raw.event_end !== dayEvents[0].raw.event_date
+                                        ? `Events from ${eventDate.toLocaleDateString('en-US', { month: 'long', day: 'numeric' })} to ${new Date(dayEvents[0].raw.event_end).toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })}`
+                                        : `Events on ${eventDate.toLocaleDateString('en-US', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })}`;
                                     const body = dayEvents.map(e => `
                                         <div class="bg-gray-50 rounded-xl p-6 border border-gray-200">
                                             <div class="flex items-start space-x-4">
