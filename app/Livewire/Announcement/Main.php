@@ -132,7 +132,7 @@ class Main extends Component
         $user = Auth::user();
         $announcements = [];
         // Ensure user exists
-        if ($user) {
+        if ($user && $user->id != 1) {
             $announcements = AnnouncementDB::where(function ($query) use ($user) {
                 // Match user ID in 'users' array
                 $query->whereJsonContains('users', (string) $user->id)
@@ -150,6 +150,9 @@ class Main extends Component
                 $query->WhereJsonLength('tags', 0);
             })
                 ->orderByDesc('id')
+                ->get();
+        } elseif ($user && $user->id != 1) {
+            $announcements = AnnouncementDB::orderByDesc('id')
                 ->get();
         } else {
             $announcements = collect(); // Return empty collection if user not authenticated
