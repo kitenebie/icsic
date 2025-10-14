@@ -530,6 +530,7 @@
                     });
 
                     function renderCalendar(date) {
+                        alert(date);
                         calendar.innerHTML = "";
                         const year = date.getFullYear();
                         const month = date.getMonth();
