@@ -6,13 +6,14 @@ import {
 } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-messaging.js";
 
 const firebaseConfig = {
-    apiKey: import.meta.env.VITE_FIREBASE_API_KEY,
-    authDomain: import.meta.env.VITE_FIREBASE_AUTH_DOMAIN,
-    databaseURL: import.meta.env.VITE_FIREBASE_DATABASE_URL,
-    projectId: import.meta.env.VITE_FIREBASE_PROJECT_ID,
-    storageBucket: import.meta.env.VITE_FIREBASE_STORAGE_BUCKET,
-    messagingSenderId: import.meta.env.VITE_FIREBASE_MESSAGING_SENDER_ID,
-    appId: import.meta.env.VITE_FIREBASE_APP_ID,
+    apiKey: "AIzaSyBMKeLJ6ali0KwG1fGaNJZJXJfCONmBNi8",
+    authDomain: "notification-app-c4e8e.firebaseapp.com",
+    databaseURL: "https://notification-app-c4e8e-default-rtdb.asia-southeast1.firebasedatabase.app",
+    projectId: "notification-app-c4e8e",
+    storageBucket: "notification-app-c4e8e.firebasestorage.app",
+    messagingSenderId: "907129181512",
+    appId: "1:907129181512:web:7c9e4a1eac5a3e77afcf7d",
+    measurementId: "G-VN3X9V49J8"
 };
 
 const app = initializeApp(firebaseConfig);
