@@ -18,7 +18,7 @@
                     $canViewList = is_array($notif->user_id_who_can_viewed)
                         ? $notif->user_id_who_can_viewed
                         : explode(',', $notif->user_id_who_can_viewed);
-
+                        dd($canViewList);
                     $canView = empty($notif->user_id_who_can_viewed) || in_array(auth()->id(), $canViewList);
                 @endphp
 
@@ -59,49 +59,34 @@
 
     <!-- JavaScript -->
     <script>
-        // Initialize notification modal elements when DOM is ready
-        document.addEventListener('DOMContentLoaded', function() {
-            const sidebarNotification = document.getElementById('rightSidebarNotification');
-            const overlayNotification = document.getElementById('overlayNotification');
+        const sidebarNotification = document.getElementById('rightSidebarNotification');
+        const overlayNotification = document.getElementById('overlayNotification');
 
-            // Make functions globally available if not already defined
-            if (typeof window.modalNotify === 'undefined') {
-                window.modalNotify = function() {
-                    if (sidebarNotification && overlayNotification) {
-                        sidebarNotification.classList.remove('translate-x-full');
-                        overlayNotification.classList.remove('hidden');
+        function modalNotify() {
+            sidebarNotification.classList.remove('translate-x-full');
+            overlayNotification.classList.remove('hidden');
+        }
+
+        function closeSidebarNotification() {
+            sidebarNotification.classList.add('translate-x-full');
+            overlayNotification.classList.add('hidden');
+        }
+
+        function markAsRead(notificationId) {
+            fetch(`/notifications/${notificationId}/mark-as-read`, {
+                    method: 'POST',
+                    headers: {
+                        'X-CSRF-TOKEN': '{{ csrf_token() }}',
+                        'Accept': 'application/json',
+                        'Content-Type': 'application/json'
                     }
-                };
-            }
-
-            if (typeof window.closeSidebarNotification === 'undefined') {
-                window.closeSidebarNotification = function() {
-                    if (sidebarNotification && overlayNotification) {
-                        sidebarNotification.classList.add('translate-x-full');
-                        overlayNotification.classList.add('hidden');
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.status === 'ok' && data.redirect) {
+                        window.location.href = data.redirect;
                     }
-                };
-            }
-
-            if (typeof window.markAsRead === 'undefined') {
-                window.markAsRead = function(notificationId) {
-                    fetch(`/notifications/${notificationId}/mark-as-read`, {
-                        method: 'POST',
-                        headers: {
-                            'X-CSRF-TOKEN': '{{ csrf_token() }}',
-                            'Accept': 'application/json',
-                            'Content-Type': 'application/json'
-                        }
-                    })
-                    .then(response => response.json())
-                    .then(data => {
-                        if (data.status === 'ok' && data.redirect) {
-                            window.location.href = data.redirect;
-                        }
-                    })
-                    .catch(error => console.error('Error marking as read:', error));
-                };
-            }
-        });
+                });
+        }
     </script>
 </div>

@@ -174,44 +174,6 @@
         }
     </script>
     @livewireScripts()
-    <script>
-        // Notification modal functions
-        function modalNotify() {
-            const sidebarNotification = document.getElementById('rightSidebarNotification');
-            const overlayNotification = document.getElementById('overlayNotification');
-            if (sidebarNotification && overlayNotification) {
-                sidebarNotification.classList.remove('translate-x-full');
-                overlayNotification.classList.remove('hidden');
-            }
-        }
-
-        function closeSidebarNotification() {
-            const sidebarNotification = document.getElementById('rightSidebarNotification');
-            const overlayNotification = document.getElementById('overlayNotification');
-            if (sidebarNotification && overlayNotification) {
-                sidebarNotification.classList.add('translate-x-full');
-                overlayNotification.classList.add('hidden');
-            }
-        }
-
-        function markAsRead(notificationId) {
-            fetch(`/notifications/${notificationId}/mark-as-read`, {
-                method: 'POST',
-                headers: {
-                    'X-CSRF-TOKEN': '{{ csrf_token() }}',
-                    'Accept': 'application/json',
-                    'Content-Type': 'application/json'
-                }
-            })
-            .then(response => response.json())
-            .then(data => {
-                if (data.status === 'ok' && data.redirect) {
-                    window.location.href = data.redirect;
-                }
-            })
-            .catch(error => console.error('Error marking as read:', error));
-        }
-    </script>
 </body>
 
 </html>
