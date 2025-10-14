@@ -533,7 +533,7 @@
                         calendar.innerHTML = "";
                         const year = date.getFullYear();
                         const month = date.getMonth();
-                        console.log(`Rendering calendar for ${date.toLocaleString('default', { month: 'long', year: 'numeric' })}`);
+                        alert(`Rendering calendar for ${month + 1}/${year}`);
                         const firstDay = new Date(year, month, 1);
                         const lastDay = new Date(year, month + 1, 0);
                         const startDay = firstDay.getDay();
@@ -927,13 +927,12 @@
                     const prev = document.getElementById("prev");
                     const next = document.getElementById("next");
 
-                    let currentDate = new Date();
+                    let currentDate = window.setupCalendarCurrentDate || new Date();
 
                     function renderCalendar(date) {
                         calendar.innerHTML = "";
                         const year = date.getFullYear();
                         const month = date.getMonth();
-                        console.log(`Rendering calendar for ${date.toLocaleString('default', { month: 'long', year: 'numeric' })}`);
 
                         const firstDay = new Date(year, month, 1).getDay();
                         const totalDays = new Date(year, month + 1, 0).getDate();
@@ -1042,7 +1041,7 @@
                             year: 'numeric'
                         });
                     }
-                    console.log(`Selected Month/Year: ${newDate.toLocaleString('default', { month: 'long', year: 'numeric' })}`);
+
                     // Update event cards visibility if they exist
                     updateEventCardsVisibility(newDate);
 
@@ -1057,15 +1056,17 @@
                             const originalCurrentDate = window.currentDate;
                             window.currentDate = newDate;
                             executeAll();
-                            // Restore original date after execution
-                            if (originalCurrentDate) {
-                                window.currentDate = originalCurrentDate;
-                            }
+                            // Restore original date after execution to maintain consistency
+                            window.currentDate = originalCurrentDate || newDate;
                         }
                     } else {
                         // Fallback for when no events exist - use the basic calendar
                         if (typeof setupCalendar === 'function') {
+                            // Update the currentDate used by setupCalendar
+                            window.setupCalendarCurrentDate = newDate;
                             setupCalendar();
+                            // Clean up the temporary variable
+                            delete window.setupCalendarCurrentDate;
                         }
                     }
                 }
