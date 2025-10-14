@@ -1,5 +1,4 @@
 <div>
-    <div class="bg-gradient-to-br from-blue-50 to-indigo-100 min-h-screen">
         <!-- Enhanced Header -->
         <div class="bg-white shadow-lg">
             <div class="flex items-center justify-between p-6 border-b border-gray-200">
@@ -1346,5 +1345,4 @@
                 box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
             }
         </style>
-    </div>
 </div>
