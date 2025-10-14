@@ -16,6 +16,7 @@ use Illuminate\Database\Eloquent\SoftDeletingScope;
 use Filament\Tables\Enums\ActionsPosition;
 use Filament\Tables\Actions\Action;
 use Filament\Tables\Columns\TextColumn;
+use Filament\Tables\Columns\IconColumn;
 use Illuminate\Support\Facades\Auth;
 use Filament\Tables\Actions\ActionGroup;
 use Filament\Support\Enums\ActionSize;
@@ -222,7 +223,15 @@ class UserResource extends Resource
                     ->disk('public')
                     ->height(50)
                     ->width(50)
-                    ->openUrlInNewTab()
+                    ->openUrlInNewTab(),
+                IconColumn::make('email_verified_at')
+                    ->label('Verified')
+                    ->boolean()
+                    ->trueIcon('heroicon-o-check-circle')
+                    ->falseIcon('heroicon-o-x-circle')
+                    ->trueColor('success')
+                    ->falseColor('danger')
+                    ->getStateUsing(fn ($record) => !is_null($record->email_verified_at))
             ])
             ->filters([
                 SelectFilter::make('role')
