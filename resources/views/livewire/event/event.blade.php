@@ -302,9 +302,9 @@
                     executeAll();
                 });
 
-                function executeAll() {
+                window.executeAll = function() {
 
-                    let events = @json($events ?? []);
+                    window.events = @json($events ?? []);
                     // Transform $events for calendar use
                     events = (events ?? []).map(e => {
                         const date = new Date(e.event_date);
@@ -389,7 +389,7 @@
                     const toggleTheme = document.getElementById("toggleTheme");
                     const html = document.documentElement;
 
-                    let currentDate = new Date();
+                    window.currentDate = new Date();
                     const C_id =
                         `event-${currentDate.getFullYear()}${currentDate.toLocaleString('default', { month: 'short' })}`;
                     const cards = document.querySelectorAll(`#${C_id}`);
@@ -864,7 +864,7 @@
                     setupCalendar();
                 });
 
-                function setupCalendar() {
+                window.setupCalendar = function() {
                     const calendar = document.getElementById("calendar");
                     const monthYear = document.getElementById("monthYear");
                     const prev = document.getElementById("prev");
@@ -978,19 +978,38 @@
                     const newDate = new Date(currentYear, currentMonth, 1);
 
                     // Update the main month/year display
-                    monthYear.textContent = newDate.toLocaleString('default', {
-                        month: 'long',
-                        year: 'numeric'
-                    });
-
-                    // Re-render the calendar with the new date
-                    renderCalendar(newDate);
+                    if (monthYear) {
+                        monthYear.textContent = newDate.toLocaleString('default', {
+                            month: 'long',
+                            year: 'numeric'
+                        });
+                    }
 
                     // Update event cards visibility if they exist
                     updateEventCardsVisibility(newDate);
 
                     // Close the dropdown after selection
                     monthYearDropdown.classList.add('hidden');
+
+                    // Re-render the calendar if events exist
+                    if (window.events && window.events.length > 0) {
+                        // Re-run the entire calendar setup with new date
+                        if (typeof executeAll === 'function') {
+                            // Temporarily modify currentDate and re-run
+                            const originalCurrentDate = window.currentDate;
+                            window.currentDate = newDate;
+                            executeAll();
+                            // Restore original date after execution
+                            if (originalCurrentDate) {
+                                window.currentDate = originalCurrentDate;
+                            }
+                        }
+                    } else {
+                        // Fallback for when no events exist - use the basic calendar
+                        if (typeof setupCalendar === 'function') {
+                            setupCalendar();
+                        }
+                    }
                 }
 
                 // Update event cards visibility based on selected month/year
