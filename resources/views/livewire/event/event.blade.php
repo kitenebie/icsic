@@ -390,6 +390,10 @@
                     const html = document.documentElement;
 
                     let currentDate = new Date();
+
+                    // Make currentDate globally accessible for monthYearDropdown sync
+                    window.currentCalendarDate = currentDate;
+
                     const C_id =
                         `event-${currentDate.getFullYear()}${currentDate.toLocaleString('default', { month: 'short' })}`;
                     const cards = document.querySelectorAll(`#${C_id}`);
@@ -481,7 +485,7 @@
                         }
                     });
 
-                    function renderCalendar(date) {
+                    window.renderCalendar = function(date) {
                         calendar.innerHTML = "";
                         const year = date.getFullYear();
                         const month = date.getMonth();
@@ -872,7 +876,10 @@
 
                     let currentDate = new Date();
 
-                    function renderCalendar(date) {
+                    // Make currentDate globally accessible for monthYearDropdown sync
+                    window.currentCalendarDate = currentDate;
+
+                    window.renderCalendar = function(date) {
                         calendar.innerHTML = "";
                         const year = date.getFullYear();
                         const month = date.getMonth();
@@ -968,6 +975,12 @@
                             monthYearDropdown.classList.add('hidden');
                             // Update the main calendar
                             updateMainCalendar();
+
+                            // Also update the currentDate variable used by navigation buttons
+                            if (typeof currentDate !== 'undefined') {
+                                currentDate.setFullYear(currentYear);
+                                currentDate.setMonth(currentMonth);
+                            }
                         });
                         monthGrid.appendChild(monthButton);
                     });
@@ -1086,6 +1099,17 @@
 
                 // Sync selector with current calendar on page load
                 function syncSelectorWithCalendar() {
+                    // First try to use the global currentCalendarDate if available
+                    if (window.currentCalendarDate) {
+                        currentMonth = window.currentCalendarDate.getMonth();
+                        currentYear = window.currentCalendarDate.getFullYear();
+                        updateDropdownYear();
+                        updateSelectorDisplay();
+                        renderMonthGrid();
+                        return;
+                    }
+
+                    // Fallback to parsing the displayed month/year text
                     const currentCalendarDate = document.getElementById('monthYear');
                     if (currentCalendarDate) {
                         const dateText = currentCalendarDate.textContent; // e.g., "April 2025"
