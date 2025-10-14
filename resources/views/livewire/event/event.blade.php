@@ -1026,8 +1026,10 @@
                             updateSelectorDisplay();
                             monthYearDropdown.classList.add('hidden');
                             // Update the main calendar
-                            const NewDate = new Date(currentYear, months[index], 1);
+                            const NewDate = new Date(currentYear, currentMonth, 1);
+
                             updateMainCalendar();
+                            alert(`new date: ${NewDate}`);
                             renderCalendar(NewDate);
                         });
                         monthGrid.appendChild(monthButton);
