@@ -106,6 +106,72 @@
                             {{ $year }}
                         </h1>
 
+                        <!-- Month/Year Selector -->
+                        <div style="position: relative;">
+                            <button id="monthYearSelector" style="padding: 6px 12px; background-color: rgba(255,255,255,0.2); color: white; border: 1px solid rgba(255,255,255,0.3); border-radius: 6px; font-weight: 500; cursor: pointer; transition: all 0.2s; display: flex; align-items: center; gap: 6px;"
+                                onmouseover="this.style.backgroundColor='rgba(255,255,255,0.3)'"
+                                onmouseout="this.style.backgroundColor='rgba(255,255,255,0.2)'">
+                                <svg style="width: 16px; height: 16px;" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
+                                </svg>
+                                <span id="selectorDisplay">Select Month & Year</span>
+                                <svg style="width: 12px; height: 12px;" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                                </svg>
+                            </button>
+
+                            <!-- Dropdown Panel -->
+                            <div id="monthYearDropdown" style="position: absolute; top: 100%; left: 0; margin-top: 8px; width: 280px; background: white; border: 1px solid #d1d5db; border-radius: 8px; box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04); z-index: 1000; display: none;"
+                                class="dark:bg-gray-800 dark:border-gray-600">
+                                <!-- Header with Year Navigation -->
+                                <div style="padding: 16px; border-bottom: 1px solid #e5e7eb; background: #f9fafb;"
+                                    class="dark:bg-gray-700 dark:border-gray-600">
+                                    <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 12px;">
+                                        <button id="yearDown" style="padding: 4px; background-color: transparent; border: none; border-radius: 50%; color: #6b7280; cursor: pointer; transition: background-color 0.2s;"
+                                            class="dark:text-gray-400"
+                                            onmouseover="this.style.backgroundColor='#e5e7eb'"
+                                            onmouseout="this.style.backgroundColor='transparent'">
+                                            <svg style="width: 20px; height: 20px;" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                                            </svg>
+                                        </button>
+                                        <h3 id="dropdownYear" style="font-size: 16px; font-weight: 600; color: #111827; margin: 0;"
+                                            class="dark:text-white">{{ $year }}</h3>
+                                        <button id="yearUp" style="padding: 4px; background-color: transparent; border: none; border-radius: 50%; color: #6b7280; cursor: pointer; transition: background-color 0.2s;"
+                                            class="dark:text-gray-400"
+                                            onmouseover="this.style.backgroundColor='#e5e7eb'"
+                                            onmouseout="this.style.backgroundColor='transparent'">
+                                            <svg style="width: 20px; height: 20px;" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 15l7-7 7 7"></path>
+                                            </svg>
+                                        </button>
+                                    </div>
+                                    <div style="font-size: 12px; color: #6b7280; text-align: center;"
+                                        class="dark:text-gray-400">
+                                        Click on a month to navigate
+                                    </div>
+                                </div>
+
+                                <!-- Month Grid -->
+                                <div style="padding: 16px;">
+                                    <div id="monthGrid" style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px;">
+                                        <!-- Months will be populated by JavaScript -->
+                                    </div>
+                                </div>
+
+                                <!-- Footer -->
+                                <div style="padding: 12px; border-top: 1px solid #e5e7eb; background: #f9fafb; border-radius: 0 0 8px 8px;"
+                                    class="dark:bg-gray-700 dark:border-gray-600">
+                                    <button id="currentMonthBtn" style="width: 100%; padding: 8px 16px; background-color: #16a34a; color: white; border: none; border-radius: 6px; font-size: 12px; font-weight: 500; cursor: pointer; transition: background-color 0.2s;"
+                                        class="dark:bg-green-700 dark:hover:bg-green-600"
+                                        onmouseover="this.style.backgroundColor='#15803d'"
+                                        onmouseout="this.style.backgroundColor='#16a34a'">
+                                        Go to Current Month
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+
                         <button wire:click="nextMonth"
                             style="padding: 6px; background-color: transparent; border: none; border-radius: 6px; color: white; cursor: pointer; transition: background-color 0.2s;"
                             onmouseover="this.style.backgroundColor='rgba(255,255,255,0.1)'"
@@ -694,6 +760,128 @@
                     attributeFilter: ['style']
                 });
             }
+        });
+    </script>
+
+    <!-- Month/Year Selector JavaScript -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const monthYearSelector = document.getElementById('monthYearSelector');
+            const monthYearDropdown = document.getElementById('monthYearDropdown');
+            const dropdownYear = document.getElementById('dropdownYear');
+            const monthGrid = document.getElementById('monthGrid');
+            const yearUp = document.getElementById('yearUp');
+            const yearDown = document.getElementById('yearDown');
+            const currentMonthBtn = document.getElementById('currentMonthBtn');
+            const selectorDisplay = document.getElementById('selectorDisplay');
+
+            let currentYear = {{ $year }};
+            let currentMonth = {{ date('n') - 1 }}; // JavaScript months are 0-based
+
+            const months = [
+                'January', 'February', 'March', 'April', 'May', 'June',
+                'July', 'August', 'September', 'October', 'November', 'December'
+            ];
+
+            // Initialize the selector
+            function initMonthYearSelector() {
+                updateDropdownYear();
+                updateSelectorDisplay();
+                renderMonthGrid();
+            }
+
+            // Update the year in dropdown
+            function updateDropdownYear() {
+                dropdownYear.textContent = currentYear;
+            }
+
+            // Update the selector button display
+            function updateSelectorDisplay() {
+                selectorDisplay.textContent = `${months[currentMonth]} ${currentYear}`;
+            }
+
+            // Render month grid
+            function renderMonthGrid() {
+                monthGrid.innerHTML = '';
+                months.forEach((month, index) => {
+                    const monthButton = document.createElement('button');
+                    monthButton.style.cssText = `
+                        padding: 12px; font-size: 12px; font-weight: 500; border-radius: 6px; transition: all 0.2s; border: none; cursor: pointer; text-align: center; ${
+                            index === currentMonth
+                                ? 'background-color: #16a34a; color: white;'
+                                : 'background-color: #f3f4f6; color: #374151;'
+                        }
+                    `;
+                    monthButton.textContent = month.substring(0, 3); // Show abbreviated month names
+                    monthButton.addEventListener('click', function() {
+                        currentMonth = index;
+                        updateSelectorDisplay();
+                        monthYearDropdown.style.display = 'none';
+
+                        // Update the Livewire component
+                        const newDate = new Date(currentYear, currentMonth, 1);
+                        @this.call('setMonthYear', currentYear, currentMonth + 1);
+                    });
+
+                    // Add hover effects
+                    monthButton.addEventListener('mouseover', function() {
+                        if (index !== currentMonth) {
+                            this.style.backgroundColor = '#e5e7eb';
+                        }
+                    });
+                    monthButton.addEventListener('mouseout', function() {
+                        if (index !== currentMonth) {
+                            this.style.backgroundColor = '#f3f4f6';
+                        }
+                    });
+
+                    monthGrid.appendChild(monthButton);
+                });
+            }
+
+            // Year navigation
+            yearUp.addEventListener('click', function() {
+                currentYear++;
+                updateDropdownYear();
+                renderMonthGrid();
+            });
+
+            yearDown.addEventListener('click', function() {
+                currentYear--;
+                updateDropdownYear();
+                renderMonthGrid();
+            });
+
+            // Toggle dropdown
+            monthYearSelector.addEventListener('click', function(e) {
+                e.stopPropagation();
+                monthYearDropdown.style.display = monthYearDropdown.style.display === 'none' ? 'block' : 'none';
+            });
+
+            // Close dropdown when clicking outside
+            document.addEventListener('click', function(e) {
+                if (!monthYearSelector.contains(e.target) && !monthYearDropdown.contains(e.target)) {
+                    monthYearDropdown.style.display = 'none';
+                }
+            });
+
+            // Go to current month
+            currentMonthBtn.addEventListener('click', function() {
+                const now = new Date();
+                currentYear = now.getFullYear();
+                currentMonth = now.getMonth();
+                updateDropdownYear();
+                updateSelectorDisplay();
+                renderMonthGrid();
+
+                // Update the Livewire component
+                @this.call('setMonthYear', currentYear, currentMonth + 1);
+
+                monthYearDropdown.style.display = 'none';
+            });
+
+            // Initialize the selector
+            initMonthYearSelector();
         });
     </script>
 </div>

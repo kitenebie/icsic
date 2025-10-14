@@ -389,6 +389,13 @@ class Main extends Component implements HasForms, HasActions
         $this->selectedDate = now()->format('Y-m-d');
     }
 
+    public function setMonthYear($year, $month)
+    {
+        $this->currentYear = $year;
+        $this->currentMonth = $month;
+        $this->selectedDate = null; // Clear selected date when changing months
+    }
+
     public function refreshCalendar()
     {
         // Reset search and reload calendar data
