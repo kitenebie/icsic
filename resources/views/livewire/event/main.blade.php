@@ -855,6 +855,7 @@
             // Toggle dropdown
             monthYearSelector.addEventListener('click', function(e) {
                 e.stopPropagation();
+                renderMonthGrid();
                 monthYearDropdown.style.display = monthYearDropdown.style.display === 'none' ? 'block' : 'none';
             });
 
