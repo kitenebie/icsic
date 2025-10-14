@@ -14,11 +14,16 @@
                     $viewed = collect($notif->user_id_who_already_viewed);
                     $isViewed = $viewed->contains(auth()->id());
 
-                    // Convert to array if it's a comma-separated string
-                    $canViewList = is_array($notif->user_id_who_can_viewed)
-                        ? $notif->user_id_who_can_viewed
-                        : explode(',', $notif->user_id_who_can_viewed);
-                    $canView = empty($notif->user_id_who_can_viewed) || in_array(auth()->id(), $canViewList);
+                    $canViewList = $notif->user_id_who_can_viewed;
+                    if (is_string($canViewList)) {
+                        $canViewList = json_decode($canViewList, true);
+                        if (!is_array($canViewList)) {
+                            $canViewList = [];
+                        }
+                    } elseif (!is_array($canViewList)) {
+                        $canViewList = [];
+                    }
+                    $canView = empty($canViewList) || in_array(auth()->id(), $canViewList);
                 @endphp
 
                 @if ($canView)
