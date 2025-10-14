@@ -272,7 +272,7 @@ new #[Layout('components.layouts.auth')] class extends Component {}; ?>
                     class="mt-2 px-3 py-1 bg-gray-500 text-white rounded text-xs hover:bg-gray-600">Refresh Debug Info</button>
             </div>
         </details> --}}
-        <div class="g-recaptcha" data-sitekey="6Lc-pOorAAAAAFfiGmielnE8nYzxXRHCSBZrW7iE"></div>
+        <div class="g-recaptcha" data-sitekey="6Le6puorAAAAAD8P1onJLx41YSORJRxjNwH0eCM8"></div>
         <br />
 
         <div class="flex items-center justify-end">
