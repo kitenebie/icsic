@@ -194,6 +194,14 @@ class UserResource extends Resource
             )
             ->queryStringIdentifier('users')
             ->columns([
+                IconColumn::make('email_verified_at')
+                    ->label('Verified')
+                    ->boolean()
+                    ->trueIcon('heroicon-o-check-circle')
+                    ->falseIcon('heroicon-o-x-circle')
+                    ->trueColor('success')
+                    ->falseColor('danger')
+                    ->getStateUsing(fn ($record) => !is_null($record->email_verified_at)),
                 TextColumn::make('LastName'),
                 TextColumn::make('FirstName'),
                 TextColumn::make('MiddleName'),
@@ -224,14 +232,6 @@ class UserResource extends Resource
                     ->height(50)
                     ->width(50)
                     ->openUrlInNewTab(),
-                IconColumn::make('email_verified_at')
-                    ->label('Verified')
-                    ->boolean()
-                    ->trueIcon('heroicon-o-check-circle')
-                    ->falseIcon('heroicon-o-x-circle')
-                    ->trueColor('success')
-                    ->falseColor('danger')
-                    ->getStateUsing(fn ($record) => !is_null($record->email_verified_at))
             ])
             ->filters([
                 SelectFilter::make('role')
