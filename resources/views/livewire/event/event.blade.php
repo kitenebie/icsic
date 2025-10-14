@@ -966,6 +966,7 @@
                         }`;
                         monthButton.textContent = month.substring(0, 3); // Show abbreviated month names
                         monthButton.addEventListener('click', function() {
+                            alert(`You clicked on ${months[index]} (${currentYear})`);
                             currentMonth = index;
                             updateSelectorDisplay();
                             monthYearDropdown.classList.add('hidden');
