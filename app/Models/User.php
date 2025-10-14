@@ -43,10 +43,12 @@ class User extends Authenticatable implements FilamentUser
         'profile_picture',
         'front_id',
         'back_id',
-        'profile_image'
+        'profile_image',
+        'fcm_token'
     ];
     protected $casts = [
         'user_group' => 'array',
+        'fcm_token' => 'string',
     ];
     /**
      * The attributes that should be hidden for serialization.

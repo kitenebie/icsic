@@ -8,6 +8,7 @@ use Livewire\Volt\Volt;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Hash;
 use App\Http\Controllers\NotificationController;
+use App\Http\Controllers\Api\FcmController;
 use App\Http\Middleware\EnsureTokenIsValid;
 use Illuminate\Support\Facades\Http;
 
@@ -76,6 +77,7 @@ Route::get('/SendNewEmailsContinuesly', [OTPController::class, 'SendNewEmailsCon
 Route::get('/create-new-password/token/{token}/email/{email}', [OTPController::class, 'createNewPassword']);
 Route::get('/verify/{password}', [OTPController::class, 'verifyPassword']);
 Route::post('/ask', [OpenRouteController::class, 'ask']);
+Route::post('/api/save-fcm-token', [FcmController::class, 'saveToken'])->middleware('auth');
 Route::get('/fonts/instrument-sans.css', function () {
     $css = file_get_contents('https://fonts.bunny.net/css?family=instrument-sans:400,500,600');
     return response($css)

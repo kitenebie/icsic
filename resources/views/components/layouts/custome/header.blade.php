@@ -174,6 +174,96 @@
         }
     </script>
     @livewireScripts()
-</body>
+    <script>
+        // Firebase configuration
+        const firebaseConfig = {
+            apiKey: "{{ env('FIREBASE_API_KEY') }}",
+            authDomain: "{{ env('FIREBASE_AUTH_DOMAIN') }}",
+            databaseURL: "{{ env('FIREBASE_DATABASE_URL') }}",
+            projectId: "{{ env('FIREBASE_PROJECT_ID') }}",
+            storageBucket: "{{ env('FIREBASE_STORAGE_BUCKET') }}",
+            messagingSenderId: "{{ env('FIREBASE_MESSAGING_SENDER_ID') }}",
+            appId: "{{ env('FIREBASE_APP_ID') }}"
+        };
 
+        // Initialize Firebase
+        firebase.initializeApp(firebaseConfig);
+
+        // Initialize Firebase Messaging
+        const messaging = firebase.messaging();
+
+        // Request permission and get token
+        function requestPermission() {
+            Notification.requestPermission().then((permission) => {
+                if (permission === 'granted') {
+                    console.log('Notification permission granted.');
+                    getToken();
+                } else {
+                    console.log('Unable to get permission to notify.');
+                }
+            });
+        }
+
+        function getToken() {
+            messaging.getToken({ vapidKey: '{{ env('FCM_SERVER_KEY') }}' }).then((currentToken) => {
+                if (currentToken) {
+                    console.log('Registration token available:', currentToken);
+                    sendTokenToServer(currentToken);
+                } else {
+                    console.log('No registration token available. Request permission to generate one.');
+                }
+            }).catch((err) => {
+                console.log('An error occurred while retrieving token. ', err);
+            });
+        }
+
+        function sendTokenToServer(token) {
+            fetch('/api/save-fcm-token', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+                },
+                body: JSON.stringify({
+                    fcm_token: token
+                })
+            })
+            .then(response => response.json())
+            .then(data => {
+                console.log('Token saved:', data);
+            })
+            .catch(error => {
+                console.error('Error saving token:', error);
+            });
+        }
+
+        // Handle incoming messages when app is in foreground
+        messaging.onMessage((payload) => {
+            console.log('Message received. ', payload);
+            // You can display the notification here
+            new Notification(payload.notification.title, {
+                body: payload.notification.body,
+                icon: payload.notification.icon
+            });
+        });
+
+        // Request permission on page load if user is authenticated
+        @auth
+            if ('serviceWorker' in navigator) {
+                navigator.serviceWorker.register('/firebase-messaging-sw.js')
+                    .then((registration) => {
+                        console.log('Service Worker registered');
+                        messaging.useServiceWorker(registration);
+                        requestPermission();
+                    })
+                    .catch((error) => {
+                        console.log('Service Worker registration failed:', error);
+                    });
+            }
+        @endauth
+    </script>
+</body>
+@php
+
+@endphp
 </html>
