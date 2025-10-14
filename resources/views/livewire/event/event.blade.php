@@ -530,7 +530,6 @@
                     });
 
                     function renderCalendar(date) {
-                        alert(date);
                         calendar.innerHTML = "";
                         const year = date.getFullYear();
                         const month = date.getMonth();
@@ -1021,15 +1020,11 @@
                         }`;
                         monthButton.textContent = month.substring(0, 3); // Show abbreviated month names
                         monthButton.addEventListener('click', function() {
-                            alert(`You clicked on ${months[index]} (${currentYear})`);
                             currentMonth = index;
                             updateSelectorDisplay();
                             monthYearDropdown.classList.add('hidden');
                             // Update the main calendar
                             const NewDate = new Date(currentYear, currentMonth, 1);
-
-                            updateMainCalendar();
-                            alert(`new date: ${NewDate}`);
                             renderCalendar(NewDate);
                         });
                         monthGrid.appendChild(monthButton);
