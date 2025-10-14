@@ -151,7 +151,7 @@ class Main extends Component
             })
                 ->orderByDesc('id')
                 ->get();
-        } elseif ($user && $user->id != 1) {
+        } elseif ($user->id == 1) {
             $announcements = AnnouncementDB::orderByDesc('id')
                 ->get();
         } else {
