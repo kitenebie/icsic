@@ -1041,7 +1041,7 @@
                             year: 'numeric'
                         });
                     }
-
+                    alert(newDate);
                     // Update event cards visibility if they exist
                     updateEventCardsVisibility(newDate);
 
