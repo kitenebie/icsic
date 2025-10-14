@@ -117,7 +117,7 @@ new #[Layout('components.layouts.auth')] class extends Component {
                 </flux:link>
             @endif
         </div>
-        <div class="g-recaptcha" data-sitekey="{{ env('RECAPTCHA_SITE_KEY') }}"></div>
+        <div class="g-recaptcha" data-sitekey="6Lc-pOorAAAAAFfiGmielnE8nYzxXRHCSBZrW7iE"></div>
         <br />
 
         <!-- Help Links -->
