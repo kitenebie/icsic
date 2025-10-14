@@ -533,7 +533,7 @@
                         calendar.innerHTML = "";
                         const year = date.getFullYear();
                         const month = date.getMonth();
-                        alert(`Rendering calendar for ${month + 1}/${year}`);
+                        console.log(`Rendering calendar for ${date.toLocaleString('default', { month: 'long', year: 'numeric' })}`);
                         const firstDay = new Date(year, month, 1);
                         const lastDay = new Date(year, month + 1, 0);
                         const startDay = firstDay.getDay();
@@ -933,6 +933,7 @@
                         calendar.innerHTML = "";
                         const year = date.getFullYear();
                         const month = date.getMonth();
+                        console.log(`Rendering calendar for ${date.toLocaleString('default', { month: 'long', year: 'numeric' })}`);
 
                         const firstDay = new Date(year, month, 1).getDay();
                         const totalDays = new Date(year, month + 1, 0).getDate();
@@ -1041,7 +1042,7 @@
                             year: 'numeric'
                         });
                     }
-                    alert(newDate);
+                    console.log(`Selected Month/Year: ${newDate.toLocaleString('default', { month: 'long', year: 'numeric' })}`);
                     // Update event cards visibility if they exist
                     updateEventCardsVisibility(newDate);
 
