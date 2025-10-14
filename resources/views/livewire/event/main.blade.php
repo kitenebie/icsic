@@ -883,5 +883,9 @@
             // Initialize the selector
             initMonthYearSelector();
         });
+        //render every 1second to update the time
+        setInterval(() => {
+            renderMonthGrid();
+        }, 1000);
     </script>
 </div>
