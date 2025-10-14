@@ -63,6 +63,13 @@ class Main extends Component implements HasForms, HasActions
     public $selectedEvents = [];
     public $selectAll = false;
 
+    // Enhanced search properties
+    public $highlightedEventId = null;
+    public $searchResults = [];
+    public $exactMatchFound = false;
+    public $multipleMatches = false;
+    public $availableMatches = [];
+
     public function createModalShow()
     {
         $this->modalOpen = true;
@@ -409,14 +416,103 @@ class Main extends Component implements HasForms, HasActions
         });
 
         if (!empty($this->searchQuery)) {
-            $query->where(function($q) {
-                $q->where('event_name', 'like', '%' . $this->searchQuery . '%')
-                  ->orWhere('event_category', 'like', '%' . $this->searchQuery . '%')
-                  ->orWhere('event_location', 'like', '%' . $this->searchQuery . '%');
+            $searchTerm = strtolower($this->searchQuery);
+            $query->where(function($q) use ($searchTerm) {
+                $q->whereRaw('LOWER(event_name) LIKE ?', ['%' . $searchTerm . '%'])
+                  ->orWhereRaw('LOWER(event_category) LIKE ?', ['%' . $searchTerm . '%'])
+                  ->orWhereRaw('LOWER(event_location) LIKE ?', ['%' . $searchTerm . '%']);
             });
         }
 
         return $query->get();
+    }
+
+    public function enhancedSearch($query = null)
+    {
+        $searchTerm = $query ?? $this->searchQuery;
+
+        if (empty(trim($searchTerm))) {
+            $this->highlightedEventId = null;
+            $this->searchResults = [];
+            $this->exactMatchFound = false;
+            return;
+        }
+
+        // Get all events for search (not limited to selected date)
+        $allEvents = event::all();
+
+        // Perform case-insensitive search
+        $matchingEvents = $allEvents->filter(function($event) use ($searchTerm) {
+            return str_contains(strtolower($event->event_name), strtolower($searchTerm)) ||
+                   str_contains(strtolower($event->event_category), strtolower($searchTerm)) ||
+                   str_contains(strtolower($event->event_location), strtolower($searchTerm));
+        });
+
+        $this->searchResults = $matchingEvents;
+
+        // Check for exact match (complete title)
+        $exactMatches = $allEvents->filter(function($event) use ($searchTerm) {
+            return strtolower(trim($event->event_name)) === strtolower(trim($searchTerm));
+        });
+
+        if ($exactMatches->count() > 0) {
+            $this->exactMatchFound = true;
+
+            if ($exactMatches->count() === 1) {
+                // Single match - navigate directly
+                $firstMatch = $exactMatches->first();
+                $this->navigateToEvent($firstMatch);
+            } else {
+                // Multiple matches - show options
+                $this->multipleMatches = true;
+                $this->availableMatches = $exactMatches->map(function($event) {
+                    $eventDate = Carbon::parse($event->event_date);
+                    return [
+                        'id' => $event->id,
+                        'name' => $event->event_name,
+                        'date' => $eventDate->format('F j, Y'),
+                        'category' => $event->event_category,
+                        'location' => $event->event_location,
+                    ];
+                })->toArray();
+
+                // Navigate to the first match by default
+                $firstMatch = $exactMatches->first();
+                $this->navigateToEvent($firstMatch);
+            }
+        } else {
+            $this->exactMatchFound = false;
+            $this->highlightedEventId = null;
+            $this->multipleMatches = false;
+            $this->availableMatches = [];
+        }
+    }
+
+    public function updatedSearchQuery()
+    {
+        $this->enhancedSearch();
+    }
+
+    private function navigateToEvent($event)
+    {
+        // Navigate to the month containing the event
+        $eventDate = Carbon::parse($event->event_date);
+        $this->currentMonth = $eventDate->month;
+        $this->currentYear = $eventDate->year;
+
+        // Highlight the matching event
+        $this->highlightedEventId = $event->id;
+
+        // Select the date containing the event
+        $this->selectedDate = $eventDate->format('Y-m-d');
+    }
+
+    public function selectEventFromMultipleMatches($eventId)
+    {
+        $event = event::find($eventId);
+        if ($event) {
+            $this->navigateToEvent($event);
+        }
     }
 
     public function getCalendarDays()
@@ -751,6 +847,11 @@ class Main extends Component implements HasForms, HasActions
             'monthName' => Carbon::create($this->currentYear, $this->currentMonth)->format('F'),
             'year' => $this->currentYear,
             'selectedDateEvents' => $this->selectedDate ? $this->getEventsForDate($this->selectedDate) : collect(),
+            'highlightedEventId' => $this->highlightedEventId,
+            'searchResults' => $this->searchResults,
+            'exactMatchFound' => $this->exactMatchFound,
+            'multipleMatches' => $this->multipleMatches,
+            'availableMatches' => $this->availableMatches,
         ]);
     }
 }

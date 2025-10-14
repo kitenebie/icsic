@@ -1,5 +1,39 @@
 <!-- Single root container for Livewire component -->
 <div>
+    <style>
+        @keyframes highlightPulse {
+            0% {
+                box-shadow: 0 0 0 0 rgba(251, 191, 36, 0.7);
+            }
+            70% {
+                box-shadow: 0 0 0 10px rgba(251, 191, 36, 0);
+            }
+            100% {
+                box-shadow: 0 0 0 0 rgba(251, 191, 36, 0);
+            }
+        }
+
+        @keyframes pulse {
+            0% {
+                transform: translateY(-50%) scale(0.8);
+                opacity: 1;
+            }
+            50% {
+                transform: translateY(-50%) scale(1.2);
+                opacity: 0.7;
+            }
+            100% {
+                transform: translateY(-50%) scale(0.8);
+                opacity: 1;
+            }
+        }
+
+        .highlighted-event {
+            z-index: 10;
+            transform: scale(1.05);
+            transition: all 0.3s ease;
+        }
+    </style>
     <!-- Create Event Button -->
     <x-filament::modal width="3xl" style="z-index: 999 !important;">
         <x-slot name="trigger">
@@ -88,14 +122,41 @@
                         <!-- Search Input -->
                         <div style="position: relative;">
                             <input type="text" wire:model.live="searchQuery" placeholder="Search events..."
-                                style="width: 160px; padding: 8px 12px; padding-right: 36px; border: 1px solid #d1d5db; border-radius: 8px; font-size: 14px; background-color: white; color: #111827; outline: none;"
-                                class="dark:bg-gray-700 dark:border-gray-600 dark:text-white focus:ring-2 focus:ring-green-500 focus:border-transparent dark:focus:ring-green-400 md:w-48 lg:w-56">
-                            <svg style="width: 14px; height: 14px; color: #9ca3af; position: absolute; right: 10px; top: 50%; transform: translateY(-50%);"
+                                style="width: 160px; padding: 8px 12px; padding-right: 36px; border: 1px solid #d1d5db; border-radius: 8px; font-size: 14px; background-color: white; color: #111827; outline: none; {{ $exactMatchFound ? 'border-color: #16a34a; box-shadow: 0 0 0 2px rgba(22, 163, 74, 0.2);' : '' }}"
+                                class="dark:bg-gray-700 dark:border-gray-600 dark:text-white focus:ring-2 focus:ring-green-500 focus:border-transparent dark:focus:ring-green-400 md:w-48 lg:w-56"
+                                id="search-input">
+                            <svg style="width: 14px; height: 14px; color: {{ $exactMatchFound ? '#16a34a' : '#9ca3af' }}; position: absolute; right: 10px; top: 50%; transform: translateY(-50%);"
                                 class="dark:text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                     d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
                             </svg>
+                            @if($exactMatchFound)
+                                <div style="position: absolute; right: -20px; top: 50%; transform: translateY(-50%); width: 8px; height: 8px; background-color: #16a34a; border-radius: 50%; animation: pulse 2s infinite;"></div>
+                            @endif
                         </div>
+
+                        <!-- Multiple Matches Selector -->
+                        @if($multipleMatches && count($availableMatches) > 1)
+                            <div style="position: absolute; top: 100%; left: 0; right: 0; margin-top: 4px; background: white; border: 1px solid #d1d5db; border-radius: 8px; box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15); z-index: 1000; max-height: 200px; overflow-y: auto;"
+                                class="dark:bg-gray-800 dark:border-gray-600">
+                                <div style="padding: 8px; background: #f9fafb; border-bottom: 1px solid #e5e7eb; font-size: 12px; color: #6b7280;"
+                                    class="dark:bg-gray-700 dark:border-gray-600 dark:text-gray-300">
+                                    Multiple events found - select one:
+                                </div>
+                                @foreach($availableMatches as $match)
+                                    <button wire:click="selectEventFromMultipleMatches({{ $match['id'] }})"
+                                        style="width: 100%; text-align: left; padding: 8px 12px; border: none; background: transparent; cursor: pointer; font-size: 12px; color: #374151; border-bottom: 1px solid #f3f4f6; transition: background-color 0.2s;"
+                                        class="dark:text-gray-200 dark:border-gray-600 dark:hover:bg-gray-700 hover:bg-gray-50"
+                                        onmouseover="this.style.backgroundColor='#f9fafb'"
+                                        onmouseout="this.style.backgroundColor='transparent'">
+                                        <div style="font-weight: 500;">{{ $match['name'] }}</div>
+                                        <div style="color: #6b7280; font-size: 11px;" class="dark:text-gray-400">
+                                            {{ $match['date'] }} • {{ $match['category'] }}
+                                        </div>
+                                    </button>
+                                @endforeach
+                            </div>
+                        @endif
 
                         <!-- Today Button -->
                         <button wire:click="goToToday"
@@ -299,10 +360,20 @@
                                         $isMultiDay = $event->event_end && $event->event_date != $event->event_end;
                                     @endphp
                                     @if (!$isMultiDay)
-                                        <div style="background: linear-gradient(135deg, #dcfce7 0%, #bbf7d0 100%); color: #166534; font-size: 10px; padding: 4px 6px; border-radius: 4px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-weight: 500; border: 1px solid rgba(34, 197, 94, 0.2);"
-                                            class="dark:bg-gradient-to-r dark:from-green-800 dark:to-green-900 dark:text-green-200 dark:border-green-700 dark:shadow-lg dark:shadow-green-900/20"
-                                            title="{{ $event->event_name }}">
+                                        @php
+                                            $isHighlighted = $highlightedEventId && $event->id == $highlightedEventId;
+                                            $highlightStyle = $isHighlighted ?
+                                                'background: linear-gradient(135deg, #fbbf24 0%, #f59e0b 100%); color: #92400e; border: 2px solid #d97706; box-shadow: 0 0 0 2px rgba(251, 191, 36, 0.3), 0 4px 12px rgba(251, 191, 36, 0.4); animation: highlightPulse 2s infinite;' :
+                                                'background: linear-gradient(135deg, #dcfce7 0%, #bbf7d0 100%); color: #166534; border: 1px solid rgba(34, 197, 94, 0.2);';
+                                        @endphp
+                                        <div style="{{ $highlightStyle }}"
+                                            class="dark:bg-gradient-to-r dark:from-green-800 dark:to-green-900 dark:text-green-200 dark:border-green-700 dark:shadow-lg dark:shadow-green-900/20 {{ $isHighlighted ? 'highlighted-event' : '' }}"
+                                            title="{{ $event->event_name }}"
+                                            data-event-id="{{ $event->id }}">
                                             {{ Str::limit($event->event_name, 12) }}
+                                            @if($isHighlighted)
+                                                <span style="margin-left: 2px;">⭐</span>
+                                            @endif
                                         </div>
                                     @endif
                                 @endforeach
@@ -532,7 +603,7 @@
         </div>
     @endif
 
-    <!-- JavaScript for keyboard navigation and modal state management -->
+    <!-- JavaScript for keyboard navigation, modal state management, and enhanced search -->
     <script>
         // Handle keyboard navigation
         document.addEventListener('keydown', function(e) {
@@ -545,6 +616,42 @@
             if (e.key === 'ArrowRight') {
                 @this.nextImage();
             }
+        });
+
+        // Enhanced search functionality
+        document.addEventListener('DOMContentLoaded', function() {
+            // Smooth scroll to highlighted event when search finds exact match
+            @if($highlightedEventId)
+                setTimeout(function() {
+                    const highlightedElement = document.querySelector('.highlighted-event');
+                    if (highlightedElement) {
+                        highlightedElement.scrollIntoView({
+                            behavior: 'smooth',
+                            block: 'center',
+                            inline: 'nearest'
+                        });
+
+                        // Add temporary focus animation
+                        highlightedElement.style.animation = 'highlightPulse 2s ease-in-out';
+                    }
+                }, 100);
+            @endif
+        });
+
+        // Listen for Livewire events to trigger smooth scrolling
+        document.addEventListener('livewire:updated', function() {
+            @if($highlightedEventId)
+                setTimeout(function() {
+                    const highlightedElement = document.querySelector('.highlighted-event');
+                    if (highlightedElement) {
+                        highlightedElement.scrollIntoView({
+                            behavior: 'smooth',
+                            block: 'center',
+                            inline: 'nearest'
+                        });
+                    }
+                }, 100);
+            @endif
         });
 
         // Listen for modal events to manage z-index
