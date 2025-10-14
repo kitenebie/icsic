@@ -25,6 +25,56 @@
                         </button>
                         <h2 id="monthYear" class="text-xl font-semibold text-gray-900 ml-4">April 2025</h2>
                     </div>
+
+                    <!-- Month/Year Selector -->
+                    <div class="relative">
+                        <button id="monthYearSelector" class="px-4 py-2 bg-white border border-gray-300 rounded-lg shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors duration-200 flex items-center space-x-2">
+                            <svg class="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
+                            </svg>
+                            <span id="selectorDisplay">Select Month & Year</span>
+                            <svg class="w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                            </svg>
+                        </button>
+
+                        <!-- Dropdown Panel -->
+                        <div id="monthYearDropdown" class="absolute top-full left-0 mt-2 w-80 bg-white border border-gray-200 rounded-lg shadow-lg z-50 hidden">
+                            <!-- Header with Year Navigation -->
+                            <div class="p-4 border-b border-gray-200">
+                                <div class="flex items-center justify-between mb-4">
+                                    <button id="yearDown" class="p-1 hover:bg-gray-100 rounded-full transition-colors duration-200">
+                                        <svg class="w-5 h-5 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                                        </svg>
+                                    </button>
+                                    <h3 id="dropdownYear" class="text-lg font-semibold text-gray-900">2025</h3>
+                                    <button id="yearUp" class="p-1 hover:bg-gray-100 rounded-full transition-colors duration-200">
+                                        <svg class="w-5 h-5 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 15l7-7 7 7"></path>
+                                        </svg>
+                                    </button>
+                                </div>
+                                <div class="text-sm text-gray-600 text-center">
+                                    Click on a month to navigate
+                                </div>
+                            </div>
+
+                            <!-- Month Grid -->
+                            <div class="p-4">
+                                <div class="grid grid-cols-3 gap-2" id="monthGrid">
+                                    <!-- Months will be populated by JavaScript -->
+                                </div>
+                            </div>
+
+                            <!-- Footer -->
+                            <div class="p-3 border-t border-gray-200 bg-gray-50 rounded-b-lg">
+                                <button id="currentMonthBtn" class="w-full py-2 px-4 bg-blue-600 text-white text-sm font-medium rounded-md hover:bg-blue-700 transition-colors duration-200">
+                                    Go to Current Month
+                                </button>
+                            </div>
+                        </div>
+                    </div>
                 </div>
                 <div class="flex items-center space-x-3">
                     {{-- <button class="px-4 py-2 text-sm font-medium text-blue-600 bg-blue-50 border border-blue-200 rounded-lg hover:bg-blue-100 transition-colors duration-200">
@@ -863,9 +913,140 @@
                 }
             </script>
         @endif
+
+        <!-- Month/Year Selector JavaScript -->
+        <script>
+            document.addEventListener('DOMContentLoaded', function() {
+                const monthYearSelector = document.getElementById('monthYearSelector');
+                const monthYearDropdown = document.getElementById('monthYearDropdown');
+                const dropdownYear = document.getElementById('dropdownYear');
+                const monthGrid = document.getElementById('monthGrid');
+                const yearUp = document.getElementById('yearUp');
+                const yearDown = document.getElementById('yearDown');
+                const currentMonthBtn = document.getElementById('currentMonthBtn');
+                const selectorDisplay = document.getElementById('selectorDisplay');
+
+                let currentYear = new Date().getFullYear();
+                let currentMonth = new Date().getMonth();
+
+                const months = [
+                    'January', 'February', 'March', 'April', 'May', 'June',
+                    'July', 'August', 'September', 'October', 'November', 'December'
+                ];
+
+                // Initialize the selector
+                function initMonthYearSelector() {
+                    updateDropdownYear();
+                    updateSelectorDisplay();
+                    renderMonthGrid();
+                }
+
+                // Update the year in dropdown
+                function updateDropdownYear() {
+                    dropdownYear.textContent = currentYear;
+                }
+
+                // Update the selector button display
+                function updateSelectorDisplay() {
+                    selectorDisplay.textContent = `${months[currentMonth]} ${currentYear}`;
+                }
+
+                // Render month grid
+                function renderMonthGrid() {
+                    monthGrid.innerHTML = '';
+                    months.forEach((month, index) => {
+                        const monthButton = document.createElement('button');
+                        monthButton.className = `p-3 text-sm font-medium rounded-lg transition-colors duration-200 ${
+                            index === currentMonth
+                                ? 'bg-blue-600 text-white'
+                                : 'bg-gray-50 text-gray-700 hover:bg-gray-100'
+                        }`;
+                        monthButton.textContent = month.substring(0, 3); // Show abbreviated month names
+                        monthButton.addEventListener('click', function() {
+                            currentMonth = index;
+                            updateSelectorDisplay();
+                            monthYearDropdown.classList.add('hidden');
+                            // Update the main calendar
+                            updateMainCalendar();
+                        });
+                        monthGrid.appendChild(monthButton);
+                    });
+                }
+
+                // Update main calendar (integrate with existing calendar logic)
+                function updateMainCalendar() {
+                    const newDate = new Date(currentYear, currentMonth, 1);
+                    renderCalendar(newDate);
+                    monthYear.textContent = newDate.toLocaleString('default', {
+                        month: 'long',
+                        year: 'numeric'
+                    });
+                }
+
+                // Year navigation
+                yearUp.addEventListener('click', function() {
+                    currentYear++;
+                    updateDropdownYear();
+                    renderMonthGrid();
+                });
+
+                yearDown.addEventListener('click', function() {
+                    currentYear--;
+                    updateDropdownYear();
+                    renderMonthGrid();
+                });
+
+                // Toggle dropdown
+                monthYearSelector.addEventListener('click', function(e) {
+                    e.stopPropagation();
+                    monthYearDropdown.classList.toggle('hidden');
+                });
+
+                // Close dropdown when clicking outside
+                document.addEventListener('click', function(e) {
+                    if (!monthYearSelector.contains(e.target) && !monthYearDropdown.contains(e.target)) {
+                        monthYearDropdown.classList.add('hidden');
+                    }
+                });
+
+                // Go to current month
+                currentMonthBtn.addEventListener('click', function() {
+                    const now = new Date();
+                    currentYear = now.getFullYear();
+                    currentMonth = now.getMonth();
+                    updateDropdownYear();
+                    updateSelectorDisplay();
+                    renderMonthGrid();
+                    monthYearDropdown.classList.add('hidden');
+                    updateMainCalendar();
+                });
+
+                // Initialize the selector
+                initMonthYearSelector();
+            });
+        </script>
+
         <style>
             #modalContainer{
                 z-index: 9999;
+            }
+
+            /* Month/Year Selector Styles */
+            #monthYearDropdown {
+                box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+            }
+
+            #monthYearDropdown .grid button:hover {
+                transform: translateY(-1px);
+            }
+
+            #monthYearDropdown .grid button {
+                cursor: pointer;
+            }
+
+            #monthYearSelector:focus {
+                outline: none;
+                box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
             }
         </style>
     </div>
