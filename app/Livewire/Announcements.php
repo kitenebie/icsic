@@ -247,10 +247,9 @@ class Announcements extends Component implements HasForms, HasActions, HasTable
                                 ->maxLength(200),
                         ];
                     })
-                    ->mutateFormDataUsing(function (array $data): array {
+                    ->mutateFormDataUsing(function (array $data, $record): array {
                         // Handle existing images if no new images are uploaded
                         if (empty($data['images'])) {
-                            $record = $this->record;
                             $data['images'] = $record?->images ?? [];
                         }
                         return $data;
