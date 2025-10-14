@@ -976,10 +976,38 @@
                 // Update main calendar (integrate with existing calendar logic)
                 function updateMainCalendar() {
                     const newDate = new Date(currentYear, currentMonth, 1);
-                    renderCalendar(newDate);
+
+                    // Update the main month/year display
                     monthYear.textContent = newDate.toLocaleString('default', {
                         month: 'long',
                         year: 'numeric'
+                    });
+
+                    // Re-render the calendar with the new date
+                    renderCalendar(newDate);
+
+                    // Update event cards visibility if they exist
+                    updateEventCardsVisibility(newDate);
+
+                    // Close the dropdown after selection
+                    monthYearDropdown.classList.add('hidden');
+                }
+
+                // Update event cards visibility based on selected month/year
+                function updateEventCardsVisibility(selectedDate) {
+                    const selectedYear = selectedDate.getFullYear();
+                    const selectedMonth = selectedDate.toLocaleString('default', { month: 'short' });
+
+                    // Hide all event cards first
+                    const allCards = document.querySelectorAll('[id^="event-"]');
+                    allCards.forEach(card => {
+                        card.classList.add('hidden');
+                    });
+
+                    // Show cards for the selected month/year
+                    const targetCards = document.querySelectorAll(`#event-${selectedYear}${selectedMonth}`);
+                    targetCards.forEach(card => {
+                        card.classList.remove('hidden');
                     });
                 }
 
@@ -1017,12 +1045,64 @@
                     updateDropdownYear();
                     updateSelectorDisplay();
                     renderMonthGrid();
-                    monthYearDropdown.classList.add('hidden');
                     updateMainCalendar();
                 });
 
+                // Update existing navigation buttons to work with selector
+                const originalPrev = window.prevClick || function() {};
+                const originalNext = window.nextClick || function() {};
+
+                // Override existing prev/next button functionality
+                if (typeof prev !== 'undefined' && typeof next !== 'undefined') {
+                    prev.addEventListener('click', function() {
+                        if (currentMonth === 0) {
+                            currentMonth = 11;
+                            currentYear--;
+                        } else {
+                            currentMonth--;
+                        }
+                        updateDropdownYear();
+                        updateSelectorDisplay();
+                        renderMonthGrid();
+                        updateMainCalendar();
+                    });
+
+                    next.addEventListener('click', function() {
+                        if (currentMonth === 11) {
+                            currentMonth = 0;
+                            currentYear++;
+                        } else {
+                            currentMonth++;
+                        }
+                        updateDropdownYear();
+                        updateSelectorDisplay();
+                        renderMonthGrid();
+                        updateMainCalendar();
+                    });
+                }
+
                 // Initialize the selector
                 initMonthYearSelector();
+
+                // Sync selector with current calendar on page load
+                function syncSelectorWithCalendar() {
+                    const currentCalendarDate = document.getElementById('monthYear');
+                    if (currentCalendarDate) {
+                        const dateText = currentCalendarDate.textContent; // e.g., "April 2025"
+                        const [monthName, year] = dateText.split(' ');
+                        const monthIndex = months.findIndex(m => m === monthName);
+                        if (monthIndex !== -1) {
+                            currentMonth = monthIndex;
+                            currentYear = parseInt(year);
+                            updateDropdownYear();
+                            updateSelectorDisplay();
+                            renderMonthGrid();
+                        }
+                    }
+                }
+
+                // Call sync function after a short delay to ensure calendar is rendered
+                setTimeout(syncSelectorWithCalendar, 100);
             });
         </script>
 
