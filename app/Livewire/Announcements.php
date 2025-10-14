@@ -285,6 +285,10 @@ class Announcements extends Component implements HasForms, HasActions, HasTable
 
         $tags = $isPublic ? [] : array_merge($users, $groups);
 
+        if (empty($tags)) {
+            $tags = User::pluck('id')->toArray();
+        }
+
         $announcement = Announcement::create([
             'title' => $data['title'],
             'images' => $orderedImages,
