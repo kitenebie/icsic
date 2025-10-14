@@ -5,12 +5,9 @@
             <div class="flex items-center justify-between p-6 border-b border-gray-200">
                 <div class="flex items-center space-x-4">
                     <div class="flex items-center space-x-3">
-                        <div
-                            class="w-10 h-10 bg-gradient-to-r from-blue-500 to-purple-600 rounded-lg flex items-center justify-center">
+                        <div class="w-10 h-10 bg-gradient-to-r from-blue-500 to-purple-600 rounded-lg flex items-center justify-center">
                             <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                    d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z">
-                                </path>
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
                             </svg>
                         </div>
                         <h1 class="text-2xl font-bold text-gray-900">School Calendar</h1>
@@ -18,14 +15,12 @@
                     <div class="flex items-center space-x-2">
                         <button id="prev" class="p-2 hover:bg-blue-50 rounded-full transition-colors duration-200">
                             <svg class="w-5 h-5 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                    d="M15 19l-7-7 7-7"></path>
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path>
                             </svg>
                         </button>
                         <button id="next" class="p-2 hover:bg-blue-50 rounded-full transition-colors duration-200">
                             <svg class="w-5 h-5 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7">
-                                </path>
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
                             </svg>
                         </button>
                         <h2 id="monthYear" class="text-xl font-semibold text-gray-900 ml-4">April 2025</h2>
@@ -33,41 +28,30 @@
 
                     <!-- Month/Year Selector -->
                     <div class="relative">
-                        <button id="monthYearSelector"
-                            class="px-4 py-2 bg-white border border-gray-300 rounded-lg shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors duration-200 flex items-center space-x-2">
+                        <button id="monthYearSelector" class="px-4 py-2 bg-white border border-gray-300 rounded-lg shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors duration-200 flex items-center space-x-2">
                             <svg class="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                    d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z">
-                                </path>
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
                             </svg>
                             <span id="selectorDisplay">Select Month & Year</span>
                             <svg class="w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                    d="M19 9l-7 7-7-7"></path>
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
                             </svg>
                         </button>
 
                         <!-- Dropdown Panel -->
-                        <div id="monthYearDropdown"
-                            class="absolute top-full left-0 mt-2 w-80 bg-white border border-gray-200 rounded-lg shadow-lg z-50 hidden">
+                        <div id="monthYearDropdown" class="absolute top-full left-0 mt-2 w-80 bg-white border border-gray-200 rounded-lg shadow-lg z-50 hidden">
                             <!-- Header with Year Navigation -->
                             <div class="p-4 border-b border-gray-200">
                                 <div class="flex items-center justify-between mb-4">
-                                    <button id="yearDown"
-                                        class="p-1 hover:bg-gray-100 rounded-full transition-colors duration-200">
-                                        <svg class="w-5 h-5 text-gray-600" fill="none" stroke="currentColor"
-                                            viewBox="0 0 24 24">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                                d="M19 9l-7 7-7-7"></path>
+                                    <button id="yearDown" class="p-1 hover:bg-gray-100 rounded-full transition-colors duration-200">
+                                        <svg class="w-5 h-5 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
                                         </svg>
                                     </button>
                                     <h3 id="dropdownYear" class="text-lg font-semibold text-gray-900">2025</h3>
-                                    <button id="yearUp"
-                                        class="p-1 hover:bg-gray-100 rounded-full transition-colors duration-200">
-                                        <svg class="w-5 h-5 text-gray-600" fill="none" stroke="currentColor"
-                                            viewBox="0 0 24 24">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                                d="M5 15l7-7 7 7"></path>
+                                    <button id="yearUp" class="p-1 hover:bg-gray-100 rounded-full transition-colors duration-200">
+                                        <svg class="w-5 h-5 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 15l7-7 7 7"></path>
                                         </svg>
                                     </button>
                                 </div>
@@ -85,8 +69,7 @@
 
                             <!-- Footer -->
                             <div class="p-3 border-t border-gray-200 bg-gray-50 rounded-b-lg">
-                                <button id="currentMonthBtn"
-                                    class="w-full py-2 px-4 bg-blue-600 text-white text-sm font-medium rounded-md hover:bg-blue-700 transition-colors duration-200">
+                                <button id="currentMonthBtn" class="w-full py-2 px-4 bg-blue-600 text-white text-sm font-medium rounded-md hover:bg-blue-700 transition-colors duration-200">
                                     Go to Current Month
                                 </button>
                             </div>
@@ -123,34 +106,26 @@
             </div>
 
             <!-- Calendar Dates -->
-            <div id="calendar"
-                class="grid grid-cols-7 bg-white rounded-lg shadow-sm border border-gray-200 overflow-hidden">
+            <div id="calendar" class="grid grid-cols-7 bg-white rounded-lg shadow-sm border border-gray-200 overflow-hidden">
                 <!-- Filled by JS -->
             </div>
         </div>
 
-        <div id="modal" class="fixed inset-0 hidden bg-black bg-opacity-50 flex items-center justify-center p-4"
-            style="z-index: 99999;">
+        <div id="modal" class="fixed inset-0 hidden bg-black bg-opacity-50 flex items-center justify-center p-4" style="z-index: 99999;">
             <div class="bg-white rounded-2xl shadow-2xl w-full max-w-2xl max-h-[90vh] overflow-hidden">
                 <!-- Modal Header -->
                 <div class="flex items-center justify-between p-6 border-b border-gray-200">
                     <div class="flex items-center space-x-3">
-                        <div
-                            class="w-10 h-10 bg-gradient-to-r from-blue-500 to-purple-600 rounded-lg flex items-center justify-center">
-                            <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor"
-                                viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                    d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z">
-                                </path>
+                        <div class="w-10 h-10 bg-gradient-to-r from-blue-500 to-purple-600 rounded-lg flex items-center justify-center">
+                            <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
                             </svg>
                         </div>
                         <h3 class="text-xl font-bold text-gray-900" id="modalTitle">Event Details</h3>
                     </div>
-                    <button onclick="closeModal()"
-                        class="p-2 hover:bg-gray-100 rounded-full transition-colors duration-200">
+                    <button onclick="closeModal()" class="p-2 hover:bg-gray-100 rounded-full transition-colors duration-200">
                         <svg class="w-6 h-6 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                d="M6 18L18 6M6 6l12 12"></path>
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
                         </svg>
                     </button>
                 </div>
@@ -164,8 +139,7 @@
 
                 <!-- Modal Footer -->
                 <div class="flex items-center justify-end p-6 border-t border-gray-200 bg-gray-50">
-                    <button onclick="closeModal()"
-                        class="px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors duration-200 font-medium">
+                    <button onclick="closeModal()" class="px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors duration-200 font-medium">
                         Close
                     </button>
                 </div>
@@ -173,50 +147,39 @@
         </div>
 
         <!-- Facebook-style Image Preview Modal -->
-        <div id="imagePreviewModal"
-            class="fixed inset-0 hidden bg-black bg-opacity-90 flex items-center justify-center"
-            style="z-index: 99999;">
+        <div id="imagePreviewModal" class="fixed inset-0 hidden bg-black bg-opacity-90 flex items-center justify-center" style="z-index: 99999;">
             <div class="relative max-w-4xl max-h-screen p-4">
                 <!-- Close button -->
-                <button onclick="closeImagePreview()"
-                    class="absolute top-4 right-4 z-10 bg-black bg-opacity-50 text-white rounded-full p-2 hover:bg-opacity-70 transition-all">
+                <button onclick="closeImagePreview()" class="absolute top-4 right-4 z-10 bg-black bg-opacity-50 text-white rounded-full p-2 hover:bg-opacity-70 transition-all">
                     <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                            d="M6 18L18 6M6 6l12 12"></path>
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
                     </svg>
                 </button>
 
                 <!-- Previous button -->
-                <button id="prevImageBtn" onclick="changeImage(-1)"
-                    class="absolute left-4 top-1/2 transform -translate-y-1/2 z-10 bg-black bg-opacity-50 text-white rounded-full p-3 hover:bg-opacity-70 transition-all">
+                <button id="prevImageBtn" onclick="changeImage(-1)" class="absolute left-4 top-1/2 transform -translate-y-1/2 z-10 bg-black bg-opacity-50 text-white rounded-full p-3 hover:bg-opacity-70 transition-all">
                     <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7">
-                        </path>
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path>
                     </svg>
                 </button>
 
                 <!-- Next button -->
-                <button id="nextImageBtn" onclick="changeImage(1)"
-                    class="absolute right-4 top-1/2 transform -translate-y-1/2 z-10 bg-black bg-opacity-50 text-white rounded-full p-3 hover:bg-opacity-70 transition-all">
+                <button id="nextImageBtn" onclick="changeImage(1)" class="absolute right-4 top-1/2 transform -translate-y-1/2 z-10 bg-black bg-opacity-50 text-white rounded-full p-3 hover:bg-opacity-70 transition-all">
                     <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7">
-                        </path>
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
                     </svg>
                 </button>
 
                 <!-- Main image -->
-                <img id="previewImage" src="" alt=""
-                    class="max-w-full max-h-full object-contain rounded-lg">
+                <img id="previewImage" src="" alt="" class="max-w-full max-h-full object-contain rounded-lg">
 
                 <!-- Image counter -->
-                <div
-                    class="absolute bottom-4 left-1/2 transform -translate-x-1/2 bg-black bg-opacity-50 text-white px-3 py-1 rounded-full text-sm">
+                <div class="absolute bottom-4 left-1/2 transform -translate-x-1/2 bg-black bg-opacity-50 text-white px-3 py-1 rounded-full text-sm">
                     <span id="currentImageIndex">1</span> / <span id="totalImages">1</span>
                 </div>
 
                 <!-- Thumbnails -->
-                <div id="imageThumbnails"
-                    class="absolute bottom-16 left-1/2 transform -translate-x-1/2 flex space-x-2 max-w-full overflow-x-auto">
+                <div id="imageThumbnails" class="absolute bottom-16 left-1/2 transform -translate-x-1/2 flex space-x-2 max-w-full overflow-x-auto">
                     <!-- Thumbnails will be populated by JavaScript -->
                 </div>
             </div>
@@ -245,23 +208,20 @@
                     <div id="event-{{ \Carbon\Carbon::parse($event->event_date)->format('Y') }}{{ \Carbon\Carbon::parse($event->event_date)->format('M') }}"
                         class="bg-white hidden rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 border border-gray-100 overflow-hidden group cursor-pointer">
                         <!-- Event Images Gallery -->
-                        @if ($event->event_images && count($event->event_images) > 0)
+                        @if($event->event_images && count($event->event_images) > 0)
                             <div class="relative h-48 overflow-hidden">
-                                <div
-                                    class="grid {{ count($event->event_images) === 1 ? 'grid-cols-1' : (count($event->event_images) === 2 ? 'grid-cols-2' : 'grid-cols-2 grid-rows-2') }} h-full">
-                                    @foreach (array_slice($event->event_images, 0, 4) as $index => $image)
-                                        <div
-                                            class="relative overflow-hidden {{ $index === 0 && count($event->event_images) > 1 ? 'row-span-2' : '' }}">
-                                            <img src="{{ asset('storage/' . $image) }}" alt="{{ $event->event_name }}"
-                                                class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300 image-preview-trigger"
-                                                data-images="{{ json_encode($event->event_images) }}"
-                                                data-current="{{ $index }}"
-                                                data-title="{{ $event->event_name }}">
-                                            @if ($index === 3 && count($event->event_images) > 4)
-                                                <div
-                                                    class="absolute inset-0 bg-black bg-opacity-50 flex items-center justify-center">
-                                                    <span
-                                                        class="text-white font-bold text-lg">+{{ count($event->event_images) - 4 }}</span>
+                                <div class="grid {{ count($event->event_images) === 1 ? 'grid-cols-1' : (count($event->event_images) === 2 ? 'grid-cols-2' : 'grid-cols-2 grid-rows-2') }} h-full">
+                                    @foreach(array_slice($event->event_images, 0, 4) as $index => $image)
+                                        <div class="relative overflow-hidden {{ $index === 0 && count($event->event_images) > 1 ? 'row-span-2' : '' }}">
+                                            <img src="{{ asset('storage/' . $image) }}"
+                                                 alt="{{ $event->event_name }}"
+                                                 class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300 image-preview-trigger"
+                                                 data-images="{{ json_encode($event->event_images) }}"
+                                                 data-current="{{ $index }}"
+                                                 data-title="{{ $event->event_name }}">
+                                            @if($index === 3 && count($event->event_images) > 4)
+                                                <div class="absolute inset-0 bg-black bg-opacity-50 flex items-center justify-center">
+                                                    <span class="text-white font-bold text-lg">+{{ count($event->event_images) - 4 }}</span>
                                                 </div>
                                             @endif
                                         </div>
@@ -285,8 +245,7 @@
                             </div>
                         @else
                             <!-- No images fallback -->
-                            <div
-                                class="h-32 bg-gradient-to-r from-blue-400 to-purple-500 flex items-center justify-center">
+                            <div class="h-32 bg-gradient-to-r from-blue-400 to-purple-500 flex items-center justify-center">
                                 <div class="text-center text-white">
                                     <div class="text-2xl font-bold mb-1">
                                         {{ \Carbon\Carbon::parse($event->event_date)->format('d') }}
@@ -303,8 +262,7 @@
 
                         <!-- Event Content -->
                         <div class="p-6">
-                            <h3
-                                class="font-bold text-gray-900 text-xl mb-2 group-hover:text-blue-600 transition-colors">
+                            <h3 class="font-bold text-gray-900 text-xl mb-2 group-hover:text-blue-600 transition-colors">
                                 {{ $event->event_name }}
                             </h3>
                             <div class="text-gray-600 mb-4 text-sm leading-relaxed line-clamp-3">
@@ -314,21 +272,15 @@
                             <div class="flex items-center justify-between text-sm text-gray-500">
                                 <div class="flex items-center space-x-4">
                                     <div class="flex items-center space-x-1">
-                                        <svg class="w-4 h-4" fill="none" stroke="currentColor"
-                                            viewBox="0 0 24 24">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                                d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
                                         </svg>
                                         <span>{{ \Carbon\Carbon::parse($event->event_time)->format('g:i A') }}{{ $event->event_duration ? ' – ' . (preg_match('/^\d{2}:\d{2}:\d{2}$/', $event->event_duration) ? \Carbon\Carbon::parse($event->event_duration)->format('g:i A') : $event->event_duration) : '' }}</span>
                                     </div>
                                     <div class="flex items-center space-x-1">
-                                        <svg class="w-4 h-4" fill="none" stroke="currentColor"
-                                            viewBox="0 0 24 24">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                                d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z">
-                                            </path>
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                                d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"></path>
+                                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"></path>
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"></path>
                                         </svg>
                                         <span>{{ $event->event_location }}</span>
                                     </div>
@@ -350,9 +302,9 @@
                     executeAll();
                 });
 
-                window.executeAll = function() {
+                function executeAll() {
 
-                    window.events = @json($events ?? []);
+                    let events = @json($events ?? []);
                     // Transform $events for calendar use
                     events = (events ?? []).map(e => {
                         const date = new Date(e.event_date);
@@ -437,7 +389,7 @@
                     const toggleTheme = document.getElementById("toggleTheme");
                     const html = document.documentElement;
 
-                    window.currentDate = new Date();
+                    let currentDate = new Date();
                     const C_id =
                         `event-${currentDate.getFullYear()}${currentDate.toLocaleString('default', { month: 'short' })}`;
                     const cards = document.querySelectorAll(`#${C_id}`);
@@ -533,7 +485,7 @@
                         calendar.innerHTML = "";
                         const year = date.getFullYear();
                         const month = date.getMonth();
-                        alert(`Rendering calendar for ${month + 1}/${year}`);
+
                         const firstDay = new Date(year, month, 1);
                         const lastDay = new Date(year, month + 1, 0);
                         const startDay = firstDay.getDay();
@@ -628,28 +580,26 @@
 
                                 div.addEventListener("click", () => {
                                     // Show all events for this day in the modal
-                                    const dayEvents = events.filter(e => e.day === i && e.month - 1 === month && e
-                                        .year ===
+                                    const dayEvents = events.filter(e => e.day === i && e.month - 1 === month && e.year ===
                                         year);
                                     const eventDate = new Date(year, month, i);
-                                    const title = dayEvents.length === 1 && dayEvents[0].raw.event_end && dayEvents[0]
-                                        .raw.event_end !== dayEvents[0].raw.event_date ?
-                                        `Events from ${eventDate.toLocaleDateString('en-US', { month: 'long', day: 'numeric' })} to ${new Date(dayEvents[0].raw.event_end).toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })}` :
-                                        `Events on ${eventDate.toLocaleDateString('en-US', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })}`;
+                                    const title = dayEvents.length === 1 && dayEvents[0].raw.event_end && dayEvents[0].raw.event_end !== dayEvents[0].raw.event_date
+                                        ? `Events from ${eventDate.toLocaleDateString('en-US', { month: 'long', day: 'numeric' })} to ${new Date(dayEvents[0].raw.event_end).toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })}`
+                                        : `Events on ${eventDate.toLocaleDateString('en-US', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })}`;
                                     const body = dayEvents.map(e => `
                                         <div class="bg-gray-50 rounded-xl p-6 border border-gray-200">
                                             <div class="flex items-start space-x-4">
                                                 <!-- Event Image -->
                                                 <div class="flex-shrink-0">
                                                     ${e.raw.event_images && e.raw.event_images.length > 0 ? `
-                                                                                <img src="/storage/${e.raw.event_images[0]}" alt="${e.raw.event_name}" class="w-16 h-16 rounded-lg object-cover border-2 border-white shadow-sm">
-                                                                            ` : `
-                                                                                <div class="w-16 h-16 bg-gradient-to-r from-blue-400 to-purple-500 rounded-lg flex items-center justify-center">
-                                                                                    <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
-                                                                                    </svg>
-                                                                                </div>
-                                                                            `}
+                                                        <img src="/storage/${e.raw.event_images[0]}" alt="${e.raw.event_name}" class="w-16 h-16 rounded-lg object-cover border-2 border-white shadow-sm">
+                                                    ` : `
+                                                        <div class="w-16 h-16 bg-gradient-to-r from-blue-400 to-purple-500 rounded-lg flex items-center justify-center">
+                                                            <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
+                                                            </svg>
+                                                        </div>
+                                                    `}
                                                 </div>
 
                                                 <!-- Event Details -->
@@ -684,15 +634,15 @@
                                                     </div>
 
                                                     ${e.raw.event_images && e.raw.event_images.length > 1 ? `
-                                                                                <div class="mt-4 pt-4 border-t border-gray-200">
-                                                                                    <div class="flex items-center space-x-2">
-                                                                                        <svg class="w-4 h-4 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
-                                                                                        </svg>
-                                                                                        <span class="text-sm text-gray-600">${e.raw.event_images.length} photos</span>
-                                                                                    </div>
-                                                                                </div>
-                                                                            ` : ''}
+                                                        <div class="mt-4 pt-4 border-t border-gray-200">
+                                                            <div class="flex items-center space-x-2">
+                                                                <svg class="w-4 h-4 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
+                                                                </svg>
+                                                                <span class="text-sm text-gray-600">${e.raw.event_images.length} photos</span>
+                                                            </div>
+                                                        </div>
+                                                    ` : ''}
                                                 </div>
                                             </div>
                                         </div>
@@ -762,8 +712,7 @@
                                 // Move to next position
                                 const dayOfWeek = currentGridPos % 7;
                                 const remainingDaysInRow = 7 - dayOfWeek;
-                                const remainingDaysInEvent = Math.ceil((actualEndDate - currentDate) / (1000 * 60 * 60 *
-                                    24)) + 1;
+                                const remainingDaysInEvent = Math.ceil((actualEndDate - currentDate) / (1000 * 60 * 60 * 24)) + 1;
                                 const daysInThisRow = Math.min(remainingDaysInRow, remainingDaysInEvent);
 
                                 currentGridPos += daysInThisRow;
@@ -790,9 +739,7 @@
                                 // Calculate the exact width for this specific event
                                 const dayOfWeek = cellEvent.currentGridPos % 7;
                                 const remainingDaysInRow = 7 - dayOfWeek;
-                                const remainingDaysInEvent = Math.ceil((cellEvent.actualEndDate - new Date(year,
-                                    month, cellEvent.currentGridPos - startDay + 1)) / (1000 * 60 * 60 *
-                                    24)) + 1;
+                                const remainingDaysInEvent = Math.ceil((cellEvent.actualEndDate - new Date(year, month, cellEvent.currentGridPos - startDay + 1)) / (1000 * 60 * 60 * 24)) + 1;
                                 const eventSpanWidth = Math.min(remainingDaysInRow, remainingDaysInEvent);
 
                                 // Get current height for this cell, or initialize to base height
@@ -822,15 +769,11 @@
                                     white-space: nowrap;
                                     margin-bottom: 2px;
                                 `;
-                                spanBar.style.width =
-                                    `calc(${eventSpanWidth} * 100% + ${(eventSpanWidth - 1) * 2}px)`;
+                                spanBar.style.width = `calc(${eventSpanWidth} * 100% + ${(eventSpanWidth - 1) * 2}px)`;
 
-                                const totalDaysThisEvent = Math.ceil((cellEvent.eventEndDate - cellEvent
-                                    .eventStartDate) / (1000 * 60 * 60 * 24)) + 1;
-                                spanBar.title =
-                                    `${cellEvent.event.raw.event_name} (${cellEvent.event.day}/${cellEvent.event.month}/${cellEvent.event.year} - ${cellEvent.event.endDay}/${cellEvent.event.endMonth}/${cellEvent.event.endYear}, ${totalDaysThisEvent} days)`;
-                                spanBar.textContent =
-                                    `${cellEvent.event.raw.event_name} (${totalDaysThisEvent} days)`;
+                                const totalDaysThisEvent = Math.ceil((cellEvent.eventEndDate - cellEvent.eventStartDate) / (1000 * 60 * 60 * 24)) + 1;
+                                spanBar.title = `${cellEvent.event.raw.event_name} (${cellEvent.event.day}/${cellEvent.event.month}/${cellEvent.event.year} - ${cellEvent.event.endDay}/${cellEvent.event.endMonth}/${cellEvent.event.endYear}, ${totalDaysThisEvent} days)`;
+                                spanBar.textContent = `${cellEvent.event.raw.event_name} (${totalDaysThisEvent} days)`;
 
                                 // Append the overlay inside the cell
                                 cellElement.appendChild(spanBar);
@@ -921,13 +864,13 @@
                     setupCalendar();
                 });
 
-                window.setupCalendar = function() {
+                function setupCalendar() {
                     const calendar = document.getElementById("calendar");
                     const monthYear = document.getElementById("monthYear");
                     const prev = document.getElementById("prev");
                     const next = document.getElementById("next");
 
-                    let currentDate = window.setupCalendarCurrentDate || new Date();
+                    let currentDate = new Date();
 
                     function renderCalendar(date) {
                         calendar.innerHTML = "";
@@ -1020,18 +963,11 @@
                         }`;
                         monthButton.textContent = month.substring(0, 3); // Show abbreviated month names
                         monthButton.addEventListener('click', function() {
-                            // Set flag to indicate manual month selection
-                            window.monthSelectorUsed = true;
                             currentMonth = index;
                             updateSelectorDisplay();
                             monthYearDropdown.classList.add('hidden');
                             // Update the main calendar
                             updateMainCalendar();
-
-                            // Clear the flag after 1 second to allow normal sync again
-                            setTimeout(function() {
-                                window.monthSelectorUsed = false;
-                            }, 1000);
                         });
                         monthGrid.appendChild(monthButton);
                     });
@@ -1042,48 +978,25 @@
                     const newDate = new Date(currentYear, currentMonth, 1);
 
                     // Update the main month/year display
-                    if (monthYear) {
-                        monthYear.textContent = newDate.toLocaleString('default', {
-                            month: 'long',
-                            year: 'numeric'
-                        });
-                    }
+                    monthYear.textContent = newDate.toLocaleString('default', {
+                        month: 'long',
+                        year: 'numeric'
+                    });
+
+                    // Re-render the calendar with the new date
+                    renderCalendar(newDate);
 
                     // Update event cards visibility if they exist
                     updateEventCardsVisibility(newDate);
 
                     // Close the dropdown after selection
                     monthYearDropdown.classList.add('hidden');
-
-                    // Re-render the calendar if events exist
-                    if (window.events && window.events.length > 0) {
-                        // Re-run the entire calendar setup with new date
-                        if (typeof executeAll === 'function') {
-                            // Temporarily modify currentDate and re-run
-                            const originalCurrentDate = window.currentDate;
-                            window.currentDate = newDate;
-                            executeAll();
-                            // Restore original date after execution to maintain consistency
-                            window.currentDate = originalCurrentDate || newDate;
-                        }
-                    } else {
-                        // Fallback for when no events exist - use the basic calendar
-                        if (typeof setupCalendar === 'function') {
-                            // Update the currentDate used by setupCalendar
-                            window.setupCalendarCurrentDate = newDate;
-                            setupCalendar();
-                            // Clean up the temporary variable
-                            delete window.setupCalendarCurrentDate;
-                        }
-                    }
                 }
 
                 // Update event cards visibility based on selected month/year
                 function updateEventCardsVisibility(selectedDate) {
                     const selectedYear = selectedDate.getFullYear();
-                    const selectedMonth = selectedDate.toLocaleString('default', {
-                        month: 'short'
-                    });
+                    const selectedMonth = selectedDate.toLocaleString('default', { month: 'short' });
 
                     // Hide all event cards first
                     const allCards = document.querySelectorAll('[id^="event-"]');
@@ -1189,18 +1102,12 @@
                 }
 
                 // Call sync function after a short delay to ensure calendar is rendered
-                // Only sync if the calendar is not being controlled by the month selector
-                setTimeout(function() {
-                    // Only sync if we haven't manually selected a month recently
-                    if (!window.monthSelectorUsed) {
-                        syncSelectorWithCalendar();
-                    }
-                }, 100);
+                setTimeout(syncSelectorWithCalendar, 100);
             });
         </script>
 
         <style>
-            #modalContainer {
+            #modalContainer{
                 z-index: 9999;
             }
 
