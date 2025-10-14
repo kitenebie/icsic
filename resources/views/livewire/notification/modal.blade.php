@@ -18,7 +18,6 @@
                     $canViewList = is_array($notif->user_id_who_can_viewed)
                         ? $notif->user_id_who_can_viewed
                         : explode(',', $notif->user_id_who_can_viewed);
-                        dd($canViewList);
                     $canView = empty($notif->user_id_who_can_viewed) || in_array(auth()->id(), $canViewList);
                 @endphp
 
