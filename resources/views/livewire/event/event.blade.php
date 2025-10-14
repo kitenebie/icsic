@@ -1020,11 +1020,18 @@
                         }`;
                         monthButton.textContent = month.substring(0, 3); // Show abbreviated month names
                         monthButton.addEventListener('click', function() {
+                            // Set flag to indicate manual month selection
+                            window.monthSelectorUsed = true;
                             currentMonth = index;
                             updateSelectorDisplay();
                             monthYearDropdown.classList.add('hidden');
                             // Update the main calendar
                             updateMainCalendar();
+
+                            // Clear the flag after 1 second to allow normal sync again
+                            setTimeout(function() {
+                                window.monthSelectorUsed = false;
+                            }, 1000);
                         });
                         monthGrid.appendChild(monthButton);
                     });
@@ -1182,7 +1189,13 @@
                 }
 
                 // Call sync function after a short delay to ensure calendar is rendered
-                setTimeout(syncSelectorWithCalendar, 100);
+                // Only sync if the calendar is not being controlled by the month selector
+                setTimeout(function() {
+                    // Only sync if we haven't manually selected a month recently
+                    if (!window.monthSelectorUsed) {
+                        syncSelectorWithCalendar();
+                    }
+                }, 100);
             });
         </script>
 
