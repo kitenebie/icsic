@@ -251,7 +251,7 @@ new #[Layout('components.layouts.auth')] class extends Component {}; ?>
         <input type="hidden" name="profile_image_data" id="profileImageData">
 
         <!-- Captcha Verification -->
-        <div class="g-recaptcha" data-sitekey="6LeGqeorAAAAAPOFnXaHN-OX_b9EAUJgZ5YsBOfY"></div>
+        <div class="g-recaptcha" data-sitekey="6LeGqeorAAAAAPOFnXaHN-OX_b9EAUJgZ5YsBOfY" data-callback="onRegisterCaptchaSuccess" data-expired-callback="onRegisterCaptchaExpired"></div>
 
         <!-- Captcha Alert Messages -->
         <div id="captcha-success" class="hidden p-4 mb-4 text-sm text-green-800 rounded-lg bg-green-50 dark:bg-gray-800 dark:text-green-400" role="alert">
@@ -1432,26 +1432,19 @@ new #[Layout('components.layouts.auth')] class extends Component {}; ?>
     console.log('📝 Draft functionality initialized');
 
     // ===== CAPTCHA VERIFICATION =====
-    var registerCaptchaCallback = function() {
-        // Use explicit render for better control
-        if (document.querySelector('.g-recaptcha')) {
-            grecaptcha.render(document.querySelector('.g-recaptcha'), {
-            'sitekey': '6LeGqeorAAAAAPOFnXaHN-OX_b9EAUJgZ5YsBOfY',
-            'callback': function(response) {
-                // Captcha verified successfully
-                document.getElementById('captcha-success').classList.remove('hidden');
-                document.getElementById('captcha-error').classList.add('hidden');
-                document.getElementById('register-button').disabled = false;
-            },
-            'expired-callback': function() {
-                // Captcha expired
-                document.getElementById('captcha-success').classList.add('hidden');
-                document.getElementById('captcha-error').classList.remove('hidden');
-                document.getElementById('captcha-error').querySelector('span').textContent = 'Captcha has expired. Please verify again.';
-                document.getElementById('register-button').disabled = true;
-            }
-        });
-    };
+    // Global callback functions for reCAPTCHA
+    function onRegisterCaptchaSuccess() {
+        document.getElementById('captcha-success').classList.remove('hidden');
+        document.getElementById('captcha-error').classList.add('hidden');
+        document.getElementById('register-button').disabled = false;
+    }
+
+    function onRegisterCaptchaExpired() {
+        document.getElementById('captcha-success').classList.add('hidden');
+        document.getElementById('captcha-error').classList.remove('hidden');
+        document.getElementById('captcha-error').querySelector('span').textContent = 'Captcha has expired. Please verify again.';
+        document.getElementById('register-button').disabled = true;
+    }
 
     // Form submission handler for captcha verification
     document.addEventListener('DOMContentLoaded', function() {
@@ -1475,5 +1468,25 @@ new #[Layout('components.layouts.auth')] class extends Component {}; ?>
                 registerButton.textContent = 'Creating account...';
             });
         }
+    });
+
+    // Debug function to check if reCAPTCHA loaded
+    function checkRecaptchaLoaded() {
+        if (typeof grecaptcha === 'undefined') {
+            console.error('reCAPTCHA not loaded');
+            // Show error message to user
+            const captchaError = document.getElementById('captcha-error');
+            if (captchaError) {
+                captchaError.classList.remove('hidden');
+                captchaError.querySelector('span').textContent = 'Captcha failed to load. Please refresh the page.';
+            }
+        } else {
+            console.log('reCAPTCHA loaded successfully');
+        }
+    }
+
+    // Check reCAPTCHA after page load
+    window.addEventListener('load', function() {
+        setTimeout(checkRecaptchaLoaded, 2000);
     });
 </script>

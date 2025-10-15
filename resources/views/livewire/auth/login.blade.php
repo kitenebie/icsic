@@ -129,8 +129,8 @@ new #[Layout('components.layouts.auth')] class extends Component {
         <!-- Remember Me -->
         <flux:checkbox wire:model="remember" :label="__('Remember me')" />
 
-        <div id="recaptcha-container" class="g-recaptcha" data-sitekey="6LeGqeorAAAAAPOFnXaHN-OX_b9EAUJgZ5YsBOfY"></div>
-        <script src="https://www.google.com/recaptcha/api.js?onload=onloadCallback&render=explicit" async defer></script>
+        <div class="g-recaptcha" data-sitekey="6LeGqeorAAAAAPOFnXaHN-OX_b9EAUJgZ5YsBOfY" data-callback="onLoginCaptchaSuccess" data-expired-callback="onLoginCaptchaExpired"></div>
+        <script src="https://www.google.com/recaptcha/api.js" async defer></script>
         
         <div class="flex items-center justify-end">
             <flux:button id="login-button" variant="primary" type="submit" class="w-full">{{ __('Log in') }}</flux:button>
@@ -146,24 +146,19 @@ new #[Layout('components.layouts.auth')] class extends Component {
 </div>
 
 <script>
-    var onloadCallback = function() {
-        grecaptcha.render('recaptcha-container', {
-            'sitekey': '6LeGqeorAAAAAPOFnXaHN-OX_b9EAUJgZ5YsBOfY',
-            'callback': function(response) {
-                // Captcha verified successfully
-                document.getElementById('captcha-success').classList.remove('hidden');
-                document.getElementById('captcha-error').classList.add('hidden');
-                document.getElementById('login-button').disabled = false;
-            },
-            'expired-callback': function() {
-                // Captcha expired
-                document.getElementById('captcha-success').classList.add('hidden');
-                document.getElementById('captcha-error').classList.remove('hidden');
-                document.getElementById('captcha-error').querySelector('span').textContent = 'Captcha has expired. Please verify again.';
-                document.getElementById('login-button').disabled = true;
-            }
-        });
-    };
+    // Global callback functions for reCAPTCHA
+    function onLoginCaptchaSuccess() {
+        document.getElementById('captcha-success').classList.remove('hidden');
+        document.getElementById('captcha-error').classList.add('hidden');
+        document.getElementById('login-button').disabled = false;
+    }
+
+    function onLoginCaptchaExpired() {
+        document.getElementById('captcha-success').classList.add('hidden');
+        document.getElementById('captcha-error').classList.remove('hidden');
+        document.getElementById('captcha-error').querySelector('span').textContent = 'Captcha has expired. Please verify again.';
+        document.getElementById('login-button').disabled = true;
+    }
 
     // Form submission handler
     document.addEventListener('DOMContentLoaded', function() {
@@ -187,5 +182,25 @@ new #[Layout('components.layouts.auth')] class extends Component {
                 loginButton.textContent = 'Logging in...';
             });
         }
+    });
+
+    // Debug function to check if reCAPTCHA loaded
+    function checkLoginRecaptchaLoaded() {
+        if (typeof grecaptcha === 'undefined') {
+            console.error('Login reCAPTCHA not loaded');
+            // Show error message to user
+            const captchaError = document.getElementById('captcha-error');
+            if (captchaError) {
+                captchaError.classList.remove('hidden');
+                captchaError.querySelector('span').textContent = 'Captcha failed to load. Please refresh the page.';
+            }
+        } else {
+            console.log('Login reCAPTCHA loaded successfully');
+        }
+    }
+
+    // Check reCAPTCHA after page load
+    window.addEventListener('load', function() {
+        setTimeout(checkLoginRecaptchaLoaded, 2000);
     });
 </script>
