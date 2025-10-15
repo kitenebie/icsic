@@ -176,13 +176,13 @@ new #[Layout('components.layouts.auth')] class extends Component {}; ?>
             <button type="button" id="startFaceButton"
                 class="mt-2 px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600 text-sm">Start Face
                 Detection</button>
-            <button type="button" id="testCameraBtn"
+            {{-- <button type="button" id="testCameraBtn"
                 class="mt-2 px-4 py-2 bg-green-500 text-white rounded hover:bg-green-600 text-sm">🧪 Test Camera</button>
             <button type="button" id="toggleDebugBtn"
                 class="mt-2 px-4 py-2 bg-gray-500 text-white rounded hover:bg-gray-600 text-sm">🔍 Debug</button>
             <button type="button" id="manualBlinkBtn"
                 class="mt-2 px-4 py-2 bg-orange-500 text-white rounded hover:bg-orange-600 text-sm"
-                style="display: none;">👁️ Manual Blink</button>
+                style="display: none;">👁️ Manual Blink</button> --}}
         </div>
 
 
