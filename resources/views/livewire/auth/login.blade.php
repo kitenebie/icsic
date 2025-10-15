@@ -17,6 +17,9 @@ new #[Layout('components.layouts.auth')] class extends Component {
     #[Validate('required|string')]
     public string $password = '';
 
+    #[Validate('required|string')]
+    public string $captcha = '';
+
     public bool $remember = false;
 
     /**
@@ -26,6 +29,19 @@ new #[Layout('components.layouts.auth')] class extends Component {
     {
         $this->validate();
         $this->ensureIsNotRateLimited();
+
+        // Verify reCAPTCHA
+        $recaptchaResponse = $this->captcha;
+        $recaptchaSecret = '6LeGqeorAAAAAKeGqQbQJqKJ8nQJqKJ8nQJqKJ8'; // Replace with your actual secret key
+
+        $response = file_get_contents("https://www.google.com/recaptcha/api/siteverify?secret=" . $recaptchaSecret . "&response=" . $recaptchaResponse);
+        $responseKeys = json_decode($response, true);
+
+        if (!$responseKeys["success"]) {
+            throw ValidationException::withMessages([
+                'captcha' => __('Please complete the captcha verification.'),
+            ]);
+        }
 
         if (!Auth::attempt(['email' => $this->email, 'password' => $this->password], $this->remember)) {
             RateLimiter::hit($this->throttleKey());
@@ -101,8 +117,7 @@ new #[Layout('components.layouts.auth')] class extends Component {
     <!-- Session Status -->
     <x-auth-session-status class="text-center" :status="session('status')" />
 
-    <form class="flex flex-col gap-6" method="POST" action="{{ route('login') }}">
-        @csrf
+    <form class="flex flex-col gap-6" wire:submit="login">
         <!-- Email Address -->
         <flux:input wire:model="email" :label="__('Email address')" type="email" required autofocus autocomplete="email"
             placeholder="email@example.com" />
@@ -129,8 +144,28 @@ new #[Layout('components.layouts.auth')] class extends Component {
         <!-- Remember Me -->
         <flux:checkbox wire:model="remember" :label="__('Remember me')" />
 
-        <div class="g-recaptcha" data-sitekey="6LeGqeorAAAAAPOFnXaHN-OX_b9EAUJgZ5YsBOfY"></div>
-        <script src="https://www.google.com/recaptcha/api.js?onload=onloadCallback&render=explicit" async defer></script>
+        <!-- reCAPTCHA -->
+        <div class="g-recaptcha" data-sitekey="6LeGqeorAAAAAPOFnXaHN-OX_b9EAUJgZ5YsBOfY" data-callback="onCaptchaCompleted" data-expired-callback="onCaptchaExpired"></div>
+
+        <!-- Hidden input to store captcha response -->
+        <input type="hidden" wire:model="captcha" id="captcha-response">
+
+        <!-- Captcha Error Display -->
+        @error('captcha')
+            <div class="text-red-600 text-sm mt-1">{{ $message }}</div>
+        @enderror
+
+        <script>
+            function onCaptchaCompleted(response) {
+                document.getElementById('captcha-response').value = response;
+                @this.set('captcha', response);
+            }
+
+            function onCaptchaExpired() {
+                document.getElementById('captcha-response').value = '';
+                @this.set('captcha', '');
+            }
+        </script>
         
         <div class="flex items-center justify-end">
             <flux:button variant="primary" type="submit" class="w-full">{{ __('Log in') }}</flux:button>
