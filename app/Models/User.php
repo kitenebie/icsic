@@ -11,6 +11,7 @@ use App\Models\student;
 use Filament\Models\Contracts\FilamentUser;
 use Filament\Panel;
 use Filament\Models\Contracts\HasAvatar;
+use Illuminate\Support\Facades\Storage;
 
 class User extends Authenticatable implements FilamentUser, HasAvatar
 {
@@ -29,15 +30,13 @@ class User extends Authenticatable implements FilamentUser, HasAvatar
 
     public function getFilamentAvatarUrl(): ?string
     {
-        // If there's a profile picture, convert it to base64
-        if ($this->profile_picture && file_exists(public_path($this->profile_picture))) {
-            $path = public_path($this->profile_picture);
-            $type = pathinfo($path, PATHINFO_EXTENSION);
-            $data = file_get_contents($path);
-            return 'data:image/' . $type . ';base64,' . base64_encode($data);
+        if ($this->profile_picture && Storage::disk('private')->exists($this->profile_picture)) {
+            $file = Storage::disk('private')->get($this->profile_picture);
+            $type = pathinfo($this->profile_picture, PATHINFO_EXTENSION);
+            return 'data:image/' . $type . ';base64,' . base64_encode($file);
         }
 
-        // Otherwise, use ui-avatars and return it as base64 too
+        // Default avatar from ui-avatars (still base64)
         $url = 'https://ui-avatars.com/api/?name='
             . strtoupper(substr($this->FirstName, 0, 1))
             . strtoupper(substr($this->LastName, 0, 1))
