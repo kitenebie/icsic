@@ -13,7 +13,7 @@
 @livewireStyles()
 <!-- index.html -->
 @php
-    $assetPath = public_path('build/assets');
+    $assetPath = asset('build/assets');
     $files = collect(\Illuminate\Support\Facades\File::files($assetPath));
     $cssFiles = $files->filter(fn($f) => str_ends_with($f->getFilename(), '.css'));
     $jsFiles = $files->filter(fn($f) => str_ends_with($f->getFilename(), '.js'));
