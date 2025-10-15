@@ -34,12 +34,19 @@ new #[Layout('components.layouts.auth')] class extends Component {
         $recaptchaResponse = $this->captcha;
         $recaptchaSecret = '6LeGqeorAAAAAKeGqQbQJqKJ8nQJqKJ8nQJqKJ8'; // Replace with your actual secret key
 
-        $response = file_get_contents("https://www.google.com/recaptcha/api/siteverify?secret=" . $recaptchaSecret . "&response=" . $recaptchaResponse);
-        $responseKeys = json_decode($response, true);
-
-        if (!$responseKeys["success"]) {
+        if (empty($recaptchaResponse)) {
             throw ValidationException::withMessages([
                 'captcha' => __('Please complete the captcha verification.'),
+            ]);
+        }
+
+        $response = file_get_contents("https://www.google.com/recaptcha/api/siteverify?secret=" . $recaptchaSecret . "&response=" . $recaptchaResponse . "&remoteip=" . request()->ip());
+        $responseKeys = json_decode($response, true);
+
+        if (!$responseKeys || !$responseKeys["success"]) {
+            $errorMsg = isset($responseKeys['error-codes']) ? implode(', ', $responseKeys['error-codes']) : 'Captcha verification failed';
+            throw ValidationException::withMessages([
+                'captcha' => __('Captcha verification failed: ' . $errorMsg),
             ]);
         }
 
@@ -145,7 +152,17 @@ new #[Layout('components.layouts.auth')] class extends Component {
         <flux:checkbox wire:model="remember" :label="__('Remember me')" />
 
         <!-- reCAPTCHA -->
-        <div class="g-recaptcha" data-sitekey="6LeGqeorAAAAAPOFnXaHN-OX_b9EAUJgZ5YsBOfY" data-callback="onCaptchaCompleted" data-expired-callback="onCaptchaExpired"></div>
+        <div class="mb-2">
+            <div class="g-recaptcha" data-sitekey="6LeGqeorAAAAAPOFnXaHN-OX_b9EAUJgZ5YsBOfY" data-callback="onCaptchaCompleted" data-expired-callback="onCaptchaExpired"></div>
+            @if($captcha)
+                <div class="text-green-600 text-sm mt-1 flex items-center">
+                    <svg class="w-4 h-4 mr-1" fill="currentColor" viewBox="0 0 20 20">
+                        <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path>
+                    </svg>
+                    {{ __('Captcha verified') }}
+                </div>
+            @endif
+        </div>
 
         <!-- Hidden input to store captcha response -->
         <input type="hidden" wire:model="captcha" id="captcha-response">
@@ -157,18 +174,40 @@ new #[Layout('components.layouts.auth')] class extends Component {
 
         <script>
             function onCaptchaCompleted(response) {
+                console.log('Captcha completed:', response);
                 document.getElementById('captcha-response').value = response;
                 @this.set('captcha', response);
+                @this.validateOnly('captcha');
             }
 
             function onCaptchaExpired() {
+                console.log('Captcha expired');
                 document.getElementById('captcha-response').value = '';
                 @this.set('captcha', '');
             }
+
+            // Ensure form doesn't submit without captcha
+            document.addEventListener('DOMContentLoaded', function() {
+                document.querySelector('form').addEventListener('submit', function(e) {
+                    if (!@this.captcha) {
+                        e.preventDefault();
+                        alert('Please complete the captcha verification.');
+                        return false;
+                    }
+                });
+            });
         </script>
         
         <div class="flex items-center justify-end">
-            <flux:button variant="primary" type="submit" class="w-full">{{ __('Log in') }}</flux:button>
+            <flux:button
+                variant="primary"
+                type="submit"
+                class="w-full"
+                :disabled="!$captcha"
+                wire:loading.attr="disabled">
+                <span wire:loading.remove>{{ __('Log in') }}</span>
+                <span wire:loading>{{ __('Verifying...') }}</span>
+            </flux:button>
         </div>
     </form>
 
