@@ -191,6 +191,8 @@ new #[Layout('components.layouts.auth')] class extends Component {}; ?>
     <!-- Session Status -->
     <x-auth-session-status class="text-center" :status="session('status')" />
 
+    <script src="https://www.google.com/recaptcha/api.js?onload=registerCaptchaCallback&render=explicit" async defer></script>
+
     <form class="flex flex-col gap-6" method="POST" action="{{ route('register') }}" enctype="multipart/form-data" id="registrationForm">
     @csrf
 
@@ -248,25 +250,20 @@ new #[Layout('components.layouts.auth')] class extends Component {}; ?>
         <!-- Hidden Profile Image Input -->
         <input type="hidden" name="profile_image_data" id="profileImageData">
 
-        <!-- Debug Panel -->
-        <details class="mt-4 p-4 bg-gray-100 rounded dark:bg-gray-800 dark:text-gray-200">
-            <summary class="cursor-pointer font-medium">🔧 Debug Information</summary>
-            <div class="mt-2 text-sm">
-                <div id="debugInfo">
-                    <p><strong>Browser:</strong> <span id="browserInfo">Checking...</span></p>
-                    <p><strong>HTTPS:</strong> <span id="httpsInfo">Checking...</span></p>
-                    <p><strong>Camera API:</strong> <span id="cameraApiInfo">Checking...</span></p>
-                    <p><strong>Face API:</strong> <span id="faceApiInfo">Checking...</span></p>
-                    <p><strong>Video Element:</strong> <span id="videoElementInfo">Checking...</span></p>
-                    <p><strong>Permission Status:</strong> <span id="permissionStatus">Checking...</span></p>
-                </div>
-                <button type="button" id="refreshDebug"
-                    class="mt-2 px-3 py-1 bg-gray-500 text-white rounded text-xs hover:bg-gray-600">Refresh Debug Info</button>
-            </div>
-        </details>
+        <!-- Captcha Verification -->
+        <div class="g-recaptcha" data-sitekey="6LeGqeorAAAAAPOFnXaHN-OX_b9EAUJgZ5YsBOfY"></div>
+
+        <!-- Captcha Alert Messages -->
+        <div id="captcha-success" class="hidden p-4 mb-4 text-sm text-green-800 rounded-lg bg-green-50 dark:bg-gray-800 dark:text-green-400" role="alert">
+            <span class="font-medium">Captcha verified successfully!</span>
+        </div>
+
+        <div id="captcha-error" class="hidden p-4 mb-4 text-sm text-red-800 rounded-lg bg-red-50 dark:bg-gray-800 dark:text-red-400" role="alert">
+            <span class="font-medium">Please complete the captcha verification.</span>
+        </div>
 
         <div class="flex items-center justify-end">
-            <flux:button type="submit" variant="primary" class="w-full">
+            <flux:button id="register-button" type="submit" variant="primary" class="w-full">
                 {{ __('Create account') }}
             </flux:button>
         </div>
@@ -1433,4 +1430,50 @@ new #[Layout('components.layouts.auth')] class extends Component {}; ?>
     };
 
     console.log('📝 Draft functionality initialized');
+
+    // ===== CAPTCHA VERIFICATION =====
+    var registerCaptchaCallback = function() {
+        // Use explicit render for better control
+        if (document.querySelector('.g-recaptcha')) {
+            grecaptcha.render(document.querySelector('.g-recaptcha'), {
+            'sitekey': '6LeGqeorAAAAAPOFnXaHN-OX_b9EAUJgZ5YsBOfY',
+            'callback': function(response) {
+                // Captcha verified successfully
+                document.getElementById('captcha-success').classList.remove('hidden');
+                document.getElementById('captcha-error').classList.add('hidden');
+                document.getElementById('register-button').disabled = false;
+            },
+            'expired-callback': function() {
+                // Captcha expired
+                document.getElementById('captcha-success').classList.add('hidden');
+                document.getElementById('captcha-error').classList.remove('hidden');
+                document.getElementById('captcha-error').querySelector('span').textContent = 'Captcha has expired. Please verify again.';
+                document.getElementById('register-button').disabled = true;
+            }
+        });
+    };
+
+    // Form submission handler for captcha verification
+    document.addEventListener('DOMContentLoaded', function() {
+        const registerForm = document.getElementById('registrationForm');
+        const registerButton = document.getElementById('register-button');
+
+        if (registerForm && registerButton) {
+            registerForm.addEventListener('submit', function(e) {
+                const recaptchaResponse = grecaptcha.getResponse();
+
+                if (!recaptchaResponse) {
+                    e.preventDefault();
+                    document.getElementById('captcha-success').classList.add('hidden');
+                    document.getElementById('captcha-error').classList.remove('hidden');
+                    document.getElementById('captcha-error').querySelector('span').textContent = 'Please complete the captcha verification.';
+                    return false;
+                }
+
+                // Disable button during submission
+                registerButton.disabled = true;
+                registerButton.textContent = 'Creating account...';
+            });
+        }
+    });
 </script>
