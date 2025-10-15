@@ -251,7 +251,9 @@ new #[Layout('components.layouts.auth')] class extends Component {}; ?>
         <input type="hidden" name="profile_image_data" id="profileImageData">
 
         <!-- Captcha Verification -->
-        <div class="g-recaptcha" data-sitekey="6LeGqeorAAAAAPOFnXaHN-OX_b9EAUJgZ5YsBOfY" data-callback="onRegisterCaptchaSuccess" data-expired-callback="onRegisterCaptchaExpired"></div>
+
+        <div id="recaptcha-container" class="g-recaptcha" data-sitekey="6LeGqeorAAAAAPOFnXaHN-OX_b9EAUJgZ5YsBOfY"></div>
+        <script src="https://www.google.com/recaptcha/api.js?onload=onloadCallback&render=explicit" async defer></script>
 
         <!-- Captcha Alert Messages -->
         <div id="captcha-success" class="hidden p-4 mb-4 text-sm text-green-800 rounded-lg bg-green-50 dark:bg-gray-800 dark:text-green-400" role="alert">
@@ -261,9 +263,6 @@ new #[Layout('components.layouts.auth')] class extends Component {}; ?>
         <div id="captcha-error" class="hidden p-4 mb-4 text-sm text-red-800 rounded-lg bg-red-50 dark:bg-gray-800 dark:text-red-400" role="alert">
             <span class="font-medium">Please complete the captcha verification.</span>
         </div>
-
-        <div id="recaptcha-container" class="g-recaptcha" data-sitekey="6LeGqeorAAAAAPOFnXaHN-OX_b9EAUJgZ5YsBOfY"></div>
-        <script src="https://www.google.com/recaptcha/api.js?onload=onloadCallback&render=explicit" async defer></script>
 
         <div class="flex items-center justify-end">
             <flux:button id="register-button" type="submit" variant="primary" class="w-full">
