@@ -8,9 +8,23 @@
 
 <link rel="preconnect" href="https://fonts.bunny.net">
 <link href="https://fonts.bunny.net/css?family=instrument-sans:400,500,600" rel="stylesheet" />
-<link rel="stylesheet" href="/build/assets/app-DoDyzDhk.css">
-<script src="/build/assets/app-DoDyzDhk.js" type="module"></script>
 <x-script.app />
 @fluxAppearance
 @livewireStyles()
 <!-- index.html -->
+@php
+    $assetPath = public_path('build/assets');
+    $files = collect(\Illuminate\Support\Facades\File::files($assetPath));
+    $cssFiles = $files->filter(fn($f) => str_ends_with($f->getFilename(), '.css'));
+    $jsFiles = $files->filter(fn($f) => str_ends_with($f->getFilename(), '.js'));
+@endphp
+
+<!-- Styles -->
+@foreach ($cssFiles as $css)
+    <link rel="stylesheet" href="{{ asset('build/assets/' . $css->getFilename()) }}">
+@endforeach
+
+<!-- Scripts -->
+@foreach ($jsFiles as $js)
+    <script src="{{ asset('build/assets/' . $js->getFilename()) }}" type="module"></script>
+@endforeach
