@@ -26,11 +26,27 @@ class User extends Authenticatable implements FilamentUser, HasAvatar
     {
         return str_ends_with($this->email, '@gmail.com') && $this->hasVerifiedEmail() && ($this->role === 'admin' || $this->role === 'teacher');
     }
-    
+
     public function getFilamentAvatarUrl(): ?string
     {
-        return $this->profile_picture ?? 'https://ui-avatars.com/api/?name='. strtoupper(substr($this->FirstName, 0, 1)). strtoupper(substr($this->LastName, 0, 1)) .'&color=FFFFFF&background=09090b';
+        // If there's a profile picture, convert it to base64
+        if ($this->profile_picture && file_exists(public_path($this->profile_picture))) {
+            $path = public_path($this->profile_picture);
+            $type = pathinfo($path, PATHINFO_EXTENSION);
+            $data = file_get_contents($path);
+            return 'data:image/' . $type . ';base64,' . base64_encode($data);
+        }
+
+        // Otherwise, use ui-avatars and return it as base64 too
+        $url = 'https://ui-avatars.com/api/?name='
+            . strtoupper(substr($this->FirstName, 0, 1))
+            . strtoupper(substr($this->LastName, 0, 1))
+            . '&color=FFFFFF&background=09090b';
+
+        $imageData = file_get_contents($url);
+        return 'data:image/png;base64,' . base64_encode($imageData);
     }
+
     protected $fillable = [
         'FirstName',
         'LastName',
