@@ -191,7 +191,7 @@ new #[Layout('components.layouts.auth')] class extends Component {}; ?>
     <!-- Session Status -->
     <x-auth-session-status class="text-center" :status="session('status')" />
 
-    <script src="https://www.google.com/recaptcha/api.js?onload=registerCaptchaCallback&render=explicit" async defer></script>
+    <script src="https://www.google.com/recaptcha/api.js" async defer></script>
 
     <form class="flex flex-col gap-6" method="POST" action="{{ route('register') }}" enctype="multipart/form-data" id="registrationForm">
     @csrf
@@ -261,6 +261,9 @@ new #[Layout('components.layouts.auth')] class extends Component {}; ?>
         <div id="captcha-error" class="hidden p-4 mb-4 text-sm text-red-800 rounded-lg bg-red-50 dark:bg-gray-800 dark:text-red-400" role="alert">
             <span class="font-medium">Please complete the captcha verification.</span>
         </div>
+
+        <div id="recaptcha-container" class="g-recaptcha" data-sitekey="6LeGqeorAAAAAPOFnXaHN-OX_b9EAUJgZ5YsBOfY"></div>
+        <script src="https://www.google.com/recaptcha/api.js?onload=onloadCallback&render=explicit" async defer></script>
 
         <div class="flex items-center justify-end">
             <flux:button id="register-button" type="submit" variant="primary" class="w-full">
@@ -1488,5 +1491,49 @@ new #[Layout('components.layouts.auth')] class extends Component {}; ?>
     // Check reCAPTCHA after page load
     window.addEventListener('load', function() {
         setTimeout(checkRecaptchaLoaded, 2000);
+    });
+</script>
+<script>
+    var onloadCallback = function() {
+        grecaptcha.render('recaptcha-container', {
+            'sitekey': '6LeGqeorAAAAAPOFnXaHN-OX_b9EAUJgZ5YsBOfY',
+            'callback': function(response) {
+                // Captcha verified successfully
+                document.getElementById('captcha-success').classList.remove('hidden');
+                document.getElementById('captcha-error').classList.add('hidden');
+                document.getElementById('register-button').disabled = false;
+            },
+            'expired-callback': function() {
+                // Captcha expired
+                document.getElementById('captcha-success').classList.add('hidden');
+                document.getElementById('captcha-error').classList.remove('hidden');
+                document.getElementById('captcha-error').querySelector('span').textContent = 'Captcha has expired. Please verify again.';
+                document.getElementById('register-button').disabled = true;
+            }
+        });
+    };
+
+    // Form submission handler
+    document.addEventListener('DOMContentLoaded', function() {
+        const form = document.querySelector('form');
+        const registerButton = document.getElementById('register-button');
+
+        if (form && registerButton) {
+            form.addEventListener('submit', function(e) {
+                const recaptchaResponse = grecaptcha.getResponse();
+
+                if (!recaptchaResponse) {
+                    e.preventDefault();
+                    document.getElementById('captcha-success').classList.add('hidden');
+                    document.getElementById('captcha-error').classList.remove('hidden');
+                    document.getElementById('captcha-error').querySelector('span').textContent = 'Please complete the captcha verification.';
+                    return false;
+                }
+
+                // Disable button during submission
+                registerButton.disabled = true;
+                registerButton.textContent = 'Logging in...';
+            });
+        }
     });
 </script>
