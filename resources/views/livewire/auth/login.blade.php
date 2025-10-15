@@ -129,8 +129,9 @@ new #[Layout('components.layouts.auth')] class extends Component {
         <flux:checkbox wire:model="remember" :label="__('Remember me')" />
 
         <div class="flex items-center justify-end">
-            <flux:button class="g-recaptcha" data-sitekey="6Lc0qOorAAAAAJeyLbH8JKXrpcG_lnPYSRHhM4_3" data-callback="onSubmit" variant="primary" class="w-full">{{ __('Log in') }}</flux:button>
+            <flux:button variant="primary" type="submit" class="w-full">{{ __('Log in') }}</flux:button>
         </div>
+      <div class="g-recaptcha" data-sitekey="6LeGqeorAAAAAPOFnXaHN-OX_b9EAUJgZ5YsBOfY"></div>
     </form>
 
     @if (Route::has('register'))
@@ -139,8 +140,4 @@ new #[Layout('components.layouts.auth')] class extends Component {
             <flux:link :href="route('register')" wire:navigate>{{ __('Sign up') }}</flux:link>
         </div>
     @endif
-    
-<script>
-    grecaptcha.execute();
-</script>
 </div>

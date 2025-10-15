@@ -123,11 +123,10 @@ new #[Layout('components.layouts.auth')] class extends Component {}; ?>
             <ul style="text-align: left; margin: 10px 0;">
                 <li>📸 Capture your profile picture</li>
                 <li👤 Perform face detection for verification</li>
-                    <li>🎯 Ensure photo quality and proper positioning</li>
+                <li>🎯 Ensure photo quality and proper positioning</li>
             </ul>
             <p style="font-size: 14px; color: #666; margin: 10px 0;">
-                Your privacy is important. The camera will only be used during registration and no images are stored
-                without your consent.
+                Your privacy is important. The camera will only be used during registration and no images are stored without your consent.
             </p>
             <div>
                 <button id="proceedToCameraBtn" style="background: #4CAF50; color: white;">Continue to Camera</button>
@@ -140,8 +139,7 @@ new #[Layout('components.layouts.auth')] class extends Component {}; ?>
     <div id="permissionModal" class="permission-modal" style="display: none;">
         <div class="permission-modal-content">
             <h3>Camera Access Required</h3>
-            <p id="permissionMessage">To capture your profile picture, we need access to your camera. Please allow
-                camera access when prompted by your browser.</p>
+            <p id="permissionMessage">To capture your profile picture, we need access to your camera. Please allow camera access when prompted by your browser.</p>
             <div>
                 <button id="allowCameraBtn" style="background: #4CAF50; color: white;">Allow Camera Access</button>
                 <button id="skipCameraBtn" style="background: #f44336; color: white;">Skip Camera</button>
@@ -160,13 +158,11 @@ new #[Layout('components.layouts.auth')] class extends Component {}; ?>
             <!-- Profile Picture Preview Overlay -->
             <div id="profileImagePreview">
                 <p class="text-xs font-medium text-gray-700 mb-1">Profile Picture:</p>
-                <img id="capturedImage" style="width: 320px !important; height: 240px !important;" width="320"
-                    height="240" src="" alt="Captured Profile Picture">
+                <img id="capturedImage" style="width: 320px !important; height: 240px !important;" width="320" height="240" src="" alt="Captured Profile Picture">
             </div>
         </div>
 
-        <div id="faceStatus">💡 Click "Start Face Detection" to begin, or "Test Camera" to check camera access first.
-        </div>
+        <div id="faceStatus">💡 Click "Start Face Detection" to begin, or "Test Camera" to check camera access first.</div>
         <div id="faceInstructions">
             <p class="font-medium">Follow these steps in order:</p>
             <ul>
@@ -181,8 +177,7 @@ new #[Layout('components.layouts.auth')] class extends Component {}; ?>
                 class="mt-2 px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600 text-sm">Start Face
                 Detection</button>
             <button type="button" id="testCameraBtn"
-                class="mt-2 px-4 py-2 bg-green-500 text-white rounded hover:bg-green-600 text-sm">🧪 Test
-                Camera</button>
+                class="mt-2 px-4 py-2 bg-green-500 text-white rounded hover:bg-green-600 text-sm">🧪 Test Camera</button>
             <button type="button" id="toggleDebugBtn"
                 class="mt-2 px-4 py-2 bg-gray-500 text-white rounded hover:bg-gray-600 text-sm">🔍 Debug</button>
             <button type="button" id="manualBlinkBtn"
@@ -196,30 +191,27 @@ new #[Layout('components.layouts.auth')] class extends Component {}; ?>
     <!-- Session Status -->
     <x-auth-session-status class="text-center" :status="session('status')" />
 
-    <form class="flex flex-col gap-6" method="POST" action="{{ route('register') }}" enctype="multipart/form-data"
-        id="registrationForm">
-        @csrf
+    <form class="flex flex-col gap-6" method="POST" action="{{ route('register') }}" enctype="multipart/form-data" id="registrationForm">
+    @csrf
 
-        <!-- Draft Restore Section -->
-        <div id="draftSection" class="hidden bg-blue-50 border border-blue-200 rounded-lg p-4 mb-4">
-            <div class="flex items-center justify-between">
-                <div class="flex items-center space-x-2">
-                    <svg class="w-5 h-5 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                            d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z">
-                        </path>
-                    </svg>
-                    <div>
-                        <p class="text-sm font-medium text-blue-800">Draft Found</p>
-                        <p class="text-xs text-blue-600">You have unsaved form data from a previous session</p>
-                    </div>
+    <!-- Draft Restore Section -->
+    <div id="draftSection" class="hidden bg-blue-50 border border-blue-200 rounded-lg p-4 mb-4">
+        <div class="flex items-center justify-between">
+            <div class="flex items-center space-x-2">
+                <svg class="w-5 h-5 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
+                </svg>
+                <div>
+                    <p class="text-sm font-medium text-blue-800">Draft Found</p>
+                    <p class="text-xs text-blue-600">You have unsaved form data from a previous session</p>
                 </div>
-                <button type="button" id="restoreDraftBtn"
-                    class="px-4 py-2 bg-blue-600 text-white text-sm font-medium rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-colors duration-200">
-                    Restore Draft
-                </button>
             </div>
+            <button type="button" id="restoreDraftBtn"
+                class="px-4 py-2 bg-blue-600 text-white text-sm font-medium rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-colors duration-200">
+                Restore Draft
+            </button>
         </div>
+    </div>
         <!-- First Name -->
         <flux:input name="FirstName" :label="__('First Name')" type="text" required autofocus
             autocomplete="FirstName" :placeholder="__('First name')" />
@@ -257,7 +249,7 @@ new #[Layout('components.layouts.auth')] class extends Component {}; ?>
         <input type="hidden" name="profile_image_data" id="profileImageData">
 
         <!-- Debug Panel -->
-        {{-- <details class="mt-4 p-4 bg-gray-100 rounded dark:bg-gray-800 dark:text-gray-200">
+        <details class="mt-4 p-4 bg-gray-100 rounded dark:bg-gray-800 dark:text-gray-200">
             <summary class="cursor-pointer font-medium">🔧 Debug Information</summary>
             <div class="mt-2 text-sm">
                 <div id="debugInfo">
@@ -271,16 +263,14 @@ new #[Layout('components.layouts.auth')] class extends Component {}; ?>
                 <button type="button" id="refreshDebug"
                     class="mt-2 px-3 py-1 bg-gray-500 text-white rounded text-xs hover:bg-gray-600">Refresh Debug Info</button>
             </div>
-        </details> --}}
+        </details>
 
         <div class="flex items-center justify-end">
-            <flux:button class="g-recaptcha" data-sitekey="6Le6puorAAAAAD8P1onJLx41YSORJRxjNwH0eCM8" data-callback='onSubmit'
-                data-action='submit' type="submit" variant="primary" class="w-full">
+            <flux:button type="submit" variant="primary" class="w-full">
                 {{ __('Create account') }}
             </flux:button>
         </div>
     </form>
-
 
     <div class="space-x-1 rtl:space-x-reverse text-center text-sm text-zinc-600 dark:text-zinc-400">
         {{ __('Already have an account?') }}
@@ -294,11 +284,7 @@ new #[Layout('components.layouts.auth')] class extends Component {}; ?>
         </flux:link>
     </div>
 </div>
-<script>
-    function onSubmit(token) {
-        document.getElementById("demo-form").submit();
-    }
-</script>
+
 <script>
     // Enhanced camera permission and access management
     console.log('🚀 Enhanced face detection script loaded at:', new Date().toISOString());
@@ -365,10 +351,8 @@ new #[Layout('components.layouts.auth')] class extends Component {}; ?>
                 if (!navigator.permissions) {
                     return 'unavailable';
                 }
-
-                const result = await navigator.permissions.query({
-                    name: 'camera'
-                });
+                
+                const result = await navigator.permissions.query({ name: 'camera' });
                 console.log('Camera permission status:', result.state);
                 return result.state; // 'granted', 'denied', or 'prompt'
             } catch (error) {
@@ -390,12 +374,8 @@ new #[Layout('components.layouts.auth')] class extends Component {}; ?>
         static async requestCameraAccess(constraints = null) {
             const defaultConstraints = {
                 video: {
-                    width: {
-                        ideal: 640
-                    },
-                    height: {
-                        ideal: 480
-                    },
+                    width: { ideal: 640 },
+                    height: { ideal: 480 },
                     facingMode: 'user'
                 }
             };
@@ -423,48 +403,43 @@ new #[Layout('components.layouts.auth')] class extends Component {}; ?>
                 case 'NotAllowedError':
                     title = 'Camera Permission Denied';
                     message = 'Camera access was denied. To use the camera feature:\n\n' +
-                        '1. Click the camera icon in your browser\'s address bar\n' +
-                        '2. Select "Allow" for camera access\n' +
-                        '3. Refresh the page and try again\n\n' +
-                        'Or you can skip camera and upload a photo instead.';
+                             '1. Click the camera icon in your browser\'s address bar\n' +
+                             '2. Select "Allow" for camera access\n' +
+                             '3. Refresh the page and try again\n\n' +
+                             'Or you can skip camera and upload a photo instead.';
                     showTryAgain = true;
                     break;
 
                 case 'NotFoundError':
                     title = 'No Camera Found';
-                    message =
-                        'No camera device was found on your device. Please connect a camera and try again, or upload a photo instead.';
+                    message = 'No camera device was found on your device. Please connect a camera and try again, or upload a photo instead.';
                     break;
 
                 case 'NotReadableError':
                     title = 'Camera In Use';
-                    message =
-                        'Your camera is currently being used by another application. Please close other apps using the camera and try again.';
+                    message = 'Your camera is currently being used by another application. Please close other apps using the camera and try again.';
                     showTryAgain = true;
                     break;
 
                 case 'OverconstrainedError':
                     title = 'Camera Quality Issue';
-                    message =
-                        'Your camera doesn\'t support the requested video quality. We\'ll try with lower settings.';
+                    message = 'Your camera doesn\'t support the requested video quality. We\'ll try with lower settings.';
                     showTryAgain = true;
                     break;
 
                 case 'SecurityError':
                     title = 'Security Restriction';
-                    message =
-                        'Camera access is blocked due to security settings. Please check your browser security settings.';
+                    message = 'Camera access is blocked due to security settings. Please check your browser security settings.';
                     break;
 
                 default:
                     title = 'Camera Error';
-                    message =
-                        `An unexpected error occurred: ${error.message || 'Unknown error'}. Please try again or upload a photo instead.`;
+                    message = `An unexpected error occurred: ${error.message || 'Unknown error'}. Please try again or upload a photo instead.`;
                     showTryAgain = true;
             }
 
             this.showPermissionModal(`${title}\n\n${message}`, showTryAgain);
-
+            
             // Update status in the main interface
             faceStatus.textContent = `❌ ${title}: ${error.message || 'Please see the popup for details'}`;
             faceStatus.style.color = 'red';
@@ -503,8 +478,7 @@ new #[Layout('components.layouts.auth')] class extends Component {}; ?>
 
     function checkBrowserCompatibility() {
         if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
-            faceStatus.textContent =
-                '❌ Your browser does not support camera access. Please use a modern browser like Chrome, Firefox, or Edge.';
+            faceStatus.textContent = '❌ Your browser does not support camera access. Please use a modern browser like Chrome, Firefox, or Edge.';
             faceStatus.style.color = 'red';
             startFaceButton.disabled = true;
             showManualUpload();
@@ -531,8 +505,7 @@ new #[Layout('components.layouts.auth')] class extends Component {}; ?>
                     console.log('✅ face-api.js loaded successfully');
                 } else {
                     console.error('❌ face-api.js failed to load');
-                    faceStatus.textContent =
-                        '❌ Face detection library failed to load. Internet connection issue.';
+                    faceStatus.textContent = '❌ Face detection library failed to load. Internet connection issue.';
                     faceStatus.style.color = 'red';
                     showManualUpload();
                 }
@@ -575,14 +548,12 @@ new #[Layout('components.layouts.auth')] class extends Component {}; ?>
         // Check basic requirements first
         if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
             console.error('❌ getUserMedia not supported');
-            faceStatus.textContent =
-                '❌ Your browser does not support camera access. Please use a modern browser like Chrome, Firefox, or Edge.';
+            faceStatus.textContent = '❌ Your browser does not support camera access. Please use a modern browser like Chrome, Firefox, or Edge.';
             faceStatus.style.color = 'red';
             return;
         }
 
-        if (location.protocol !== 'https:' && location.hostname !== 'localhost' && location.hostname !==
-            '127.0.0.1') {
+        if (location.protocol !== 'https:' && location.hostname !== 'localhost' && location.hostname !== '127.0.0.1') {
             console.error('❌ HTTPS required for camera access');
             faceStatus.textContent = '❌ Camera access requires HTTPS. Please use HTTPS or localhost.';
             faceStatus.style.color = 'red';
@@ -616,10 +587,7 @@ new #[Layout('components.layouts.auth')] class extends Component {}; ?>
         try {
             // Simple camera test without face detection
             const testStream = await navigator.mediaDevices.getUserMedia({
-                video: {
-                    width: 320,
-                    height: 240
-                }
+                video: { width: 320, height: 240 }
             });
 
             console.log('✅ Basic camera test successful');
@@ -690,16 +658,12 @@ new #[Layout('components.layouts.auth')] class extends Component {}; ?>
 
     document.getElementById('tryAgainBtn').addEventListener('click', async () => {
         CameraPermissionManager.hidePermissionModal();
-
+        
         // Try with lower constraints if previous attempt failed
         const fallbackConstraints = {
             video: {
-                width: {
-                    ideal: 320
-                },
-                height: {
-                    ideal: 240
-                },
+                width: { ideal: 320 },
+                height: { ideal: 240 },
                 facingMode: 'user'
             }
         };
@@ -797,14 +761,12 @@ new #[Layout('components.layouts.auth')] class extends Component {}; ?>
             // Wait for video to be ready
             await new Promise((resolve) => {
                 faceVideo.addEventListener('loadedmetadata', () => {
-                    console.log('📺 Video metadata loaded, dimensions:', faceVideo.videoWidth, 'x',
-                        faceVideo.videoHeight);
+                    console.log('📺 Video metadata loaded, dimensions:', faceVideo.videoWidth, 'x', faceVideo.videoHeight);
                     resolve();
                 });
             });
 
-            faceStatus.textContent =
-                '🎯 Camera ready. Keep your face in view, smile first, then blink to complete validation!';
+            faceStatus.textContent = '🎯 Camera ready. Keep your face in view, smile first, then blink to complete validation!';
             faceStatus.style.color = 'blue';
             faceInstructions.style.display = 'block';
 
@@ -863,9 +825,7 @@ new #[Layout('components.layouts.auth')] class extends Component {}; ?>
         const avgEAR = (leftEAR + rightEAR) / 2.0;
 
         // Log EAR values for debugging
-        console.log(
-            `👁️ EAR Values - Left: ${leftEAR.toFixed(3)}, Right: ${rightEAR.toFixed(3)}, Avg: ${avgEAR.toFixed(3)}`
-        );
+        console.log(`👁️ EAR Values - Left: ${leftEAR.toFixed(3)}, Right: ${rightEAR.toFixed(3)}, Avg: ${avgEAR.toFixed(3)}`);
 
         // Calibration phase - collect baseline EAR for first 30 frames
         if (blinkCalibrationFrames < 30) {
@@ -881,14 +841,11 @@ new #[Layout('components.layouts.auth')] class extends Component {}; ?>
                 // Set dynamic threshold based on baseline (25% below baseline for maximum sensitivity)
                 earThreshold = Math.max(0.08, baselineEAR * 0.75);
 
-                console.log(
-                    `🔍 Blink calibration complete. Baseline EAR: ${baselineEAR.toFixed(3)}, Threshold: ${earThreshold.toFixed(3)}`
-                );
+                console.log(`🔍 Blink calibration complete. Baseline EAR: ${baselineEAR.toFixed(3)}, Threshold: ${earThreshold.toFixed(3)}`);
                 console.log(`📊 EAR History: [${blinkHistory.map(ear => ear.toFixed(3)).join(', ')}]`);
 
                 // Update status to show calibration is complete
-                faceStatus.textContent =
-                    `🎯 Blink detection calibrated! Baseline: ${baselineEAR.toFixed(3)}, Threshold: ${earThreshold.toFixed(3)}. Now blink your eyes!`;
+                faceStatus.textContent = `🎯 Blink detection calibrated! Baseline: ${baselineEAR.toFixed(3)}, Threshold: ${earThreshold.toFixed(3)}. Now blink your eyes!`;
                 faceStatus.style.color = 'green';
 
                 // Add visual indicator that blink detection is ready
@@ -900,8 +857,7 @@ new #[Layout('components.layouts.auth')] class extends Component {}; ?>
             } else if (blinkCalibrationFrames % 10 === 0) {
                 // Show calibration progress
                 const progress = Math.round((blinkCalibrationFrames / 30) * 100);
-                faceStatus.textContent =
-                    `🔄 Calibrating blink detection... ${progress}% (Current EAR: ${avgEAR.toFixed(3)})`;
+                faceStatus.textContent = `🔄 Calibrating blink detection... ${progress}% (Current EAR: ${avgEAR.toFixed(3)})`;
             }
             updateDebugDisplay(avgEAR, false);
             return false;
@@ -910,9 +866,7 @@ new #[Layout('components.layouts.auth')] class extends Component {}; ?>
         // Check for blink using dynamic threshold
         const isBlinking = avgEAR < earThreshold;
 
-        console.log(
-            `🎯 Blink Check - EAR: ${avgEAR.toFixed(3)}, Threshold: ${earThreshold.toFixed(3)}, Is Blinking: ${isBlinking}, Consecutive: ${consecutiveBlinkFrames}`
-        );
+        console.log(`🎯 Blink Check - EAR: ${avgEAR.toFixed(3)}, Threshold: ${earThreshold.toFixed(3)}, Is Blinking: ${isBlinking}, Consecutive: ${consecutiveBlinkFrames}`);
 
         if (isBlinking) {
             consecutiveBlinkFrames++;
@@ -968,8 +922,7 @@ new #[Layout('components.layouts.auth')] class extends Component {}; ?>
         const statusText = isBlinking ? 'BLINKING!' : 'Normal';
         const statusColor = isBlinking ? 'red' : 'green';
 
-        earDisplay.innerHTML =
-            `EAR: <span style="color: blue;">${earText}</span> | Threshold: <span style="color: orange;">${thresholdText}</span> | Status: <span style="color: ${statusColor};">${statusText}</span>`;
+        earDisplay.innerHTML = `EAR: <span style="color: blue;">${earText}</span> | Threshold: <span style="color: orange;">${thresholdText}</span> | Status: <span style="color: ${statusColor};">${statusText}</span>`;
 
         // Update blink status
         let blinkStatusText = 'Ready';
@@ -992,8 +945,7 @@ new #[Layout('components.layouts.auth')] class extends Component {}; ?>
 
         const detectionInterval = setInterval(async () => {
             try {
-                const detections = await faceapi.detectAllFaces(faceVideo, new faceapi
-                        .TinyFaceDetectorOptions())
+                const detections = await faceapi.detectAllFaces(faceVideo, new faceapi.TinyFaceDetectorOptions())
                     .withFaceLandmarks()
                     .withFaceExpressions();
 
@@ -1013,9 +965,7 @@ new #[Layout('components.layouts.auth')] class extends Component {}; ?>
                     if (!singleFaceDetected) {
                         singleFaceDetected = true;
                         faceStep1.innerHTML = 'Step 1: Keep only one face in view ✅';
-                        speak(
-                            'Step 1 completed. Now smile first, then blink your eyes to complete validation'
-                            );
+                        speak('Step 1 completed. Now smile first, then blink your eyes to complete validation');
                     }
 
                     // Check eye blink (only after smile is detected)
@@ -1036,8 +986,7 @@ new #[Layout('components.layouts.auth')] class extends Component {}; ?>
                         } else {
                             // User tried to blink before smiling
                             if (!blinkDetected) {
-                                faceStatus.textContent =
-                                    '😊 Please smile first before blinking your eyes!';
+                                faceStatus.textContent = '😊 Please smile first before blinking your eyes!';
                                 speak('Please smile first');
                                 console.log('👁️ Blink attempted before smile - rejected');
                             }
@@ -1085,15 +1034,13 @@ new #[Layout('components.layouts.auth')] class extends Component {}; ?>
                         }
                     }
                 } else if (detections.length === 0) {
-                    faceStatus.textContent =
-                        '👤 No face detected. Please position your face in the camera view.';
+                    faceStatus.textContent = '👤 No face detected. Please position your face in the camera view.';
                     if (!singleFaceDetected) {
                         speak('No face detected. Please position your face in the camera view');
                     }
                     resetValidations();
                 } else {
-                    faceStatus.textContent =
-                        `👥 Multiple faces detected (${detections.length}). Please ensure only one person is in view.`;
+                    faceStatus.textContent = `👥 Multiple faces detected (${detections.length}). Please ensure only one person is in view.`;
                     speak('Multiple faces detected. Please ensure only one person is in view');
                     resetValidations();
                 }
@@ -1248,7 +1195,7 @@ new #[Layout('components.layouts.auth')] class extends Component {}; ?>
     window.addEventListener('error', function(e) {
         console.error('🚨 JavaScript Error:', e.error);
         console.error('📍 Error location:', e.filename, 'line:', e.lineno);
-
+        
         // If it's a critical error related to face detection, show manual upload
         if (e.error && (e.error.message.includes('faceapi') || e.error.message.includes('camera'))) {
             showManualUpload();
@@ -1260,11 +1207,10 @@ new #[Layout('components.layouts.auth')] class extends Component {}; ?>
     // Enhanced error handling for unhandled promise rejections
     window.addEventListener('unhandledrejection', function(e) {
         console.error('🚨 Unhandled Promise Rejection:', e.reason);
-
+        
         // Handle specific camera-related promise rejections
         if (e.reason && typeof e.reason === 'object') {
-            if (e.reason.name && ['NotAllowedError', 'NotFoundError', 'NotReadableError'].includes(e.reason
-                    .name)) {
+            if (e.reason.name && ['NotAllowedError', 'NotFoundError', 'NotReadableError'].includes(e.reason.name)) {
                 CameraPermissionManager.handleCameraError(e.reason);
                 e.preventDefault(); // Prevent the default unhandled rejection behavior
             }
@@ -1330,7 +1276,7 @@ new #[Layout('components.layouts.auth')] class extends Component {}; ?>
             if (navigator.mediaDevices && navigator.mediaDevices.getSupportedConstraints) {
                 const supportedConstraints = navigator.mediaDevices.getSupportedConstraints();
                 console.log('📋 Supported camera constraints:', supportedConstraints);
-
+                
                 // Check for specific features we might want to use
                 const advancedFeatures = {
                     facingMode: supportedConstraints.facingMode || false,
@@ -1339,7 +1285,7 @@ new #[Layout('components.layouts.auth')] class extends Component {}; ?>
                     frameRate: supportedConstraints.frameRate || false,
                     aspectRatio: supportedConstraints.aspectRatio || false
                 };
-
+                
                 console.log('🔧 Advanced camera features available:', advancedFeatures);
                 return advancedFeatures;
             }
@@ -1457,7 +1403,6 @@ new #[Layout('components.layouts.auth')] class extends Component {}; ?>
 
     // Auto-save draft on form changes
     let saveTimeout;
-
     function scheduleSave() {
         clearTimeout(saveTimeout);
         saveTimeout = setTimeout(saveDraft, 1000); // Save after 1 second of inactivity
