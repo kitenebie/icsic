@@ -29,7 +29,7 @@ class User extends Authenticatable implements FilamentUser, HasAvatar
     
     public function getFilamentAvatarUrl(): ?string
     {
-        return $this->profile_image ?? 'https://ui-avatars.com/api/?name='. strtoupper(substr($this->FirstName, 0, 1)). strtoupper(substr($this->LastName, 0, 1)) .'&color=FFFFFF&background=09090b';
+        return $this->profile_picture ?? 'https://ui-avatars.com/api/?name='. strtoupper(substr($this->FirstName, 0, 1)). strtoupper(substr($this->LastName, 0, 1)) .'&color=FFFFFF&background=09090b';
     }
     protected $fillable = [
         'FirstName',
