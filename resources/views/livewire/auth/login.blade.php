@@ -129,7 +129,8 @@ new #[Layout('components.layouts.auth')] class extends Component {
         <flux:checkbox wire:model="remember" :label="__('Remember me')" />
 
         <div class="flex items-center justify-end">
-            <flux:button variant="primary" type="submit" class="w-full">{{ __('Log in') }}</flux:button>
+            <flux:button class="g-recaptcha" data-sitekey="6Le6puorAAAAAD8P1onJLx41YSORJRxjNwH0eCM8" data-callback='onSubmit'
+                data-action='submit' type="submit" variant="primary" type="submit" class="w-full">{{ __('Log in') }}</flux:button>
         </div>
     </form>
 
@@ -140,4 +141,9 @@ new #[Layout('components.layouts.auth')] class extends Component {
         </div>
     @endif
     
+<script>
+    function onSubmit(token) {
+        document.getElementById("demo-form").submit();
+    }
+</script>
 </div>
