@@ -11,7 +11,6 @@ use App\Models\student;
 use Filament\Models\Contracts\FilamentUser;
 use Filament\Panel;
 use Filament\Models\Contracts\HasAvatar;
-use Illuminate\Support\Facades\Storage;
 
 class User extends Authenticatable implements FilamentUser, HasAvatar
 {
@@ -27,25 +26,11 @@ class User extends Authenticatable implements FilamentUser, HasAvatar
     {
         return str_ends_with($this->email, '@gmail.com') && $this->hasVerifiedEmail() && ($this->role === 'admin' || $this->role === 'teacher');
     }
-
+    
     public function getFilamentAvatarUrl(): ?string
     {
-        if ($this->profile_picture && Storage::disk('private')->exists($this->profile_picture)) {
-            $file = Storage::disk('private')->get($this->profile_picture);
-            $type = pathinfo($this->profile_picture, PATHINFO_EXTENSION);
-            return 'data:image/' . $type . ';base64,' . base64_encode($file);
-        }
-
-        // Default avatar from ui-avatars (still base64)
-        $url = 'https://ui-avatars.com/api/?name='
-            . strtoupper(substr($this->FirstName, 0, 1))
-            . strtoupper(substr($this->LastName, 0, 1))
-            . '&color=FFFFFF&background=09090b';
-
-        $imageData = file_get_contents($url);
-        return 'data:image/png;base64,' . base64_encode($imageData);
+        return $this->profile_picture ?? 'https://ui-avatars.com/api/?name='. strtoupper(substr($this->FirstName, 0, 1)). strtoupper(substr($this->LastName, 0, 1)) .'&color=FFFFFF&background=09090b';
     }
-
     protected $fillable = [
         'FirstName',
         'LastName',
