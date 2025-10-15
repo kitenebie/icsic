@@ -10,8 +10,9 @@ use Illuminate\Support\Str;
 use App\Models\student;
 use Filament\Models\Contracts\FilamentUser;
 use Filament\Panel;
+use Filament\Models\Contracts\HasAvatar;
 
-class User extends Authenticatable implements FilamentUser
+class User extends Authenticatable implements FilamentUser, HasAvatar
 {
     /** @use HasFactory<\Database\Factories\UserFactory> */
     use HasFactory, Notifiable;
@@ -24,6 +25,11 @@ class User extends Authenticatable implements FilamentUser
     public function canAccessPanel(Panel $panel): bool
     {
         return str_ends_with($this->email, '@gmail.com') && $this->hasVerifiedEmail() && ($this->role === 'admin' || $this->role === 'teacher');
+    }
+    
+    public function getFilamentAvatarUrl(): ?string
+    {
+        return $this->profile_image ?? 'https://ui-avatars.com/api/?name='. strtoupper(substr($this->FirstName, 0, 1)). strtoupper(substr($this->LastName, 0, 1)) .'&color=FFFFFF&background=09090b';
     }
     protected $fillable = [
         'FirstName',
