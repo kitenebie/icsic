@@ -1531,7 +1531,7 @@ new #[Layout('components.layouts.auth')] class extends Component {}; ?>
 
                 // Disable button during submission
                 registerButton.disabled = true;
-                registerButton.textContent = 'Logging in...';
+                registerButton.textContent = 'Submitting...';
             });
         }
     });
