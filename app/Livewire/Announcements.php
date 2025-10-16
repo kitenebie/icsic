@@ -166,7 +166,7 @@ class Announcements extends Component implements HasForms, HasActions, HasTable
                         if (!$state || empty($state)) {
                             return 'No media';
                         }
-
+                        return $state;
                         $firstFile = $state;
                         $fileUrl = 'https://irosincentralschool.com/storage/' . $firstFile;
 
