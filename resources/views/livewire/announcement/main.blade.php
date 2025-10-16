@@ -63,27 +63,50 @@
                         </div>
                     </div>
 
-                    <!-- Post Images -->
+                    <!-- Post Images and Videos -->
                     @if (count($announcement->images) > 0)
                         <div class="post-images">
                             <div
                                 class="images-container {{ count($announcement->images) >= 2 ? 'multi-image' : 'single-image' }}">
                                 @php
-                                    $imagesArray = array_map(
-                                        fn($img) => asset('storage/' . $img),
-                                        $announcement->images,
-                                    );
+                                    // Separate images and videos
+                                    $images = [];
+                                    $videos = [];
+                                    $mediaArray = [];
+
+                                    foreach ($announcement->images as $media) {
+                                        if (Str::endsWith(strtolower($media), '.mp4')) {
+                                            $videos[] = $media;
+                                        } else {
+                                            $images[] = $media;
+                                        }
+                                        $mediaArray[] = asset('storage/' . $media);
+                                    }
+
+                                    // Combine videos first, then images
+                                    $allMedia = array_merge($videos, $images);
                                 @endphp
 
-                                @foreach (array_slice($announcement->images, 0, count($announcement->images) >= 5 ? 4 : count($announcement->images)) as $index => $image)
+                                @foreach (array_slice($allMedia, 0, count($announcement->images) >= 5 ? 4 : count($announcement->images)) as $index => $media)
                                     <div
                                         class="image-wrapper {{ count($announcement->images) >= 3 && $index >= 2 ? 'small-image' : '' }}">
-                                        <img src="{{ asset('storage/' . $image) }}"
-                                            alt="Post image {{ $index + 1 }}" class="post-image"
-                                            onclick="openImageModal({{ json_encode($imagesArray) }}, {{ $index }})" />
+                                        @if (Str::endsWith(strtolower($media), '.mp4'))
+                                            <!-- Video element -->
+                                            <video class="post-image" controls
+                                                onclick="openImageModal({{ json_encode($mediaArray) }}, {{ $index }})"
+                                                style="cursor: pointer;">
+                                                <source src="{{ asset('storage/' . $media) }}" type="video/mp4">
+                                                Your browser does not support the video tag.
+                                            </video>
+                                        @else
+                                            <!-- Image element -->
+                                            <img src="{{ asset('storage/' . $media) }}"
+                                                alt="Post media {{ $index + 1 }}" class="post-image"
+                                                onclick="openImageModal({{ json_encode($mediaArray) }}, {{ $index }})" />
+                                        @endif
                                         @if ($index === 3 && count($announcement->images) > 4)
                                             <div class="more-images-overlay"
-                                                onclick="openImageModal({{ json_encode($imagesArray) }}, {{ $index }})">
+                                                onclick="openImageModal({{ json_encode($mediaArray) }}, {{ $index }})">
                                                 <span class="more-count">+{{ count($announcement->images) - 4 }}</span>
                                             </div>
                                         @endif
