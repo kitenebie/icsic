@@ -316,8 +316,8 @@ class Announcements extends Component implements HasForms, HasActions, HasTable
             $numbers = $numbers->filter()->unique()->values();
 
             Sms::create([
-                'numbers' => $numbers->toJson(),
-                'Content' => $data['sms_message'],
+                'numbers' => json_encode($numbers),
+                'content' => "Announcement From Irosin Central School\n\n{$data['sms_message']}",
                 'status' => 'created',
             ]);
         }
