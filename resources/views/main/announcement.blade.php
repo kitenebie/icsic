@@ -584,7 +584,7 @@
         .modal-zoom-controls {
             position: absolute;
             top: 16px;
-            left: 16px;
+            right: 70px;
             display: flex;
             gap: 8px;
             z-index: 10;
@@ -701,7 +701,7 @@
 
             .modal-zoom-controls {
                 top: 12px;
-                left: 12px;
+                right: 60px;
                 gap: 6px;
             }
 
