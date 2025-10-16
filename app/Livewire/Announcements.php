@@ -174,7 +174,7 @@ class Announcements extends Component implements HasForms, HasActions, HasTable
 
                         // Check if it's a video file
                         if (Str::endsWith(strtolower($firstFile), '.mp4')) {
-                            return '<i class="fas fa-video text-blue-500"></i> Video';
+                        return '<img src="/video.jpg" alt="Media" style="width: 50px; height: 50px; object-fit: cover; border-radius: 4px;">';
                         }
 
                         // For image files, show thumbnail
