@@ -318,7 +318,7 @@ class Announcements extends Component implements HasForms, HasActions, HasTable
 
             Sms::create([
                 'numbers' => $numbers->toJson(),
-                'Content' => $this->smsMessage,
+                'Content' => $this->sms_message,
                 'status' => 'created',
             ]);
         }
