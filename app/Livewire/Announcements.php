@@ -251,7 +251,7 @@ class Announcements extends Component implements HasForms, HasActions, HasTable
                                 ->uploadingMessage('Uploading Images...')
                                 ->minFiles(0)
                                 ->maxFiles(15)
-                                ->maxSize(50000),
+                                ->maxSize(100000),
                             MarkdownEditor::make('content')
                                 ->toolbarButtons([]),
                             Checkbox::make('is_sms')
