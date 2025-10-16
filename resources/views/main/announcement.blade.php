@@ -580,9 +580,11 @@
         }
 
         .modal-image {
-            max-width: auto;
-            max-height: auto;
-            /* object-fit: contain; */
+            max-width: 100%;
+            max-height: 100%;
+            width: auto;
+            height: auto;
+            object-fit: contain;
             border-radius: 8px;
         }
 
