@@ -243,8 +243,7 @@ class Announcements extends Component implements HasForms, HasActions, HasTable
                                 ->label('SMS Message Content')
                                 ->rows(3)
                                 ->visible(fn($get) => $get('is_sms') === true)
-                                ->required(fn($get) => $get('is_sms') === true)
-                                ->maxLength(200),
+                                ->required(fn($get) => $get('is_sms') === true),
                         ];
                     })
                     ->mutateFormDataUsing(function (array $data, $record): array {
@@ -318,7 +317,7 @@ class Announcements extends Component implements HasForms, HasActions, HasTable
 
             Sms::create([
                 'numbers' => $numbers->toJson(),
-                'Content' => $this->sms_message,
+                'Content' => $data['sms_message'],
                 'status' => 'created',
             ]);
         }
