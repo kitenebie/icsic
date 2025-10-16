@@ -92,7 +92,7 @@
                                         class="image-wrapper {{ count($announcement->images) >= 3 && $index >= 2 ? 'small-image' : '' }}">
                                         @if (Str::endsWith(strtolower($media), '.mp4'))
                                             <!-- Video element -->
-                                            <video class="post-image" controls
+                                            <video class="post-video" controls
                                                 onclick="openImageModal({{ json_encode($mediaArray) }}, {{ $index }})"
                                                 style="cursor: pointer;">
                                                 <source src="{{ asset('storage/' . $media) }}" type="video/mp4">
