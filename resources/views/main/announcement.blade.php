@@ -523,9 +523,12 @@
             position: relative;
             max-width: 90vw;
             max-height: 90vh;
+            width: auto;
+            height: auto;
             display: flex;
             align-items: center;
             justify-content: center;
+            padding: 20px;
         }
 
         .modal-close {
@@ -546,7 +549,63 @@
             z-index: 10;
         }
 
+        .modal-zoom-controls {
+            position: absolute;
+            top: 16px;
+            left: 16px;
+            display: flex;
+            gap: 8px;
+            z-index: 10;
+        }
+
+        .zoom-btn {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: rgba(0, 0, 0, 0.5);
+            border: none;
+            color: white;
+            font-size: 18px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: background-color 0.2s;
+        }
+
+        .zoom-btn:hover {
+            background: rgba(0, 0, 0, 0.7);
+        }
+
         .modal-close:hover {
+            background: rgba(0, 0, 0, 0.7);
+        }
+
+        .modal-zoom-controls {
+            position: absolute;
+            top: 16px;
+            left: 16px;
+            display: flex;
+            gap: 8px;
+            z-index: 10;
+        }
+
+        .zoom-btn {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: rgba(0, 0, 0, 0.5);
+            border: none;
+            color: white;
+            font-size: 18px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: background-color 0.2s;
+        }
+
+        .zoom-btn:hover {
             background: rgba(0, 0, 0, 0.7);
         }
 
@@ -580,12 +639,14 @@
         }
 
         .modal-image {
-            max-width: 100%;
-            max-height: 100%;
+            max-width: calc(100% - 40px);
+            max-height: calc(100% - 40px);
             width: auto;
             height: auto;
             object-fit: contain;
             border-radius: 8px;
+            display: block;
+            margin: 0 auto;
         }
 
         .hidden {
@@ -634,6 +695,20 @@
 
             .modal-content {
                 margin: 16px;
+                max-width: calc(100vw - 32px);
+                max-height: calc(100vh - 32px);
+            }
+
+            .modal-zoom-controls {
+                top: 12px;
+                left: 12px;
+                gap: 6px;
+            }
+
+            .zoom-btn {
+                width: 36px;
+                height: 36px;
+                font-size: 16px;
             }
         }
 
@@ -887,26 +962,56 @@
 
             let currentImages = [];
             let currentIndex = 0;
+            let currentZoom = 1;
+            let zoomStep = 0.25;
 
             window.openImageModal = function(images, index) {
                 currentImages = images;
                 currentIndex = index;
+                currentZoom = 1; // Reset zoom when opening modal
                 document.getElementById('modalImage').src = currentImages[currentIndex];
                 document.getElementById('imageModal').classList.remove('hidden');
                 document.body.style.overflow = 'hidden';
+                updateImageTransform();
             };
 
             window.closeImageModal = function() {
                 document.getElementById('imageModal').classList.add('hidden');
                 document.body.style.overflow = 'auto';
+                currentZoom = 1; // Reset zoom when closing modal
             };
 
             window.changeModalImage = function(direction) {
                 currentIndex += direction;
                 if (currentIndex < 0) currentIndex = currentImages.length - 1;
                 if (currentIndex >= currentImages.length) currentIndex = 0;
+                currentZoom = 1; // Reset zoom when changing images
                 document.getElementById('modalImage').src = currentImages[currentIndex];
+                updateImageTransform();
             };
+
+            window.zoomImage = function(direction) {
+                if (direction === 'in') {
+                    currentZoom += zoomStep;
+                } else if (direction === 'out') {
+                    currentZoom = Math.max(zoomStep, currentZoom - zoomStep);
+                }
+                updateImageTransform();
+            };
+
+            window.resetZoom = function() {
+                currentZoom = 1;
+                updateImageTransform();
+            };
+
+            function updateImageTransform() {
+                const modalImage = document.getElementById('modalImage');
+                if (modalImage) {
+                    modalImage.style.transform = `scale(${currentZoom})`;
+                    modalImage.style.transformOrigin = 'center center';
+                    modalImage.style.transition = 'transform 0.2s ease';
+                }
+            }
 
             document.addEventListener('keydown', function(e) {
                 const modal = document.getElementById('imageModal');

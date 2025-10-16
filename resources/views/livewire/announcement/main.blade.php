@@ -156,6 +156,20 @@
             <button class="modal-close" onclick="closeImageModal()" aria-label="Close modal">
                 <i class="fas fa-times"></i>
             </button>
+
+            <!-- Zoom Controls -->
+            <div class="modal-zoom-controls">
+                <button class="zoom-btn" onclick="zoomImage('in')" aria-label="Zoom in" title="Zoom in">
+                    <i class="fas fa-search-plus"></i>
+                </button>
+                <button class="zoom-btn" onclick="zoomImage('out')" aria-label="Zoom out" title="Zoom out">
+                    <i class="fas fa-search-minus"></i>
+                </button>
+                <button class="zoom-btn" onclick="resetZoom()" aria-label="Reset zoom" title="Reset zoom">
+                    <i class="fas fa-expand"></i>
+                </button>
+            </div>
+
             <div class="modal-content">
                 <button class="modal-nav modal-prev" onclick="changeModalImage(-1)" aria-label="Previous image">
                     <i class="fas fa-chevron-left"></i>
