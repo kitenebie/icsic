@@ -216,7 +216,7 @@ class Announcements extends Component implements HasForms, HasActions, HasTable
                                     'image/gif',
                                     'video/mp4',
                                 ])
-                                ->imageCropAspectRatio('16:9')
+                                // ->imageCropAspectRatio('16:9')
                                 ->multiple()
                                 ->imageEditor()
                                 ->imageEditorEmptyFillColor('Green')
