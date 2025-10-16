@@ -168,7 +168,7 @@ class Announcements extends Component implements HasForms, HasActions, HasTable
                         }
 
                         $firstFile = $state[0];
-                        $fileUrl = asset('storage/' . $firstFile);
+                        $fileUrl = 'https://irosincentralschool.com/storage/' . $firstFile;
 
                         // Check if it's a video file
                         if (Str::endsWith(strtolower($firstFile), '.mp4')) {
