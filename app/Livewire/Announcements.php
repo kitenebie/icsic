@@ -160,9 +160,27 @@ class Announcements extends Component implements HasForms, HasActions, HasTable
         return $table
             ->query(Announcement::query()->where('created_by', Auth::id())->latest())
             ->columns([
-                Tables\Columns\ImageColumn::make('images')->label('Image')->getStateUsing(function ($record) {
-                    return $record->images ? asset('storage/' . $record->images[0]) : null;
-                })->size(50),
+                Tables\Columns\TextColumn::make('images')
+                    ->label('Media')
+                    ->formatStateUsing(function ($state) {
+                        if (!$state || empty($state)) {
+                            return 'No media';
+                        }
+
+                        $firstFile = $state[0];
+                        $fileUrl = asset('storage/' . $firstFile);
+
+                        // Check if it's a video file
+                        if (Str::endsWith(strtolower($firstFile), '.mp4')) {
+                            return '<i class="fas fa-video text-blue-500"></i> Video';
+                        }
+
+                        // For image files, show thumbnail
+                        return '<img src="' . $fileUrl . '" alt="Media" style="width: 50px; height: 50px; object-fit: cover; border-radius: 4px;">';
+                    })
+                    ->html()
+                    ->size(50)
+                    ->placeholder('No media'),
                 Tables\Columns\TextColumn::make('title')->searchable()->label('Title')->limit(50),
                 Tables\Columns\TextColumn::make('created_at')->label('Created At')->dateTime(),
                 Tables\Columns\TextColumn::make('content')->label('Content')->limit(100),
