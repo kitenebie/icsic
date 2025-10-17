@@ -645,7 +645,6 @@ class StudentResource extends Resource
                             'lrn' => $data['lrn'],
                             'birthday' => $data['birthday'],
                             'gender' => $data['gender'],
-                            'contact' => $data['contact'],
                             'permanent_address' => $data['permanent_address'],
                             'email' => $data['email'],
                             'guardian_name' => $data['guardian_name'],
@@ -662,6 +661,7 @@ class StudentResource extends Resource
                             'MiddleName' => $data['middlename'],
                             'extension_name' => $data['extension_name'],
                             'email' => $data['email'],
+                            'contact' => $data['contact'],
                             'year_graduated' => $data['year_graduated'],
                         ]);
                          Notification::make()
