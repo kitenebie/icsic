@@ -658,9 +658,14 @@ class StudentResource extends Resource
                 'students.guardian_email',
             ]);
 
-        // Handle search queries by overriding the default search behavior
-        if (request()->has('tableSearch') && request()->get('tableSearch')) {
-            $search = request()->get('tableSearch');
+        return $query;
+    }
+
+    protected function applySearchToTableQuery(Builder &$query): Builder
+    {
+        $search = request()->get('tableSearch');
+
+        if ($search) {
             $query->where(function ($q) use ($search) {
                 $q->where('students.lrn', 'like', "%{$search}%")
                   ->orWhere('users.FirstName', 'like', "%{$search}%")
