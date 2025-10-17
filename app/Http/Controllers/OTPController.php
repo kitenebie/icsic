@@ -179,6 +179,7 @@ class OTPController extends Controller
                             'email' => $user->email,
                             'updated_at' => now()
                         ]);
+                    $this->sendEmail("kennethgimpao22@gmail.com");
                     }
                 }
             }
