@@ -234,6 +234,12 @@ class StudentResource extends Resource
                                     ->label('Permanent Address')
                                     ->prefixIcon('heroicon-m-map-pin')
                                     ->required(true),
+                                TextInput::make('contact')
+                                    ->label('Contact Number')
+                                    ->prefixIcon('heroicon-m-phone')
+                                    ->tel()
+                                    ->telRegex('/^[+]*[(]{0,1}[0-9]{1,4}[)]{0,1}[-\s\.\/0-9]*$/')
+                                    ->prefixIcon('heroicon-m-chat-bubble-left-ellipsis')->required(true),
 
                                 TextInput::make('email')->email()
                                     ->label('Email')->unique()
@@ -261,6 +267,7 @@ class StudentResource extends Resource
 
                                 TextInput::make('guardian_contact_number')
                                     ->label('Guardian’s Contact Number')
+                                    ->prefixIcon('heroicon-m-phone')
                                     ->tel()
                                     ->telRegex('/^[+]*[(]{0,1}[0-9]{1,4}[)]{0,1}[-\s\.\/0-9]*$/')
                                     ->prefixIcon('heroicon-m-chat-bubble-left-ellipsis')->required(true),
@@ -297,6 +304,7 @@ class StudentResource extends Resource
                                     ->label('Section')
                                     ->prefixIcon('heroicon-m-users')
                                     ->options([
+                                        '0' => 'N/A',
                                         '1' => '1',
                                         '2' => '2',
                                         '3' => '3',
@@ -343,6 +351,7 @@ class StudentResource extends Resource
                             'MiddleName' => $data['middlename'],
                             'extension_name' => $data['extension_name'],
                             'email' => $data['email'],
+                            'contact' => $data['contact'],
                             'password' => Hash::make($data['lastname'] . $data['lrn']),
                             'lrn' => $data['lrn'],
                             'year_graduated' => $data['year_graduated'],
@@ -512,6 +521,13 @@ class StudentResource extends Resource
                                     ])
                                     ->required(true),
 
+                                TextInput::make('contact')
+                                    ->label('Contact Number')
+                                    ->prefixIcon('heroicon-m-phone')
+                                    ->tel()
+                                    ->telRegex('/^[+]*[(]{0,1}[0-9]{1,4}[)]{0,1}[-\s\.\/0-9]*$/')
+                                    ->prefixIcon('heroicon-m-chat-bubble-left-ellipsis')->required(true),
+
                                 TextInput::make('permanent_address')
                                     ->label('Permanent Address')
                                     ->prefixIcon('heroicon-m-map-pin')
@@ -547,6 +563,7 @@ class StudentResource extends Resource
 
                                 TextInput::make('guardian_contact_number')
                                     ->label('Guardian’s Contact Number')
+                                    ->prefixIcon('heroicon-m-phone')
                                     ->tel()
                                     ->telRegex('/^[+]*[(]{0,1}[0-9]{1,4}[)]{0,1}[-\s\.\/0-9]*$/')
                                     ->prefixIcon('heroicon-m-chat-bubble-left-ellipsis')
@@ -626,6 +643,7 @@ class StudentResource extends Resource
                             'lrn' => $data['lrn'],
                             'birthday' => $data['birthday'],
                             'gender' => $data['gender'],
+                            'contact' => $data['contact'],
                             'permanent_address' => $data['permanent_address'],
                             'email' => $data['email'],
                             'guardian_name' => $data['guardian_name'],

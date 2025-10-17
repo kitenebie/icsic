@@ -13,7 +13,7 @@ class student extends Model
         'year_graduated' => 'integer',       // Cast year_graduated as an integer
         'remarks' => 'string',               // Cast remarks as a string
         'gender' => 'string',                // Cast gender as a string (although it’s already string in DB, this can be helpful for consistency)
-    ];
+    ]; 
     
     protected $fillable = [
         'profile',
