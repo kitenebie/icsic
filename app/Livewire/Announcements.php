@@ -337,7 +337,7 @@ class Announcements extends Component implements HasForms, HasActions, HasTable
 
             Sms::create([
                 'numbers' => json_encode($numbers),
-                'content' => "Announcement From Irosin Central School\n\n{$data['sms_message']}",
+                'Content' => "Announcement From Irosin Central School\n\n{$data['sms_message']}",
                 'status' => 'created',
             ]);
         }
