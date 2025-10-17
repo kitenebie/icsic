@@ -367,10 +367,10 @@ class StudentResource extends Resource
                     ->width(40),
 
                 TextColumn::make('lrn')->label('LRN')->searchable()->sortable(),
-                TextColumn::make('firstname')->label('First Name')->sortable(),
-                TextColumn::make('middlename')->label('Middle Name')->sortable(),
-                TextColumn::make('lastname')->label('Last Name')->sortable()->toggleable(),
-                TextColumn::make('extension_name')->label('Ext Name')->sortable(),
+                TextColumn::make('firstname')->label('First Name')->searchable()->sortable(),
+                TextColumn::make('middlename')->label('Middle Name')->searchable()->sortable(),
+                TextColumn::make('lastname')->label('Last Name')->searchable()->sortable()->toggleable(),
+                TextColumn::make('extension_name')->label('Ext Name')->searchable()->sortable(),
                 TextColumn::make('birthday')->label('Birthday')->date()->sortable(),
                 TextColumn::make('age')->label('Age')->sortable(),
                 TextColumn::make('permanent_address')->label('Address')->limit(30)->tooltip(fn($record) => $record->permanent_address),
@@ -635,7 +635,7 @@ class StudentResource extends Resource
 
     public static function getEloquentQuery(): Builder
     {
-        $query = parent::getEloquentQuery()
+        return parent::getEloquentQuery()
             ->leftJoin('users', 'students.lrn', '=', 'users.lrn')
             ->select([
                 'students.id',
@@ -657,25 +657,6 @@ class StudentResource extends Resource
                 'students.guardian_contact_number',
                 'students.guardian_email',
             ]);
-
-        return $query;
-    }
-
-    protected function applySearchToTableQuery(Builder &$query): Builder
-    {
-        $search = request()->get('tableSearch');
-
-        if ($search) {
-            $query->where(function ($q) use ($search) {
-                $q->where('students.lrn', 'like', "%{$search}%")
-                  ->orWhere('users.FirstName', 'like', "%{$search}%")
-                  ->orWhere('users.MiddleName', 'like', "%{$search}%")
-                  ->orWhere('users.LastName', 'like', "%{$search}%")
-                  ->orWhere('users.extension_name', 'like', "%{$search}%");
-            });
-        }
-
-        return $query;
     }
 
 
