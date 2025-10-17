@@ -329,7 +329,7 @@ class StudentResource extends Resource
                             'permanent_address' => $data['permanent_address'],
                             'gender' => $data['gender'],
                             'grade' => $data['grade'],
-                            'section' => $data['section'],
+                            'section' => $data['section'] ?? null,
                             'email' => $data['email'],
                             'guardian_name' => $data['guardian_name'],
                             'relationship' => $data['relationship'],
