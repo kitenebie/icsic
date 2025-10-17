@@ -689,6 +689,7 @@ class StudentResource extends Resource
                 'users.LastName as lastname',
                 'users.MiddleName as middlename',
                 'users.extension_name',
+                'users.contact',
                 'users.email as user_email',
                 'students.lrn',
                 'students.profile',
