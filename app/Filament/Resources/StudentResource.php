@@ -407,6 +407,7 @@ class StudentResource extends Resource
                     ->sortable(),
                 TextColumn::make('birthday')->label('Birthday')->date()->sortable(),
                 TextColumn::make('age')->label('Age')->sortable(),
+                TextColumn::make('contact')->label('Contact Number')->sortable(),
                 TextColumn::make('permanent_address')->label('Address')->limit(30)->tooltip(fn($record) => $record->permanent_address),
                 TextColumn::make('gender')->label('Gender')->sortable(),
 
