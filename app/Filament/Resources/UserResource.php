@@ -240,7 +240,6 @@ class UserResource extends Resource
                         'admin' => 'Admin',
                         'staff' => 'Staff',
                         'teacher' => 'Teacher', 
-                        'student' => 'Student',
                         'parent' => 'Parent',
                         'graduate' => 'Graduate',
                         'pending' => 'Pending'
