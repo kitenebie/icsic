@@ -636,7 +636,7 @@ class StudentResource extends Resource
     public static function getEloquentQuery(): Builder
     {
         $query = parent::getEloquentQuery()
-            ->leftJoin('users', 'students.email', '=', 'users.email')
+            ->leftJoin('users', 'students.lrn', '=', 'users.lrn')
             ->select([
                 'students.id',
                 'users.id as userId',
