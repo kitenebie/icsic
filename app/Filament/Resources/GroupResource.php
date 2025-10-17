@@ -27,7 +27,7 @@ class GroupResource extends Resource
     public static function form(Form $form): Form
     {
         return $form->schema([
-            Forms\Components\TextInput::make('author_id')
+            Forms\Components\Hidden::make('author_id')
                 ->default(fn() => Auth::user()->id),
 
             Forms\Components\TextInput::make('name')
