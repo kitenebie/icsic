@@ -599,6 +599,7 @@ class StudentResource extends Resource
                                     ->label('Section')
                                     ->prefixIcon('heroicon-m-users')
                                     ->options([
+                                        '0' => 'N/A',
                                         '1' => '1',
                                         '2' => '2',
                                         '3' => '3',
@@ -652,7 +653,7 @@ class StudentResource extends Resource
                             'guardian_contact_number' => $data['guardian_contact_number'],
                             'guardian_email' => $data['guardian_email'],
                             'grade' => $data['grade'],
-                            'section' => $data['section'],
+                            'section' => $data['section'] ?? null,
                             'year_graduated' => $data['year_graduated'],
                         ]);
                         User::where('lrn', $data['lrn'])->update([
