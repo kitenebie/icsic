@@ -92,9 +92,7 @@ class StudentResource extends Resource
                         5,
                         6
                     ])
-                    ->default(0)
-                    ->required(fn(\Filament\Forms\Get $get) => $get('grade') !== 'Kinder')
-                    ->hidden(fn(\Filament\Forms\Get $get) => $get('grade') === 'Kinder'),
+                    ->required(),
 
                 TextInput::make('year_graduated'),
             ]);
