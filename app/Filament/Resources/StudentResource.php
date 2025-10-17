@@ -635,7 +635,7 @@ class StudentResource extends Resource
 
     public static function getEloquentQuery(): Builder
     {
-        return parent::getEloquentQuery()
+        $query = parent::getEloquentQuery()
             ->leftJoin('users', 'students.lrn', '=', 'users.lrn')
             ->select([
                 'students.id',
@@ -657,6 +657,20 @@ class StudentResource extends Resource
                 'students.guardian_contact_number',
                 'students.guardian_email',
             ]);
+
+        // Handle search queries by overriding the default search behavior
+        if (request()->has('tableSearch') && request()->get('tableSearch')) {
+            $search = request()->get('tableSearch');
+            $query->where(function ($q) use ($search) {
+                $q->where('students.lrn', 'like', "%{$search}%")
+                  ->orWhere('users.FirstName', 'like', "%{$search}%")
+                  ->orWhere('users.MiddleName', 'like', "%{$search}%")
+                  ->orWhere('users.LastName', 'like', "%{$search}%")
+                  ->orWhere('users.extension_name', 'like', "%{$search}%");
+            });
+        }
+
+        return $query;
     }
 
 
