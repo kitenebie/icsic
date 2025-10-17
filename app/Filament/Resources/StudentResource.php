@@ -366,11 +366,37 @@ class StudentResource extends Resource
                     ->height(40)
                     ->width(40),
 
-                TextColumn::make('lrn')->label('LRN')->searchable()->sortable(),
-                TextColumn::make('firstname')->label('First Name')->searchable()->sortable(),
-                TextColumn::make('middlename')->label('Middle Name')->searchable()->sortable(),
-                TextColumn::make('lastname')->label('Last Name')->searchable()->sortable()->toggleable(),
-                TextColumn::make('extension_name')->label('Ext Name')->searchable()->sortable(),
+                TextColumn::make('lrn')
+                    ->label('LRN')
+                    ->searchable(query: function (Builder $query, string $search): Builder {
+                        return $query->orWhere('students.lrn', 'like', "%{$search}%");
+                    })
+                    ->sortable(),
+                TextColumn::make('firstname')
+                    ->label('First Name')
+                    ->searchable(query: function (Builder $query, string $search): Builder {
+                        return $query->orWhere('users.FirstName', 'like', "%{$search}%");
+                    })
+                    ->sortable(),
+                TextColumn::make('middlename')
+                    ->label('Middle Name')
+                    ->searchable(query: function (Builder $query, string $search): Builder {
+                        return $query->orWhere('users.MiddleName', 'like', "%{$search}%");
+                    })
+                    ->sortable(),
+                TextColumn::make('lastname')
+                    ->label('Last Name')
+                    ->searchable(query: function (Builder $query, string $search): Builder {
+                        return $query->orWhere('users.LastName', 'like', "%{$search}%");
+                    })
+                    ->sortable()
+                    ->toggleable(),
+                TextColumn::make('extension_name')
+                    ->label('Ext Name')
+                    ->searchable(query: function (Builder $query, string $search): Builder {
+                        return $query->orWhere('users.extension_name', 'like', "%{$search}%");
+                    })
+                    ->sortable(),
                 TextColumn::make('birthday')->label('Birthday')->date()->sortable(),
                 TextColumn::make('age')->label('Age')->sortable(),
                 TextColumn::make('permanent_address')->label('Address')->limit(30)->tooltip(fn($record) => $record->permanent_address),
