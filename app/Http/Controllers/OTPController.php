@@ -69,8 +69,14 @@ class OTPController extends Controller
         );
         Sms::updateOrCreate(
             ['numbers' => [Auth::user()->contact]],
-            ['Content' => "Your OTP " . $otp]
+            [
+                'Content' => "Hi " . Auth::user()->name . "!\n\n" .
+                    "This message is from Irosin Central School Official Website.\n\n" .
+                    "Your One-Time Password (OTP) is: " . $otp . "\n\n" .
+                    "⚠️ Do not share this code with anyone for your security."
+            ]
         );
+
 
         // Send the email
         Mail::to(Auth::user()->email)->send(new OtpMail($otp));
