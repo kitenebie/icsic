@@ -452,18 +452,15 @@ class StudentResource extends Resource
                 TextColumn::make('year_graduated')->label('Graduated')->toggleable(),
                 TextColumn::make('user_group')
                     ->label('Groups')
-                    ->getStateUsing(function ($record) {
-                        if (!$record->user_group || empty($record->user_group)) {
-                            return 'No groups assigned';
+                    ->formatStateUsing(function ($state) {
+                        if (!$state) {
+                            return 'No groups';
                         }
-
-                        $groupIds = is_array($record->user_group) ? $record->user_group : [$record->user_group];
-                        $groups = Group::whereIn('id', $groupIds)->pluck('name')->toArray();
-
-                        return implode(', ', $groups);
+                        return is_array($state) ? implode(', ', $state) : $state;
                     })
                     ->badge()
-                    ->color('primary'),
+                    ->color('primary')
+                    ->toggleable(),
             ])
             ->filters([
                 Tables\Filters\SelectFilter::make('gender')
