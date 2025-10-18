@@ -176,6 +176,14 @@ class UserResource extends Resource
                     ->image()
                     ->directory('profiles')
                     ->columnSpanFull(),
+                Select::make('user_group')
+                    ->label('User Groups')
+                    ->multiple()
+                    ->options(Group::all()->pluck('name', 'id'))
+                    ->searchable()
+                    ->placeholder('Select groups')
+                    ->columnSpanFull()
+                    ->helperText('Hold Ctrl/Cmd to select multiple groups'),
             ]);
     }
 
@@ -212,7 +220,20 @@ class UserResource extends Resource
                 TextColumn::make('contact'),
                 TextColumn::make('email'),
                 TextColumn::make('role'),
-                TextColumn::make('user_group'),
+                TextColumn::make('user_group')
+                    ->label('Groups')
+                    ->getStateUsing(function ($record) {
+                        if (!$record->user_group || empty($record->user_group)) {
+                            return 'No groups assigned';
+                        }
+
+                        $groupIds = is_array($record->user_group) ? $record->user_group : [$record->user_group];
+                        $groups = Group::whereIn('id', $groupIds)->pluck('name')->toArray();
+
+                        return implode(', ', $groups);
+                    })
+                    ->badge()
+                    ->color('primary'),
                 TextColumn::make('year_graduated'),
                 ImageColumn::make('front_id')
                     ->label('Front ID')
