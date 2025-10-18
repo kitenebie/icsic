@@ -38,8 +38,8 @@
                         class="{{ request()->routeIs('announcements') ? 'font-semibold text-gray-900' : 'hover:text-gray-900' }}">Announcements</a></li>
                 <li><a href="/events"
                         class="{{ request()->routeIs('events') ? 'font-semibold text-gray-900' : 'hover:text-gray-900' }}">Events</a></li>
-                <li><a href="/gallery"
-                        class="{{ request()->routeIs('gallery') ? 'font-semibold text-gray-900' : 'hover:text-gray-900' }}">Gallery</a></li>
+                {{-- <li><a href="/gallery"
+                        class="{{ request()->routeIs('gallery') ? 'font-semibold text-gray-900' : 'hover:text-gray-900' }}">Gallery</a></li> --}}
 
                 <!-- Dropdown -->
                 <li x-data="{ open: false }" class="relative">
@@ -103,8 +103,8 @@
                 class="{{ request()->routeIs('announcements') ? 'font-semibold text-gray-900 block' : 'hover:text-gray-900 block' }}">Announcements</a>
             <a href="/events"
                 class="{{ request()->routeIs('events') ? 'font-semibold text-gray-900 block' : 'hover:text-gray-900 block' }}">Events</a>
-            <a href="/gallery"
-                class="{{ request()->routeIs('gallery') ? 'font-semibold text-gray-900 block' : 'hover:text-gray-900 block' }}">Gallery</a>
+            {{-- <a href="/gallery"
+                class="{{ request()->routeIs('gallery') ? 'font-semibold text-gray-900 block' : 'hover:text-gray-900 block' }}">Gallery</a> --}}
 
             <div class="border-t border-gray-200 pt-2 mt-2">
                 <p class="text-gray-500 text-xs uppercase tracking-wide">More</p>
@@ -117,9 +117,9 @@
             </div>
         @endif
 
-        <a href="/about"
+        {{-- <a href="/about"
             class="{{ request()->routeIs('about') ? 'font-semibold text-gray-900 block' : 'hover:text-gray-900 block' }}">About
-            Us</a>
+            Us</a> --}}
 
         @if (!auth()->check())
             <div class="flex mt-4">
