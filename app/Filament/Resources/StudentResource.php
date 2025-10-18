@@ -452,11 +452,28 @@ class StudentResource extends Resource
                 TextColumn::make('year_graduated')->label('Graduated')->toggleable(),
                 TextColumn::make('user_group')
                     ->label('Groups')
-                    ->formatStateUsing(function ($state) {
-                        if (!$state) {
-                            return 'No groups';
+                    ->getStateUsing(function ($record) {
+                        // Access user_group from the joined query result
+                        $userGroupData = $record->user_group;
+
+                        if (!$userGroupData) {
+                            return 'No groups assigned';
                         }
-                        return is_array($state) ? implode(', ', $state) : $state;
+
+                        // Handle both array and JSON string formats
+                        if (is_string($userGroupData)) {
+                            $userGroupData = json_decode($userGroupData, true) ?? [];
+                        }
+
+                        $groupIds = is_array($userGroupData) ? $userGroupData : [$userGroupData];
+
+                        if (empty($groupIds)) {
+                            return 'No groups assigned';
+                        }
+
+                        $groupNames = Group::whereIn('id', $groupIds)->pluck('name')->toArray();
+
+                        return implode(', ', $groupNames);
                     })
                     ->badge()
                     ->color('primary')
