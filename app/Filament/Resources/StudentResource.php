@@ -5,6 +5,7 @@ namespace App\Filament\Resources;
 use App\Filament\Resources\StudentResource\Pages;
 use App\Models\student as Student;
 use App\Models\User;
+use App\Models\Group;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
@@ -95,6 +96,15 @@ class StudentResource extends Resource
                     ->required(),
 
                 TextInput::make('year_graduated'),
+
+                Select::make('user_group')
+                    ->label('User Groups')
+                    ->multiple()
+                    ->options(Group::all()->pluck('name', 'id'))
+                    ->searchable()
+                    ->placeholder('Select groups')
+                    ->columnSpanFull()
+                    ->helperText('Hold Ctrl/Cmd to select multiple groups'),
             ]);
     }
 
@@ -328,6 +338,26 @@ class StudentResource extends Resource
                                 '2xl' => 3,
                             ]),
 
+                        Section::make('User Groups')
+                            ->description('Assign the student to specific user groups.')
+                            ->schema([
+                                Select::make('user_group')
+                                    ->label('User Groups')
+                                    ->multiple()
+                                    ->options(Group::all()->pluck('name', 'id'))
+                                    ->searchable()
+                                    ->placeholder('Select groups')
+                                    ->columnSpanFull()
+                                    ->helperText('Hold Ctrl/Cmd to select multiple groups'),
+                            ])
+                            ->columns([
+                                'sm' => 1,
+                                'md' => 1,
+                                'lg' => 1,
+                                'xl' => 1,
+                                '2xl' => 1,
+                            ]),
+
                     ])
                     ->action(function (array $data) {
                         $student_data = [
@@ -355,7 +385,8 @@ class StudentResource extends Resource
                             'password' => Hash::make($data['lastname'] . $data['lrn']),
                             'lrn' => $data['lrn'],
                             'year_graduated' => $data['year_graduated'],
-                            'role' => 'student'
+                            'role' => 'student',
+                            'user_group' => $data['user_group'],
                         ];
                         User::create($user_model);
                         Student::create($student_data);
@@ -419,6 +450,21 @@ class StudentResource extends Resource
                 TextColumn::make('guardian_contact_number')->label('Contact')->toggleable(),
                 TextColumn::make('guardian_email')->label('Email')->toggleable(),
                 TextColumn::make('year_graduated')->label('Graduated')->toggleable(),
+                TextColumn::make('user_group')
+                    ->label('Groups')
+                    ->getStateUsing(function ($record) {
+                        if (!$record->user_group || empty($record->user_group)) {
+                            return 'No groups assigned';
+                        }
+
+                        $groupIds = is_array($record->user_group) ? $record->user_group : [$record->user_group];
+                        $groups = Group::whereIn('id', $groupIds)->pluck('name')->toArray();
+
+                        return implode(', ', $groups);
+                    })
+                    ->badge()
+                    ->color('primary')
+                    ->toggleable(),
             ])
             ->filters([
                 Tables\Filters\SelectFilter::make('gender')
@@ -617,6 +663,20 @@ class StudentResource extends Resource
                                     ->required(false),
                             ])
                             ->columns(4),
+
+                        Section::make('User Groups')
+                            ->description('Assign the student to specific user groups.')
+                            ->schema([
+                                Select::make('user_group')
+                                    ->label('User Groups')
+                                    ->multiple()
+                                    ->options(Group::all()->pluck('name', 'id'))
+                                    ->searchable()
+                                    ->placeholder('Select groups')
+                                    ->columnSpanFull()
+                                    ->helperText('Hold Ctrl/Cmd to select multiple groups'),
+                            ])
+                            ->columns(4),
                     ])
                     ->fillForm(fn(Student $record): array => [
                         'lrn' => $record->lrn,
@@ -636,6 +696,7 @@ class StudentResource extends Resource
                         'grade' => $record->grade,
                         'section' => $record->section,
                         'year_graduated' => $record->year_graduated,
+                        'user_group' => $record->user_group,
                     ])
                     ->action(function (array $data, Student $studentModel): void {
                         // Update the student data
@@ -663,6 +724,7 @@ class StudentResource extends Resource
                             'email' => $data['email'],
                             'contact' => $data['contact'],
                             'year_graduated' => $data['year_graduated'],
+                            'user_group' => $data['user_group'],
                         ]);
                          Notification::make()
                             ->title('updated successfully')
@@ -674,6 +736,40 @@ class StudentResource extends Resource
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
                     Tables\Actions\DeleteBulkAction::make(),
+
+                    Tables\Actions\BulkAction::make('assignGroups')
+                        ->label('Assign Groups')
+                        ->icon('heroicon-o-users')
+                        ->form([
+                            Select::make('groups')
+                                ->label('Select Groups')
+                                ->multiple()
+                                ->options(Group::all()->pluck('name', 'id'))
+                                ->searchable()
+                                ->required(),
+                        ])
+                        ->action(function ($records, $data) {
+                            foreach ($records as $record) {
+                                // Get current user_group or initialize as empty array
+                                $currentGroups = $record->user_group ?? [];
+
+                                // Ensure currentGroups is an array
+                                if (!is_array($currentGroups)) {
+                                    $currentGroups = [$currentGroups];
+                                }
+
+                                // Merge and deduplicate groups
+                                $newGroups = array_unique(array_merge($currentGroups, $data['groups']));
+
+                                // Update the student record's related user
+                                User::where('lrn', $record->lrn)->update([
+                                    'user_group' => $newGroups
+                                ]);
+                            }
+                        })
+                        ->deselectRecordsAfterCompletion()
+                        ->requiresConfirmation()
+                        ->modalHeading('Assign Groups to Selected Students'),
                 ]),
             ]);
     }
@@ -690,6 +786,7 @@ class StudentResource extends Resource
                 'users.MiddleName as middlename',
                 'users.extension_name',
                 'users.contact',
+                'users.user_group',
                 'users.email as user_email',
                 'students.lrn',
                 'students.profile',
