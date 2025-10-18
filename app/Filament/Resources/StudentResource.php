@@ -463,8 +463,7 @@ class StudentResource extends Resource
                         return implode(', ', $groups);
                     })
                     ->badge()
-                    ->color('primary')
-                    ->toggleable(),
+                    ->color('primary'),
             ])
             ->filters([
                 Tables\Filters\SelectFilter::make('gender')
