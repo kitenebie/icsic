@@ -51,7 +51,7 @@ class Event extends Component
     public function loadEvents()
     {
         $this->events = EventModel::orderBy('event_date', 'asc')
-            ->get();
+            ->get()->limit(9);
     }
     public function render()
     {
