@@ -23,7 +23,7 @@
                     </div>
                     <h3 class="font-bold text-[#0a1f3f] text-lg mb-1">{{ $event->event_name }}</h3>
                     <div class="text-[#4a5568] mb-4 text-sm leading-relaxed">
-                        {!! \Illuminate\Support\Str::markdown($event->event_discription) !!}
+                        {!! \Illuminate\Support\Str::markdown(\Illuminate\Support\Str::limit($event->event_discription, 203)) !!}
                     </div>
                     <div class="flex items-center text-[#6b7280] text-xs space-x-2 mb-1">
                         <i class="far fa-clock"></i>
