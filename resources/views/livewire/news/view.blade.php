@@ -231,7 +231,7 @@
                             </span>
                             <form wire:submit.prevent="save_comment" class="flex-1">
                                 <textarea wire:model='commentInput' id="commentInput"
-                                    class="w-full border bg-white border-brown-200 rounded-md p-2 text-[13px] text-brown-50 focus:outline-none focus:ring-2 focus:ring-brown-500"
+                                    class="w-full border bg-white border-brown-200 rounded-md p-2 text-[13px] text-brown-800 focus:outline-none focus:ring-2 focus:ring-brown-500"
                                     rows="3" placeholder="Write your comment here..."></textarea>
 
                                 <div class="mt-2 flex justify-end">
