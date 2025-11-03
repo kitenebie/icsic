@@ -218,25 +218,25 @@
                         </div>
                     @endif
                     <!-- Comment Input -->
-                    <div id="reply" class="mt-8 bg-[#F8FAFC] p-4 rounded-lg shadow-sm">
+                    <div id="reply" class="mt-8 bg-brown-50 p-4 rounded-lg shadow-sm">
                         <h3 class="text-[14px] font-semibold text-[#0f172a] mb-2">Leave a Comment</h3>
 
                         <div
-                            class="text-[12px] p-2 px-4 mb-3  @if ($this->ReplycommentInput) bg-[#f1f5ff] border @endif rounded text-gray-600">
+                            class="text-[12px] p-2 px-4 mb-3  @if ($this->ReplycommentInput) bg-brown-50 border @endif rounded text-gray-600">
                             {!! $this->ReplycommentInput !!}</div>
                         <div class="flex items-start gap-2">
                             <span
-                                class="inline-flex items-center justify-center w-8 h-8 rounded-full bg-[#EFF8F2] text-[#1D723C] mt-1">
+                                class="inline-flex items-center justify-center w-8 h-8 rounded-full bg-brown-50 text-brown-500 mt-1">
                                 <i class="fas fa-user"></i>
                             </span>
                             <form wire:submit.prevent="save_comment" class="flex-1">
                                 <textarea wire:model='commentInput' id="commentInput"
-                                    class="w-full border bg-white border-[#cbd5e1] rounded-md p-2 text-[13px] text-[#334155] focus:outline-none focus:ring-2 focus:ring-brown-500"
+                                    class="w-full border bg-white border-brown-200 rounded-md p-2 text-[13px] text-brown-50 focus:outline-none focus:ring-2 focus:ring-brown-500"
                                     rows="3" placeholder="Write your comment here..."></textarea>
 
                                 <div class="mt-2 flex justify-end">
                                     <button id="submitComment" type="submit"
-                                        class="flex items-center gap-2 px-4 py-1.5 text-[13px] font-medium text-white bg-brown-500 rounded-md hover:bg-[#249c50] transition-colors"
+                                        class="flex items-center gap-2 px-4 py-1.5 text-[13px] font-medium text-white bg-brown-500 rounded-md hover:bg-brown-500 transition-colors"
                                         wire:loading.attr="disabled" wire:target="save_comment">
 
                                         {{-- Default text --}}
