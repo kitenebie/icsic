@@ -3,7 +3,7 @@
             <!-- Left content -->
             <main class="flex-1 max-w-full lg:max-w-[720px]">
                 <!-- Breadcrumb -->
-                <nav aria-label="Breadcrumb" class="text-[13px] text-[#64748b] mb-4">
+                <nav aria-label="Breadcrumb" class="text-[13px] text-brown-600 mb-4">
                     <ol class="inline-flex space-x-1">
                         <li>
                             <a class="hover:underline" href="#">
@@ -21,7 +21,7 @@
                                 ›
                             </span>
                         </li>
-                        <li aria-current="page" class="font-semibold text-[#475569]">
+                        <li aria-current="page" class="font-semibold text-brown-800">
                             {{ $this->Topic_title() }}
                         </li>
                     </ol>
@@ -29,7 +29,7 @@
                 <!-- Category label -->
                 <div>
                     <span
-                        class="inline-block bg-[#2CAC5B] text-white text-[10px] font-semibold uppercase px-2 py-[2px] rounded">
+                        class="inline-block bg-brown-500 text-white text-[10px] font-semibold uppercase px-2 py-[2px] rounded">
                         {{ $this->Topic_category() }}
                     </span>
                 </div>
@@ -41,7 +41,7 @@
                 <div class="flex flex-wrap items-center gap-4 mt-3 text-[#475569] text-[13px]">
                     <div class="flex items-center gap-2">
                         <span
-                            class="inline-flex items-center justify-center w-5 h-5 rounded-full bg-[#e0e7ff] text-[#2CAC5B]">
+                            class="inline-flex items-center justify-center w-5 h-5 rounded-full bg-[#e0e7ff] text-brown-500">
                             <i class="fas fa-user">
                             </i>
                         </span>
@@ -90,7 +90,7 @@
                         @endforelse
                         @forelse($content['Quote'] as $Quote)
                             <blockquote
-                                class="border-l-4 py-2 border-[#2CAC5B] pl-4 italic text-[13px] text-[#3D4B42] bg-[#B8E3C8] rounded-md">
+                                class="border-l-4 py-2 border-brown-500 pl-4 italic text-[13px] text-[#3D4B42] bg-[#B8E3C8] rounded-md">
                                 <p>
                                     {!! $Quote['Quote'] !!}
                                 </p>
@@ -163,7 +163,7 @@
                                 @livewire('news.like-dislike', ['commentId' => $main_comment->id], key($main_comment->id))
                                 <a role="button" href="#reply"
                                     wire:click='reply("{{ $main_comment->commentatorId }}", "reply", "{{ $main_comment->id }}", "")'
-                                    class="text-[#2CAC5B] font-semibold hover:underline focus:outline-none">
+                                    class="text-brown-500 font-semibold hover:underline focus:outline-none">
                                     Reply
                                 </a>
                             </div>
@@ -174,7 +174,7 @@
                                     class="mt-6 bg-[#f1f5ff] rounded-lg p-3 text-[12px] text-[#475569]">
                                     <div class="flex items-center gap-2 mb-2">
                                         <span
-                                            class="inline-flex items-center justify-center w-5 h-5 rounded-full bg-[#e0e7ff] text-[#2CAC5B]">
+                                            class="inline-flex items-center justify-center w-5 h-5 rounded-full bg-[#e0e7ff] text-brown-500">
                                             <i class="fas fa-user">
                                             </i>
                                         </span>
@@ -192,7 +192,7 @@
                                         @livewire('news.like-dislike', ['commentId' => $reply->id], key($reply->id))
                                         <a role="button" href="#reply"
                                             wire:click='reply("{{ $reply->commentatorId }}", "reply", "{{ $main_comment->id }}", "{{ $reply->id }}")'
-                                            class="text-[#2CAC5B] font-semibold hover:underline focus:outline-none">
+                                            class="text-brown-500 font-semibold hover:underline focus:outline-none">
                                             Reply
                                         </a>
                                     </div>
@@ -231,12 +231,12 @@
                             </span>
                             <form wire:submit.prevent="save_comment" class="flex-1">
                                 <textarea wire:model='commentInput' id="commentInput"
-                                    class="w-full border bg-white border-[#cbd5e1] rounded-md p-2 text-[13px] text-[#334155] focus:outline-none focus:ring-2 focus:ring-[#2CAC5B]"
+                                    class="w-full border bg-white border-[#cbd5e1] rounded-md p-2 text-[13px] text-[#334155] focus:outline-none focus:ring-2 focus:ring-brown-500"
                                     rows="3" placeholder="Write your comment here..."></textarea>
 
                                 <div class="mt-2 flex justify-end">
                                     <button id="submitComment" type="submit"
-                                        class="flex items-center gap-2 px-4 py-1.5 text-[13px] font-medium text-white bg-[#2CAC5B] rounded-md hover:bg-[#249c50] transition-colors"
+                                        class="flex items-center gap-2 px-4 py-1.5 text-[13px] font-medium text-white bg-brown-500 rounded-md hover:bg-[#249c50] transition-colors"
                                         wire:loading.attr="disabled" wire:target="save_comment">
 
                                         {{-- Default text --}}
@@ -297,7 +297,7 @@
                         @forelse($relatedArticles as $related)
                             <article class="mb-4 last:mb-0">
                                 <span class="inline-block text-[10px] font-semibold uppercase mb-1
-                                    @if($related->topic_category == 0) text-[#2CAC5B]
+                                    @if($related->topic_category == 0) text-brown-500
                                     @elseif($related->topic_category == 1) text-[#22c55e]
                                     @elseif($related->topic_category == 2) text-[#ec4899]
                                     @elseif($related->topic_category == 3) text-[#3b82f6]
@@ -308,7 +308,7 @@
                                 </span>
                                 <h3 class="font-semibold text-[13px] text-[#0f172a] leading-tight mb-1">
                                     <a href="/read/{{ Illuminate\Support\Str::random(100) }}/{{ $related->id }}"
-                                       class="hover:text-[#2CAC5B] transition-colors">
+                                       class="hover:text-brown-500 transition-colors">
                                         {{ Illuminate\Support\Str::limit($related->title, 50) }}
                                     </a>
                                 </h3>
@@ -337,7 +337,7 @@
                                     </li>
                                 @endif
                             @endforeach
-                            {{-- <li class="text-[#2CAC5B] font-semibold hover:underline">
+                            {{-- <li class="text-brown-500 font-semibold hover:underline">
                                 Introduction
                             </li> --}}
                         </ul>
@@ -356,7 +356,7 @@
                 if (lastBtnId) {
                     const lastBtn = document.getElementById(lastBtnId);
                     if (lastBtn) {
-                        lastBtn.classList.remove('text-[#2CAC5B]', 'font-semibold', 'hover:underline');
+                        lastBtn.classList.remove('text-brown-500', 'font-semibold', 'hover:underline');
                     }
                 }
 
@@ -364,7 +364,7 @@
                 const btnElement = document.getElementById(`btn-${id}`);
                 const y = element.getBoundingClientRect().top + window.pageYOffset + yOffset;
 
-                btnElement.classList.add('text-[#2CAC5B]', 'font-semibold', 'hover:underline');
+                btnElement.classList.add('text-brown-500', 'font-semibold', 'hover:underline');
                 localStorage.setItem('lastStateBtn', `btn-${id}`);
 
                 window.scrollTo({
@@ -388,13 +388,13 @@
                 if (currentSectionId) {
                     // Remove old highlight
                     document.querySelectorAll('[id^="btn-section-"]').forEach(btn => {
-                        btn.classList.remove('text-[#2CAC5B]', 'font-semibold', 'hover:underline');
+                        btn.classList.remove('text-brown-500', 'font-semibold', 'hover:underline');
                     });
 
                     // Add highlight to current button
                     const activeBtn = document.getElementById(`btn-${currentSectionId}`);
                     if (activeBtn) {
-                        activeBtn.classList.add('text-[#2CAC5B]', 'font-semibold', 'hover:underline');
+                        activeBtn.classList.add('text-brown-500', 'font-semibold', 'hover:underline');
                         localStorage.setItem('lastStateBtn', `btn-${currentSectionId}`);
                     }
                 }
