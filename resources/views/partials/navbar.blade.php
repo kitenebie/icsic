@@ -1,4 +1,4 @@
-<nav class="border-b z-50 sticky top-0 bg-white border-gray-200">
+<nav class="border-b z-50 sticky top-0 bg-white border-cream-100">
     <div class="flex items-center justify-between px-6 py-4">
         <!-- Logo -->
         <div class="flex items-center space-x-2">
