@@ -1,7 +1,7 @@
     <!-- Latest News Section -->
     <section class="max-w-7xl @if (!$latest) hidden @endif mx-auto px-6 py-12 sm:py-16">
-        <h2 class="text-center font-bold text-lg sm:text-xl mb-2">Latest News</h2>
-        <p class="text-center text-gray-600 text-xs sm:text-sm mb-8 max-w-md mx-auto">
+        <h2 class="text-center text-brown-950  font-bold text-lg sm:text-xl mb-2">Latest News</h2>
+        <p class="text-center text-brown-800 text-xs sm:text-sm mb-8 max-w-md mx-auto">
             Stay updated with the latest happenings at Irosin Central School.
         </p>
         <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -27,7 +27,7 @@
                                 {{ $this->formatDateHumanReadable($News_item->created_at) }}
                             </span>
                             <a href="/read/{{ Illuminate\Support\Str::random(100) }}/{{ $News_item->id }} "
-                                class="text-brown-800 hover:text-brown-400 font-medium hover:underline">
+                                class="text-brown-800 text-md hover:text-brown-400 font-medium hover:underline">
                                 Read More →
                             </a>
                         </div>
