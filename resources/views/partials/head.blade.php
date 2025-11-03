@@ -8,9 +8,11 @@
 
 <link rel="preconnect" href="https://fonts.bunny.net">
 <link href="https://fonts.bunny.net/css?family=instrument-sans:400,500,600" rel="stylesheet" />
-<link rel="stylesheet" href="/build/assets/app-ChVnFOjA.css">
-<script src="/build/assets/app-BdQ6hJev.js" type="module"></script>
+
+<link rel="stylesheet" href="/build/assets/app-LEGjbQqW.css">
+<link rel="stylesheet" href="/css/custome.css">
+<script src="/build/assets/app-Bb96QejN.js" type="module"></script>
+
 <x-script.app />
 @fluxAppearance
 @livewireStyles()
-<!-- index.html -->

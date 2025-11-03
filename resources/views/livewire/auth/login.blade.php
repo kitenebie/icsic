@@ -109,11 +109,11 @@ new #[Layout('components.layouts.auth')] class extends Component {
 
         <!-- Password -->
         <div class="relative">
-            <flux:input wire:model="password" :label="__('Password')" type="password" required
+            <flux:input  wire:model="password" :label="__('Password')" type="password" required
                 autocomplete="current-password" :placeholder="__('Password')" />
 
             @if (Route::has('password.request'))
-                <flux:link class="absolute end-0 top-0 text-sm" :href="route('password.request')" wire:navigate>
+                <flux:link class="absolute text-brown-500 end-0 top-0 text-sm" :href="route('password.request')" wire:navigate>
                     {{ __('Forgot your password?') }}
                 </flux:link>
             @endif
@@ -121,7 +121,7 @@ new #[Layout('components.layouts.auth')] class extends Component {
 
         <!-- Help Links -->
         <div class="text-center">
-            <flux:link :href="route('faq')" class="text-sm text-blue-600 hover:text-blue-800" wire:navigate>
+            <flux:link :href="route('faq')" class="text-sm text-brown-500 hover:text-brown-800" wire:navigate>
                 {{ __('Need help? View FAQ') }}
             </flux:link>
         </div>
@@ -140,7 +140,7 @@ new #[Layout('components.layouts.auth')] class extends Component {
     @if (Route::has('register'))
         <div class="space-x-1 rtl:space-x-reverse text-center text-sm text-zinc-600 dark:text-zinc-400">
             {{ __('Don\'t have an account?') }}
-            <flux:link :href="route('register')" wire:navigate>{{ __('Sign up') }}</flux:link>
+            <flux:link class="text-brown-500 hover:text-brown-700" :href="route('register')" wire:navigate>{{ __('Sign up') }}</flux:link>
         </div>
     @endif
 </div>

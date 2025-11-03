@@ -3,12 +3,12 @@
     <head>
         @include('partials.head')
     </head>
-    <body class="min-h-screen bg-white antialiased dark:bg-linear-to-b dark:from-neutral-950 dark:to-neutral-900">
+    <body class="min-h-screen bg-cream-50 antialiased dark:bg-linear-to-b dark:from-neutral-950 dark:to-neutral-900">
         <div class="relative grid h-dvh flex-col items-center justify-center px-8 sm:px-0 lg:max-w-none lg:grid-cols-2 lg:px-0">
             <div class="bg-muted relative hidden h-full flex-col p-10 text-white lg:flex dark:border-e dark:border-neutral-800">
                 
                 <div class="absolute inset-0">
-                    <div class="absolute inset-0 bg-green-700 opacity-50">
+                    <div class="absolute inset-0 bg-brown-700 opacity-50">
                     </div>
                     <img class="w-full h-full"  src="/home.png" />
                 </div>
@@ -23,7 +23,10 @@
 
                 
                 @php
-                    [$message, $author] = str(Illuminate\Foundation\Inspiring::quotes()->random())->explode('-');
+                    $quote = Illuminate\Foundation\Inspiring::quotes()->random();
+                    $parts = explode('-', $quote, 2);
+                    $message = trim($parts[0] ?? $quote);
+                    $author = trim($parts[1] ?? 'Unknown');
                 @endphp
 
                 <div class="relative z-20 mt-auto">

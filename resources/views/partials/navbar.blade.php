@@ -4,17 +4,15 @@
         <div class="flex items-center space-x-2">
             <img alt="Irosin Central School logo" class="w-6 h-6"
                 src="https://storage.googleapis.com/a1aa/image/496df554-c03f-4d0f-b627-889d928b8201.jpg" />
-            <span class="font-semibold text-gray-900 text-sm sm:text-base">
+            <span class="font-semibold text-brown-800 text-sm sm:text-base">
                 Irosin Central School
             </span>
         </div>
 
         <!-- Hamburger button (mobile only) -->
         <button id="menu-toggle" class="md:hidden text-gray-600 focus:outline-none">
-            <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="2"
-                viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round"
-                    d="M4 6h16M4 12h16M4 18h16"></path>
+            <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 12h16M4 18h16"></path>
             </svg>
         </button>
 
@@ -22,35 +20,35 @@
         <ul id="disktop-view" class="space-x-6 text-sm text-gray-600 items-center">
             <li>
                 <a href="/"
-                    class="{{ request()->routeIs('home') ? 'font-semibold text-gray-900' : 'hover:text-gray-900' }}">
+                    class="{{ request()->routeIs('home') ? 'font-semibold text-brown-800' : 'hover:text-brown-800' }}">
                     Home
                 </a>
             </li>
             <li>
                 <a href="/news"
-                    class="{{ request()->routeIs('news') ? 'font-semibold text-gray-900' : 'hover:text-gray-900' }}">
+                    class="{{ request()->routeIs('news') ? 'font-semibold text-brown-800' : 'hover:text-brown-800' }}">
                     News
                 </a>
             </li>
 
             @if (auth()->user() && auth()->user()->role != 'pending')
                 <li><a href="/announcements"
-                        class="{{ request()->routeIs('announcements') ? 'font-semibold text-gray-900' : 'hover:text-gray-900' }}">Announcements</a></li>
+                        class="{{ request()->routeIs('announcements') ? 'font-semibold text-brown-800' : 'hover:text-brown-800' }}">Announcements</a>
+                </li>
                 <li><a href="/events"
-                        class="{{ request()->routeIs('events') ? 'font-semibold text-gray-900' : 'hover:text-gray-900' }}">Events</a></li>
+                        class="{{ request()->routeIs('events') ? 'font-semibold text-brown-800' : 'hover:text-brown-800' }}">Events</a>
+                </li>
                 {{-- <li><a href="/gallery"
-                        class="{{ request()->routeIs('gallery') ? 'font-semibold text-gray-900' : 'hover:text-gray-900' }}">Gallery</a></li> --}}
+                        class="{{ request()->routeIs('gallery') ? 'font-semibold text-brown-800' : 'hover:text-brown-800' }}">Gallery</a></li> --}}
 
                 <!-- Dropdown -->
                 <li x-data="{ open: false }" class="relative">
                     <button @click="open = !open"
-                        class="flex items-center space-x-2 px-2 py-1 text-gray-700 hover:text-gray-900 focus:outline-none">
+                        class="flex items-center space-x-2 px-2 py-1 text-gray-700 hover:text-brown-800 focus:outline-none">
                         <span>More</span>
-                        <svg class="w-4 h-4 transform transition-transform duration-200"
-                            :class="{ 'rotate-180': open }" fill="none" stroke="currentColor"
-                            stroke-width="2" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round"
-                                d="M19 9l-7 7-7-7"></path>
+                        <svg class="w-4 h-4 transform transition-transform duration-200" :class="{ 'rotate-180': open }"
+                            fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7"></path>
                         </svg>
                     </button>
 
@@ -71,7 +69,7 @@
 
             <li>
                 <a href="/about"
-                    class="{{ request()->routeIs('about') ? 'font-semibold text-gray-900' : 'hover:text-gray-900' }}">About
+                    class="{{ request()->routeIs('about') ? 'font-semibold text-brown-800' : 'hover:text-brown-800' }}">About
                     Us</a>
             </li>
 
@@ -94,17 +92,17 @@
     <div id="mobile-menu"
         class="md:hidden hidden px-6 pb-4 space-y-2 text-sm text-gray-600 transition-all duration-300">
         <a href="/"
-            class="{{ request()->routeIs('home') ? 'font-semibold text-gray-900 block' : 'hover:text-gray-900 block' }}">Home</a>
+            class="{{ request()->routeIs('home') ? 'font-semibold text-brown-800 block' : 'hover:text-brown-800 block' }}">Home</a>
         <a href="/news"
-            class="{{ request()->routeIs('news') ? 'font-semibold text-gray-900 block' : 'hover:text-gray-900 block' }}">News</a>
+            class="{{ request()->routeIs('news') ? 'font-semibold text-brown-800 block' : 'hover:text-brown-800 block' }}">News</a>
 
         @if (auth()->user() && auth()->user()->role != 'pending')
             <a href="/announcements"
-                class="{{ request()->routeIs('announcements') ? 'font-semibold text-gray-900 block' : 'hover:text-gray-900 block' }}">Announcements</a>
+                class="{{ request()->routeIs('announcements') ? 'font-semibold text-brown-800 block' : 'hover:text-brown-800 block' }}">Announcements</a>
             <a href="/events"
-                class="{{ request()->routeIs('events') ? 'font-semibold text-gray-900 block' : 'hover:text-gray-900 block' }}">Events</a>
+                class="{{ request()->routeIs('events') ? 'font-semibold text-brown-800 block' : 'hover:text-brown-800 block' }}">Events</a>
             {{-- <a href="/gallery"
-                class="{{ request()->routeIs('gallery') ? 'font-semibold text-gray-900 block' : 'hover:text-gray-900 block' }}">Gallery</a> --}}
+                class="{{ request()->routeIs('gallery') ? 'font-semibold text-brown-800 block' : 'hover:text-brown-800 block' }}">Gallery</a> --}}
 
             <div class="border-t border-gray-200 pt-2 mt-2">
                 <p class="text-gray-500 text-xs uppercase tracking-wide">More</p>
@@ -118,7 +116,7 @@
         @endif
 
         {{-- <a href="/about"
-            class="{{ request()->routeIs('about') ? 'font-semibold text-gray-900 block' : 'hover:text-gray-900 block' }}">About
+            class="{{ request()->routeIs('about') ? 'font-semibold text-brown-800 block' : 'hover:text-brown-800 block' }}">About
             Us</a> --}}
 
         @if (!auth()->check())
