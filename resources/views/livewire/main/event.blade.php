@@ -39,7 +39,7 @@
         </div>
         <div class="mt-8 flex justify-center">
             <a href="/events"
-                class="bg-green-800 text-white text-xs sm:text-sm font-semibold px-4 py-2 rounded-md hover:bg-green-900">
+                class="bg-brown-500 text-white text-xs sm:text-sm font-semibold px-4 py-2 rounded-md hover:bg-brown-600">
                 View All Events
         </a>
         </div>
