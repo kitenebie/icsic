@@ -17,7 +17,7 @@
                                 {{ \Carbon\Carbon::parse($event->event_date)->format('M') }}
                             </div>
                         </div>
-                        <div class="bg-cream-800 text-cream-100 text-xs rounded-full px-3 py-1 font-semibold self-start">
+                        <div class="bg-cream-600 text-cream-100 text-xs rounded-full px-3 py-1 font-semibold self-start">
                             {{ $event->event_category }}
                         </div>
                     </div>
