@@ -120,6 +120,7 @@
     @yield('meta')
     @fluxAppearance
     @livewireStyles()
+    <link rel="stylesheet" href="/css/custome.css">
 </head>
 
 <body class="bg-white text-gray-800 hide-scrollbar hide-scrollbar::-webkit-scrollbar">
@@ -205,7 +206,9 @@
         }
 
         function getToken() {
-            messaging.getToken({ vapidKey: '{{ env('FCM_SERVER_KEY') }}' }).then((currentToken) => {
+            messaging.getToken({
+                vapidKey: '{{ env('FCM_SERVER_KEY') }}'
+            }).then((currentToken) => {
                 if (currentToken) {
                     console.log('Registration token available:', currentToken);
                     sendTokenToServer(currentToken);
@@ -219,22 +222,22 @@
 
         function sendTokenToServer(token) {
             fetch('/api/save-fcm-token', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
-                },
-                body: JSON.stringify({
-                    fcm_token: token
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+                    },
+                    body: JSON.stringify({
+                        fcm_token: token
+                    })
                 })
-            })
-            .then(response => response.json())
-            .then(data => {
-                console.log('Token saved:', data);
-            })
-            .catch(error => {
-                console.error('Error saving token:', error);
-            });
+                .then(response => response.json())
+                .then(data => {
+                    console.log('Token saved:', data);
+                })
+                .catch(error => {
+                    console.error('Error saving token:', error);
+                });
         }
 
         // Handle incoming messages when app is in foreground
@@ -249,21 +252,22 @@
 
         // Request permission on page load if user is authenticated
         @auth
-            if ('serviceWorker' in navigator) {
-                navigator.serviceWorker.register('/firebase-messaging-sw.js')
-                    .then((registration) => {
-                        console.log('Service Worker registered');
-                        messaging.useServiceWorker(registration);
-                        requestPermission();
-                    })
-                    .catch((error) => {
-                        console.log('Service Worker registration failed:', error);
-                    });
-            }
+        if ('serviceWorker' in navigator) {
+            navigator.serviceWorker.register('/firebase-messaging-sw.js')
+                .then((registration) => {
+                    console.log('Service Worker registered');
+                    messaging.useServiceWorker(registration);
+                    requestPermission();
+                })
+                .catch((error) => {
+                    console.log('Service Worker registration failed:', error);
+                });
+        }
         @endauth
     </script>
 </body>
 @php
 
 @endphp
+
 </html>

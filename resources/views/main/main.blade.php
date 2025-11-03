@@ -1,5 +1,5 @@
 <x-layouts.custome.header>
-    <section class="relative bg-green-700 text-white px-6 py-20 sm:py-28 md:py-32 lg:py-40 bg-cover bg-center"
+    <section class="relative bg-brown-700 text-white px-6 py-20 sm:py-28 md:py-32 lg:py-40 bg-cover bg-center"
         style="background-image: url('/home.png'); min-height: 600px;">
 
         <!-- Dark overlay -->
