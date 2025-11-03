@@ -126,7 +126,7 @@
         <div class="mb-8">
             <div class="flex items-center justify-between mb-6">
                 <h2 class="text-2xl font-bold text-gray-900">Latest News</h2>
-                <a href="#" class="text-blue-600 hover:text-blue-700 font-medium">View all →</a>
+                <a href="#" class="text-brown-600 hover:text-brown-700 font-medium">View all →</a>
             </div>
             <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
                 <!-- News cards will be populated by LatestNews component -->

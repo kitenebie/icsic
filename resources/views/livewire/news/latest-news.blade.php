@@ -25,7 +25,7 @@
 
             <!-- News Content -->
             <div class="p-6">
-                <h3 class="font-bold text-gray-900 text-lg leading-tight mb-3 group-hover:text-blue-600 transition-colors line-clamp-2">
+                <h3 class="font-bold text-gray-900 text-lg leading-tight mb-3 group-hover:text-brown-600 transition-colors line-clamp-2">
                     {{ $News_item->title }}
                 </h3>
 
@@ -37,7 +37,7 @@
                 <div class="flex items-center justify-between">
                     <div class="flex items-center space-x-3">
                         <div class="w-8 h-8 bg-gradient-to-r from-cream-400 to-brown-500 rounded-full flex items-center justify-center">
-                            <img class="w-4 h-4 text-white" src="https://irosincentralschool.com/favicon.png" alt="" srcset="">
+                            <img class="w-full h-fill text-white" src="https://irosincentralschool.com/favicon.png" alt="" srcset="">
                         </div>
                         <div>
                             <p class="text-xs font-medium text-gray-900">{{ $News_item->author ?? 'School Admin' }}</p>
