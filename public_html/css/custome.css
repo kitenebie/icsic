@@ -267,6 +267,9 @@
     .text-brown-900 {
         color: var(--color-brown-900) !important;
     }
+    .text-brown-950 {
+        color: var(--color-brown-950) !important;
+    }
 
     /* ☕ primary */
     .bg-primary-50 {

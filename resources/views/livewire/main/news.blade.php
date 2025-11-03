@@ -8,26 +8,26 @@
             @forelse ($latest as $News_item)
                 <!-- Card 1 -->
                 <article class="bg-white rounded-lg shadow-sm border">
-                    <div class="bg-[#D7DEFF] rounded-t-lg flex justify-center items-center">
-                        <img class="w-full h-full max-h-64 text-[#4F6BED]" height="48"
+                    <div class="bg-brown-50 rounded-t-lg flex justify-center items-center">
+                        <img class="w-full h-full max-h-64 text-cream-800" height="48"
                             src="/storage/{{ $News_item->image }}" width="48" />
                     </div>
                     <div class="p-6">
-                        <p class="text-[#4F6BED] text-xs font-semibold uppercase mb-1">
+                        <p class="text-brown-700 text-xs font-semibold uppercase mb-1">
                             {{ $this->categories[$News_item->topic_category] }}
                         </p>
                         <h3 class="font-extrabold text-base leading-6 mb-3">
                             {{ $News_item->title }}
                         </h3>
-                        <p class="text-[#64748B] text-sm leading-5 mb-6">
+                        <p class="text-brown-950 text-sm leading-5 mb-6">
                             {!! Illuminate\Support\Str::limit($News_item->content[0]['Paragraph'][0]['content'], 168) !!}
                         </p>
-                        <div class="flex mt-2 justify-between items-center text-[#64748B] text-xs">
+                        <div class="flex mt-2 justify-between items-center text-brown-950 text-xs">
                             <span>
                                 {{ $this->formatDateHumanReadable($News_item->created_at) }}
                             </span>
                             <a href="/read/{{ Illuminate\Support\Str::random(100) }}/{{ $News_item->id }} "
-                                class="text-[#2CAC5B] font-medium hover:underline">
+                                class="text-brown-800 hover:text-brown-400 font-medium hover:underline">
                                 Read More →
                             </a>
                         </div>
@@ -38,7 +38,7 @@
         </div>
         <div class="mt-8 flex justify-center">
             <a href="/news"
-                class="bg-green-800 text-white text-xs sm:text-sm font-semibold px-4 py-2 rounded-md hover:bg-green-900">
+                class="bg-brown-500 text-white text-xs sm:text-sm font-semibold px-4 py-2 rounded-md hover:bg-brown-700">
                 View All News
             </a>
         </div>
