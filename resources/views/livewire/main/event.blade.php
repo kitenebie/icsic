@@ -1,6 +1,6 @@
     <section class="max-w-7xl mx-auto px-6 pb-12">
-        <h2 class="text-center font-bold text-lg sm:text-xl mb-2">Events</h2>
-        <p class="text-center text-gray-600 text-xs sm:text-sm mb-8 max-w-md mx-auto">
+        <h2 class="text-center text-brown-950 font-bold text-lg sm:text-xl mb-2">Events</h2>
+        <p class="text-center text-brown-800 text-xs sm:text-sm mb-8 max-w-md mx-auto">
             Stay updated with the latest happenings at Irosin Central School.
         </p>
 
