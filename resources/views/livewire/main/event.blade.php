@@ -9,7 +9,7 @@
                 <div id="event-{{ \Carbon\Carbon::parse($event->event_date)->format('Y') }}{{ \Carbon\Carbon::parse($event->event_date)->format('M') }}"
                     class="bg-white rounded-xl p-6 shadow-md border">
                     <div class="flex justify-between items-start mb-4">
-                        <div class="bg-[#d9f0e1] rounded-md text-[#2f7a4e] font-semibold text-center w-14">
+                        <div class="bg-cream-100 rounded-md text-cream-600 font-semibold text-center w-14">
                             <div class="text-xl leading-none pt-1 font-bold">
                                 {{ \Carbon\Carbon::parse($event->event_date)->format('d') }}
                             </div>
@@ -17,7 +17,7 @@
                                 {{ \Carbon\Carbon::parse($event->event_date)->format('M') }}
                             </div>
                         </div>
-                        <div class="bg-[#0b6b2f] text-white text-xs rounded-full px-3 py-1 font-semibold self-start">
+                        <div class="bg-cream-800 text-cream-100 text-xs rounded-full px-3 py-1 font-semibold self-start">
                             {{ $event->event_category }}
                         </div>
                     </div>
