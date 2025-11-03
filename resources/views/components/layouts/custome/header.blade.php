@@ -123,7 +123,7 @@
     <link rel="stylesheet" href="/css/custome.css">
 </head>
 
-<body class="bg-cream-200 text-gray-800 hide-scrollbar hide-scrollbar::-webkit-scrollbar">
+<body class="bg-cream-100 text-gray-800 hide-scrollbar hide-scrollbar::-webkit-scrollbar">
     <x-loading />
     @livewire('notification.modal')
     @livewire('profile.modal')
