@@ -10,14 +10,14 @@
 
                 <!-- Category Badge -->
                 <div class="absolute top-3 left-3">
-                    <span class="px-3 py-1 bg-blue-600 text-white text-xs font-semibold rounded-full">
+                    <span class="px-3 py-1 bg-cream-800 text-white text-xs font-semibold rounded-full">
                         {{ $this->categories[$News_item->topic_category] }}
                     </span>
                 </div>
 
                 <!-- Reading Time -->
                 <div class="absolute top-3 right-3">
-                    <div class="bg-white/90 backdrop-blur-sm rounded-lg px-2 py-1">
+                    <div class="bg-cream-100 text-brown-800 backdrop-blur-sm rounded-lg px-2 py-1">
                         <span class="text-xs font-medium text-gray-700">{{ $News_item->read_duration ?? '5' }} min read</span>
                     </div>
                 </div>
@@ -48,7 +48,7 @@
                     </div>
 
                     <a href="/read/{{ Illuminate\Support\Str::random(100) }}/{{ $News_item->id }}"
-                       class="inline-flex items-center space-x-1 text-blue-600 hover:text-blue-700 font-medium text-sm transition-colors">
+                       class="inline-flex items-center space-x-1 text-brown-500 hover:text-brown-700 font-medium text-sm transition-colors">
                         <span>Read more</span>
                         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
@@ -98,7 +98,7 @@
                             <div class="space-y-1">
                                 @foreach($relatedArticles as $related)
                                     <a href="/read/{{ Illuminate\Support\Str::random(100) }}/{{ $related->id }}"
-                                       class="block text-xs text-blue-600 hover:text-blue-700 hover:underline truncate">
+                                       class="block text-xs text-brown-600 hover:text-brown-700 hover:underline truncate">
                                         {{ Illuminate\Support\Str::limit($related->title, 40) }}
                                     </a>
                                 @endforeach
@@ -117,7 +117,7 @@
                             </h4>
                             <div class="flex flex-wrap gap-1">
                                 @foreach($trendingTopics->take(3) as $topic)
-                                    <span class="inline-block px-2 py-1 text-xs bg-blue-100 text-blue-700 rounded-full">
+                                    <span class="inline-block px-2 py-1 text-xs bg-cream-100 text-brown-800 rounded-full">
                                         {{ $topic }}
                                     </span>
                                 @endforeach

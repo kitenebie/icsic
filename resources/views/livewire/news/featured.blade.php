@@ -8,14 +8,14 @@
                 FEATURED
             </span>
             <a href="/read/{{ Illuminate\Support\Str::random(100) }}/{{ $featured->id }} "
-                class="absolute z-1 bg-[#2CAC5B] text-white text-sm font-semibold rounded-md px-4 py-4 w-max hover:bg-[#3C7647] transition-colors">
+                class="absolute z-1 bg-brown-500 text-white text-sm font-semibold rounded-md px-4 py-4 w-max hover:bg-brown-700 transition-colors">
                 Read Full Story
             </a>
             <img alt="Icon of a newspaper in white on a green gradient background" aria-hidden="true"
                 class="w-full h-full" height="96" src="/storage/{{ $featured->image }}" width="96" />
         </div>
         <div class="flex-1 p-6 md:p-8 flex flex-col justify-center">
-            <span class="text-[#2CAC5B] font-semibold text-xs tracking-wide uppercase mb-2">
+            <span class="text-brown-700 font-semibold text-xs tracking-wide uppercase mb-2">
                 {{ $this->categories[$featured->topic_category] }}
             </span>
             <h2 class="font-extrabold text-black text-xl md:text-2xl leading-tight mb-4">
