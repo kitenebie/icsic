@@ -277,10 +277,18 @@
                                     <div class="absolute top-3 left-3">
                                         <div class="bg-brown-600 bg-opacity-90 backdrop-blur-sm rounded-lg px-3 py-1">
                                             <div class="text-sm font-semibold text-brown-50">
-                                                {{ \Carbon\Carbon::parse($event->event_date)->format('M j') }}
+                                                @if($event->event_end)
+                                                    {{ \Carbon\Carbon::parse($event->event_date)->format('M j') }} - {{ \Carbon\Carbon::parse($event->event_end)->format('M j') }}
+                                                @else
+                                                    {{ \Carbon\Carbon::parse($event->event_date)->format('M j') }}
+                                                @endif
                                             </div>
                                             <div class="text-xs text-brown-50">
-                                                {{ \Carbon\Carbon::parse($event->event_date)->format('Y') }}
+                                                @if($event->event_end)
+                                                    {{ \Carbon\Carbon::parse($event->event_date)->format('Y') }}
+                                                @else
+                                                    {{ \Carbon\Carbon::parse($event->event_date)->format('Y') }}
+                                                @endif
                                             </div>
                                         </div>
                                     </div>
@@ -296,15 +304,31 @@
                                 <div style="background-image: linear-gradient(to right, #ffd18f, #62341f) !important;"
                                     class="h-32 flex items-center justify-center">
                                     <div class="text-center text-white">
-                                        <div class="text-2xl font-bold mb-1">
-                                            {{ \Carbon\Carbon::parse($event->event_date)->format('d') }}
-                                        </div>
-                                        <div class="text-sm opacity-90">
-                                            {{ \Carbon\Carbon::parse($event->event_date)->format('M') }}
-                                        </div>
-                                        <div class="text-xs opacity-75">
-                                            {{ \Carbon\Carbon::parse($event->event_date)->format('Y') }}
-                                        </div>
+                                        @if($event->event_end)
+                                            <div class="text-2xl font-bold mb-1">
+                                                {{ \Carbon\Carbon::parse($event->event_date)->format('d') }} - {{ \Carbon\Carbon::parse($event->event_end)->format('d') }}
+                                            </div>
+                                            <div class="text-sm opacity-90">
+                                                @if(\Carbon\Carbon::parse($event->event_date)->format('M') == \Carbon\Carbon::parse($event->event_end)->format('M'))
+                                                    {{ \Carbon\Carbon::parse($event->event_date)->format('M') }}
+                                                @else
+                                                    {{ \Carbon\Carbon::parse($event->event_date)->format('M') }} - {{ \Carbon\Carbon::parse($event->event_end)->format('M') }}
+                                                @endif
+                                            </div>
+                                            <div class="text-xs opacity-75">
+                                                {{ \Carbon\Carbon::parse($event->event_date)->format('Y') }}
+                                            </div>
+                                        @else
+                                            <div class="text-2xl font-bold mb-1">
+                                                {{ \Carbon\Carbon::parse($event->event_date)->format('d') }}
+                                            </div>
+                                            <div class="text-sm opacity-90">
+                                                {{ \Carbon\Carbon::parse($event->event_date)->format('M') }}
+                                            </div>
+                                            <div class="text-xs opacity-75">
+                                                {{ \Carbon\Carbon::parse($event->event_date)->format('Y') }}
+                                            </div>
+                                        @endif
                                     </div>
                                 </div>
                             @endif
