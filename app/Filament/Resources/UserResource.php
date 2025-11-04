@@ -288,7 +288,8 @@ class UserResource extends Resource
                         'teacher' => 'Teacher',
                         'parent' => 'Parent',
                         'graduate' => 'Graduate',
-                        'pending' => 'Pending'
+                        'pending' => 'Pending',
+                        'rejected' => 'Rejected'
                     ])
                     ->placeholder('All Roles')
             ], layout: FiltersLayout::AboveContent)
