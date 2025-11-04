@@ -50,7 +50,8 @@ class Event extends Component
 
     public function loadEvents()
     {
-        $this->events = EventModel::orderBy('event_date', 'asc')
+        $this->events = EventModel::where('updated_at', '>=', now())
+            ->orderBy('event_date', 'asc')
             ->get();
     }
     public function render()
