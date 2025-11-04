@@ -23,11 +23,6 @@
             Your account has been <span class="font-semibold">rejected</span> because it does not comply with our
             system's rules and regulations.
         </p>
-        @php
-            if (!Auth::user()->role == 'rejected') {
-                return redirect('/');
-            }
-        @endphp
         @if (Auth::user()->rejection_reason)
             <p class="text-gray-700 mb-4 flex flex-row">
                 <strong>Reason:</strong> {!! Auth::user()->rejection_reason !!}

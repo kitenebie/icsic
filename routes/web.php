@@ -6,7 +6,7 @@ use App\Http\Controllers\CleanupController;
 use Illuminate\Support\Facades\Route;
 use Livewire\Volt\Volt;
 use Illuminate\Support\Facades\Session;
-use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\NotificationController;
 use App\Http\Controllers\Api\FcmController;
 use App\Http\Middleware\EnsureTokenIsValid;
@@ -16,6 +16,9 @@ Route::post('/notifications/{id}/mark-as-read', [NotificationController::class, 
     ->middleware('auth');
 
 Route::get('/rejected', function () {
+    if (!Auth::user()->role == 'rejected') {
+        return redirect('/');
+    }
     return view('unable');
 })->name('rejected');
 // waiting
