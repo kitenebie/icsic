@@ -9,7 +9,7 @@
   <script src="https://cdn.tailwindcss.com"></script>
   <!-- SweetAlert2 -->
   <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-
+  <link rel="stylesheet" href="public_html/css/custome.css">
   <style>
     .pw-input { width: 100%; }
     .meter {
@@ -26,7 +26,7 @@
     }
   </style>
 </head>
-<body class="bg-gray-50 min-h-screen flex items-center justify-center p-6">
+<body class="bg-brown-50 min-h-screen flex items-center justify-center p-6">
   <div class="w-full max-w-md bg-white rounded-2xl shadow-lg p-6">
     <h1 class="text-2xl font-semibold text-gray-800 mb-2">Create your password</h1>
     <p class="text-sm text-gray-500 mb-6">Make sure it's strong — you'll use this to verify your account.</p>
@@ -39,6 +39,17 @@
           <input id="password" type="password" class="pw-input border border-gray-200 rounded-lg px-4 py-2 pr-12 focus:outline-none focus:ring-2 focus:ring-emerald-300" autocomplete="new-password" required />
           <button type="button" id="togglePw" class="absolute right-2 top-1/2 -translate-y-1/2 text-sm text-gray-600 hover:text-gray-800">Show</button>
         </div>
+      </div>
+
+      <!-- Password Requirements -->
+      <div class="space-y-1">
+        <p class="text-xs text-gray-500">Password must contain:</p>
+        <ul class="text-xs space-y-1">
+          <li id="req-length" class="text-red-500">• At least 8 characters</li>
+          <li id="req-upper" class="text-red-500">• One uppercase letter</li>
+          <li id="req-lower" class="text-red-500">• One lowercase letter</li>
+          <li id="req-special" class="text-red-500">• One special character (e.g., $, @)</li>
+        </ul>
       </div>
 
       <!-- Strength meter -->
@@ -125,6 +136,12 @@
       strengthBar.className = 'bg-brown-600';
       strengthText.textContent = 'Strong';
     }
+
+    // Update requirement indicators
+    document.getElementById('req-length').className = rules.length.test(val) ? 'text-green-500' : 'text-red-500';
+    document.getElementById('req-upper').className = rules.upper.test(val) ? 'text-green-500' : 'text-red-500';
+    document.getElementById('req-lower').className = rules.lower.test(val) ? 'text-green-500' : 'text-red-500';
+    document.getElementById('req-special').className = rules.special.test(val) ? 'text-green-500' : 'text-red-500';
   }
 
   function updateMatchUI() {
