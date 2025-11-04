@@ -20,7 +20,7 @@
     </p>
     @if(Auth::user()->rejection_reason)
     <p class="text-gray-700 mb-4">
-      <strong>Reason:</strong> {{ Auth::user()->rejection_reason }}
+      <strong>Reason:</strong> {!! Auth::user()->rejection_reason !!}
     </p>
     @endif
     <p class="text-sm text-gray-600 mb-4">
