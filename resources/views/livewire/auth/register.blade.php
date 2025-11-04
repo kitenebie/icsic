@@ -177,7 +177,7 @@ new #[Layout('components.layouts.auth')] class extends Component {}; ?>
                 class="mt-2 px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600 text-sm">Start Face
                 Detection</button>
             {{-- <button type="button" id="testCameraBtn"
-                class="mt-2 px-4 py-2 bg-green-500 text-white rounded hover:bg-green-600 text-sm">🧪 Test Camera</button>
+                class="mt-2 px-4 py-2 bg-brown-500 text-white rounded hover:bg-brown-600 text-sm">🧪 Test Camera</button>
             <button type="button" id="toggleDebugBtn"
                 class="mt-2 px-4 py-2 bg-gray-500 text-white rounded hover:bg-gray-600 text-sm">🔍 Debug</button>
             <button type="button" id="manualBlinkBtn"
@@ -256,7 +256,7 @@ new #[Layout('components.layouts.auth')] class extends Component {}; ?>
         <script src="https://www.google.com/recaptcha/api.js?onload=onloadCallback&render=explicit" async defer></script>
 
         <!-- Captcha Alert Messages -->
-        <div id="captcha-success" class="hidden p-4 mb-4 text-sm text-green-800 rounded-lg bg-green-50 dark:bg-gray-800 dark:text-green-400" role="alert">
+        <div id="captcha-success" class="hidden p-4 mb-4 text-sm text-brown-800 rounded-lg bg-brown-50 dark:bg-gray-800 dark:text-brown-400" role="alert">
             <span class="font-medium">Captcha verified successfully!</span>
         </div>
 
@@ -591,7 +591,7 @@ new #[Layout('components.layouts.auth')] class extends Component {}; ?>
 
             console.log('✅ Basic camera test successful');
             faceStatus.textContent = '✅ Camera access works! You can now use face detection.';
-            faceStatus.style.color = 'green';
+            faceStatus.style.color = 'brown';
 
             // Stop the test stream immediately
             testStream.getTracks().forEach(track => track.stop());
@@ -845,7 +845,7 @@ new #[Layout('components.layouts.auth')] class extends Component {}; ?>
 
                 // Update status to show calibration is complete
                 faceStatus.textContent = `🎯 Blink detection calibrated! Baseline: ${baselineEAR.toFixed(3)}, Threshold: ${earThreshold.toFixed(3)}. Now blink your eyes!`;
-                faceStatus.style.color = 'green';
+                faceStatus.style.color = 'brown';
 
                 // Add visual indicator that blink detection is ready
                 faceStep1.innerHTML = 'Step 1: Blink your eyes (Ready!)';
@@ -919,7 +919,7 @@ new #[Layout('components.layouts.auth')] class extends Component {}; ?>
         const earText = currentEAR !== null ? currentEAR.toFixed(3) : '--';
         const thresholdText = '0.250'; // Fixed threshold
         const statusText = isBlinking ? 'BLINKING!' : 'Normal';
-        const statusColor = isBlinking ? 'red' : 'green';
+        const statusColor = isBlinking ? 'red' : 'brown';
 
         earDisplay.innerHTML = `EAR: <span style="color: blue;">${earText}</span> | Threshold: <span style="color: orange;">${thresholdText}</span> | Status: <span style="color: ${statusColor};">${statusText}</span>`;
 
@@ -1017,7 +1017,7 @@ new #[Layout('components.layouts.auth')] class extends Component {}; ?>
                         if (validationCount >= 5) {
                             clearInterval(detectionInterval);
                             faceStatus.textContent = '✅ Validation completed! All steps successful.';
-                            faceStatus.style.color = 'green';
+                            faceStatus.style.color = 'brown';
                             speak('All steps completed successfully. Capturing your profile photo now');
                             setTimeout(() => {
                                 capturePhoto();
@@ -1095,7 +1095,7 @@ new #[Layout('components.layouts.auth')] class extends Component {}; ?>
             faceVideo.style.display = 'none';
 
             faceStatus.textContent = '🎉 Profile picture captured successfully!';
-            faceStatus.style.color = 'green';
+            faceStatus.style.color = 'brown';
             speak('Profile picture captured successfully');
             hideAllCameraButtons();
 
@@ -1355,7 +1355,7 @@ new #[Layout('components.layouts.auth')] class extends Component {}; ?>
                     capturedImage.src = data.profile_image_data;
                     profileImagePreview.style.display = 'block';
                     faceStatus.textContent = '✅ Profile picture restored from draft!';
-                    faceStatus.style.color = 'green';
+                    faceStatus.style.color = 'brown';
                 }
 
                 return true;
