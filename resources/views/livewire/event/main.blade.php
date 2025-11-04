@@ -76,7 +76,7 @@
     </x-filament::modal>
     <br>
     <!-- Calendar Container -->
-    <div style="background-color: white; border-radius: 8px; box-shadow: 0 4px 12px -2px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.05); overflow: hidden; transition: all 0.3s ease; margin-top: 4px;"
+    <div style="background-color: white; border-radius: 8px; box-shadow: 0 4px 12px -2px #fdf8f6, 0 2px 4px -1px rgba(0, 0, 0, 0.05); overflow: hidden; transition: all 0.3s ease; margin-top: 4px;"
         class="dark:bg-gray-900 dark:border dark:border-gray-700 dark:shadow-xl dark:shadow-gray-900/30">
 
         <!-- Calendar Header -->
@@ -121,7 +121,7 @@
                             </button>
 
                             <!-- Dropdown Panel -->
-                            <div id="monthYearDropdown" style="position: absolute; top: 100%; left: 0; margin-top: 8px; width: 280px; background: white; border: 1px solid #d1d5db; border-radius: 8px; box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04); z-index: 1000; display: none;"
+                            <div id="monthYearDropdown" style="position: absolute; top: 100%; left: 0; margin-top: 8px; width: 280px; background: white; border: 1px solid #d1d5db; border-radius: 8px; box-shadow: 0 10px 25px -5px #fdf8f6, 0 10px 10px -5px rgba(0, 0, 0, 0.04); z-index: 1000; display: none;"
                                 class="dark:bg-gray-800 dark:border-gray-600">
                                 <!-- Header with Year Navigation -->
                                 <div style="padding: 16px; border-bottom: 1px solid #e5e7eb; background: #f9fafb;"
@@ -203,7 +203,7 @@
 
                         <!-- Multiple Matches Selector -->
                         @if($multipleMatches && count($availableMatches) > 1)
-                            <div style="position: absolute; top: 100%; left: 0; right: 0; margin-top: 4px; background: white; border: 1px solid #d1d5db; border-radius: 8px; box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15); z-index: 1000; max-height: 200px; overflow-y: auto;"
+                            <div style="position: absolute; top: 100%; left: 0; right: 0; margin-top: 4px; background: white; border: 1px solid #d1d5db; border-radius: 8px; box-shadow: 0 4px 12px #f5e8e1; z-index: 1000; max-height: 200px; overflow-y: auto;"
                                 class="dark:bg-gray-800 dark:border-gray-600">
                                 <div style="padding: 8px; background: #f9fafb; border-bottom: 1px solid #e5e7eb; font-size: 12px; color: #6b7280;"
                                     class="dark:bg-gray-700 dark:border-gray-600 dark:text-gray-300">
@@ -285,7 +285,7 @@
             </div>
 
             <!-- Calendar Days -->
-            <div style="display: grid; grid-template-columns: repeat(7, 1fr); gap: 1px; background: linear-gradient(135deg, #e2e8f0 0%, #cbd5e1 100%); border-radius: 8px; overflow: hidden; min-width: 500px; max-width: 100%; box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1); position: relative;"
+            <div style="display: grid; grid-template-columns: repeat(7, 1fr); gap: 1px; background: linear-gradient(135deg, #e2e8f0 0%, #cbd5e1 100%); border-radius: 8px; overflow: hidden; min-width: 500px; max-width: 100%; box-shadow: inset 0 1px 3px #fdf8f6; position: relative;"
                 class="dark:bg-gradient-to-br dark:from-gray-700 dark:to-gray-800 dark:shadow-2xl dark:shadow-gray-900/50">
                 @php
                     // Google Calendar style color mapping function
@@ -357,10 +357,10 @@
                         <div wire:click="selectDate('{{ $day['date'] }}')"
                             style="background: linear-gradient(135deg, #ffffff 0%, #fefefe 100%); min-height: 120px; padding: 8px; cursor: pointer; transition: all 0.3s ease; border-radius: 6px; position: relative; {{ $day['is_today'] ? 'background: linear-gradient(135deg, #dcfce7 0%, #bbf7d0 100%); box-shadow: 0 3px 8px rgba(150, 87, 55, 0.3);' : '' }} {{ $day['is_selected'] ? 'box-shadow: 0 0 0 2px #965737, 0 3px 8px rgba(150, 87, 55, 0.4);' : '' }}"
                             class="dark:bg-gradient-to-br dark:from-gray-700 dark:to-gray-800 dark:text-white {{ $day['is_today'] ? 'dark:bg-gradient-to-br dark:from-green-800 dark:to-green-900 dark:shadow-2xl dark:shadow-green-900/50' : '' }} dark:hover:shadow-lg dark:hover:shadow-gray-900/30"
-                            onmouseover="this.style.transform='translateY(1px)'; this.style.boxShadow='{{ $day['is_selected'] ? '0 0 0 2px #b37b5d, ' : '' }}0 6px 16px rgba(0, 0, 0, 0.15)'"
+                            onmouseover="this.style.transform='translateY(1px)'; this.style.boxShadow='{{ $day['is_selected'] ? '0 0 0 2px #b37b5d, ' : '' }}0 6px 16px #f5e8e1'"
                             onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='{{ $day['is_selected'] ? '0 0 0 2px #b37b5d' : ($day['is_today'] ? '0 3px 8px #e7cfc0' : 'none') }}'">
 
-                            <div style="font-size: 14px; font-weight: 600; color: #111827; margin-bottom: 6px; text-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);"
+                            <div style="font-size: 14px; font-weight: 600; color: #111827; margin-bottom: 6px; text-shadow: 0 1px 2px #fdf8f6;"
                                 class="dark:text-gray-100">
                                 {{ $day['day'] }}
                             </div>
@@ -495,10 +495,10 @@
                 @if ($selectedDateEvents->count() > 0)
                     <div style="display: flex; flex-direction: column; gap: 12px;">
                         @foreach ($selectedDateEvents as $event)
-                            <div style="background: linear-gradient(135deg, #ffffff 0%, #fefefe 100%); padding: 16px; border-radius: 8px; box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1), 0 1px 3px rgba(0, 0, 0, 0.05); border: 1px solid rgba(229, 231, 235, 0.8); transition: all 0.3s ease; position: relative; overflow: hidden;"
+                            <div style="background: linear-gradient(135deg, #ffffff 0%, #fefefe 100%); padding: 16px; border-radius: 8px; box-shadow: 0 2px 8px #fdf8f6, 0 1px 3px rgba(0, 0, 0, 0.05); border: 1px solid rgba(229, 231, 235, 0.8); transition: all 0.3s ease; position: relative; overflow: hidden;"
                                 class="dark:bg-gradient-to-br dark:from-gray-700 dark:to-gray-800 dark:border-gray-600 dark:shadow-2xl dark:shadow-gray-900/30"
-                                onmouseover="this.style.transform='translateY(-1px)'; this.style.boxShadow='0 6px 16px rgba(0, 0, 0, 0.15)'"
-                                onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 2px 8px rgba(0, 0, 0, 0.1), 0 1px 3px rgba(0, 0, 0, 0.05)'">
+                                onmouseover="this.style.transform='translateY(-1px)'; this.style.boxShadow='0 6px 16px #f5e8e1'"
+                                onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 2px 8px #fdf8f6, 0 1px 3px rgba(0, 0, 0, 0.05)'">
                                 <div style="position: absolute; top: 0; left: 0; right: 0; bottom: 0; background: url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48ZGVmcz48cGF0dGVybiBpZD0ic3VidGxlLXBhdHRlcm4iIHdpZHRoPSIyMCIgaGVpZ2h0PSIyMCIgcGF0dGVyblVuaXRzPSJ1c2VyU3BhY2VPblVzZSI+PGNpcmNsZSBjeD0iMTAiIGN5PSIxMCIgcj0iMC41IiBmaWxsPSJyZ2JhKDAsMCwwLDAuMDIpIi8+PC9wYXR0ZXJuPjwvZGVmcz48cmVjdCB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgZmlsbD0idXJsKCNzdWJ0bGUtcGF0dGVybikiLz48L3N2Zz4=');
                                     opacity: 0.3;"
                                     class="dark:opacity-10">
@@ -581,7 +581,7 @@
                 @else
                     <div style="text-align: center; padding: 48px 0; color: #6b7280;" class="dark:text-gray-400">
                         <div style="position: relative; display: inline-block;">
-                            <svg style="width: 64px; height: 64px; margin: 0 auto 20px; color: #d1d5db; filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.1));"
+                            <svg style="width: 64px; height: 64px; margin: 0 auto 20px; color: #d1d5db; filter: drop-shadow(0 4px 8px #fdf8f6);"
                                 class="dark:text-gray-600 dark:filter dark:drop-shadow-[0_4px_8px_rgba(0,0,0,0.3)]"
                                 fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
