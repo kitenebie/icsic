@@ -273,96 +273,96 @@
 
     /* ☕ primary */
     .bg-primary-50 {
-        background-color: var(--color-brown-50)  !important;
+        background-color: var(--color-brown-50) !important;
     }
     .bg-primary-100 {
-        background-color: var(--color-brown-100)  !important;
+        background-color: var(--color-brown-100) !important;
     }
     .bg-primary-200 {
-        background-color: var(--color-brown-200)  !important;
+        background-color: var(--color-brown-200) !important;
     }
     .bg-primary-300 {
-        background-color: var(--color-brown-300)  !important;
+        background-color: var(--color-brown-300) !important;
     }
     .bg-primary-400 {
-        background-color: var(--color-brown-400)  !important;
+        background-color: var(--color-brown-400) !important;
     }
     .bg-primary-500 {
-        background-color: var(--color-brown-500)  !important;
+        background-color: var(--color-brown-500) !important;
     }
     .bg-primary-600 {
-        background-color: var(--color-brown-600)  !important;
+        background-color: var(--color-brown-600) !important;
     }
     .bg-primary-700 {
-        background-color: var(--color-brown-700)  !important;
+        background-color: var(--color-brown-700) !important;
     }
     .bg-primary-800 {
-        background-color: var(--color-brown-800)  !important;
+        background-color: var(--color-brown-800) !important;
     }
     .bg-primary-900 {
-        background-color: var(--color-brown-900)  !important;
+        background-color: var(--color-brown-900) !important;
     }
 
     .border-primary-50 {
-        border-color: var(--color-brown-50)  !important;
+        border-color: var(--color-brown-50) !important;
     }
     .border-primary-100 {
-        border-color: var(--color-brown-100)  !important;
+        border-color: var(--color-brown-100) !important;
     }
     .border-primary-200 {
-        border-color: var(--color-brown-200)  !important;
+        border-color: var(--color-brown-200) !important;
     }
     .border-primary-300 {
-        border-color: var(--color-brown-300)  !important;
+        border-color: var(--color-brown-300) !important;
     }
     .border-primary-400 {
-        border-color: var(--color-brown-400)  !important;
+        border-color: var(--color-brown-400) !important;
     }
     .border-primary-500 {
-        border-color: var(--color-brown-500)  !important;
+        border-color: var(--color-brown-500) !important;
     }
     .border-primary-600 {
-        border-color: var(--color-brown-600)  !important;
+        border-color: var(--color-brown-600) !important;
     }
     .border-primary-700 {
-        border-color: var(--color-brown-700)  !important;
+        border-color: var(--color-brown-700) !important;
     }
     .border-primary-800 {
-        border-color: var(--color-brown-800)  !important;
+        border-color: var(--color-brown-800) !important;
     }
     .border-primary-900 {
-        border-color: var(--color-brown-900)  !important;
+        border-color: var(--color-brown-900) !important;
     }
 
     .text-primary-50 {
-        color: var(--color-brown-50)  !important;
+        color: var(--color-brown-50) !important;
     }
     .text-primary-100 {
-        color: var(--color-brown-100)  !important;
+        color: var(--color-brown-100) !important;
     }
     .text-primary-200 {
-        color: var(--color-brown-200)  !important;
+        color: var(--color-brown-200) !important;
     }
     .text-primary-300 {
-        color: var(--color-brown-300)  !important;
+        color: var(--color-brown-300) !important;
     }
     .text-primary-400 {
-        color: var(--color-brown-400)  !important;
+        color: var(--color-brown-400) !important;
     }
     .text-primary-500 {
-        color: var(--color-brown-500)  !important;
+        color: var(--color-brown-500) !important;
     }
     .text-primary-600 {
-        color: var(--color-brown-600)  !important;
+        color: var(--color-brown-600) !important;
     }
     .text-primary-700 {
-        color: var(--color-brown-700)  !important;
+        color: var(--color-brown-700) !important;
     }
     .text-primary-800 {
-        color: var(--color-brown-800)  !important;
+        color: var(--color-brown-800) !important;
     }
     .text-primary-900 {
-        color: var(--color-brown-900)  !important;
+        color: var(--color-brown-900) !important;
     }
     /* 🩵 Info */
     .bg-info-500 {
@@ -425,9 +425,43 @@
         border-color: var(--color-warning-500) !important;
     }
 
-    /* Gradient */
-    .bg-gradient-to-r-from-cream-500-to-brown-600 {
-        background: linear-gradient(to right, var(--color-cream-500), var(--color-brown-600)) !important;
+    /* =========================================================
+   🎨 GRADIENT UTILITIES (Tailwind-style)
+   ========================================================= */
+    @layer utilities {
+        /* ✅ Custom gradient class (mimics Tailwind syntax) */
+        .bg-gradient-to-r.from-cream-500.to-brown-600 {
+            background-image: linear-gradient(
+                to right,
+                var(--color-cream-500),
+                var(--color-brown-600)
+            ) !important;
+        }
+
+        /* Optional: variants for direction */
+        .bg-gradient-to-l.from-cream-500.to-brown-600 {
+            background-image: linear-gradient(
+                to left,
+                var(--color-cream-500),
+                var(--color-brown-600)
+            ) !important;
+        }
+
+        .bg-gradient-to-t.from-cream-500.to-brown-600 {
+            background-image: linear-gradient(
+                to top,
+                var(--color-cream-500),
+                var(--color-brown-600)
+            ) !important;
+        }
+
+        .bg-gradient-to-b.from-cream-500.to-brown-600 {
+            background-image: linear-gradient(
+                to bottom,
+                var(--color-cream-500),
+                var(--color-brown-600)
+            ) !important;
+        }
     }
 }
 
@@ -446,19 +480,19 @@
 /* mobile */
 @media (max-width: 1023px) {
     .comments-modal {
-        position: fixed  !important;
-        top: 0  !important;
-        left: 0  !important;
-        right: 0  !important;
-        bottom: 0  !important;
-        width: 100%  !important;
-        height: 100%  !important;
+        position: fixed !important;
+        top: 0 !important;
+        left: 0 !important;
+        right: 0 !important;
+        bottom: 0 !important;
+        width: 100% !important;
+        height: 100% !important;
     }
     .comments-container {
-        width: 100%  !important;
-        height: 100%  !important;
-        max-height: 100vh  !important;
-        border-radius: 0  !important;
+        width: 100% !important;
+        height: 100% !important;
+        max-height: 100vh !important;
+        border-radius: 0 !important;
     }
     .comments-header {
         padding: 1rem !important;
@@ -491,17 +525,17 @@
 /* desktop */
 @media (min-width: 1024px) {
     .comments-modal {
-        position: absolute  !important;
-        top: 0  !important;
-        right: 0  !important;
-        bottom: 0  !important;
-        width: 24rem  !important;
-        height: auto  !important;
-        max-height: 80vh  !important;
+        position: absolute !important;
+        top: 0 !important;
+        right: 0 !important;
+        bottom: 0 !important;
+        width: 24rem !important;
+        height: auto !important;
+        max-height: 80vh !important;
     }
     .comments-container {
-        width: 24rem  !important;
-        max-height: 80vh  !important;
+        width: 24rem !important;
+        max-height: 80vh !important;
         border-radius: 0.5rem !important;
         box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1) !important;
     }
@@ -534,14 +568,14 @@ textarea:focus[data-flux-control],
 select:focus[data-flux-control] {
     --tw-ring-shadow: var(--tw-ring-inset) 0 0 0
         calc(2px + var(--tw-ring-offset-width))
-        var(--tw-ring-color, currentcolor)  !important;
+        var(--tw-ring-color, currentcolor) !important;
     box-shadow: var(--tw-inset-shadow), var(--tw-inset-ring-shadow),
-        var(--tw-ring-offset-shadow), var(--tw-ring-shadow), var(--tw-shadow)  !important;
+        var(--tw-ring-offset-shadow), var(--tw-ring-shadow), var(--tw-shadow) !important;
 
     /* 🎨 Brown accent theme */
-    --tw-ring-color: var(--color-brown-500)  !important;
-    --tw-ring-offset-width: 2px  !important;
-    --tw-ring-offset-color: var(--color-brown-100)  !important;
+    --tw-ring-color: var(--color-brown-500) !important;
+    --tw-ring-offset-width: 2px !important;
+    --tw-ring-offset-color: var(--color-brown-100) !important;
 
     /* remove browser default outline
     --tw-outline-style: none  !important;
@@ -551,19 +585,19 @@ select:focus[data-flux-control] {
 @media (hover: hover) {
     ui-checkbox[data-checked]
         .hover\:\[ui-checkbox\[data-checked\]_\&\]\:bg-\(--color-accent\):hover {
-        background-color: var(--color-brown-500)  !important;
+        background-color: var(--color-brown-500) !important;
     }
 }
 
 ui-checkbox[data-checked] .\[ui-checkbox\[data-checked\]_\&\]\:shadow-none {
     --tw-shadow: 0 0 #0000 !important;
-    background-color: var(--color-brown-500)  !important;
+    background-color: var(--color-brown-500) !important;
     box-shadow: var(--tw-inset-shadow), var(--tw-inset-ring-shadow),
         var(--tw-ring-offset-shadow), var(--tw-ring-shadow), var(--tw-shadow) !important;
 }
 .bg-\[var\(--color-accent\)\] {
-    background-color: var(--color-brown-500)  !important;
+    background-color: var(--color-brown-500) !important;
 }
 .bg-\[var\(--color-accent\)\]:hover {
-    background-color: var(--color-brown-400)  !important;
+    background-color: var(--color-brown-400) !important;
 }
