@@ -232,7 +232,7 @@
     </section>
 
 
-    <section class="bg-gray-100 py-16">
+    <section class="bg-brown-100 py-16">
         <div class="max-w-4xl mx-auto px-4">
             <h2 class="text-4xl font-bold text-center text-gray-800 mb-12">Frequently Asked Questions</h2>
 
@@ -823,7 +823,7 @@
                     <h3 class="text-2xl font-semibold text-gray-700 mb-6 border-b pb-2 text-center">${section}</h3>
                     <div class="flex justify-center">
                         ${teamData[section].map(member => `
-                                                                                                    <div class="bg-gray-100 rounded-lg shadow hover:shadow-md transition max-w-xs mx-auto">
+                                                                                                    <div class="bg-brown-100 rounded-lg shadow hover:shadow-md transition max-w-xs mx-auto">
                                                                                                         <img src="${member.image}" class="w-full h-60 object-cover" alt="${member.name}">
                                                                                                         <div class="p-4 text-center">
                                                                                                         <h4 class="text-xl font-bold text-gray-800">${member.name}</h4>
@@ -840,7 +840,7 @@
                     <h3 class="text-2xl font-semibold text-gray-700 mb-6 border-b pb-2 text-center">${section}</h3>
                     <div class="grid justify-center gap-8 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-4">
                         ${teamData[section].map(member => `
-                                                                                                    <div class="bg-gray-100 rounded-lg shadow hover:shadow-md transition max-w-xs mx-auto">
+                                                                                                    <div class="bg-brown-100 rounded-lg shadow hover:shadow-md transition max-w-xs mx-auto">
                                                                                                         <img src="${member.image}" class="w-full h-60 object-cover" alt="${member.name}">
                                                                                                         <div class="p-4 text-center">
                                                                                                         <h4 class="text-xl font-bold text-gray-800">${member.name}</h4>
