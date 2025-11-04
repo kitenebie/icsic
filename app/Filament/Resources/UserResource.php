@@ -29,6 +29,9 @@ use Filament\Tables\Enums\FiltersLayout;
 use Filament\Notifications\Notification;
 use Filament\Tables\Columns\ImageColumn;
 use Filament\Forms\Components\RichEditor;
+use Filament\Forms\Set;
+
+
 
 class UserResource extends Resource
 {
@@ -127,6 +130,11 @@ class UserResource extends Resource
                     ])
                     ->default('student')
                     ->required()
+                    ->afterStateUpdated(function (Set $set, ?string $state) {
+                        if ($state != 'Reject') {
+                            $set('rejection_reason', '');
+                        }
+                    })
                     ->columnSpanFull()
                     ->placeholder('Select user role')
                     ->reactive(), // Make it reactive so it can trigger changes in dependent fields
