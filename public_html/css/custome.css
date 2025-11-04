@@ -601,3 +601,10 @@ ui-checkbox[data-checked] .\[ui-checkbox\[data-checked\]_\&\]\:shadow-none {
 .bg-\[var\(--color-accent\)\]:hover {
     background-color: var(--color-brown-400) !important;
 }
+.bg-grad-cream-brown-right {
+    background-image: linear-gradient(
+        to right,
+        var(--color-cream-500),
+        var(--color-brown-600)
+    ) !important;
+}
