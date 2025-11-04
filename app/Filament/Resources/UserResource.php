@@ -130,10 +130,8 @@ class UserResource extends Resource
                     ])
                     ->default('student')
                     ->required()
-                    ->afterStateUpdated(function (Set $set, ?string $state) {
-                        if ($state != 'Reject') {
-                            $set('rejection_reason', '');
-                        }
+                    ->afterStateUpdated(function (Set $set) {
+                            $set('rejection_reason', ' ');
                     })
                     ->columnSpanFull()
                     ->placeholder('Select user role')
