@@ -1,9 +1,9 @@
-<div class="relative w-full bg-[#f0f2f5]">
-    <div class="facebook-newsfeed">
+<div class="relative w-full bg-brown-50">
+    <div class="facebook-newsfeed bg-brown-50">
         <!-- News Feed Posts -->
-        <div class="posts-container">
+        <div class="posts-container bg-brown-50">
             @forelse ($announcements as $announcement)
-                <article id="announcement-{{ $announcement->id }}" class="facebook-post mt-4">
+                <article id="announcement-{{ $announcement->id }}" class="facebook-post mt-4 bg-cream-50">
                     @section('meta')
                         <meta property="og:title" content="{{ $announcement->title }}" />
                         <meta property="og:description" content="{{ Str::limit(strip_tags($announcement->content), 150) }}" />
@@ -12,17 +12,17 @@
                         <meta property="og:type" content="article" />
                     @endsection
                     <!-- Post Header -->
-                    <header id="{{ $announcement->id }}" class="post-header">
-                        <div class="post-author-info">
+                    <header id="{{ $announcement->id }}" class="post-header bg-cream-50">
+                        <div class="post-author-info bg-cream-50">
                             <img src="{{ $announcement->creator->profile_picture ? asset('storage/' . $announcement->creator->profile_picture) : asset('images/blank-avatar.png') }}"
                                 alt="{{ $announcement->creator->FirstName }} {{ $announcement->creator->LastName }} avatar" class="post-avatar" />
-                            <div class="post-meta-info">
-                                <h3 class="post-author-name">{{ $announcement->creator->FirstName }} {{ $announcement->creator->LastName }}</h3>
-                                <div class="post-time-privacy">
+                            <div class="post-meta-info bg-cream-50">
+                                <h3 class="post-author-name bg-cream-50">{{ $announcement->creator->FirstName }} {{ $announcement->creator->LastName }}</h3>
+                                <div class="post-time-privacy bg-cream-50">
                                     <time datetime="{{ $announcement->created_at }}">
                                         {{ $this->formatDateHumanReadable($announcement->created_at) }}
                                     </time>
-                                    <span class="meta-separator">·</span>
+                                    <span class="meta-separator bg-cream-50">·</span>
                                     @if ($announcement->tags)
                                         <i class="fas fa-users meta-icon" aria-label="Group post"
                                             title="Group post"></i>
@@ -39,12 +39,12 @@
                     </header>
 
                     <!-- Post Content -->
-                    <div class="post-content">
+                    <div class="post-content bg-cream-50">
                         @if ($announcement->title && $announcement->title !== strip_tags($announcement->content))
                             <h4 class="post-title">{{ $announcement->title }}</h4>
                         @endif
-                        <div class="post-text">
-                            <div class="content-preview">
+                        <div class="post-text bg-cream-50">
+                            <div class="content-preview bg-cream-50">
                                 {!! \Illuminate\Support\Str::limit($announcement->content, 300, '') !!}
                                 @if (strlen($announcement->content) > 300)
                                     <button class="see-more-link" onclick="toggleContent({{ $announcement->id }})">
@@ -53,7 +53,7 @@
                                 @endif
                             </div>
                             @if (strlen($announcement->content) > 300)
-                                <div class="content-full hidden">
+                                <div class="content-full hidden bg-cream-50">
                                     {!! $announcement->content !!}
                                     <button class="see-more-link" onclick="toggleContent({{ $announcement->id }})">
                                         See less
@@ -65,7 +65,7 @@
 
                     <!-- Post Images and Videos -->
                     @if (count($announcement->images) > 0)
-                        <div class="post-images">
+                        <div class="post-images bg-cream-50">
                             <div
                                 class="images-container {{ count($announcement->images) >= 2 ? 'multi-image' : 'single-image' }}">
                                 @php
@@ -117,7 +117,7 @@
                     @endif
 
                     <!-- Post Reactions Summary -->
-                    <div class="post-stats">
+                    <div class="post-stats bg-cream-50">
                         @include('livewire.announcement.partials.reaction-summary', [
                             'itemId' => $announcement->id,
                             'type' => 'post',
@@ -138,7 +138,7 @@
                     </div>
 
                     <!-- Post Actions -->
-                    <div class="post-actions">
+                    <div class="post-actions bg-cream-50">
                         <div class="action-button-wrapper">
                             @include('livewire.announcement.partials.reaction-button', [
                                 'itemId' => $announcement->id,
@@ -163,7 +163,7 @@
                     </div>
                 </article>
             @empty
-                <div class="empty-feed">
+                <div class="empty-feed bg-cream-50">
                     <div class="empty-icon">
                         <i class="fas fa-newspaper"></i>
                     </div>
