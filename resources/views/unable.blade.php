@@ -24,7 +24,7 @@
             system's rules and regulations.
         </p>
         @php
-            if (Auth::user()->role != "rejected") {
+            if (!Auth::user()->rejection_reason) {
                 return redirect('/');
             }
         @endphp
