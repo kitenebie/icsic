@@ -430,7 +430,7 @@
                                             $isHighlighted = $highlightedEventId && $event->id == $highlightedEventId;
                                             $highlightStyle = $isHighlighted ?
                                                 'background: linear-gradient(135deg, #d1aa90 0%, #b37b5d 100%); color: #4a2718; border: 2px solid #965737; box-shadow: 0 0 0 2px rgba(209, 170, 144, 0.3), 0 4px 12px rgba(209, 170, 144, 0.4); animation: highlightPulse 2s infinite;' :
-                                                'background: linear-gradient(135deg, #dcfce7 0%, #bbf7d0 100%); color: #4a2718; border: 1px solid rgba(150, 87, 55, 0.2);';
+                                                'background: linear-gradient(135deg, #FACEB1FF 0%, #E7A47FFF 100%); color: #4a2718; border: 1px solid rgba(150, 87, 55, 0.2);';
                                         @endphp
                                         <div style="{{ $highlightStyle }}"
                                             class="dark:bg-gradient-to-r dark:from-green-800 dark:to-green-900 dark:text-green-200 dark:border-green-700 dark:shadow-lg dark:shadow-green-900/20 {{ $isHighlighted ? 'highlighted-event' : '' }}"
