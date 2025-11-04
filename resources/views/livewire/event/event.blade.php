@@ -5,7 +5,7 @@
             <div class="flex items-center justify-between p-6 border-b border-gray-200">
                 <div class="flex items-center space-x-4">
                     <div class="flex items-center space-x-3">
-                        <div style="background: linear-gradient(to right, #ffd18f, #brown) !important;"
+                        <div style="background-image: linear-gradient(to right, #ffd18f, #brown) !important;"
                             class="w-10 h-10 rounded-lg flex items-center justify-center">
                             <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -270,15 +270,6 @@
                                             @endif
                                         </div>
                                     @empty
-                                        <div
-                                            class="w-full h-full bg-gradient-to-r from-blue-500 to-purple-600 rounded-lg flex items-center justify-center">
-                                            <svg class="w-24 h-24 text-white" fill="none" stroke="currentColor"
-                                                viewBox="0 0 24 24">
-                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                                    d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z">
-                                                </path>
-                                            </svg>
-                                        </div>
                                     @endforelse
                                 </div>
                                 <div class="absolute top-3 left-3">
@@ -299,8 +290,8 @@
                             </div>
                         @else
                             <!-- No images fallback -->
-                            <div
-                                class="h-32 bg-gradient-to-r from-blue-400 to-purple-500 flex items-center justify-center">
+                            <div style="background-image: linear-gradient(to right, #ffd18f, #brown) !important;"
+                                class="h-32 flex items-center justify-center">
                                 <div class="text-center text-white">
                                     <div class="text-2xl font-bold mb-1">
                                         {{ \Carbon\Carbon::parse($event->event_date)->format('d') }}
