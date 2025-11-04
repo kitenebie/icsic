@@ -461,7 +461,7 @@
                         </svg>
                     </button>
                     <div class="faq-content px-5 pb-5 text-gray-600 hidden">
-                        Contact the ICSIS Help Desk or your school’s IT coordinator. Their contact info is in the About
+                        Contact the <a href="https://mail.google.com/mail/?view=cm&fs=1&to=irosincentralschool01@gmail.com">ICSIS Help Desk</a> or your school’s IT coordinator. Their contact info is in the About
                         Us section or on the login page. They can assist with account issues, technical problems, and
                         general questions.
                     </div>
@@ -740,6 +740,198 @@
                         <p class="text-gray-600 text-lg leading-relaxed mt-4">
                             <em>Last updated: November 2025</em>
                         </p>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="bg-brown-100 py-16">
+        <div class="max-w-4xl mx-auto px-4">
+            <h2 class="text-4xl font-bold text-center text-gray-800 mb-12">Terms and Conditions</h2>
+
+            <div class="bg-cream-50 p-8 rounded-xl shadow hover:shadow-md transition">
+                <div class="space-y-8">
+
+                    <!-- Acceptance of Terms -->
+                    <div>
+                        <h3 class="text-2xl font-semibold text-gray-700 mb-4">Acceptance of Terms</h3>
+                        <p class="text-gray-600 text-lg leading-relaxed">
+                            By accessing and using the Irosin Central School Information System (ICSIS), you accept and agree to be bound by the terms and provision of this agreement. If you do not agree to abide by the above, please do not use this service.
+                        </p>
+                    </div>
+
+                    <!-- User Eligibility -->
+                    <div>
+                        <h3 class="text-2xl font-semibold text-gray-700 mb-4">User Eligibility and Registration</h3>
+                        <p class="text-gray-600 text-lg leading-relaxed">
+                            ICSIS is available to:
+                        </p>
+                        <ul class="list-disc list-inside mt-4 space-y-2 text-gray-600">
+                            <li>Currently enrolled students of Irosin Central School</li>
+                            <li>Parents or guardians of enrolled students</li>
+                            <li>Graduates of Irosin Central School</li>
+                            <li>School teachers and administrative staff</li>
+                        </ul>
+                        <p class="text-gray-600 text-lg leading-relaxed mt-4">
+                            Students are pre-registered by school administrators. Parents and graduates must register themselves and provide valid identification for verification. All users must complete the face detection verification process during registration.
+                        </p>
+                    </div>
+
+                    <!-- User Responsibilities -->
+                    <div>
+                        <h3 class="text-2xl font-semibold text-gray-700 mb-4">User Responsibilities and Conduct</h3>
+                        <p class="text-gray-600 text-lg leading-relaxed">
+                            Users agree to:
+                        </p>
+                        <ul class="list-disc list-inside mt-4 space-y-2 text-gray-600">
+                            <li>Provide accurate and truthful information during registration and profile updates</li>
+                            <li>Maintain the confidentiality of login credentials and account access</li>
+                            <li>Use the system only for lawful purposes related to school communication and information sharing</li>
+                            <li>Respect the rights and privacy of other users</li>
+                            <li>Follow community guidelines and school policies</li>
+                            <li>Report any technical issues or security concerns promptly</li>
+                        </ul>
+                        <p class="text-gray-600 text-lg leading-relaxed mt-4">
+                            Users are prohibited from:
+                        </p>
+                        <ul class="list-disc list-inside mt-4 space-y-2 text-gray-600">
+                            <li>Sharing account credentials with others</li>
+                            <li>Posting inappropriate, offensive, or harmful content</li>
+                            <li>Attempting to access unauthorized areas or data</li>
+                            <li>Using the system for commercial purposes or spam</li>
+                            <li>Impersonating other users or providing false information</li>
+                        </ul>
+                    </div>
+
+                    <!-- Content Guidelines -->
+                    <div>
+                        <h3 class="text-2xl font-semibold text-gray-700 mb-4">Content Guidelines and Moderation</h3>
+                        <p class="text-gray-600 text-lg leading-relaxed">
+                            ICSIS employs AI-powered content moderation to maintain a respectful community environment. Comments and posts are automatically scanned for:
+                        </p>
+                        <ul class="list-disc list-inside mt-4 space-y-2 text-gray-600">
+                            <li>Rude, offensive, or inappropriate language</li>
+                            <li>Harmful or discriminatory content</li>
+                            <li>Spam or irrelevant posts</li>
+                            <li>Violations of school policies</li>
+                        </ul>
+                        <p class="text-gray-600 text-lg leading-relaxed mt-4">
+                            Violating content may be removed, and repeated violations may result in temporary or permanent suspension of commenting privileges or account access. Users are responsible for the content they post and engage with.
+                        </p>
+                    </div>
+
+                    <!-- Group Membership and Access -->
+                    <div>
+                        <h3 class="text-2xl font-semibold text-gray-700 mb-4">Group Membership and Access Control</h3>
+                        <p class="text-gray-600 text-lg leading-relaxed">
+                            Groups are created and managed by school administrators and teachers to organize community discussions and information sharing. Users may request to join groups, but membership requires administrative approval. Group access controls ensure that:
+                        </p>
+                        <ul class="list-disc list-inside mt-4 space-y-2 text-gray-600">
+                            <li>Only approved members can view group-specific announcements and events</li>
+                            <li>News posts remain publicly accessible to all users</li>
+                            <li>Group discussions stay relevant to the intended community</li>
+                        </ul>
+                        <p class="text-gray-600 text-lg leading-relaxed mt-4">
+                            Users must respect group purposes and maintain appropriate conduct within group spaces.
+                        </p>
+                    </div>
+
+                    <!-- Account Security and Verification -->
+                    <div>
+                        <h3 class="text-2xl font-semibold text-gray-700 mb-4">Account Security and Identity Verification</h3>
+                        <p class="text-gray-600 text-lg leading-relaxed">
+                            Account security is maintained through:
+                        </p>
+                        <ul class="list-disc list-inside mt-4 space-y-2 text-gray-600">
+                            <li>Mandatory face detection verification during registration</li>
+                            <li>Document verification for parents and graduates</li>
+                            <li>Secure login procedures and password requirements</li>
+                            <li>Regular security audits and system updates</li>
+                        </ul>
+                        <p class="text-gray-600 text-lg leading-relaxed mt-4">
+                            Users must immediately report any suspected unauthorized access to their accounts. The school reserves the right to verify user identities at any time and suspend accounts that cannot be properly verified.
+                        </p>
+                    </div>
+
+                    <!-- Service Availability -->
+                    <div>
+                        <h3 class="text-2xl font-semibold text-gray-700 mb-4">Service Availability and Technical Support</h3>
+                        <p class="text-gray-600 text-lg leading-relaxed">
+                            ICSIS strives to provide reliable access to the platform, but service availability may be affected by:
+                        </p>
+                        <ul class="list-disc list-inside mt-4 space-y-2 text-gray-600">
+                            <li>Scheduled maintenance periods</li>
+                            <li>Technical issues or system updates</li>
+                            <li>Internet connectivity problems</li>
+                            <li>Force majeure events beyond our control</li>
+                        </ul>
+                        <p class="text-gray-600 text-lg leading-relaxed mt-4">
+                            Technical support is available through the ICSIS Help Desk and school IT coordinator. Users experiencing technical difficulties should contact support immediately for assistance.
+                        </p>
+                    </div>
+
+                    <!-- Limitation of Liability -->
+                    <div>
+                        <h3 class="text-2xl font-semibold text-gray-700 mb-4">Limitation of Liability</h3>
+                        <p class="text-gray-600 text-lg leading-relaxed">
+                            ICSIS and Irosin Central School provide the platform "as is" without warranties of any kind. We are not liable for:
+                        </p>
+                        <ul class="list-disc list-inside mt-4 space-y-2 text-gray-600">
+                            <li>Indirect, incidental, or consequential damages</li>
+                            <li>Loss of data or information</li>
+                            <li>Service interruptions or technical issues</li>
+                            <li>User-generated content or interactions</li>
+                        </ul>
+                        <p class="text-gray-600 text-lg leading-relaxed mt-4">
+                            Users assume all responsibility for their use of the platform and interactions with other users.
+                        </p>
+                    </div>
+
+                    <!-- Termination -->
+                    <div>
+                        <h3 class="text-2xl font-semibold text-gray-700 mb-4">Account Termination</h3>
+                        <p class="text-gray-600 text-lg leading-relaxed">
+                            The school reserves the right to suspend or terminate user accounts for violations of these terms, school policies, or inappropriate conduct. Users may also request account deletion at any time. Upon termination:
+                        </p>
+                        <ul class="list-disc list-inside mt-4 space-y-2 text-gray-600">
+                            <li>Access to the platform will be immediately revoked</li>
+                            <li>User data may be retained for legal or administrative purposes</li>
+                            <li>Some data may be permanently deleted based on retention policies</li>
+                        </ul>
+                    </div>
+
+                    <!-- Governing Law -->
+                    <div>
+                        <h3 class="text-2xl font-semibold text-gray-700 mb-4">Governing Law and Dispute Resolution</h3>
+                        <p class="text-gray-600 text-lg leading-relaxed">
+                            These terms are governed by the laws of the Republic of the Philippines. Any disputes arising from the use of ICSIS will be resolved through the school's administrative procedures and, if necessary, through appropriate legal channels.
+                        </p>
+                    </div>
+
+                    <!-- Updates to Terms -->
+                    <div>
+                        <h3 class="text-2xl font-semibold text-gray-700 mb-4">Updates to Terms and Conditions</h3>
+                        <p class="text-gray-600 text-lg leading-relaxed">
+                            These terms may be updated periodically to reflect changes in school policies, legal requirements, or system functionality. Users will be notified of significant changes through the platform or via email. Continued use of ICSIS after updates constitutes acceptance of the revised terms.
+                        </p>
+                        <p class="text-gray-600 text-lg leading-relaxed mt-4">
+                            <em>Last updated: November 2025</em>
+                        </p>
+                    </div>
+
+                    <!-- Contact Information -->
+                    <div>
+                        <h3 class="text-2xl font-semibold text-gray-700 mb-4">Contact Information</h3>
+                        <p class="text-gray-600 text-lg leading-relaxed">
+                            For questions about these Terms and Conditions or to report violations, please contact:
+                        </p>
+                        <ul class="list-none mt-4 space-y-2 text-gray-600">
+                            <li><strong>ICSIS Help Desk:</strong> Available through the portal's support section</li>
+                            <li><strong>School Administration:</strong> Contact the principal's office for policy-related concerns</li>
+                            <li><strong>IT Coordinator:</strong> For technical and access-related issues</li>
+                        </ul>
                     </div>
 
                 </div>
