@@ -38,9 +38,9 @@
     <x-filament::modal width="3xl" style="z-index: 999 !important;">
         <x-slot name="trigger">
             <x-filament::button wire:click="createModalShow"
-                style="background-color:#a5f8c5; color: #054721; display: flex; border: none; padding: 8px 16px; border-radius: 8px; font-weight: 500; cursor: pointer; display: flex; align-items: center; gap: 8px; transition: background-color 0.2s; width: fit-content;"
-                class="dark:bg-gray-700 dark:text-green-400 dark:hover:bg-gray-600"
-                onmouseover="this.style.backgroundColor='#62E489FF'" onmouseout="this.style.backgroundColor='#a5f8c5'">
+                style="background-color:#f5e8e1; color: #2e180f; display: flex; border: none; padding: 8px 16px; border-radius: 8px; font-weight: 500; cursor: pointer; display: flex; align-items: center; gap: 8px; transition: background-color 0.2s; width: fit-content;"
+                class="dark:bg-gray-700 dark:text-brown-400 dark:hover:bg-gray-600"
+                onmouseover="this.style.backgroundColor='#d1aa90'" onmouseout="this.style.backgroundColor='#f5e8e1'">
                 <svg style="width: 20px; height: 20px;" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path>
                 </svg>
@@ -80,8 +80,8 @@
         class="dark:bg-gray-900 dark:border dark:border-gray-700 dark:shadow-xl dark:shadow-gray-900/30">
 
         <!-- Calendar Header -->
-        <div style="background: linear-gradient(135deg, #16a34a 0%, #15803d 100%); color: white; padding: 16px 20px; position: relative;"
-            class="dark:bg-gradient-to-r dark:from-gray-800 dark:to-gray-900 dark:shadow-lg">
+        <div style="background: linear-gradient(135deg, #965737 0%, #7c4328 100%); color: white; padding: 16px 20px; position: relative;"
+            class="dark:bg-gradient-to-r dark:from-gray-800 dark:to-brown-900 dark:shadow-lg">
             <div style="position: absolute; top: 0; left: 0; right: 0; bottom: 0; background: url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48ZGVmcz48cGF0dGVybiBpZD0iZ3JhaW4iIHdpZHRoPSIxMDAiIGhlaWdodD0iMTAwIiBwYXR0ZXJuVW5pdHM9InVzZXJTcGFjZU9uVXNlIj48Y2lyY2xlIGN4PSIyNSIgY3k9IjI1IiByPSIxIiBmaWxsPSJyZ2JhKDI1NSwyNTUsMjU1LDAuMSkiLz48Y2lyY2xlIGN4PSI3NSIgY3k9Ijc1IiByPSIxIiBmaWxsPSJyZ2JhKDI1NSwyNTUsMjU1LDAuMSkiLz48L3BhdHRlcm4+PC9kZWZzPjxyZWN0IHdpZHRoPSIxMDAiIGhlaWdodD0iMTAwIiBmaWxsPSJ1cmwoI2dyYWluKSIvPjwvc3ZnPg=='); opacity: 0.1;"
                 class="dark:opacity-20">
             </div>
@@ -162,8 +162,8 @@
                                 <!-- Footer -->
                                 <div style="padding: 12px; border-top: 1px solid #e5e7eb; background: #f9fafb; border-radius: 0 0 8px 8px;"
                                     class="dark:bg-gray-700 dark:border-gray-600">
-                                    <button id="currentMonthBtn" style="width: 100%; padding: 8px 16px; background-color: #16a34a; color: white; border: none; border-radius: 6px; font-size: 12px; font-weight: 500; cursor: pointer; transition: background-color 0.2s;"
-                                        class="dark:bg-green-700 dark:hover:bg-green-600"
+                                    <button id="currentMonthBtn" style="width: 100%; padding: 8px 16px; background-color: #965737; color: white; border: none; border-radius: 6px; font-size: 12px; font-weight: 500; cursor: pointer; transition: background-color 0.2s;"
+                                        class="dark:bg-brown-700 dark:hover:bg-brown-600"
                                         onmouseover="this.style.backgroundColor='#15803d'"
                                         onmouseout="this.style.backgroundColor='#16a34a'">
                                         Go to Current Month
@@ -188,16 +188,16 @@
                         <!-- Search Input -->
                         <div style="position: relative;">
                             <input type="text" wire:model.live="searchQuery" placeholder="Search events..."
-                                style="width: 160px; padding: 8px 12px; padding-right: 36px; border: 1px solid #d1d5db; border-radius: 8px; font-size: 14px; background-color: white; color: #111827; outline: none; {{ $exactMatchFound ? 'border-color: #16a34a; box-shadow: 0 0 0 2px rgba(22, 163, 74, 0.2);' : '' }}"
+                                style="width: 160px; padding: 8px 12px; padding-right: 36px; border: 1px solid #d1d5db; border-radius: 8px; font-size: 14px; background-color: white; color: #111827; outline: none; {{ $exactMatchFound ? 'border-color: #965737; box-shadow: 0 0 0 2px rgba(22, 163, 74, 0.2);' : '' }}"
                                 class="dark:bg-gray-700 dark:border-gray-600 dark:text-white focus:ring-2 focus:ring-green-500 focus:border-transparent dark:focus:ring-green-400 md:w-48 lg:w-56"
                                 id="search-input">
-                            <svg style="width: 14px; height: 14px; color: {{ $exactMatchFound ? '#16a34a' : '#9ca3af' }}; position: absolute; right: 10px; top: 50%; transform: translateY(-50%);"
+                            <svg style="width: 14px; height: 14px; color: {{ $exactMatchFound ? '#965737' : '#9ca3af' }}; position: absolute; right: 10px; top: 50%; transform: translateY(-50%);"
                                 class="dark:text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                     d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
                             </svg>
                             @if($exactMatchFound)
-                                <div style="position: absolute; right: -20px; top: 50%; transform: translateY(-50%); width: 8px; height: 8px; background-color: #16a34a; border-radius: 50%; animation: pulse 2s infinite;"></div>
+                                <div style="position: absolute; right: -20px; top: 50%; transform: translateY(-50%); width: 8px; height: 8px; background-color: #965737; border-radius: 50%; animation: pulse 2s infinite;"></div>
                             @endif
                         </div>
 
@@ -226,8 +226,8 @@
 
                         <!-- Today Button -->
                         <button wire:click="goToToday"
-                            style="padding: 8px 16px; background-color: white; color: #16a34a; border: none; border-radius: 8px; font-weight: 500; cursor: pointer; transition: background-color 0.2s;"
-                            class="dark:bg-gray-700 dark:text-green-400 dark:hover:bg-gray-600"
+                            style="padding: 8px 16px; background-color: white; color: #965737; border: none; border-radius: 8px; font-weight: 500; cursor: pointer; transition: background-color 0.2s;"
+                            class="dark:bg-gray-700 dark:text-brown-400 dark:hover:bg-gray-600"
                             onmouseover="this.style.backgroundColor='#f0fdf4'"
                             onmouseout="this.style.backgroundColor='white'">
                             Today
@@ -235,8 +235,8 @@
 
                         <!-- Refresh Button -->
                         <button wire:click="refreshCalendar"
-                            style="padding: 8px; background-color: white; color: #16a34a; border: none; border-radius: 8px; cursor: pointer; transition: background-color 0.2s; display: flex; align-items: center; justify-content: center;"
-                            class="dark:bg-gray-700 dark:text-green-400 dark:hover:bg-gray-600"
+                            style="padding: 8px; background-color: white; color: #965737; border: none; border-radius: 8px; cursor: pointer; transition: background-color 0.2s; display: flex; align-items: center; justify-content: center;"
+                            class="dark:bg-gray-700 dark:text-brown-400 dark:hover:bg-gray-600"
                             onmouseover="this.style.backgroundColor='#f0fdf4'"
                             onmouseout="this.style.backgroundColor='white'"
                             title="Refresh Calendar">
@@ -249,14 +249,14 @@
                         <div style="display: none; background-color: rgba(255,255,255,0.2); border-radius: 8px; padding: 4px;"
                             class="dark:bg-gray-600">
                             <button wire:click="switchView('month')"
-                                style="padding: 4px 12px; border: none; border-radius: 6px; font-weight: 500; cursor: pointer; transition: all 0.2s; {{ $viewMode === 'month' ? 'background-color: white; color: #16a34a;' : 'color: white; background-color: transparent;' }}"
+                                style="padding: 4px 12px; border: none; border-radius: 6px; font-weight: 500; cursor: pointer; transition: all 0.2s; {{ $viewMode === 'month' ? 'background-color: white; color: #965737;' : 'color: white; background-color: transparent;' }}"
                                 class="{{ $viewMode === 'month' ? 'dark:bg-gray-800 dark:text-green-400' : 'dark:text-gray-300' }}"
                                 onmouseover="{{ $viewMode !== 'month' ? 'this.style.backgroundColor=\"rgba(255,255,255,0.2)\"' : '' }}"
                                 onmouseout="{{ $viewMode !== 'month' ? 'this.style.backgroundColor=\"transparent\"' : '' }}">
                                 Month
                             </button>
                             <button wire:click="switchView('week')"
-                                style="padding: 4px 12px; border: none; border-radius: 6px; font-weight: 500; cursor: pointer; transition: all 0.2s; {{ $viewMode === 'week' ? 'background-color: white; color: #16a34a;' : 'color: white; background-color: transparent;' }}"
+                                style="padding: 4px 12px; border: none; border-radius: 6px; font-weight: 500; cursor: pointer; transition: all 0.2s; {{ $viewMode === 'week' ? 'background-color: white; color: #965737;' : 'color: white; background-color: transparent;' }}"
                                 class="{{ $viewMode === 'week' ? 'dark:bg-gray-800 dark:text-green-400' : 'dark:text-gray-300' }}"
                                 onmouseover="{{ $viewMode !== 'week' ? 'this.style.backgroundColor=\"rgba(255,255,255,0.2)\"' : '' }}"
                                 onmouseout="{{ $viewMode !== 'week' ? 'this.style.backgroundColor=\"transparent\"' : '' }}">
@@ -355,7 +355,7 @@
                         @endphp
 
                         <div wire:click="selectDate('{{ $day['date'] }}')"
-                            style="background: linear-gradient(135deg, #ffffff 0%, #fefefe 100%); min-height: 120px; padding: 8px; cursor: pointer; transition: all 0.3s ease; border-radius: 6px; position: relative; {{ $day['is_today'] ? 'background: linear-gradient(135deg, #dcfce7 0%, #bbf7d0 100%); box-shadow: 0 3px 8px rgba(34, 197, 94, 0.3);' : '' }} {{ $day['is_selected'] ? 'box-shadow: 0 0 0 2px #16a34a, 0 3px 8px rgba(22, 163, 74, 0.4);' : '' }}"
+                            style="background: linear-gradient(135deg, #ffffff 0%, #fefefe 100%); min-height: 120px; padding: 8px; cursor: pointer; transition: all 0.3s ease; border-radius: 6px; position: relative; {{ $day['is_today'] ? 'background: linear-gradient(135deg, #dcfce7 0%, #bbf7d0 100%); box-shadow: 0 3px 8px rgba(150, 87, 55, 0.3);' : '' }} {{ $day['is_selected'] ? 'box-shadow: 0 0 0 2px #965737, 0 3px 8px rgba(150, 87, 55, 0.4);' : '' }}"
                             class="dark:bg-gradient-to-br dark:from-gray-700 dark:to-gray-800 dark:text-white {{ $day['is_today'] ? 'dark:bg-gradient-to-br dark:from-green-800 dark:to-green-900 dark:shadow-2xl dark:shadow-green-900/50' : '' }} dark:hover:shadow-lg dark:hover:shadow-gray-900/30"
                             onmouseover="this.style.transform='translateY(1px)'; this.style.boxShadow='{{ $day['is_selected'] ? '0 0 0 2px #16a34a, ' : '' }}0 6px 16px rgba(0, 0, 0, 0.15)'"
                             onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='{{ $day['is_selected'] ? '0 0 0 2px #16a34a' : ($day['is_today'] ? '0 3px 8px rgba(34, 197, 94, 0.3)' : 'none') }}'">
@@ -429,8 +429,8 @@
                                         @php
                                             $isHighlighted = $highlightedEventId && $event->id == $highlightedEventId;
                                             $highlightStyle = $isHighlighted ?
-                                                'background: linear-gradient(135deg, #fbbf24 0%, #f59e0b 100%); color: #92400e; border: 2px solid #d97706; box-shadow: 0 0 0 2px rgba(251, 191, 36, 0.3), 0 4px 12px rgba(251, 191, 36, 0.4); animation: highlightPulse 2s infinite;' :
-                                                'background: linear-gradient(135deg, #dcfce7 0%, #bbf7d0 100%); color: #166534; border: 1px solid rgba(34, 197, 94, 0.2);';
+                                                'background: linear-gradient(135deg, #d1aa90 0%, #b37b5d 100%); color: #4a2718; border: 2px solid #965737; box-shadow: 0 0 0 2px rgba(209, 170, 144, 0.3), 0 4px 12px rgba(209, 170, 144, 0.4); animation: highlightPulse 2s infinite;' :
+                                                'background: linear-gradient(135deg, #dcfce7 0%, #bbf7d0 100%); color: #4a2718; border: 1px solid rgba(150, 87, 55, 0.2);';
                                         @endphp
                                         <div style="{{ $highlightStyle }}"
                                             class="dark:bg-gradient-to-r dark:from-green-800 dark:to-green-900 dark:text-green-200 dark:border-green-700 dark:shadow-lg dark:shadow-green-900/20 {{ $isHighlighted ? 'highlighted-event' : '' }}"
@@ -468,13 +468,13 @@
                                 style="display: flex; align-items: center; gap: 8px; font-size: 14px; color: #4b5563; cursor: pointer;"
                                 class="dark:text-gray-300">
                                 <input type="checkbox" {{ $selectAll ? 'checked' : '' }} wire:click="toggleSelectAll"
-                                    style="width: 16px; height: 16px; accent-color: #16a34a; cursor: pointer;">
+                                    style="width: 16px; height: 16px; accent-color: #965737; cursor: pointer;">
                                 <span>Select All</span>
                             </label>
 
                             @if (count($selectedEvents) > 0)
                                 <button wire:click="deleteSelectedEvents"
-                                    style="padding: 8px 16px; background-color: #dc2626; color: white; border: none; border-radius: 6px; font-size: 14px; font-weight: 500; cursor: pointer; transition: background-color 0.2s;"
+                                    style="padding: 8px 16px; background-color: #b37b5d; color: white; border: none; border-radius: 6px; font-size: 14px; font-weight: 500; cursor: pointer; transition: background-color 0.2s;"
                                     class="dark:bg-red-700 dark:hover:bg-red-600"
                                     onmouseover="this.style.backgroundColor='#b91c1c'"
                                     onmouseout="this.style.backgroundColor='#dc2626'"
@@ -513,14 +513,14 @@
                                                     <input type="checkbox"
                                                         {{ in_array($event->id, $selectedEvents) ? 'checked' : '' }}
                                                         wire:click="toggleEventSelection({{ $event->id }})"
-                                                        style="width: 16px; height: 16px; accent-color: #16a34a; cursor: pointer;">
+                                                        style="width: 16px; height: 16px; accent-color: #965737; cursor: pointer;">
                                                     <h4 style="font-weight: 600; color: #111827; margin: 0;"
                                                         class="dark:text-white">{{ $event->event_name }}</h4>
                                                 </div>
                                                 <!-- Edit Button -->
                                                 <button wire:click="editEvent({{ $event->id }})"
-                                                    style="padding: 6px 12px; background-color: #16a34a; color: white; border: none; border-radius: 6px; font-size: 12px; font-weight: 500; cursor: pointer; transition: background-color 0.2s; display: flex; align-items: center; gap: 4px;"
-                                                    class="dark:bg-green-700 dark:hover:bg-green-600"
+                                                    style="padding: 6px 12px; background-color: #965737; color: white; border: none; border-radius: 6px; font-size: 12px; font-weight: 500; cursor: pointer; transition: background-color 0.2s; display: flex; align-items: center; gap: 4px;"
+                                                    class="dark:bg-brown-700 dark:hover:bg-brown-600"
                                                     onmouseover="this.style.backgroundColor='#15803d'"
                                                     onmouseout="this.style.backgroundColor='#16a34a'">
                                                     <svg style="width: 14px; height: 14px;" fill="none"
@@ -588,7 +588,7 @@
                                     d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z">
                                 </path>
                             </svg>
-                            <div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 32px; height: 32px; background: linear-gradient(135deg, #16a34a 0%, #15803d 100%); border-radius: 50%; opacity: 0.1;"
+                            <div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 32px; height: 32px; background: linear-gradient(135deg, #965737 0%, #7c4328 100%); border-radius: 50%; opacity: 0.1;"
                                 class="dark:opacity-20"></div>
                         </div>
                         <h3 style="margin: 0 0 8px 0; font-size: 18px; font-weight: 600; color: #374151;"
@@ -808,7 +808,7 @@
                     monthButton.style.cssText = `
                         padding: 12px; font-size: 12px; font-weight: 500; border-radius: 6px; transition: all 0.2s; border: none; cursor: pointer; text-align: center; ${
                             index === currentMonth
-                                ? 'background-color: #16a34a; color: white;'
+                                ? 'background-color: #965737; color: white;'
                                 : 'background-color: #f3f4f6; color: #374151;'
                         }
                     `;
