@@ -16,10 +16,10 @@ Route::post('/notifications/{id}/mark-as-read', [NotificationController::class, 
     ->middleware('auth');
 
 Route::get('/rejected', function () {
-    if (!Auth::user()->role == 'rejected') {
-        return redirect('/');
+    if (Auth::user()->role == 'rejected') {
+        return view('unable');
     }
-    return view('unable');
+    return redirect('/');
 })->name('rejected');
 // waiting
 Route::post('/forgot-password', [OTPController::class, 'sendPasswordResetLink'])
