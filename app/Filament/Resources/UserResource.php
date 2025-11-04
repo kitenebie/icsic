@@ -115,7 +115,8 @@ class UserResource extends Resource
                         'student' => 'Student', 
                         'parent' => 'Parent', 
                         'graduate' => 'Graduate', 
-                        'pending' => 'Pending'
+                        'pending' => 'Pending',
+                        'rejected' => 'Reject'
                     ])
                     ->default('student')
                     ->required()

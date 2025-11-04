@@ -29,8 +29,8 @@ class AdministratorPanelProvider extends PanelProvider
             ->id('administrator')
             ->path('administrator')
             ->colors([
-                'primary' => Color::Brown,
-                'secondary' => Color::Brown,
+                'primary' => Color::Amber,
+                'secondary' => Color::Amber,
                 'danger' => Color::Red,
                 'warning' => Color::Amber,
                 'success' => Color::Green,

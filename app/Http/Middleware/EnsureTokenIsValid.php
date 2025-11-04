@@ -21,6 +21,7 @@ class EnsureTokenIsValid
         if ($request->is('login') || $request->is('register')  || $request->is('logout') || $request->routeIs('password.request')) {
             return $next($request);
         }
+        
         // Allow OTP route without redirection
         if ($request->is('events') ||  $request->is('announcements')) {
             if (!Auth::check()) {
