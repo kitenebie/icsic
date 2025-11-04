@@ -376,10 +376,7 @@
                         <b>Groups</b> are community spaces where parents, students, and graduates connect based on
                         shared
                         classes, interests, or activities. They help organize discussions, resource sharing,
-                        announcements, and events. A <b>"My Groups"</b> button is available for users to quickly access
-                        the
-                        groups they have already joined. Within these groups, users can easily stay updated with the
-                        latest announcements and upcoming events relevant to their communities.
+                        announcements.
                     </div>
                 </div>
 
@@ -592,6 +589,160 @@
                     </div>
                 </div>
 
+            </div>
+        </div>
+    </section>
+
+    <section class="bg-cream-50 py-16">
+        <div class="max-w-4xl mx-auto px-4">
+            <h2 class="text-4xl font-bold text-center text-gray-800 mb-12">Privacy Policies</h2>
+
+            <div class="bg-brown-50 p-8 rounded-xl shadow hover:shadow-md transition">
+                <div class="space-y-8">
+
+                    <!-- Introduction -->
+                    <div>
+                        <h3 class="text-2xl font-semibold text-gray-700 mb-4">Introduction</h3>
+                        <p class="text-gray-600 text-lg leading-relaxed">
+                            At Irosin Central School Information System (ICSIS), we are committed to protecting your privacy and ensuring the security of your personal information. This Privacy Policy outlines how we collect, use, protect, and manage your data in compliance with applicable laws and regulations. By using ICSIS, you agree to the practices described in this policy.
+                        </p>
+                    </div>
+
+                    <!-- Data Collection -->
+                    <div>
+                        <h3 class="text-2xl font-semibold text-gray-700 mb-4">Data Collection</h3>
+                        <p class="text-gray-600 text-lg leading-relaxed">
+                            We collect personal information necessary to provide our services, including:
+                        </p>
+                        <ul class="list-disc list-inside mt-4 space-y-2 text-gray-600">
+                            <li><strong>Registration Information:</strong> Name, email, contact number, and relationship details (for parents/guardians)</li>
+                            <li><strong>Profile Pictures:</strong> Captured via face detection during registration for verification purposes</li>
+                            <li><strong>Identification Documents:</strong> Government-issued IDs submitted for verification</li>
+                            <li><strong>Usage Data:</strong> Login activity, interactions (comments, reactions), and group memberships</li>
+                            <li><strong>Device Information:</strong> Browser type, IP address, and device details for security and analytics</li>
+                        </ul>
+                        <p class="text-gray-600 text-lg leading-relaxed mt-4">
+                            All data collection is performed with user consent and follows strict verification processes to ensure authenticity.
+                        </p>
+                    </div>
+
+                    <!-- Data Usage -->
+                    <div>
+                        <h3 class="text-2xl font-semibold text-gray-700 mb-4">Data Usage</h3>
+                        <p class="text-gray-600 text-lg leading-relaxed">
+                            Your personal information is used to:
+                        </p>
+                        <ul class="list-disc list-inside mt-4 space-y-2 text-gray-600">
+                            <li>Provide access to ICSIS features and services</li>
+                            <li>Verify user identities and maintain account security</li>
+                            <li>Facilitate communication between students, parents, teachers, and alumni</li>
+                            <li>Display member information for community engagement and transparency</li>
+                            <li>Send notifications about news, announcements, and events</li>
+                            <li>Moderate content and maintain a respectful community environment</li>
+                            <li>Improve system functionality and user experience</li>
+                        </ul>
+                    </div>
+
+                    <!-- Data Protection -->
+                    <div>
+                        <h3 class="text-2xl font-semibold text-gray-700 mb-4">Data Protection and Security</h3>
+                        <p class="text-gray-600 text-lg leading-relaxed">
+                            We implement comprehensive security measures to protect your data:
+                        </p>
+                        <ul class="list-disc list-inside mt-4 space-y-2 text-gray-600">
+                            <li><strong>Secure Login:</strong> Encrypted authentication and password protection</li>
+                            <li><strong>Role-Based Access Control:</strong> Users can only access information appropriate to their role</li>
+                            <li><strong>AI Comment Moderation:</strong> Automated filtering of inappropriate content</li>
+                            <li><strong>Regular System Updates:</strong> Ongoing security patches and improvements</li>
+                            <li><strong>Data Encryption:</strong> All sensitive data is encrypted in transit and at rest</li>
+                            <li><strong>Access Restrictions:</strong> Only registered and logged-in users can view member information</li>
+                        </ul>
+                        <p class="text-gray-600 text-lg leading-relaxed mt-4">
+                            We regularly audit our systems and update our security practices to address emerging threats.
+                        </p>
+                    </div>
+
+                    <!-- User Rights -->
+                    <div>
+                        <h3 class="text-2xl font-semibold text-gray-700 mb-4">Your Rights and Choices</h3>
+                        <p class="text-gray-600 text-lg leading-relaxed">
+                            You have the following rights regarding your personal information:
+                        </p>
+                        <ul class="list-disc list-inside mt-4 space-y-2 text-gray-600">
+                            <li><strong>Access and Update:</strong> You can view and update most profile information, except name and contact number which require formal requests</li>
+                            <li><strong>Data Portability:</strong> Request a copy of your personal data in a structured format</li>
+                            <li><strong>Data Deletion:</strong> Request deletion of your account and associated data, subject to legal and operational requirements</li>
+                            <li><strong>Consent Withdrawal:</strong> Opt-out of non-essential communications and data processing</li>
+                            <li><strong>Complaint Filing:</strong> Report privacy concerns to our data protection officer</li>
+                        </ul>
+                        <p class="text-gray-600 text-lg leading-relaxed mt-4">
+                            To exercise these rights or make changes to restricted fields, please contact the school administration or IT coordinator.
+                        </p>
+                    </div>
+
+                    <!-- Face Detection Privacy -->
+                    <div>
+                        <h3 class="text-2xl font-semibold text-gray-700 mb-4">Face Detection and Biometric Data</h3>
+                        <p class="text-gray-600 text-lg leading-relaxed">
+                            Our face detection feature is used solely for user verification during registration:
+                        </p>
+                        <ul class="list-disc list-inside mt-4 space-y-2 text-gray-600">
+                            <li><strong>Local Processing:</strong> Face detection occurs entirely in your browser; no data is sent to external servers</li>
+                            <li><strong>Limited Use:</strong> Facial data is only used for identity verification and profile picture capture</li>
+                            <li><strong>No Third-Party Sharing:</strong> We do not share facial recognition data with any third-party services</li>
+                            <li><strong>Data Retention:</strong> Facial images are securely stored and used only for account verification purposes</li>
+                            <li><strong>Consent Required:</strong> Camera access and face detection require explicit user permission</li>
+                        </ul>
+                        <p class="text-gray-600 text-lg leading-relaxed mt-4">
+                            This feature enhances security by preventing fake accounts while maintaining user privacy.
+                        </p>
+                    </div>
+
+                    <!-- Community Visibility -->
+                    <div>
+                        <h3 class="text-2xl font-semibold text-gray-700 mb-4">Community Information Display</h3>
+                        <p class="text-gray-600 text-lg leading-relaxed">
+                            To foster transparency and community engagement, member information (students, parents, teachers, alumni) is displayed within ICSIS. This visibility:
+                        </p>
+                        <ul class="list-disc list-inside mt-4 space-y-2 text-gray-600">
+                            <li>Helps users connect with peers and access relevant group features</li>
+                            <li>Supports accurate record-keeping and communication</li>
+                            <li>Is restricted to registered, logged-in users only</li>
+                            <li>Includes privacy measures to protect sensitive personal data</li>
+                        </ul>
+                        <p class="text-gray-600 text-lg leading-relaxed mt-4">
+                            We balance community benefits with privacy protection, ensuring that only necessary information is shared.
+                        </p>
+                    </div>
+
+                    <!-- Contact Information -->
+                    <div>
+                        <h3 class="text-2xl font-semibold text-gray-700 mb-4">Contact Us</h3>
+                        <p class="text-gray-600 text-lg leading-relaxed">
+                            If you have questions about this Privacy Policy or our data practices, please contact:
+                        </p>
+                        <ul class="list-none mt-4 space-y-2 text-gray-600">
+                            <li><strong>ICSIS Help Desk:</strong> Available through the portal's support section</li>
+                            <li><strong>School IT Coordinator:</strong> Contact information available in the About Us section</li>
+                            <li><strong>Data Protection Officer:</strong> Reach out via the school's administration office</li>
+                        </ul>
+                        <p class="text-gray-600 text-lg leading-relaxed mt-4">
+                            We are committed to addressing your privacy concerns promptly and transparently.
+                        </p>
+                    </div>
+
+                    <!-- Policy Updates -->
+                    <div>
+                        <h3 class="text-2xl font-semibold text-gray-700 mb-4">Policy Updates</h3>
+                        <p class="text-gray-600 text-lg leading-relaxed">
+                            This Privacy Policy may be updated periodically to reflect changes in our practices or legal requirements. We will notify users of significant changes through the ICSIS portal or via email. Continued use of ICSIS after updates constitutes acceptance of the revised policy.
+                        </p>
+                        <p class="text-gray-600 text-lg leading-relaxed mt-4">
+                            <em>Last updated: November 2025</em>
+                        </p>
+                    </div>
+
+                </div>
             </div>
         </div>
     </section>
