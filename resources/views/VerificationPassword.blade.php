@@ -9,7 +9,7 @@
   <script src="https://cdn.tailwindcss.com"></script>
   <!-- SweetAlert2 -->
   <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-  <link rel="stylesheet" href="public_html/css/custome.css">
+  <link rel="stylesheet" href="/css/custome.css">
   <style>
     .pw-input { width: 100%; }
     .meter {
@@ -138,10 +138,10 @@
     }
 
     // Update requirement indicators
-    document.getElementById('req-length').className = rules.length.test(val) ? 'text-green-500' : 'text-red-500';
-    document.getElementById('req-upper').className = rules.upper.test(val) ? 'text-green-500' : 'text-red-500';
-    document.getElementById('req-lower').className = rules.lower.test(val) ? 'text-green-500' : 'text-red-500';
-    document.getElementById('req-special').className = rules.special.test(val) ? 'text-green-500' : 'text-red-500';
+    document.getElementById('req-length').className = rules.length.test(val) ? 'text-brown-500' : 'text-red-500';
+    document.getElementById('req-upper').className = rules.upper.test(val) ? 'text-brown-500' : 'text-red-500';
+    document.getElementById('req-lower').className = rules.lower.test(val) ? 'text-brown-500' : 'text-red-500';
+    document.getElementById('req-special').className = rules.special.test(val) ? 'text-brown-500' : 'text-red-500';
   }
 
   function updateMatchUI() {
@@ -151,7 +151,7 @@
     }
     if (pw.value === cf.value) {
       matchText.textContent = 'Passwords match';
-      matchText.className = 'text-xs mt-2 text-green-600';
+      matchText.className = 'text-xs mt-2 text-brown-600';
     } else {
       matchText.textContent = 'Passwords do not match';
       matchText.className = 'text-xs mt-2 text-red-600';
