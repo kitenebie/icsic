@@ -165,7 +165,7 @@
                                     <button id="currentMonthBtn" style="width: 100%; padding: 8px 16px; background-color: #965737; color: white; border: none; border-radius: 6px; font-size: 12px; font-weight: 500; cursor: pointer; transition: background-color 0.2s;"
                                         class="dark:bg-brown-700 dark:hover:bg-brown-600"
                                         onmouseover="this.style.backgroundColor='#15803d'"
-                                        onmouseout="this.style.backgroundColor='#16a34a'">
+                                        onmouseout="this.style.backgroundColor='#b37b5d'">
                                         Go to Current Month
                                     </button>
                                 </div>
@@ -357,8 +357,8 @@
                         <div wire:click="selectDate('{{ $day['date'] }}')"
                             style="background: linear-gradient(135deg, #ffffff 0%, #fefefe 100%); min-height: 120px; padding: 8px; cursor: pointer; transition: all 0.3s ease; border-radius: 6px; position: relative; {{ $day['is_today'] ? 'background: linear-gradient(135deg, #dcfce7 0%, #bbf7d0 100%); box-shadow: 0 3px 8px rgba(150, 87, 55, 0.3);' : '' }} {{ $day['is_selected'] ? 'box-shadow: 0 0 0 2px #965737, 0 3px 8px rgba(150, 87, 55, 0.4);' : '' }}"
                             class="dark:bg-gradient-to-br dark:from-gray-700 dark:to-gray-800 dark:text-white {{ $day['is_today'] ? 'dark:bg-gradient-to-br dark:from-green-800 dark:to-green-900 dark:shadow-2xl dark:shadow-green-900/50' : '' }} dark:hover:shadow-lg dark:hover:shadow-gray-900/30"
-                            onmouseover="this.style.transform='translateY(1px)'; this.style.boxShadow='{{ $day['is_selected'] ? '0 0 0 2px #16a34a, ' : '' }}0 6px 16px rgba(0, 0, 0, 0.15)'"
-                            onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='{{ $day['is_selected'] ? '0 0 0 2px #16a34a' : ($day['is_today'] ? '0 3px 8px rgba(34, 197, 94, 0.3)' : 'none') }}'">
+                            onmouseover="this.style.transform='translateY(1px)'; this.style.boxShadow='{{ $day['is_selected'] ? '0 0 0 2px #b37b5d, ' : '' }}0 6px 16px rgba(0, 0, 0, 0.15)'"
+                            onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='{{ $day['is_selected'] ? '0 0 0 2px #b37b5d' : ($day['is_today'] ? '0 3px 8px #e7cfc0' : 'none') }}'">
 
                             <div style="font-size: 14px; font-weight: 600; color: #111827; margin-bottom: 6px; text-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);"
                                 class="dark:text-gray-100">
