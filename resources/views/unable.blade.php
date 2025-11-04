@@ -25,7 +25,7 @@
         </p>
         @php
             if (Auth::user()->role != "rejected") {
-                return redirect()->back();
+                return redirect('/');
             }
         @endphp
         @if (Auth::user()->rejection_reason)
