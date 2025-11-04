@@ -5,7 +5,7 @@
             <div class="flex items-center justify-between p-6 border-b border-gray-200">
                 <div class="flex items-center space-x-4">
                     <div class="flex items-center space-x-3">
-                        <div style="background-image: linear-gradient(to right, #ffd18f, brown) !important;"
+                        <div style="background-image: linear-gradient(to right, #ffd18f, #62341f) !important;"
                             class="w-10 h-10 rounded-lg flex items-center justify-center">
                             <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -290,7 +290,7 @@
                             </div>
                         @else
                             <!-- No images fallback -->
-                            <div style="background-image: linear-gradient(to right, #ffd18f, brown) !important;"
+                            <div style="background-image: linear-gradient(to right, #ffd18f, #62341f) !important;"
                                 class="h-32 flex items-center justify-center">
                                 <div class="text-center text-white">
                                     <div class="text-2xl font-bold mb-1">
