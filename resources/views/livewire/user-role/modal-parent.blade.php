@@ -16,7 +16,7 @@
             <button type="button" onclick="reloadPage()"
                 class="px-4 py-2 bg-cream-600 text-white rounded hover:bg-cream-700">Back</button>
             <button type="submit"
-                class="px-4 py-2 bg-cream-600 text-white rounded hover:bg-cream-700">Continue</button>
+                class="px-4 py-2 bg-brown-600 text-white rounded hover:bg-cream-700">Continue</button>
         </div>
 
         <!-- Optional Flash Messages -->
