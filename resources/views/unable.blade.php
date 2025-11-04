@@ -18,6 +18,11 @@
     <p class="text-gray-700 mb-4">
       Your account has been <span class="font-semibold">rejected</span> because it does not comply with our system's rules and regulations.
     </p>
+    @if(Auth::user()->rejection_reason)
+    <p class="text-gray-700 mb-4">
+      <strong>Reason:</strong> {{ Auth::user()->rejection_reason }}
+    </p>
+    @endif
     <p class="text-sm text-gray-600 mb-4">
       This may be due to providing inaccurate or incomplete information, attempting to bypass verification, or engaging in activity that violates our terms of service.
     </p>

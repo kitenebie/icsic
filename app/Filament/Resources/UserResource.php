@@ -28,16 +28,17 @@ use Filament\Tables\Filters\SelectFilter;
 use Filament\Tables\Enums\FiltersLayout;
 use Filament\Notifications\Notification;
 use Filament\Tables\Columns\ImageColumn;
+use Filament\Forms\Components\RichEditor;
 
 class UserResource extends Resource
 {
     protected static ?string $model = User::class;
-    
+
     public static function getNavigationGroup(): ?string
     {
         return 'Users Management';
     }
-    
+
     protected static function boot()
     {
         parent::boot();
@@ -48,7 +49,7 @@ class UserResource extends Resource
             }
         });
     }
-    
+
     protected static ?string $navigationIcon = 'heroicon-o-user-group';
 
     public static function form(Form $form): Form
@@ -110,11 +111,11 @@ class UserResource extends Resource
                 Select::make('role')
                     ->options([
                         'admin' => 'Admin',
-                        'staff' => 'Staff', 
+                        'staff' => 'Staff',
                         'teacher' => 'Teacher',
-                        'student' => 'Student', 
-                        'parent' => 'Parent', 
-                        'graduate' => 'Graduate', 
+                        'student' => 'Student',
+                        'parent' => 'Parent',
+                        'graduate' => 'Graduate',
                         'pending' => 'Pending',
                         'rejected' => 'Reject'
                     ])
@@ -185,6 +186,13 @@ class UserResource extends Resource
                     ->placeholder('Select groups')
                     ->columnSpanFull()
                     ->helperText('Hold Ctrl/Cmd to select multiple groups'),
+                RichEditor::make('rejection_reason')
+                    ->label('Rejection Reason')
+                    ->toolbarButtons([])
+                    ->columnSpanFull()
+                    ->visible(fn(callable $get) => $get('role') === 'rejected')
+                    ->required(fn(callable $get) => $get('role') === 'rejected')
+                    ->placeholder('Enter the reason for rejection'),
             ]);
     }
 
@@ -210,7 +218,7 @@ class UserResource extends Resource
                     ->falseIcon('heroicon-o-x-circle')
                     ->trueColor('success')
                     ->falseColor('danger')
-                    ->getStateUsing(fn ($record) => !is_null($record->email_verified_at)),
+                    ->getStateUsing(fn($record) => !is_null($record->email_verified_at)),
                 TextColumn::make('LastName'),
                 TextColumn::make('FirstName'),
                 TextColumn::make('MiddleName'),
@@ -254,6 +262,10 @@ class UserResource extends Resource
                     ->height(50)
                     ->width(50)
                     ->openUrlInNewTab(),
+                TextColumn::make('rejection_reason')
+                    ->label('Rejection Reason')
+                    ->wrap()
+                    ->limit(50),
             ])
             ->filters([
                 SelectFilter::make('role')
@@ -261,7 +273,7 @@ class UserResource extends Resource
                     ->options([
                         'admin' => 'Admin',
                         'staff' => 'Staff',
-                        'teacher' => 'Teacher', 
+                        'teacher' => 'Teacher',
                         'parent' => 'Parent',
                         'graduate' => 'Graduate',
                         'pending' => 'Pending'
