@@ -50,7 +50,8 @@ class User extends Authenticatable implements FilamentUser, HasAvatar
         'front_id',
         'back_id',
         'profile_image',
-        'fcm_token'
+        'fcm_token',
+        'rejection_reason'
     ];
     protected $casts = [
         'user_group' => 'array',
