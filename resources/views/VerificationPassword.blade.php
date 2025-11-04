@@ -64,7 +64,7 @@
 
       <!-- Submit -->
       <div class="pt-2">
-        <button type="submit" class="w-full px-4 py-2 bg-emerald-500 text-white rounded-lg shadow hover:brightness-95">Set password</button>
+        <button type="submit" class="w-full px-4 py-2 bg-brown-500 text-white rounded-lg shadow hover:brightness-95">Set password</button>
       </div>
     </form>
   </div>
@@ -82,7 +82,7 @@
   const rules = {
     length: /.{8,}/,
     upper: /[A-Z]/,
-    number: /[0-9]/,
+    lower: /[a-z]/,
     special: /[!@#\$%\^&\*(),.?":{}|<>\-\[\]\/\+=~`]/
   };
 
@@ -102,7 +102,7 @@
     let score = 0;
     if (rules.length.test(value)) score++;
     if (rules.upper.test(value)) score++;
-    if (rules.number.test(value)) score++;
+    if (rules.lower.test(value)) score++;
     if (rules.special.test(value)) score++;
     return score;
   }
@@ -122,7 +122,7 @@
       strengthBar.className = 'bg-emerald-400';
       strengthText.textContent = 'Good';
     } else {
-      strengthBar.className = 'bg-green-600';
+      strengthBar.className = 'bg-brown-600';
       strengthText.textContent = 'Strong';
     }
   }
@@ -156,7 +156,7 @@
 
     if (!rules.length.test(value)) problems.push('At least 8 characters');
     if (!rules.upper.test(value)) problems.push('One uppercase letter');
-    if (!rules.number.test(value)) problems.push('One number');
+    if (!rules.lower.test(value)) problems.push('One lowercase letter');
     if (!rules.special.test(value)) problems.push('One special character');
     if (value !== confirm) problems.push('Passwords must match');
 
