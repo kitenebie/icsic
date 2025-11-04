@@ -9,10 +9,11 @@
   <script src="https://cdn.tailwindcss.com"></script>
   <!-- SweetAlert2 CDN -->
   <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+  <link rel="stylesheet" href="/css/custome.css">
 
   <style>
     .otp-input {
-      @apply border-2 border-gray-400 focus:border-emerald-500 focus:ring-0 rounded-lg text-center font-medium;
+      @apply border-2 border-brown-400 focus:border-brown-500 focus:ring-0 rounded-lg text-center font-medium;
       width: 3.5rem; /* ~56px */
       height: 3.5rem;
       font-size: 1.25rem;
@@ -34,19 +35,19 @@
     }
   </style>
 </head>
-<body class="bg-gray-50 min-h-screen flex items-center justify-center px-4 py-6">
-  <div class="w-full max-w-sm sm:max-w-md bg-white rounded-2xl shadow-lg p-6">
-    <h1 class="text-2xl font-semibold text-gray-800 mb-2">Verify your account</h1>
-    <p class="text-sm text-gray-500 mb-6">Enter the 4-digit code we sent. Check your phone or email.</p>
+<body class="bg-cream-50 min-h-screen flex items-center justify-center px-4 py-6">
+  <div class="w-full max-w-sm sm:max-w-md bg-cream-100 rounded-2xl shadow-lg p-6">
+    <h1 class="text-2xl font-semibold text-brown-900 mb-2">Verify your account</h1>
+    <p class="text-sm text-brown-600 mb-6">Enter the 4-digit code we sent. Check your phone or email.</p>
 
     <div class="flex flex-wrap justify-center gap-3 mb-4" id="otp-fields"></div>
 
     <div class="flex flex-col sm:flex-row gap-3 justify-center mb-2">
-      <button id="verifyBtn" class="flex-1 px-4 py-2 bg-emerald-500 text-white rounded-lg shadow hover:brightness-95">Verify</button>
-      <button id="resendBtn" class="flex-1 px-4 py-2 bg-yellow-400 text-gray-800 rounded-lg shadow hover:brightness-95">Resend</button>
+      <button id="verifyBtn" class="flex-1 px-4 py-2 bg-brown-500 text-white rounded-lg shadow hover:brightness-95">Verify</button>
+      <button id="resendBtn" class="flex-1 px-4 py-2 bg-cream-500 text-brown-900 rounded-lg shadow hover:brightness-95">Resend</button>
     </div>
 
-    <p class="text-xs text-gray-400 text-center" id="timerText"></p>
+    <p class="text-xs text-brown-500 text-center" id="timerText"></p>
   </div>
 
 <script>
@@ -84,7 +85,7 @@ function createOtpInputs() {
     input.type = 'text';
     input.inputMode = 'numeric';
     input.maxLength = 1;
-    input.className = 'otp-input border-2 border-gray-400 focus:border-emerald-500 focus:ring-0 rounded-lg text-center font-medium outline-none';
+    input.className = 'otp-input border-2 border-brown-400 focus:border-brown-500 focus:ring-0 rounded-lg text-center font-medium outline-none';
     input.autocomplete = 'one-time-code';
     input.dataset.index = i;
     input.addEventListener('input', onOtpInput);
