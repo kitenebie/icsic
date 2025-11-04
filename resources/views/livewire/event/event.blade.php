@@ -640,7 +640,7 @@
                                 // });
                                 const badge = document.createElement("span");
                                 badge.className =
-                                    "absolute top-2 right-12 sm:text-[12px]  sm:top-[-10px] sm:right-[-10px]  bg-brown-500 text-white text-xs font-bold px-2 py-0.5 rounded-full z-[30]";
+                                    "absolute top-2 right-2 sm:text-[12px]  bg-brown-500 text-white text-xs font-bold px-2 py-0.5 rounded-full z-[30]";
                                 badge.textContent = count;
                                 div.appendChild(badge);
 
