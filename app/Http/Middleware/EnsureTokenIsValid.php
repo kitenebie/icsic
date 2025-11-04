@@ -47,6 +47,10 @@ class EnsureTokenIsValid
         // if($request->is('waiting')){
         //     return $next($request);
         // }
+        if(Auth::user()->role == 'rejected')
+        {
+            return redirect('/rejected');
+        }
         if ($request->is('restart')) {
             return $next($request);
         }

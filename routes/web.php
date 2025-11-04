@@ -15,7 +15,7 @@ use Illuminate\Support\Facades\Http;
 Route::post('/notifications/{id}/mark-as-read', [NotificationController::class, 'markAsRead'])
     ->middleware('auth');
 
-Route::get('/reject', function () {
+Route::get('/rejected', function () {
     return view('unable');
 })->name('rejected');
 // waiting
