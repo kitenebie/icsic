@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Parent;
 
 use App\Http\Controllers\Controller;
 use App\Models\DocumentRequest;
+use App\Models\Group;
 use Illuminate\Http\Request;
 use App\Models\NotListedStudent;
 use App\Models\student;
@@ -13,23 +14,33 @@ use Illuminate\Support\Facades\Auth;
 
 class selectStudentController extends Controller
 {
-    public function selectStudentController(Request $request, student $student, NotListedStudent $NotListedStudent, User $user)
+    public function selectStudentController(Request $request, student $student, NotListedStudent $NotListedStudent, User $user, Group $group)
     {
         $parent_user_group = [];
+
         $children = Student::where('guardian_contact_number', Auth::user()->contact)->get(['lrn']);
+
         foreach ($children as $child) {
-            $studentInfo = $student::where('lrn', $child->lrn)->first();
-                if ($studentInfo) {
-                    $parent_user_group[] = $studentInfo->grade . "-" . $studentInfo->section;
-                }
+            $studentInfo = Student::where('lrn', $child->lrn)->first();
+
+            if ($studentInfo) {
+                $groupName = 'Grade '.$studentInfo->grade . '-Section ' . $studentInfo->section;
+
+                // Find or create the group
+                $group = Group::firstOrCreate(
+                    ['name' => $groupName],
+                    ['author_id' => 1]
+                );
+
+                $parent_user_group[] = $group->id;
             }
-            
-            User::where('id', Auth::user()->id)->update(['role' => 'parent']);
-            User::where('id', Auth::user()->id)->update(['user_group' => $parent_user_group]);
+        }
 
-            return back()->with('success', 'Your role has been updated to parent.');
-        
 
+        User::where('id', Auth::user()->id)->update(['role' => 'parent']);
+        User::where('id', Auth::user()->id)->update(['user_group' => $parent_user_group]);
+
+        return back()->with('success', 'Your role has been updated to parent.');
     }
 
 
