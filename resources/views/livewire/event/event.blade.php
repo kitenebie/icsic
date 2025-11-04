@@ -1,11 +1,11 @@
 <div>
-    <div class="bg-gradient-to-br from-blue-50 to-indigo-100 min-h-screen">
+    <div class="bg-gradient-to-br from-brown-50 to-indigo-100 min-h-screen">
         <!-- Enhanced Header -->
         <div class="bg-white shadow-lg">
             <div class="flex items-center justify-between p-6 border-b border-gray-200">
                 <div class="flex items-center space-x-4">
                     <div class="flex items-center space-x-3">
-                        <div class="w-10 h-10 bg-gradient-to-r from-blue-500 to-purple-600 rounded-lg flex items-center justify-center">
+                        <div class="w-10 h-10 bg-gradient-to-r from-brown-500 to-purple-600 rounded-lg flex items-center justify-center">
                             <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
                             </svg>
@@ -13,13 +13,13 @@
                         <h1 class="text-2xl font-bold text-gray-900">School Calendar</h1>
                     </div>
                     <div class="flex items-center space-x-2">
-                        <button id="prev" class="p-2 hover:bg-blue-50 rounded-full transition-colors duration-200">
-                            <svg class="w-5 h-5 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <button id="prev" class="p-2 hover:bg-brown-50 rounded-full transition-colors duration-200">
+                            <svg class="w-5 h-5 text-brown-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path>
                             </svg>
                         </button>
-                        <button id="next" class="p-2 hover:bg-blue-50 rounded-full transition-colors duration-200">
-                            <svg class="w-5 h-5 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <button id="next" class="p-2 hover:bg-brown-50 rounded-full transition-colors duration-200">
+                            <svg class="w-5 h-5 text-brown-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
                             </svg>
                         </button>
@@ -28,7 +28,7 @@
 
                     <!-- Month/Year Selector -->
                     <div class="relative">
-                        <button id="monthYearSelector" class="px-4 py-2 bg-white border border-gray-300 rounded-lg shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors duration-200 flex items-center space-x-2">
+                        <button id="monthYearSelector" class="px-4 py-2 bg-white border border-gray-300 rounded-lg shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-brown-500 focus:border-brown-500 transition-colors duration-200 flex items-center space-x-2">
                             <svg class="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
                             </svg>
@@ -69,7 +69,7 @@
 
                             <!-- Footer -->
                             <div class="p-3 border-t border-gray-200 bg-gray-50 rounded-b-lg">
-                                <button id="currentMonthBtn" class="w-full py-2 px-4 bg-blue-600 text-white text-sm font-medium rounded-md hover:bg-blue-700 transition-colors duration-200">
+                                <button id="currentMonthBtn" class="w-full py-2 px-4 bg-brown-600 text-white text-sm font-medium rounded-md hover:bg-brown-700 transition-colors duration-200">
                                     Go to Current Month
                                 </button>
                             </div>
@@ -77,11 +77,11 @@
                     </div>
                 </div>
                 <div class="flex items-center space-x-3">
-                    {{-- <button class="px-4 py-2 text-sm font-medium text-blue-600 bg-blue-50 border border-blue-200 rounded-lg hover:bg-blue-100 transition-colors duration-200">
+                    {{-- <button class="px-4 py-2 text-sm font-medium text-brown-600 bg-brown-50 border border-brown-200 rounded-lg hover:bg-brown-100 transition-colors duration-200">
                         Today
                     </button>
                     <div class="flex rounded-lg shadow-sm border border-gray-200">
-                        <button class="px-4 py-2 text-sm font-medium text-white bg-blue-600 border border-blue-600 rounded-l-lg hover:bg-blue-700 transition-colors duration-200">
+                        <button class="px-4 py-2 text-sm font-medium text-white bg-brown-600 border border-brown-600 rounded-l-lg hover:bg-brown-700 transition-colors duration-200">
                             Month
                         </button>
                         <button class="px-4 py-2 text-sm font-medium text-gray-700 bg-white border-l border-gray-200 rounded-r-lg hover:bg-gray-50 transition-colors duration-200">
@@ -116,7 +116,7 @@
                 <!-- Modal Header -->
                 <div class="flex items-center justify-between p-6 border-b border-gray-200">
                     <div class="flex items-center space-x-3">
-                        <div class="w-10 h-10 bg-gradient-to-r from-blue-500 to-purple-600 rounded-lg flex items-center justify-center">
+                        <div class="w-10 h-10 bg-gradient-to-r from-brown-500 to-purple-600 rounded-lg flex items-center justify-center">
                             <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
                             </svg>
@@ -139,7 +139,7 @@
 
                 <!-- Modal Footer -->
                 <div class="flex items-center justify-end p-6 border-t border-gray-200 bg-gray-50">
-                    <button onclick="closeModal()" class="px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors duration-200 font-medium">
+                    <button onclick="closeModal()" class="px-6 py-2 bg-brown-600 text-white rounded-lg hover:bg-brown-700 transition-colors duration-200 font-medium">
                         Close
                     </button>
                 </div>
@@ -193,7 +193,7 @@
             </div>
             <div id="event-loading" class="flex justify-center items-center py-12" style="display: none;">
                 <div class="flex items-center space-x-3">
-                    <svg class="animate-spin h-8 w-8 text-blue-500" xmlns="http://www.w3.org/2000/svg" fill="none"
+                    <svg class="animate-spin h-8 w-8 text-brown-500" xmlns="http://www.w3.org/2000/svg" fill="none"
                         viewBox="0 0 24 24">
                         <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor"
                             stroke-width="4"></circle>
@@ -238,14 +238,14 @@
                                     </div>
                                 </div>
                                 <div class="absolute top-3 right-3">
-                                    <div class="bg-blue-600 text-white text-xs rounded-full px-3 py-1 font-semibold">
+                                    <div class="bg-brown-600 text-white text-xs rounded-full px-3 py-1 font-semibold">
                                         {{ $event->event_category }}
                                     </div>
                                 </div>
                             </div>
                         @else
                             <!-- No images fallback -->
-                            <div class="h-32 bg-gradient-to-r from-blue-400 to-purple-500 flex items-center justify-center">
+                            <div class="h-32 bg-gradient-to-r from-brown-400 to-purple-500 flex items-center justify-center">
                                 <div class="text-center text-white">
                                     <div class="text-2xl font-bold mb-1">
                                         {{ \Carbon\Carbon::parse($event->event_date)->format('d') }}
@@ -262,7 +262,7 @@
 
                         <!-- Event Content -->
                         <div class="p-6">
-                            <h3 class="font-bold text-gray-900 text-xl mb-2 group-hover:text-blue-600 transition-colors">
+                            <h3 class="font-bold text-gray-900 text-xl mb-2 group-hover:text-brown-600 transition-colors">
                                 {{ $event->event_name }}
                             </h3>
                             <div class="text-gray-600 mb-4 text-sm leading-relaxed line-clamp-3">
@@ -453,7 +453,7 @@
                             const thumb = document.createElement('img');
                             thumb.src = `/storage/${image}`;
                             thumb.className = `w-12 h-12 rounded object-cover cursor-pointer border-2 ${
-                                index === currentImageIndex ? 'border-blue-500' : 'border-gray-300'
+                                index === currentImageIndex ? 'border-brown-500' : 'border-gray-300'
                             }`;
                             thumb.onclick = () => {
                                 currentImageIndex = index;
@@ -528,14 +528,14 @@
                                 console.log(`Day ${i}: ${count} event(s)`);
                             }
                             const div = document.createElement("div");
-                            div.className = `min-h-[140px] p-4 border-r border-b border-gray-200 hover:bg-blue-50 hover:shadow-md transition-all duration-200 relative ${
-                                isToday ? 'bg-blue-100 shadow-inner' : 'bg-white'
+                            div.className = `min-h-[140px] p-4 border-r border-b border-gray-200 hover:bg-brown-50 hover:shadow-md transition-all duration-200 relative ${
+                                isToday ? 'bg-brown-100 shadow-inner' : 'bg-white'
                             }`;
 
                             // Date number
                             const dateDiv = document.createElement("div");
                             dateDiv.className = `text-lg font-bold mb-2 ${
-                                isToday ? 'text-blue-700' : 'text-gray-900'
+                                isToday ? 'text-brown-700' : 'text-gray-900'
                             }`;
                             dateDiv.textContent = i;
                             div.appendChild(dateDiv);
@@ -543,7 +543,7 @@
                             // Today indicator
                             if (isToday) {
                                 const todayBadge = document.createElement("div");
-                                todayBadge.className = "absolute top-2 right-2 w-2 h-2 bg-blue-600 rounded-full";
+                                todayBadge.className = "absolute top-2 right-2 w-2 h-2 bg-brown-600 rounded-full";
                                 div.appendChild(todayBadge);
                             }
 
@@ -572,13 +572,13 @@
                             }
 
                             if (hasEvent) {
-                                div.classList.add("font-semibold", "text-green-900", "dark:text-green-200");
+                                div.classList.add("font-semibold", "text-brown-900", "dark:text-brown-200");
                                 // div.addEventListener("click", () => {
                                 //     openModal("Event Details", hasEvent.label);
                                 // });
                                 const badge = document.createElement("span");
                                 badge.className =
-                                    "absolute top-[-3px] right-[-3px] sm:text-[12px]  sm:top-[-10px] sm:right-[-10px]  bg-green-500 text-white text-xs font-bold px-2 py-0.5 rounded-full z-[30]";
+                                    "absolute top-[-3px] right-[-3px] sm:text-[12px]  sm:top-[-10px] sm:right-[-10px]  bg-brown-500 text-white text-xs font-bold px-2 py-0.5 rounded-full z-[30]";
                                 badge.textContent = count;
                                 div.appendChild(badge);
 
@@ -598,7 +598,7 @@
                                                     ${e.raw.event_images && e.raw.event_images.length > 0 ? `
                                                         <img src="/storage/${e.raw.event_images[0]}" alt="${e.raw.event_name}" class="w-16 h-16 rounded-lg object-cover border-2 border-white shadow-sm">
                                                     ` : `
-                                                        <div class="w-16 h-16 bg-gradient-to-r from-blue-400 to-purple-500 rounded-lg flex items-center justify-center">
+                                                        <div class="w-16 h-16 bg-gradient-to-r from-brown-400 to-purple-500 rounded-lg flex items-center justify-center">
                                                             <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
                                                             </svg>
@@ -655,7 +655,7 @@
                                 });
                                 const dot = document.createElement("span");
                                 dot.className =
-                                    "absolute bottom-1 left-1/2 transform -translate-x-1/2 h-1.5 w-1.5 rounded hover:bg-green-400 bg-green-500";
+                                    "absolute bottom-1 left-1/2 transform -translate-x-1/2 h-1.5 w-1.5 rounded hover:bg-brown-400 bg-brown-500";
                                 div.appendChild(dot);
                             }
 
@@ -754,7 +754,7 @@
                                 // Multi-day event spanning bar overlaying cells
                                 const spanBar = document.createElement('div');
                                 const eventColor = getEventColor(cellEvent.event.raw.event_category);
-                                spanBar.className = "dark:text-blue-200 dark:shadow-lg dark:shadow-blue-900/20";
+                                spanBar.className = "dark:text-brown-200 dark:shadow-lg dark:shadow-brown-900/20";
                                 spanBar.style.cssText = `
                                     z-index: 30;
                                     background: ${eventColor};
@@ -811,7 +811,7 @@
                             div.className = `p-4 rounded-lg shadow text-sm transition ${
                     isPast
                         ? "bg-red-100 dark:bg-red-800 border border-red-300 dark:border-red-600 text-red-800 dark:text-red-200"
-                        : "bg-green-50 dark:bg-green-900 border border-green-200 dark:border-green-600 text-green-800 dark:text-green-200"
+                        : "bg-brown-50 dark:bg-brown-900 border border-brown-200 dark:border-brown-600 text-brown-800 dark:text-brown-200"
                 }`;
 
                             div.innerHTML = `
@@ -965,7 +965,7 @@
                         const monthButton = document.createElement('button');
                         monthButton.className = `p-3 text-sm font-medium rounded-lg transition-colors duration-200 ${
                             index === currentMonth
-                                ? 'bg-blue-600 text-white'
+                                ? 'bg-brown-600 text-white'
                                 : 'bg-gray-50 text-gray-700 hover:bg-gray-100'
                         }`;
                         monthButton.textContent = month.substring(0, 3); // Show abbreviated month names
