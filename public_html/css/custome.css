@@ -271,6 +271,40 @@
         color: var(--color-brown-950) !important;
     }
 
+    .ring-brown-50 {
+        --tw-ring-color: var(--color-brown-50) !important;
+    }
+    .ring-brown-100 {
+        --tw-ring-color: var(--color-brown-100) !important;
+    }
+    .ring-brown-200 {
+        --tw-ring-color: var(--color-brown-200) !important;
+    }
+    .ring-brown-300 {
+        --tw-ring-color: var(--color-brown-300) !important;
+    }
+    .ring-brown-400 {
+        --tw-ring-color: var(--color-brown-400) !important;
+    }
+    .ring-brown-500 {
+        --tw-ring-color: var(--color-brown-500) !important;
+    }
+    .ring-brown-600 {
+        --tw-ring-color: var(--color-brown-600) !important;
+    }
+    .ring-brown-700 {
+        --tw-ring-color: var(--color-brown-700) !important;
+    }
+    .ring-brown-800 {
+        --tw-ring-color: var(--color-brown-800) !important;
+    }
+    .ring-brown-900 {
+        --tw-ring-color: var(--color-brown-900) !important;
+    }
+    .ring-brown-950 {
+        --tw-ring-color: var(--color-brown-950) !important;
+    }
+
     /* ☕ primary */
     .bg-primary-50 {
         background-color: var(--color-brown-50) !important;

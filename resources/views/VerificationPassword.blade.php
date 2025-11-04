@@ -36,7 +36,7 @@
       <div>
         <label for="password" class="block text-sm font-medium text-gray-700 mb-1">Password</label>
         <div class="relative">
-          <input id="password" type="password" class="pw-input border border-gray-200 rounded-lg px-4 py-2 pr-12 focus:outline-none focus:ring-2 focus:ring-emerald-300" autocomplete="new-password" required />
+          <input id="password" type="password" class="pw-input border border-gray-200 rounded-lg px-4 py-2 pr-12 focus:outline-none focus:ring-2 focus:ring-brown-300" autocomplete="new-password" required />
           <button type="button" id="togglePw" class="absolute right-2 top-1/2 -translate-y-1/2 text-sm text-gray-600 hover:text-gray-800">Show</button>
         </div>
       </div>
@@ -67,7 +67,7 @@
       <div>
         <label for="confirm" class="block text-sm font-medium text-gray-700 mb-1">Confirm password</label>
         <div class="relative">
-          <input id="confirm" type="password" class="pw-input border border-gray-200 rounded-lg px-4 py-2 pr-12 focus:outline-none focus:ring-2 focus:ring-emerald-300" autocomplete="new-password" required />
+          <input id="confirm" type="password" class="pw-input border border-gray-200 rounded-lg px-4 py-2 pr-12 focus:outline-none focus:ring-2 focus:ring-brown-300" autocomplete="new-password" required />
           <button type="button" id="toggleConfirm" class="absolute right-2 top-1/2 -translate-y-1/2 text-sm text-gray-600 hover:text-gray-800">Show</button>
         </div>
         <p id="matchText" class="text-xs mt-2"></p>
@@ -130,7 +130,7 @@
       strengthBar.className = 'bg-yellow-400';
       strengthText.textContent = 'Fair';
     } else if (score === 3) {
-      strengthBar.className = 'bg-emerald-400';
+      strengthBar.className = 'bg-brown-400';
       strengthText.textContent = 'Good';
     } else {
       strengthBar.className = 'bg-brown-600';
