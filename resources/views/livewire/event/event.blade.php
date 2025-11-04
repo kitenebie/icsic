@@ -247,7 +247,7 @@
             <div class="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
                 @forelse ($events ?? [] as $event)
                     <div id="event-{{ \Carbon\Carbon::parse($event->event_date)->format('Y') }}{{ \Carbon\Carbon::parse($event->event_date)->format('M') }}"
-                        class="bg-brown-100 hidden rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 border border-brown-600 overflow-hidden group cursor-pointer">
+                        class="bg-brown-50 hidden rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 border border-brown-600 overflow-hidden group cursor-pointer">
                         <!-- Event Images Gallery -->
                         @if ($event->event_images && count($event->event_images) > 0)
                             <div class="relative h-48 overflow-hidden">
