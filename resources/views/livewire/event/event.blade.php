@@ -605,7 +605,7 @@
                             // Today indicator
                             if (isToday) {
                                 const todayBadge = document.createElement("div");
-                                todayBadge.className = "absolute top-2 right-2 w-2 h-2 bg-brown-600 rounded-full";
+                                todayBadge.className = "absolute top-4 right-8 w-2 h-2 bg-brown-600 rounded-full";
                                 div.appendChild(todayBadge);
                             }
 
