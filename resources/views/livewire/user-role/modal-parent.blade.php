@@ -6,31 +6,14 @@
         class="bg-white rounded-lg p-6 max-w-2xl w-full transform scale-95 transition-all duration-300"
         onclick="event.stopPropagation()">
         @csrf
-        <h2 class="text-xl font-semibold mb-2">Select Your Child</h2>
-        <p class="text-gray-600 mb-4">Select from the recommended students the one(s) you wish to remove.</p>
-        <!-- ✅ Hidden input to send selected IDs to Livewire -->
-        <input type="hidden" id="selected_ids" name="selected_ids">
-        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-4">
-            @forelse ($childrens as $child)
-                <div data-student-id="{{ $child->id }}" role="button"
-                    class="student-card flex-col items-center border p-3 rounded hover:border-2 hover:border-red-400 border-green-400 hover:shadow cursor-pointer">
-                    <div class="flex">
-                        <img src="/storage/{{ $child->profile }}" class="w-12 h-12 rounded-full mr-3" alt="Child">
-                        <span>{{ $child->lastname . ', ' . $child->firstname . ' ' . $child->middlename . ' ' . $child->extension_name }}</span>
-                    </div>
-                    <div class="flex w-full justify-center">
-                        <p class="text-md font-semibold">{{ $child->grade }} - {{ $child->section }}</p>
-                    </div>
-                </div>
-            @empty
-            @endforelse
-        </div>
+        <h2 class="text-xl font-semibold mb-2">Confirm Parent Role</h2>
+        <p class="text-gray-600 mb-4">Do you want to continue and submit your request as a parent? Add any children not listed below if needed.</p>
 
         <div class="mb-4">
-            <label class="block text-sm font-medium mb-1">Child not listed?</label>
+            <label class="block text-sm font-medium mb-1">Add Children Not Listed</label>
             <div id="extraInputContainer" class="space-y-2">
                 <div class="flex gap-2">
-                    <input type="text" class="dark:text-white" name="student_name[]" placeholder="Enter your child's name"
+                    <input type="text" name="student_name[]" placeholder="Enter your child's name"
                         class="w-full border px-4 py-2 rounded">
                 </div>
             </div>
@@ -45,7 +28,7 @@
             <button type="button" onclick="reloadPage()"
                 class="px-4 py-2 bg-yellow-400 text-white rounded hover:bg-yellow-500">Back</button>
             <button type="submit"
-                class="px-4 py-2 bg-green-600 text-white rounded hover:bg-green-700">Continue</button>
+                class="px-4 py-2 bg-green-600 text-white rounded hover:bg-green-700">Submit Request</button>
         </div>
 
         <!-- Optional Flash Messages -->
@@ -74,28 +57,6 @@
             closeAllModals(); // Only closes if clicked intentionally
         }
 
-        let selectedStudentIds = [];
-
-        const studentCards = document.querySelectorAll('.student-card');
-
-        studentCards.forEach(card => {
-            card.addEventListener('click', () => {
-                const studentId = card.getAttribute('data-student-id');
-
-                if (selectedStudentIds.includes(studentId)) {
-                    selectedStudentIds = selectedStudentIds.filter(id => id !== studentId);
-                    card.classList.remove('border-2', 'border-red-500');
-                } else {
-                    selectedStudentIds.push(studentId);
-                    card.classList.add('border-2', 'border-red-500');
-                }
-                document.getElementById('selected_ids').value = selectedStudentIds.join(',');
-                // alert(selectedStudentIds)
-                console.log("Selected Student IDs:", selectedStudentIds);
-
-                // ✅ Sync JS array with hidden input for Livewire
-            });
-        });
 
         function addInputField() {
             const container = document.getElementById('extraInputContainer');

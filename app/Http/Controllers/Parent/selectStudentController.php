@@ -15,53 +15,21 @@ class selectStudentController extends Controller
 {
     public function selectStudentController(Request $request, student $student, NotListedStudent $NotListedStudent, User $user)
     {
-        // Explode the comma-separated string into an array of IDs
-        $rstudentIds = explode(",", $request->selected_ids);
-
-        // Track if any data was submitted
-        $hasValidRequest = false;
-
-        // Handle listed students
-        if (!empty($rstudentIds) && !empty($rstudentIds[0])) {
-            $student::whereIn("id", $rstudentIds)
-                ->update(["remarks" => "Invalid Guardian Details"]);
-            $hasValidRequest = true;
-        }
-
-        // Handle not-listed students
-        if (!empty($request->student_name)) {
-            foreach ($request->student_name as $name) {
-                if (!empty(trim($name))) {
-                    $NotListedStudent::create([
-                        'studentName' => $name,
-                        'parentId' => Auth::user()->id,
-                        'ParentName' => Auth::user()->LastName . ', ' . Auth::user()->FirstName . ' ' . Auth::user()->MiddleName,
-                        'status' => 'Requested'
-                    ]);
-                    $hasValidRequest = true;
-                }
-            }
-        }
-
-        // Only update user role if at least one valid request was made
-        if ($hasValidRequest) {
-            $user::where('id', Auth::user()->id)->update(['role' => 'parent']);
-
-            $parent_user_group = [];
-            $children = $student::where('guardian_contact_number', Auth::user()->contact)->get(['lrn']);
-            foreach ($children as $child) {
-                $studentInfo = $student::where('lrn', $child->lrn)->first();
+        $parent_user_group = [];
+        $children = Student::where('guardian_contact_number', Auth::user()->contact)->get(['lrn']);
+        foreach ($children as $child) {
+            $studentInfo = $student::where('lrn', $child->lrn)->first();
                 if ($studentInfo) {
                     $parent_user_group[] = $studentInfo->grade . "-" . $studentInfo->section;
                 }
             }
-
-            $user::where('id', Auth::user()->id)->update(['user_group' => $parent_user_group]);
+            
+            User::where('id', Auth::user()->id)->update(['role' => 'parent']);
+            User::where('id', Auth::user()->id)->update(['user_group' => $parent_user_group]);
 
             return back()->with('success', 'Your role has been updated to parent.');
-        }
+        
 
-        return back()->with('error', 'Please select at least one student or provide a name to proceed.');
     }
 
 
