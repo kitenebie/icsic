@@ -46,11 +46,11 @@
         });
     </script>
 
-    <section class="bg-white py-16">
+    <section class="bg-cream-50 py-16">
         <div class="max-w-6xl mx-auto px-4">
             <h2 class="text-4xl font-bold text-center text-gray-800 mb-12">Our History / Kasaysayan ng Paaralan</h2>
 
-            <div class="bg-gray-50 p-8 rounded-xl shadow hover:shadow-md transition max-w-4xl mx-auto">
+            <div class="bg-brown-50 p-8 rounded-xl shadow hover:shadow-md transition max-w-4xl mx-auto">
                 <div class="flex items-center gap-4 mb-6">
                     <svg class="w-10 h-10 text-purple-600" fill="none" stroke="currentColor" stroke-width="2"
                         viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
@@ -94,7 +94,7 @@
         </div>
     </section>
 
-    <section class="bg-white py-16">
+    <section class="bg-cream-50 py-16">
         <div class="max-w-6xl mx-auto px-4">
             <h2 class="text-4xl font-bold text-center text-gray-800 mb-12">Our Mission & Vision / Aming Misyon at Bisyon
             </h2>
@@ -102,7 +102,7 @@
             <div class="grid md:grid-cols-2 gap-8">
 
                 <!-- Mission -->
-                <div class="bg-gray-50 p-8 rounded-xl shadow hover:shadow-md transition">
+                <div class="bg-brown-50 p-8 rounded-xl shadow hover:shadow-md transition">
                     <div class="flex items-center gap-4 mb-4">
                         <svg class="w-10 h-10 text-blue-600" fill="none" stroke="currentColor" stroke-width="2"
                             viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
@@ -121,7 +121,7 @@
                 </div>
 
                 <!-- Vision -->
-                <div class="bg-gray-50 p-8 rounded-xl shadow hover:shadow-md transition">
+                <div class="bg-brown-50 p-8 rounded-xl shadow hover:shadow-md transition">
                     <div class="flex items-center gap-4 mb-4">
                         <svg class="w-10 h-10 text-green-600" fill="none" stroke="currentColor" stroke-width="2"
                             viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
@@ -143,14 +143,14 @@
         </div>
     </section>
 
-    <section class="bg-white py-16">
+    <section class="bg-cream-50 py-16">
         <div class="max-w-6xl mx-auto px-4">
             <h2 class="text-4xl font-bold text-center text-gray-800 mb-12">Our Core Values / Mga Pundamental na Halaga
             </h2>
 
             <div class="grid md:grid-cols-4 gap-8 text-center">
 
-                <div class="bg-gray-50 p-8 rounded-xl shadow hover:shadow-md transition">
+                <div class="bg-brown-50 p-8 rounded-xl shadow hover:shadow-md transition">
                     <div class="flex justify-center mb-4">
                         <!-- New icon: Heart for Maka-Diyos -->
                         <svg class="w-12 h-12 text-yellow-500" fill="none" stroke="currentColor" stroke-width="2"
@@ -167,7 +167,7 @@
                     </p>
                 </div>
 
-                <div class="bg-gray-50 p-8 rounded-xl shadow hover:shadow-md transition">
+                <div class="bg-brown-50 p-8 rounded-xl shadow hover:shadow-md transition">
                     <div class="flex justify-center mb-4">
                         <!-- New icon: Hands shaking for Maka-Tao -->
                         <svg class="w-12 h-12 text-pink-500" fill="none" stroke="currentColor" stroke-width="2"
@@ -184,7 +184,7 @@
                     </p>
                 </div>
 
-                <div class="bg-gray-50 p-8 rounded-xl shadow hover:shadow-md transition">
+                <div class="bg-brown-50 p-8 rounded-xl shadow hover:shadow-md transition">
                     <div class="flex justify-center mb-4">
                         <!-- New icon: Leaf for Maka-Kalikasan -->
                         <svg class="w-12 h-12 text-green-500" fill="none" stroke="currentColor" stroke-width="2"
@@ -202,7 +202,7 @@
                     </p>
                 </div>
 
-                <div class="bg-gray-50 p-8 rounded-xl shadow hover:shadow-md transition">
+                <div class="bg-brown-50 p-8 rounded-xl shadow hover:shadow-md transition">
                     <div class="flex justify-center mb-4">
                         <!-- New icon: Flag for Maka-Bansa -->
                         <svg class="w-12 h-12 text-blue-500" fill="none" stroke="currentColor" stroke-width="2"
@@ -223,7 +223,7 @@
     </section>
 
 
-    <section class="bg-white py-16">
+    <section class="bg-cream-50 py-16">
         <div class="max-w-7xl mx-auto px-4">
             <h2 class="text-4xl font-bold text-center text-gray-800 mb-16">Our School Team</h2>
 
@@ -239,7 +239,7 @@
             <div class="space-y-4" id="faqAccordion">
 
                 <!-- FAQ 1 -->
-                <div class="bg-white rounded-lg shadow overflow-hidden">
+                <div class="bg-cream-50 rounded-lg shadow overflow-hidden">
                     <button class="w-full text-left p-5 flex justify-between items-center faq-toggle">
                         <span class="text-lg font-medium text-gray-800">1. What is the Irosin Central School
                             Information System (ICSIS)?</span>
@@ -257,7 +257,7 @@
                 </div>
 
                 <!-- FAQ 2 -->
-                <div class="bg-white rounded-lg shadow overflow-hidden">
+                <div class="bg-cream-50 rounded-lg shadow overflow-hidden">
                     <button class="w-full text-left p-5 flex justify-between items-center faq-toggle">
                         <span class="text-lg font-medium text-gray-800">2. Who can use ICSIS?</span>
                         <svg class="w-5 h-5 text-gray-500 transition-transform transform rotate-0" fill="none"
@@ -279,7 +279,7 @@
                 </div>
 
                 <!-- FAQ 3 -->
-                <div class="bg-white rounded-lg shadow overflow-hidden">
+                <div class="bg-cream-50 rounded-lg shadow overflow-hidden">
                     <button class="w-full text-left p-5 flex justify-between items-center faq-toggle">
                         <span class="text-lg font-medium text-gray-800">3. How do I log in and create an account on
                             ICSIS?</span>
@@ -307,7 +307,7 @@
 
 
                 <!-- FAQ 4 -->
-                <div class="bg-white rounded-lg shadow overflow-hidden">
+                <div class="bg-cream-50 rounded-lg shadow overflow-hidden">
                     <button class="w-full text-left p-5 flex justify-between items-center faq-toggle">
                         <span class="text-lg font-medium text-gray-800">4. What kind of information can I find in the
                             News, Announcements, and Calendar Events sections?</span>
@@ -329,7 +329,7 @@
                 </div>
 
                 <!-- FAQ 5 -->
-                <div class="bg-white rounded-lg shadow overflow-hidden">
+                <div class="bg-cream-50 rounded-lg shadow overflow-hidden">
                     <button class="w-full text-left p-5 flex justify-between items-center faq-toggle">
                         <span class="text-lg font-medium text-gray-800">5. Can I interact with the news and
                             announcements?</span>
@@ -345,7 +345,7 @@
                 </div>
 
                 <!-- FAQ 6 -->
-                <div class="bg-white rounded-lg shadow overflow-hidden">
+                <div class="bg-cream-50 rounded-lg shadow overflow-hidden">
                     <button class="w-full text-left p-5 flex justify-between items-center faq-toggle">
                         <span class="text-lg font-medium text-gray-800">6. Are there any rules or filters for
                             commenting?</span>
@@ -363,7 +363,7 @@
 
 
                 <!-- FAQ 7 -->
-                <div class="bg-white rounded-lg shadow overflow-hidden">
+                <div class="bg-cream-50 rounded-lg shadow overflow-hidden">
                     <button class="w-full text-left p-5 flex justify-between items-center faq-toggle">
                         <span class="text-lg font-medium text-gray-800">7. What are the groups in ICSIS, and how do
                             they work?</span>
@@ -384,7 +384,7 @@
                 </div>
 
                 <!-- FAQ 8 -->
-                <div class="bg-white rounded-lg shadow overflow-hidden">
+                <div class="bg-cream-50 rounded-lg shadow overflow-hidden">
                     <button class="w-full text-left p-5 flex justify-between items-center faq-toggle">
                         <span class="text-lg font-medium text-gray-800">8. How do I join or create a group?</span>
                         <svg class="w-5 h-5 text-gray-500 transition-transform transform rotate-0" fill="none"
@@ -404,7 +404,7 @@
 
 
                 <!-- FAQ 9 -->
-                <div class="bg-white rounded-lg shadow overflow-hidden">
+                <div class="bg-cream-50 rounded-lg shadow overflow-hidden">
                     <button class="w-full text-left p-5 flex justify-between items-center faq-toggle">
                         <span class="text-lg font-medium text-gray-800">9. How does ICSIS protect my personal
                             information and keep interactions safe?</span>
@@ -420,7 +420,7 @@
                 </div>
 
                 <!-- FAQ 10 -->
-                <div class="bg-white rounded-lg shadow overflow-hidden">
+                <div class="bg-cream-50 rounded-lg shadow overflow-hidden">
                     <button class="w-full text-left p-5 flex justify-between items-center faq-toggle">
                         <span class="text-lg font-medium text-gray-800">10. Can I access ICSIS on mobile
                             devices?</span>
@@ -436,7 +436,7 @@
                 </div>
 
                 <!-- FAQ 11 -->
-                <div class="bg-white rounded-lg shadow overflow-hidden">
+                <div class="bg-cream-50 rounded-lg shadow overflow-hidden">
                     <button class="w-full text-left p-5 flex justify-between items-center faq-toggle">
                         <span class="text-lg font-medium text-gray-800">11. What should I do if I forget my
                             password?</span>
@@ -454,7 +454,7 @@
                 </div>
 
                 <!-- FAQ 12 -->
-                <div class="bg-white rounded-lg shadow overflow-hidden">
+                <div class="bg-cream-50 rounded-lg shadow overflow-hidden">
                     <button class="w-full text-left p-5 flex justify-between items-center faq-toggle">
                         <span class="text-lg font-medium text-gray-800">12. What if I encounter technical problems or
                             have questions about ICSIS?</span>
@@ -471,7 +471,7 @@
                 </div>
 
                 <!-- FAQ 13 -->
-                <div class="bg-white rounded-lg shadow overflow-hidden">
+                <div class="bg-cream-50 rounded-lg shadow overflow-hidden">
                     <button class="w-full text-left p-5 flex justify-between items-center faq-toggle">
                         <span class="text-lg font-medium text-gray-800">13. Where can I learn more about Irosin Central
                             School?</span>
@@ -487,7 +487,7 @@
                 </div>
 
                 <!-- FAQ 14 -->
-                <div class="bg-white rounded-lg shadow overflow-hidden">
+                <div class="bg-cream-50 rounded-lg shadow overflow-hidden">
                     <button class="w-full text-left p-5 flex justify-between items-center faq-toggle">
                         <span class="text-lg font-medium text-gray-800">14. Can I update my profile information?</span>
                         <svg class="w-5 h-5 text-gray-500 transition-transform transform rotate-0" fill="none"
@@ -506,7 +506,7 @@
                 </div>
 
                 <!-- FAQ 15 -->
-                <div class="bg-white rounded-lg shadow overflow-hidden">
+                <div class="bg-cream-50 rounded-lg shadow overflow-hidden">
                     <button class="w-full text-left p-5 flex justify-between items-center faq-toggle">
                         <span class="text-lg font-medium text-gray-800">15. Will I receive notifications for new
                             updates?</span>
@@ -524,7 +524,7 @@
                 </div>
 
                 <!-- FAQ 16 -->
-                <div class="bg-white rounded-lg shadow overflow-hidden">
+                <div class="bg-cream-50 rounded-lg shadow overflow-hidden">
                     <button class="w-full text-left p-5 flex justify-between items-center faq-toggle">
                         <span class="text-lg font-medium text-gray-800">16. Why are all members of the school displayed
                             on the Irosin Central School Information System?</span>
@@ -545,7 +545,7 @@
                 </div>
 
                 <!-- FAQ 17 -->
-                <div class="bg-white rounded-lg shadow overflow-hidden">
+                <div class="bg-cream-50 rounded-lg shadow overflow-hidden">
                     <button class="w-full text-left p-5 flex justify-between items-center faq-toggle">
                         <span class="text-lg font-medium text-gray-800">17. What is the face detection feature during
                             registration and how does it work?</span>

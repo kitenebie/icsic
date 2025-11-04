@@ -7,7 +7,7 @@
     <!-- Comments Container -->
     <div class="comments-container relative bg-white w-full h-full lg:h-auto lg:w-96 flex flex-col max-h-screen lg:max-h-[80vh] rounded-t-lg lg:rounded-lg lg:shadow-lg">
         <!-- Header -->
-        <header class="comments-header">
+        <header class="comments-header bg-cream-200">
             <button type="button" wire:click="closeComment" class="back-button" aria-label="Close comments">
                 <i class="fas fa-arrow-left"></i>
             </button>
