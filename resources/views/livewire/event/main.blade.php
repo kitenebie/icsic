@@ -355,7 +355,7 @@
                         @endphp
 
                         <div wire:click="selectDate('{{ $day['date'] }}')"
-                            style="background: linear-gradient(135deg, #ffffff 0%, #fefefe 100%); min-height: 120px; padding: 8px; cursor: pointer; transition: all 0.3s ease; border-radius: 6px; position: relative; {{ $day['is_today'] ? 'background: linear-gradient(135deg, #f5e8e1 0%, #d1aa90 100%); box-shadow: 0 3px 8px rgba(150, 87, 55, 0.3);' : '' }} {{ $day['is_selected'] ? 'box-shadow: 0 0 0 2px #965737, 0 3px 8px rgba(150, 87, 55, 0.4);' : '' }}"
+                            style="background: linear-gradient(135deg, #ffffff 0%, #fefefe 100%); min-height: 120px; padding: 8px; cursor: pointer; transition: all 0.3s ease; border-radius: 6px; position: relative; {{ $day['is_today'] ? 'background: linear-gradient(135deg, #f5e8e1 0%, #fdf8f6 100%); box-shadow: 0 3px 8px rgba(150, 87, 55, 0.3);' : '' }} {{ $day['is_selected'] ? 'box-shadow: 0 0 0 2px #965737, 0 3px 8px rgba(150, 87, 55, 0.4);' : '' }}"
                             class="dark:bg-gradient-to-br dark:from-gray-700 dark:to-gray-800 dark:text-white {{ $day['is_today'] ? 'dark:bg-gradient-to-br dark:from-green-800 dark:to-green-900 dark:shadow-2xl dark:shadow-green-900/50' : '' }} dark:hover:shadow-lg dark:hover:shadow-gray-900/30"
                             onmouseover="this.style.transform='translateY(1px)'; this.style.boxShadow='{{ $day['is_selected'] ? '0 0 0 2px #b37b5d, ' : '' }}0 6px 16px #f5e8e1'"
                             onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='{{ $day['is_selected'] ? '0 0 0 2px #b37b5d' : ($day['is_today'] ? '0 3px 8px #e7cfc0' : 'none') }}'">
