@@ -292,53 +292,53 @@
                     function getEventColor($category)
                     {
                         $colors = [
-                            'Exams & Quizzes' => '#ea4335',
-                            'Science Fair' => '#34a853',
-                            'Math Olympiad' => '#4285f4',
-                            'Spelling Bee' => '#fbbc04',
-                            'Debate/Essay Contests' => '#ea4335',
-                            'Parent-Teacher Conferences' => '#34a853',
-                            'Report Card Distribution' => '#4285f4',
-                            'Clubs (e.g., Journalism, Robotics)' => '#fbbc04',
-                            'Student Council Elections' => '#ea4335',
-                            'Leadership Training' => '#34a853',
-                            'Educational Field Trips' => '#4285f4',
-                            'Intramurals' => '#fbbc04',
-                            'Sports Fest' => '#ea4335',
-                            'Tryouts and Practice Sessions' => '#34a853',
-                            'Cheerleading Competitions' => '#4285f4',
-                            'P.E. Demonstrations' => '#fbbc04',
-                            'Foundation Day' => '#ea4335',
-                            'Linggo ng Wika' => '#34a853',
-                            'Buwan ng Sining' => '#4285f4',
-                            'Christmas Program' => '#fbbc04',
-                            'School Play or Musical' => '#ea4335',
-                            'Art Exhibits' => '#34a853',
-                            'Cultural Shows' => '#4285f4',
-                            'Mass or Worship Services' => '#fbbc04',
-                            'Retreats & Recollections' => '#ea4335',
-                            'Religious Holidays' => '#34a853',
-                            'Moral Instruction Sessions' => '#4285f4',
-                            'Medical/Dental Missions' => '#fbbc04',
-                            'Mental Health Week' => '#ea4335',
-                            'Anti-Bullying Campaigns' => '#34a853',
-                            'Nutrition Month' => '#4285f4',
-                            'Blood Donation Drives' => '#fbbc04',
-                            'Tree Planting' => '#ea4335',
-                            'Community Clean-Up Drives' => '#34a853',
-                            'Charity Events' => '#4285f4',
-                            'School Caravan' => '#fbbc04',
-                            'Brigada Eskwela' => '#ea4335',
-                            'General Assembly' => '#34a853',
-                            'Faculty Development' => '#4285f4',
-                            'Student/Parent Orientation' => '#fbbc04',
-                            'Enrollment Days' => '#ea4335',
-                            'Accreditation Visits' => '#34a853',
-                            'Awarding Ceremonies' => '#4285f4',
-                            'Recognition Day' => '#fbbc04',
-                            'Graduation/Moving-Up' => '#ea4335',
-                            'Inter-School Competitions' => '#34a853',
-                            'Other' => '#4285f4',
+                            "Exams & Quizzes" => "#965737", // brown-500
+                            "Science Fair" => "#ffbf65", // cream-500
+                            "Math Olympiad" => "#7c4328", // brown-600
+                            "Spelling Bee" => "#e6a94f", // cream-600
+                            "Debate/Essay Contests" => "#62341f", // brown-700
+                            "Parent-Teacher Conferences" => "#b8853e", // cream-700
+                            "Report Card Distribution" => "#4a2718", // brown-800
+                            "Clubs (e.g., Journalism, Robotics)" => "#8a6330", // cream-800
+                            "Student Council Elections" => "#2e180f", // brown-900
+                            "Leadership Training" => "#5f4522", // cream-900
+                            "Educational Field Trips" => "#b37b5d", // brown-400
+                            "Intramurals" => "#ffd18f", // cream-400
+                            "Sports Fest" => "#d1aa90", // brown-300
+                            "Tryouts and Practice Sessions" => "#ffe2b9", // cream-300
+                            "Cheerleading Competitions" => "#e7cfc0", // brown-200
+                            "P.E. Demonstrations" => "#ffefdb", // cream-200
+                            "Foundation Day" => "#f5e8e1", // brown-100
+                            "Linggo ng Wika" => "#fff7ed", // cream-100
+                            "Buwan ng Sining" => "#fdf8f6", // brown-50
+                            "Christmas Program" => "#fffdfa", // cream-50
+                            "School Play or Musical" => "#965737", // brown-500
+                            "Art Exhibits" => "#ffbf65", // cream-500
+                            "Cultural Shows" => "#7c4328", // brown-600
+                            "Mass or Worship Services" => "#e6a94f", // cream-600
+                            "Retreats & Recollections" => "#62341f", // brown-700
+                            "Religious Holidays" => "#b8853e", // cream-700
+                            "Moral Instruction Sessions" => "#4a2718", // brown-800
+                            "Medical/Dental Missions" => "#8a6330", // cream-800
+                            "Mental Health Week" => "#2e180f", // brown-900
+                            "Anti-Bullying Campaigns" => "#5f4522", // cream-900
+                            "Nutrition Month" => "#b37b5d", // brown-400
+                            "Blood Donation Drives" => "#ffd18f", // cream-400
+                            "Tree Planting" => "#d1aa90", // brown-300
+                            "Community Clean-Up Drives" => "#ffe2b9", // cream-300
+                            "Charity Events" => "#e7cfc0", // brown-200
+                            "School Caravan" => "#ffefdb", // cream-200
+                            "Brigada Eskwela" => "#f5e8e1", // brown-100
+                            "General Assembly" => "#fff7ed", // cream-100
+                            "Faculty Development" => "#fdf8f6", // brown-50
+                            "Student/Parent Orientation" => "#fffdfa", // cream-50
+                            "Enrollment Days" => "#965737", // brown-500
+                            "Accreditation Visits" => "#ffbf65", // cream-500
+                            "Awarding Ceremonies" => "#7c4328", // brown-600
+                            "Recognition Day" => "#e6a94f", // cream-600
+                            "Graduation/Moving-Up" => "#62341f", // brown-700
+                            "Inter-School Competitions" => "#b8853e", // cream-700
+                            "Other" => "#965737" // brown-500 as default
                         ];
                         return $colors[$category] ?? '#4285f4';
                     }
@@ -521,8 +521,8 @@
                                                 <button wire:click="editEvent({{ $event->id }})"
                                                     style="padding: 6px 12px; background-color: #965737; color: white; border: none; border-radius: 6px; font-size: 12px; font-weight: 500; cursor: pointer; transition: background-color 0.2s; display: flex; align-items: center; gap: 4px;"
                                                     class="dark:bg-brown-700 dark:hover:bg-brown-600"
-                                                    onmouseover="this.style.backgroundColor='#15803d'"
-                                                    onmouseout="this.style.backgroundColor='#16a34a'">
+                                                    onmouseover="this.style.backgroundColor='#964F2CFF'"
+                                                    onmouseout="this.style.backgroundColor='#965737'">
                                                     <svg style="width: 14px; height: 14px;" fill="none"
                                                         stroke="currentColor" viewBox="0 0 24 24">
                                                         <path stroke-linecap="round" stroke-linejoin="round"
