@@ -274,10 +274,10 @@ class UserResource extends Resource
                     ->height(50)
                     ->width(50)
                     ->openUrlInNewTab(),
-                TextColumn::make('rejection_reason')
-                    ->label('Rejection Reason')
-                    ->wrap()
-                    ->limit(50),
+                // TextColumn::make('rejection_reason')
+                //     ->label('Rejection Reason')
+                //     ->wrap()
+                //     ->limit(50),
             ])
             ->filters([
                 SelectFilter::make('role')
