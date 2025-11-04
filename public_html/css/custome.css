@@ -424,6 +424,11 @@
     .border-warning-500 {
         border-color: var(--color-warning-500) !important;
     }
+
+    /* Gradient */
+    .bg-gradient-to-r-from-cream-500-to-brown-600 {
+        background: linear-gradient(to right, var(--color-cream-500), var(--color-brown-600)) !important;
+    }
 }
 
 /* =========================================================
