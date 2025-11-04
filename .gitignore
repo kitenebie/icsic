@@ -25,4 +25,4 @@ firebase.json
 /public
 .history
 firebase_credentials.json
-!vendor/vendor/filament/support/src/Colors/Color.php
+!vendor/filament/filament-sample/vendor/filament/support/src/Colors/Color.php
