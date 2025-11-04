@@ -246,101 +246,105 @@
 
             <div class="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
                 @forelse ($events ?? [] as $event)
-                    <div id="event-{{ \Carbon\Carbon::parse($event->event_date)->format('Y') }}{{ \Carbon\Carbon::parse($event->event_date)->format('M') }}"
-                        class="bg-brown-50 hidden rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 border border-brown-600 overflow-hidden group cursor-pointer">
-                        <!-- Event Images Gallery -->
-                        @if ($event->event_images && count($event->event_images) > 0)
-                            <div class="relative h-48 overflow-hidden">
-                                <div
-                                    class="grid {{ count($event->event_images) === 1 ? 'grid-cols-1' : (count($event->event_images) === 2 ? 'grid-cols-2' : 'grid-cols-2 grid-rows-2') }} h-full">
-                                    @forelse (array_slice($event->event_images, 0, 4) as $index => $image)
+                    @if ($event->event_end ? $event->event_end >= now() : $event->event_date >= now())
+                        <div id="event-{{ \Carbon\Carbon::parse($event->event_date)->format('Y') }}{{ \Carbon\Carbon::parse($event->event_date)->format('M') }}"
+                            class="bg-brown-50 hidden rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 border border-brown-600 overflow-hidden group cursor-pointer">
+                            <!-- Event Images Gallery -->
+                            @if ($event->event_images && count($event->event_images) > 0)
+                                <div class="relative h-48 overflow-hidden">
+                                    <div
+                                        class="grid {{ count($event->event_images) === 1 ? 'grid-cols-1' : (count($event->event_images) === 2 ? 'grid-cols-2' : 'grid-cols-2 grid-rows-2') }} h-full">
+                                        @forelse (array_slice($event->event_images, 0, 4) as $index => $image)
+                                            <div
+                                                class="relative overflow-hidden {{ $index === 0 && count($event->event_images) > 1 ? 'row-span-2' : '' }}">
+                                                <img src="{{ asset('storage/' . $image) }}"
+                                                    alt="{{ $event->event_name }}"
+                                                    class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300 image-preview-trigger"
+                                                    data-images="{{ json_encode($event->event_images) }}"
+                                                    data-current="{{ $index }}"
+                                                    data-title="{{ $event->event_name }}">
+                                                @if ($index === 3 && count($event->event_images) > 4)
+                                                    <div
+                                                        class="absolute inset-0 bg-black bg-opacity-50 flex items-center justify-center">
+                                                        <span
+                                                            class="text-white font-bold text-lg">+{{ count($event->event_images) - 4 }}</span>
+                                                    </div>
+                                                @endif
+                                            </div>
+                                        @empty
+                                        @endforelse
+                                    </div>
+                                    <div class="absolute top-3 left-3">
+                                        <div class="bg-brown-600 bg-opacity-90 backdrop-blur-sm rounded-lg px-3 py-1">
+                                            <div class="text-sm font-semibold text-brown-50">
+                                                {{ \Carbon\Carbon::parse($event->event_date)->format('M j') }}
+                                            </div>
+                                            <div class="text-xs text-brown-50">
+                                                {{ \Carbon\Carbon::parse($event->event_date)->format('Y') }}
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="absolute top-3 right-3">
                                         <div
-                                            class="relative overflow-hidden {{ $index === 0 && count($event->event_images) > 1 ? 'row-span-2' : '' }}">
-                                            <img src="{{ asset('storage/' . $image) }}" alt="{{ $event->event_name }}"
-                                                class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300 image-preview-trigger"
-                                                data-images="{{ json_encode($event->event_images) }}"
-                                                data-current="{{ $index }}"
-                                                data-title="{{ $event->event_name }}">
-                                            @if ($index === 3 && count($event->event_images) > 4)
-                                                <div
-                                                    class="absolute inset-0 bg-black bg-opacity-50 flex items-center justify-center">
-                                                    <span
-                                                        class="text-white font-bold text-lg">+{{ count($event->event_images) - 4 }}</span>
-                                                </div>
-                                            @endif
+                                            class="bg-brown-600 text-white text-xs rounded-full px-3 py-1 font-semibold">
+                                            {{ $event->event_category }}
                                         </div>
-                                    @empty
-                                    @endforelse
+                                    </div>
                                 </div>
-                                <div class="absolute top-3 left-3">
-                                    <div class="bg-brown-600 bg-opacity-90 backdrop-blur-sm rounded-lg px-3 py-1">
-                                        <div class="text-sm font-semibold text-brown-50">
-                                            {{ \Carbon\Carbon::parse($event->event_date)->format('M j') }}
+                            @else
+                                <!-- No images fallback -->
+                                <div style="background-image: linear-gradient(to right, #ffd18f, #62341f) !important;"
+                                    class="h-32 flex items-center justify-center">
+                                    <div class="text-center text-white">
+                                        <div class="text-2xl font-bold mb-1">
+                                            {{ \Carbon\Carbon::parse($event->event_date)->format('d') }}
                                         </div>
-                                        <div class="text-xs text-brown-50">
+                                        <div class="text-sm opacity-90">
+                                            {{ \Carbon\Carbon::parse($event->event_date)->format('M') }}
+                                        </div>
+                                        <div class="text-xs opacity-75">
                                             {{ \Carbon\Carbon::parse($event->event_date)->format('Y') }}
                                         </div>
                                     </div>
                                 </div>
-                                <div class="absolute top-3 right-3">
-                                    <div class="bg-brown-600 text-white text-xs rounded-full px-3 py-1 font-semibold">
-                                        {{ $event->event_category }}
-                                    </div>
-                                </div>
-                            </div>
-                        @else
-                            <!-- No images fallback -->
-                            <div style="background-image: linear-gradient(to right, #ffd18f, #62341f) !important;"
-                                class="h-32 flex items-center justify-center">
-                                <div class="text-center text-white">
-                                    <div class="text-2xl font-bold mb-1">
-                                        {{ \Carbon\Carbon::parse($event->event_date)->format('d') }}
-                                    </div>
-                                    <div class="text-sm opacity-90">
-                                        {{ \Carbon\Carbon::parse($event->event_date)->format('M') }}
-                                    </div>
-                                    <div class="text-xs opacity-75">
-                                        {{ \Carbon\Carbon::parse($event->event_date)->format('Y') }}
-                                    </div>
-                                </div>
-                            </div>
-                        @endif
+                            @endif
 
-                        <!-- Event Content -->
-                        <div class="p-6">
-                            <h3
-                                class="font-bold text-gray-900 text-xl mb-2 group-hover:text-brown-600 transition-colors">
-                                {{ $event->event_name }}
-                            </h3>
-                            <div class="text-gray-600 mb-4 text-sm leading-relaxed line-clamp-3">
-                                {!! \Illuminate\Support\Str::markdown($event->event_discription) !!}
-                            </div>
+                            <!-- Event Content -->
+                            <div class="p-6">
+                                <h3
+                                    class="font-bold text-gray-900 text-xl mb-2 group-hover:text-brown-600 transition-colors">
+                                    {{ $event->event_name }}
+                                </h3>
+                                <div class="text-gray-600 mb-4 text-sm leading-relaxed line-clamp-3">
+                                    {!! \Illuminate\Support\Str::markdown($event->event_discription) !!}
+                                </div>
 
-                            <div class="flex items-center justify-between text-sm text-gray-500">
-                                <div class="flex items-center space-x-4">
-                                    <div class="flex items-center space-x-1">
-                                        <svg class="w-4 h-4" fill="none" stroke="currentColor"
-                                            viewBox="0 0 24 24">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                                d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
-                                        </svg>
-                                        <span>{{ \Carbon\Carbon::parse($event->event_time)->format('g:i A') }}{{ $event->event_duration ? ' – ' . (preg_match('/^\d{2}:\d{2}:\d{2}$/', $event->event_duration) ? \Carbon\Carbon::parse($event->event_duration)->format('g:i A') : $event->event_duration) : '' }}</span>
-                                    </div>
-                                    <div class="flex items-center space-x-1">
-                                        <svg class="w-4 h-4" fill="none" stroke="currentColor"
-                                            viewBox="0 0 24 24">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                                d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z">
-                                            </path>
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                                d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"></path>
-                                        </svg>
-                                        <span>{{ $event->event_location }}</span>
+                                <div class="flex items-center justify-between text-sm text-gray-500">
+                                    <div class="flex items-center space-x-4">
+                                        <div class="flex items-center space-x-1">
+                                            <svg class="w-4 h-4" fill="none" stroke="currentColor"
+                                                viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                    d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                                            </svg>
+                                            <span>{{ \Carbon\Carbon::parse($event->event_time)->format('g:i A') }}{{ $event->event_duration ? ' – ' . (preg_match('/^\d{2}:\d{2}:\d{2}$/', $event->event_duration) ? \Carbon\Carbon::parse($event->event_duration)->format('g:i A') : $event->event_duration) : '' }}</span>
+                                        </div>
+                                        <div class="flex items-center space-x-1">
+                                            <svg class="w-4 h-4" fill="none" stroke="currentColor"
+                                                viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                    d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z">
+                                                </path>
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                    d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"></path>
+                                            </svg>
+                                            <span>{{ $event->event_location }}</span>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
-                    </div>
+                    @endif
                 @empty
                     <p></p>
                     @livewire('event.not-found')
@@ -651,14 +655,14 @@
                                                 <!-- Event Image -->
                                                 <div class="flex-shrink-0">
                                                     ${e.raw.event_images && e.raw.event_images.length > 0 ? `
-                                                                    <img src="/storage/${e.raw.event_images[0]}" alt="${e.raw.event_name}" class="w-16 h-16 rounded-lg object-cover border-2 border-white shadow-sm">
-                                                                ` : `
-                                                                    <div class="w-16 h-16 bg-gradient-to-r from-brown-400 to-purple-500 rounded-lg flex items-center justify-center">
-                                                                        <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
-                                                                        </svg>
-                                                                    </div>
-                                                                `}
+                                                                                <img src="/storage/${e.raw.event_images[0]}" alt="${e.raw.event_name}" class="w-16 h-16 rounded-lg object-cover border-2 border-white shadow-sm">
+                                                                            ` : `
+                                                                                <div class="w-16 h-16 bg-gradient-to-r from-brown-400 to-purple-500 rounded-lg flex items-center justify-center">
+                                                                                    <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
+                                                                                    </svg>
+                                                                                </div>
+                                                                            `}
                                                 </div>
 
                                                 <!-- Event Details -->
@@ -693,15 +697,15 @@
                                                     </div>
 
                                                     ${e.raw.event_images && e.raw.event_images.length > 1 ? `
-                                                                    <div class="mt-4 pt-4 border-t border-gray-200">
-                                                                        <div class="flex items-center space-x-2">
-                                                                            <svg class="w-4 h-4 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
-                                                                            </svg>
-                                                                            <span class="text-sm text-gray-600">${e.raw.event_images.length} photos</span>
-                                                                        </div>
-                                                                    </div>
-                                                                ` : ''}
+                                                                                <div class="mt-4 pt-4 border-t border-gray-200">
+                                                                                    <div class="flex items-center space-x-2">
+                                                                                        <svg class="w-4 h-4 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
+                                                                                        </svg>
+                                                                                        <span class="text-sm text-gray-600">${e.raw.event_images.length} photos</span>
+                                                                                    </div>
+                                                                                </div>
+                                                                            ` : ''}
                                                 </div>
                                             </div>
                                         </div>
