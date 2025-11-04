@@ -282,7 +282,7 @@
                                     @endforelse
                                 </div>
                                 <div class="absolute top-3 left-3">
-                                    <div class="bg-white bg-opacity-90 backdrop-blur-sm rounded-lg px-3 py-1">
+                                    <div class="bg-brown-600 bg-opacity-90 backdrop-blur-sm rounded-lg px-3 py-1">
                                         <div class="text-sm font-semibold text-gray-900">
                                             {{ \Carbon\Carbon::parse($event->event_date)->format('M j') }}
                                         </div>
@@ -300,7 +300,7 @@
                         @else
                             <!-- No images fallback -->
                             <div
-                                class="h-32 bg-gradient-to-r from-brown-400 to-purple-500 flex items-center justify-center">
+                                class="h-32 bg-gradient-to-r from-blue-400 to-purple-500 flex items-center justify-center">
                                 <div class="text-center text-white">
                                     <div class="text-2xl font-bold mb-1">
                                         {{ \Carbon\Carbon::parse($event->event_date)->format('d') }}
