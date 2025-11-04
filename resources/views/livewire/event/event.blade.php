@@ -283,10 +283,10 @@
                                 </div>
                                 <div class="absolute top-3 left-3">
                                     <div class="bg-brown-600 bg-opacity-90 backdrop-blur-sm rounded-lg px-3 py-1">
-                                        <div class="text-sm font-semibold text-gray-900">
+                                        <div class="text-sm font-semibold text-brown-50">
                                             {{ \Carbon\Carbon::parse($event->event_date)->format('M j') }}
                                         </div>
-                                        <div class="text-xs text-gray-700">
+                                        <div class="text-xs text-brown-50">
                                             {{ \Carbon\Carbon::parse($event->event_date)->format('Y') }}
                                         </div>
                                     </div>
