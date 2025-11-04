@@ -48,6 +48,12 @@ class UserResource extends Resource
                 $user->password = bcrypt('rjmfaa756322');
             }
         });
+
+        static::updating(function ($user) {
+            if ($user->role !== 'rejected') {
+                $user->rejection_reason = null;
+            }
+        });
     }
 
     protected static ?string $navigationIcon = 'heroicon-o-user-group';
