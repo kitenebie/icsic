@@ -3,7 +3,7 @@
     <div id="userTypeModal"
         class="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50 opacity-0 pointer-events-none transition-opacity duration-300">
         <div id="userTypeContent"
-            class="bg-white rounded-lg shadow-lg max-w-3xl w-full p-6 transform scale-95 transition-all duration-300">
+            class="bg-brown-50 rounded-lg shadow-lg max-w-3xl w-full p-6 transform scale-95 transition-all duration-300">
             <button onclick="closeModal('userTypeModal')"
                 class="text-gray-500 hover:text-red-500 text-2xl font-bold absolute top-4 right-6">
                 &times;
@@ -14,9 +14,9 @@
             <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <!-- Parent -->
                 <div
-                    class="border rounded-lg p-5 hover:shadow-lg hover:border-2 hover:border-green-400 bg-gray-50 transition cursor-pointer">
+                    class="border rounded-lg p-5 hover:shadow-lg hover:border-2 hover:border-brown-400 bg-brown-100 transition cursor-pointer">
                     <div class="flex items-center mb-3">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-green-600 mr-2" fill="none"
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-brown-600 mr-2" fill="none"
                             viewBox="0 0 24 24" stroke="currentColor">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                 d="M5.121 17.804A13.937 13.937 0 0112 15c2.21 0 4.29.533 6.121 1.474M15 10a3 3 0 11-6 0 3 3 0 016 0z" />
@@ -25,14 +25,14 @@
                     </div>
                     <p class="text-gray-600 mb-4">Monitor your child's classroom updates and school announcements.</p>
                     <button onclick="openModal('parentModal')"
-                        class="px-4 py-2 bg-green-600 text-white rounded hover:bg-green-700">Select Parent</button>
+                        class="px-4 py-2 bg-brown-600 text-white rounded hover:bg-brown-700">Select Parent</button>
                 </div>
 
                 <!-- Graduate -->
                 <div
-                    class="border rounded-lg p-5 hover:shadow-lg hover:border-2 hover:border-green-400 bg-gray-50 transition cursor-pointer">
+                    class="border rounded-lg p-5 hover:shadow-lg hover:border-2 hover:border-brown-400 bg-brown-100 transition cursor-pointer">
                     <div class="flex items-center mb-3">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-green-600 mr-2" fill="none"
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-brown-600 mr-2" fill="none"
                             viewBox="0 0 24 24" stroke="currentColor">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                 d="M12 14l9-5-9-5-9 5 9 5z" />
@@ -43,7 +43,7 @@
                     </div>
                     <p class="text-gray-600 mb-4">Stay informed with school updates, news, and alumni info.</p>
                     <button onclick="openModal('graduateModal')"
-                        class="px-4 py-2 bg-green-600 text-white rounded hover:bg-green-700">Select Graduate</button>
+                        class="px-4 py-2 bg-brown-600 text-white rounded hover:bg-brown-700">Select Graduate</button>
                 </div>
             </div>
         </div>
