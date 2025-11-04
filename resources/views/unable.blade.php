@@ -24,7 +24,7 @@
     <p class="text-sm text-gray-600 mb-6">
       Please review our <a href="#" class="text-blue-500 underline">User Policy</a> and <a href="#" class="text-blue-500 underline">Terms of Service</a> for more details.
     </p>
-    <a href="/contact-support" class="inline-block bg-brown-600 text-white px-5 py-2 rounded-full hover:bg-brown-700 transition">
+    <a href="irosincentralschool01@gmail.com" class="inline-block bg-brown-600 text-white px-5 py-2 rounded-full hover:bg-brown-700 transition">
       Contact Support
     </a>
   </div>
