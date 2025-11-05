@@ -95,29 +95,13 @@ new #[Layout('components.layouts.auth')] class extends Component {
 }; ?>
 
 <div class="flex flex-col gap-6">
-    @if (env('NOT_PAID') == true)
-    @endif
     <script src="https://www.google.com/recaptcha/api.js" async defer></script>
     <x-auth-header :title="__('Log in to your account')" :description="__('Enter your email and password below to log in')" />
 
     <!-- Session Status -->
     <x-auth-session-status class="text-center" :status="session('status')" />
-    
-        <div class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50" id="paymentOverlay"
-            style="display: none;">
-            <div class="bg-white p-6 rounded-lg shadow-lg max-w-md w-full mx-4">
-                <h2 class="text-xl font-bold mb-4">Payment Section</h2>
-                <p class="mb-4">Please complete your payment using GCash.</p>
-                <img src="/gcash.jpg" alt="GCash Logo" class="w-32 h-32 mx-auto mb-4">
-            </div>
-        </div>
 
-        <script>
-            function closePaymentOverlay() {
-                document.getElementById('paymentOverlay').style.display = 'none';
-            }
-        </script>
-
+    @if (env('NOT_PAID') == false)
     <form class="flex flex-col gap-6" method="POST" action="{{ route('login') }}">
         @csrf
         <!-- Email Address -->
@@ -162,6 +146,7 @@ new #[Layout('components.layouts.auth')] class extends Component {
             <flux:link class="text-brown-500 hover:text-brown-700" :href="route('register')" wire:navigate>
                 {{ __('Sign up') }}</flux:link>
         </div>
+    @endif
     @endif
 </div>
 
