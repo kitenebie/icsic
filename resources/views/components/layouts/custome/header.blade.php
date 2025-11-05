@@ -124,8 +124,6 @@
 </head>
 
 <body class="bg-cream-50 text-gray-800 hide-scrollbar hide-scrollbar::-webkit-scrollbar">
-
-    @include('components.layouts.custome.paymentOverlay')
     <x-loading />
     @livewire('notification.modal')
     @livewire('profile.modal')
