@@ -269,7 +269,6 @@
                             <li><strong>Calendar Events:</strong> School events, exams, parent meetings, and holidays</li>
                             <li><strong>Community Groups:</strong> Class-based and interest-based discussion spaces</li>
                             <li><strong>Member Directory:</strong> Verified member information for community connection</li>
-                            <li><strong>Document Sharing:</strong> Secure sharing of school documents and resources</li>
                         </ul><br />
 
                         <strong>Security and Privacy:</strong> ICSIS employs advanced security measures including encrypted connections, user verification, AI-powered content moderation, and role-based access controls to ensure a safe and secure environment for all users.
@@ -292,7 +291,7 @@
                             <li><strong>Parents/Guardians:</strong> Legal guardians or parents of currently enrolled students who can verify their relationship</li>
                             <li><strong>School Graduates:</strong> Former students who graduated from Irosin Central School and wish to maintain community connections</li>
                             <li><strong>Teaching Staff:</strong> All classroom teachers, subject teachers, and special education instructors</li>
-                            <li><strong>School Administrators:</strong> Principal, vice-principal, department heads, and administrative personnel</li>
+                            <li><strong>School Administrators:</strong> Principal, and administrative personnel</li>
                             <li><strong>Support Staff:</strong> Librarians, counselors, nurses, IT personnel, and other school support staff</li>
                         </ul><br />
 
@@ -301,8 +300,8 @@
                             <li><strong>Student Access:</strong> View news, announcements, calendar events, participate in approved groups, comment and react to posts</li>
                             <li><strong>Parent Access:</strong> Monitor student-related announcements, communicate with teachers, access parent-specific groups, view school events</li>
                             <li><strong>Graduate Access:</strong> Stay updated with school news, participate in alumni groups, network with other graduates, access career resources</li>
-                            <li><strong>Teacher Access:</strong> Post announcements, create and manage groups, access student records, moderate content, communicate with parents</li>
-                            <li><strong>Administrator Access:</strong> Full system management, user account creation, content oversight, system configuration, and reporting</li>
+                            <li><strong>Teacher Access:</strong> Post announcements, create and manage groups, access student records, moderate Content</li>
+                            <li><strong>Administrator Access:</strong> Full system management, user account creation, content oversight, system configuration</li>
                         </ul><br />
 
                         <strong>Verification Requirements:</strong>
@@ -368,7 +367,6 @@
                             <li><strong>Student Achievements:</strong> Academic awards, sports victories, arts performances, and special recognitions</li>
                             <li><strong>School Events:</strong> Coverage of school programs, field trips, cultural activities, and community outreach</li>
                             <li><strong>Program Launches:</strong> New initiatives, clubs, after-school programs, and educational enhancements</li>
-                            <li><strong>Community Updates:</strong> Local partnerships, environmental projects, and community service activities</li>
                             <li><strong>Staff Updates:</strong> Professional development, new appointments, and faculty achievements</li>
                             <li><strong>Educational Highlights:</strong> Innovative teaching methods, curriculum updates, and learning outcomes</li>
                         </ul><br />
@@ -397,9 +395,7 @@
                         <strong>Additional Features:</strong>
                         <ul class="list-disc list-inside mt-2 space-y-1">
                             <li><strong>Interactive Elements:</strong> Users can react with emojis, comment, and share relevant posts</li>
-                            <li><strong>Filtering Options:</strong> Filter by date, category, or relevance to specific user groups</li>
                             <li><strong>Notification System:</strong> Automatic alerts for important announcements and upcoming events</li>
-                            <li><strong>Search Functionality:</strong> Easy search for specific events, dates, or topics</li>
                             <li><strong>Mobile Accessibility:</strong> All features available on mobile devices with push notifications</li>
                         </ul>
                     </div>
@@ -420,7 +416,7 @@
 
                         <strong>Reaction Options:</strong>
                         <ul class="list-disc list-inside mt-2 space-y-1">
-                            <li><strong>Emoji Reactions:</strong> Express your feelings with like 👍, love ❤️, celebrate 🎉, thoughtful 🤔, and other relevant emojis</li>
+                            <li><strong>Emoji Reactions:</strong> Express your feelings with like 👍, love ❤️, lough 😂, sad 🥲, and other relevant emojis</li>
                             <li><strong>Quick Feedback:</strong> Instant reactions help show community engagement and support</li>
                             <li><strong>Anonymous Reactions:</strong> React without leaving a comment if you prefer privacy</li>
                         </ul><br />
@@ -429,8 +425,6 @@
                         <ul class="list-disc list-inside mt-2 space-y-1">
                             <li><strong>Text Comments:</strong> Share your thoughts, ask questions, or provide additional context</li>
                             <li><strong>Threaded Discussions:</strong> Reply to specific comments to create organized conversations</li>
-                            <li><strong>Rich Text Support:</strong> Format your comments with basic text styling options</li>
-                            <li><strong>Edit Capability:</strong> Modify your comments within a short time window after posting</li>
                         </ul><br />
 
                         <strong>Community Guidelines for Interaction:</strong>
@@ -510,7 +504,6 @@
                         <strong>How Groups Work:</strong>
                         <ul class="list-disc list-inside mt-2 space-y-1">
                             <li><strong>Targeted Communications:</strong> Group-specific announcements, discussions, and updates</li>
-                            <li><strong>Resource Sharing:</strong> Share documents, study materials, photos, and relevant resources</li>
                             <li><strong>Event Coordination:</strong> Plan and organize group activities, meetings, and events</li>
                             <li><strong>Private Discussions:</strong> Focused conversations relevant to group members only</li>
                             <li><strong>Collaborative Projects:</strong> Work on group assignments, projects, or initiatives</li>
@@ -520,27 +513,20 @@
                         <strong>Group Features:</strong>
                         <ul class="list-disc list-inside mt-2 space-y-1">
                             <li><strong>Member Directory:</strong> View and connect with other group members</li>
-                            <li><strong>File Sharing:</strong> Upload and download group-related documents and media</li>
                             <li><strong>Discussion Threads:</strong> Organized topic-based conversations</li>
                             <li><strong>Event Calendar:</strong> Group-specific events and meeting schedules</li>
-                            <li><strong>Photo Galleries:</strong> Share memories and group activities</li>
-                            <li><strong>Moderation Tools:</strong> Group leaders can manage content and membership</li>
+                            <li><strong>Moderation Tools:</strong> Manage content and membership</li>
                         </ul><br />
 
                         <strong>Access and Privacy:</strong>
                         <ul class="list-disc list-inside mt-2 space-y-1">
-                            <li><strong>Membership Approval:</strong> Group access requires administrator approval to maintain appropriate membership</li>
-                            <li><strong>Role-Based Permissions:</strong> Different access levels for students, parents, teachers, and alumni</li>
                             <li><strong>Content Visibility:</strong> Group content is only visible to approved members</li>
-                            <li><strong>Public vs. Private:</strong> Some groups may have public information while maintaining private discussion areas</li>
                         </ul><br />
 
                         <strong>Group Management:</strong>
                         <ul class="list-disc list-inside mt-2 space-y-1">
                             <li><strong>Creation:</strong> Only teachers and administrators can create official school groups</li>
-                            <li><strong>Leadership:</strong> Each group has designated leaders (usually teachers or elected representatives)</li>
-                            <li><strong>Moderation:</strong> Group leaders monitor content and ensure appropriate conduct</li>
-                            <li><strong>Activity Tracking:</strong> Monitor group engagement and participation levels</li>
+                            <li><strong>Moderation:</strong> Monitor content and ensure appropriate conduct</li>
                         </ul>
                     </div>
                 </div>
@@ -559,47 +545,32 @@
                         <ul class="list-disc list-inside mt-2 space-y-1">
                             <li><strong>Who Can Create:</strong> Only verified teachers and school administrators can create official groups to ensure proper organization and oversight</li>
                             <li><strong>Purpose Requirement:</strong> Groups must serve a legitimate educational, extracurricular, or community purpose</li>
-                            <li><strong>Approval Process:</strong> New group requests are reviewed by administration before approval</li>
                             <li><strong>Naming Conventions:</strong> Groups follow standard naming formats (e.g., "Grade 4 - Science Club" or "PTA - Grade 2 Parents")</li>
                             <li><strong>Initial Setup:</strong> Group creators set initial permissions, description, and membership criteria</li>
                         </ul><br />
 
                         <strong>Joining Existing Groups:</strong>
                         <ul class="list-disc list-inside mt-2 space-y-1">
-                            <li><strong>Discovery:</strong> Browse available groups through the Groups section or search by name/interest</li>
-                            <li><strong>Membership Request:</strong> Click "Request to Join" for groups that match your eligibility</li>
                             <li><strong>Automatic Assignment:</strong> Students are often automatically added to their class and grade-level groups</li>
                             <li><strong>Parent Assignment:</strong> Parents may be automatically added to grade-level parent groups based on their child's enrollment</li>
-                            <li><strong>Approval Process:</strong> Group leaders or administrators review and approve membership requests</li>
+                            <li><strong>Assignment Process:</strong> Teachers and Administrators can assign group to users</li>
                         </ul><br />
 
                         <strong>Membership Criteria:</strong>
                         <ul class="list-disc list-inside mt-2 space-y-1">
                             <li><strong>Eligibility Verification:</strong> Members must meet group-specific criteria (grade level, parent status, alumni year, etc.)</li>
-                            <li><strong>Active Participation:</strong> Some groups require demonstrated interest or participation commitment</li>
                             <li><strong>Conduct Standards:</strong> Members must maintain appropriate behavior and follow group guidelines</li>
-                            <li><strong>Maximum Capacity:</strong> Some groups have size limits to ensure effective communication</li>
+                            <li><strong>Maximum Capacity:</strong> Groups no size limits</li>
                         </ul><br />
 
                         <strong>Access Control and Privacy:</strong>
                         <ul class="list-disc list-inside mt-2 space-y-1">
-                            <li><strong>Content Visibility:</strong> Group discussions and files are only visible to approved members</li>
-                            <li><strong>Public Information:</strong> Basic group information (name, description, member count) may be visible to all users</li>
+                            <li><strong>Content Visibility:</strong> Group discussions are only visible to approved members</li>
                             <li><strong>Announcement Filtering:</strong> Group members receive targeted announcements relevant to their groups</li>
-                            <li><strong>Event Access:</strong> Private group events are only visible and accessible to group members</li>
-                        </ul><br />
-
-                        <strong>Managing Your Group Membership:</strong>
-                        <ul class="list-disc list-inside mt-2 space-y-1">
-                            <li><strong>My Groups Dashboard:</strong> View all groups you're a member of in one convenient location</li>
-                            <li><strong>Leave Groups:</strong> You can leave groups at any time through your account settings</li>
-                            <li><strong>Notification Preferences:</strong> Customize how you receive group updates and notifications</li>
-                            <li><strong>Multiple Memberships:</strong> Users can belong to multiple groups simultaneously</li>
                         </ul><br />
 
                         <strong>Important Notes:</strong>
                         <ul class="list-disc list-inside mt-2 space-y-1">
-                            <li><strong>No Duplicate Groups:</strong> The approval process prevents redundant or similar groups</li>
                             <li><strong>Regular Review:</strong> Groups are periodically reviewed to ensure they remain active and relevant</li>
                             <li><strong>Community Standards:</strong> All groups must adhere to school policies and community guidelines</li>
                             <li><strong>Support Available:</strong> Contact group leaders or administrators if you have questions about joining</li>
@@ -631,8 +602,6 @@
                         <strong>Community Safety Features:</strong>
                         <ul class="list-disc list-inside mt-2 space-y-1">
                             <li><strong>AI Comment Moderation:</strong> Automated scanning of all comments and posts for inappropriate content, with immediate removal of violating content</li>
-                            <li><strong>Content Filtering:</strong> Real-time filtering of rude, offensive, harmful, or discriminatory language</li>
-                            <li><strong>User Reporting:</strong> Easy reporting mechanisms for users to flag inappropriate content or behavior</li>
                             <li><strong>Account Verification:</strong> Mandatory identity verification during registration prevents fake accounts</li>
                             <li><strong>Activity Monitoring:</strong> System logs and monitoring to detect unusual or suspicious activities</li>
                         </ul><br />
@@ -690,11 +659,8 @@
 
                         <strong>Mobile-Specific Functionality:</strong>
                         <ul class="list-disc list-inside mt-2 space-y-1">
-                            <li><strong>Push Notifications:</strong> Real-time alerts for news, announcements, and messages</li>
                             <li><strong>Quick Actions:</strong> One-tap reactions, comments, and sharing</li>
-                            <li><strong>Voice-to-Text:</strong> Dictation support for comments and messages</li>
                             <li><strong>Photo Upload:</strong> Direct camera access for sharing photos and documents</li>
-                            <li><strong>Emergency Contacts:</strong> Quick access to important school contact numbers</li>
                         </ul><br />
 
                         <strong>Performance Optimization:</strong>
@@ -718,7 +684,6 @@
                             <li><strong>Secure Connections:</strong> All mobile access uses HTTPS encryption</li>
                             <li><strong>Device Security:</strong> Compatible with device-level security features</li>
                             <li><strong>Session Management:</strong> Automatic logout after periods of inactivity</li>
-                            <li><strong>Remote Wipe:</strong> Ability to remotely log out from lost or stolen devices</li>
                         </ul><br />
 
                         <strong>Troubleshooting Mobile Access:</strong>
@@ -748,7 +713,6 @@
                         <ol class="list-decimal list-inside mt-2 space-y-2">
                             <li><strong>Access Reset Page:</strong> Click the "Forgot Password?" link on the login page</li>
                             <li><strong>Enter Identifier:</strong> Provide your registered email address or username</li>
-                            <li><strong>Security Verification:</strong> Complete CAPTCHA or additional security verification if required</li>
                             <li><strong>Check Email:</strong> Look for a password reset email in your inbox (check spam folder if needed)</li>
                             <li><strong>Click Reset Link:</strong> Click the secure reset link in the email (link expires in 24 hours)</li>
                             <li><strong>Create New Password:</strong> Enter a strong new password following the requirements shown</li>
@@ -759,7 +723,6 @@
                         <ul class="list-disc list-inside mt-2 space-y-1">
                             <li><strong>Minimum Length:</strong> At least 8 characters</li>
                             <li><strong>Complexity:</strong> Include uppercase, lowercase, numbers, and special characters</li>
-                            <li><strong>Uniqueness:</strong> Cannot be the same as your previous 5 passwords</li>
                             <li><strong>No Personal Info:</strong> Should not contain your name, email, or easily guessable information</li>
                         </ul><br />
 
@@ -777,13 +740,6 @@
                             <li><strong>Expired Link:</strong> Request a new reset link if the previous one expired</li>
                             <li><strong>Wrong Email:</strong> Ensure you're using the email address registered with your account</li>
                             <li><strong>Account Locked:</strong> Contact IT support if your account is temporarily locked due to multiple failed attempts</li>
-                        </ul><br />
-
-                        <strong>Alternative Recovery Options:</strong>
-                        <ul class="list-disc list-inside mt-2 space-y-1">
-                            <li><strong>Security Questions:</strong> Answer pre-set security questions if configured</li>
-                            <li><strong>Two-Factor Authentication:</strong> Use backup codes if 2FA is enabled</li>
-                            <li><strong>Account Recovery:</strong> Provide additional verification for account recovery</li>
                         </ul><br />
 
                         <strong>Prevention Tips:</strong>
@@ -837,7 +793,6 @@
                             <li><strong>Content Issues:</strong> Missing posts, incorrect information, display problems</li>
                             <li><strong>Security Concerns:</strong> Suspicious activity, privacy questions</li>
                             <li><strong>Group Management:</strong> Joining groups, permissions, group settings</li>
-                            <li><strong>Notification Settings:</strong> Customizing alerts and communication preferences</li>
                         </ul><br />
 
                         <strong>Self-Help Resources:</strong>
@@ -905,32 +860,19 @@
                             <li><strong>News Feed:</strong> Current events, achievements, and school announcements</li>
                             <li><strong>Team Directory:</strong> Meet our teachers, administrators, and support staff</li>
                             <li><strong>Event Calendar:</strong> Upcoming school events, holidays, and important dates</li>
-                            <li><strong>Gallery:</strong> Photos and videos of school activities and facilities</li>
                         </ul><br />
 
                         <strong>Official School Website:</strong>
                         <ul class="list-disc list-inside mt-2 space-y-1">
-                            <li><strong>Academic Programs:</strong> Curriculum details, subjects offered, and learning approaches</li>
                             <li><strong>Admission Information:</strong> Enrollment procedures, requirements, and deadlines</li>
                             <li><strong>School Facilities:</strong> Campus tour, classrooms, laboratories, and amenities</li>
                             <li><strong>Student Life:</strong> Clubs, sports, extracurricular activities, and student organizations</li>
                             <li><strong>Parent Resources:</strong> PTA information, volunteer opportunities, and family engagement</li>
                         </ul><br />
 
-                        <strong>School Publications and Documents:</strong>
-                        <ul class="list-disc list-inside mt-2 space-y-1">
-                            <li><strong>Handbook:</strong> Complete student and parent handbook with policies and procedures</li>
-                            <li><strong>Newsletter:</strong> Regular publications highlighting school news and achievements</li>
-                            <li><strong>Annual Report:</strong> Comprehensive yearly overview of school performance and goals</li>
-                            <li><strong>Strategic Plan:</strong> Long-term vision and development objectives</li>
-                            <li><strong>Accreditation Reports:</strong> Quality assurance and educational standards information</li>
-                        </ul><br />
-
                         <strong>Community and Social Media:</strong>
                         <ul class="list-disc list-inside mt-2 space-y-1">
                             <li><strong>Official Facebook Page:</strong> Daily updates, event announcements, and community interaction</li>
-                            <li><strong>School Blog:</strong> In-depth articles about educational initiatives and student success stories</li>
-                            <li><strong>YouTube Channel:</strong> Videos of school events, performances, and educational content</li>
                             <li><strong>Alumni Network:</strong> Connect with former students and stay updated on school developments</li>
                         </ul><br />
 
@@ -975,13 +917,8 @@
 
                         <strong>Information You Can Update:</strong>
                         <ul class="list-disc list-inside mt-2 space-y-1">
-                            <li><strong>Email Address:</strong> Primary contact email for notifications and password recovery</li>
+                            <li><strong>Email Address:</strong> Primary contact email for verification email, OTP and password recovery</li>
                             <li><strong>Profile Picture:</strong> Upload or update your profile photo (must meet verification standards)</li>
-                            <li><strong>Bio/Description:</strong> Personal description or professional summary</li>
-                            <li><strong>Notification Preferences:</strong> Customize how and when you receive alerts</li>
-                            <li><strong>Privacy Settings:</strong> Control visibility of your profile and activity</li>
-                            <li><strong>Language Preferences:</strong> Set your preferred language for the interface</li>
-                            <li><strong>Display Name:</strong> Choose how your name appears to other users (within guidelines)</li>
                         </ul><br />
 
                         <strong>Restricted Information (Cannot Be Changed Directly):</strong>
@@ -994,11 +931,9 @@
 
                         <strong>How to Update Your Profile:</strong>
                         <ol class="list-decimal list-inside mt-2 space-y-2">
-                            <li><strong>Access Profile Settings:</strong> Click your profile picture or name in the top navigation</li>
-                            <li><strong>Select Edit Profile:</strong> Choose the "Edit Profile" or "Account Settings" option</li>
+                            <li><strong>Access Profile Settings:</strong> Click your profile in the top navigation</li>
                             <li><strong>Make Changes:</strong> Update the allowed fields with your new information</li>
                             <li><strong>Save Changes:</strong> Click "Save" or "Update Profile" to apply changes</li>
-                            <li><strong>Verification:</strong> Some changes may require email confirmation</li>
                         </ol><br />
 
                         <strong>Requesting Changes to Restricted Information:</strong>
@@ -1015,7 +950,6 @@
                             <li><strong>Clear Photo:</strong> Face must be clearly visible and well-lit</li>
                             <li><strong>Appropriate Content:</strong> School-appropriate attire and background</li>
                             <li><strong>File Format:</strong> JPG, PNG, or GIF formats accepted</li>
-                            <li><strong>File Size:</strong> Maximum 5MB file size</li>
                             <li><strong>Verification:</strong> Profile pictures may need to match ID verification photos</li>
                         </ul><br />
 
@@ -1024,7 +958,6 @@
                             <li><strong>Information Visibility:</strong> Choose what information is visible to other users</li>
                             <li><strong>Activity Privacy:</strong> Control whether your posts and comments are publicly visible</li>
                             <li><strong>Contact Permissions:</strong> Decide who can send you messages or friend requests</li>
-                            <li><strong>Data Sharing:</strong> Opt-in or opt-out of data sharing for research or analytics</li>
                         </ul><br />
 
                         <strong>Important Notes:</strong>
@@ -1055,58 +988,6 @@
                         <strong>Types of Notifications You Receive:</strong>
                         <ul class="list-disc list-inside mt-2 space-y-1">
                             <li><strong>News Updates:</strong> New articles, school announcements, and important news posts</li>
-                            <li><strong>Event Reminders:</strong> Upcoming school events, deadlines, and calendar appointments</li>
-                            <li><strong>Group Activity:</strong> New posts, comments, and discussions in your groups</li>
-                            <li><strong>Direct Messages:</strong> Private messages from teachers, administrators, or other users</li>
-                            <li><strong>System Alerts:</strong> Account changes, security notifications, and platform updates</li>
-                            <li><strong>Assignment Notifications:</strong> Homework reminders, grade updates, and academic alerts</li>
-                            <li><strong>Emergency Communications:</strong> Urgent announcements and safety alerts</li>
-                        </ul><br />
-
-                        <strong>Notification Delivery Methods:</strong>
-                        <ul class="list-disc list-inside mt-2 space-y-1">
-                            <li><strong>In-App Notifications:</strong> Bell icon in the top navigation with real-time alerts</li>
-                            <li><strong>Email Notifications:</strong> Sent to your registered email address</li>
-                            <li><strong>SMS/Text Messages:</strong> For urgent notifications (parents and guardians)</li>
-                            <li><strong>Push Notifications:</strong> Mobile app alerts when using the platform on mobile devices</li>
-                            <li><strong>Browser Notifications:</strong> Desktop alerts when logged into the web platform</li>
-                        </ul><br />
-
-                        <strong>Customizing Your Notification Preferences:</strong>
-                        <ol class="list-decimal list-inside mt-2 space-y-2">
-                            <li><strong>Access Settings:</strong> Go to Account Settings > Notifications</li>
-                            <li><strong>Choose Categories:</strong> Select which types of notifications you want to receive</li>
-                            <li><strong>Set Delivery Methods:</strong> Choose email, SMS, push, or in-app for each category</li>
-                            <li><strong>Frequency Settings:</strong> Opt for immediate, daily digest, or weekly summaries</li>
-                            <li><strong>Quiet Hours:</strong> Set times when you don't want to receive notifications</li>
-                            <li><strong>Group-Specific Settings:</strong> Customize notifications for individual groups</li>
-                        </ol><br />
-
-                        <strong>Notification Categories and Priority Levels:</strong>
-                        <ul class="list-disc list-inside mt-2 space-y-1">
-                            <li><strong>Critical/Emergency:</strong> Always sent via all available methods (cannot be disabled)</li>
-                            <li><strong>High Priority:</strong> Important announcements, assignment deadlines, security alerts</li>
-                            <li><strong>Medium Priority:</strong> General news, event reminders, group discussions</li>
-                            <li><strong>Low Priority:</strong> Social interactions, comment replies, general updates</li>
-                            <li><strong>Marketing/Optional:</strong> School program promotions, alumni updates (opt-in only)</li>
-                        </ul><br />
-
-                        <strong>Mobile Notification Features:</strong>
-                        <ul class="list-disc list-inside mt-2 space-y-1">
-                            <li><strong>Smart Scheduling:</strong> Delivers notifications at optimal times based on your usage patterns</li>
-                            <li><strong>Location-Based:</strong> Event reminders when you're near school or event locations</li>
-                            <li><strong>Offline Queue:</strong> Notifications delivered when you regain internet connection</li>
-                            <li><strong>Do Not Disturb:</strong> Respects device-level notification settings</li>
-                            <li><strong>Rich Content:</strong> Includes images, links, and action buttons in notifications</li>
-                        </ul><br />
-
-                        <strong>Managing Notification Overload:</strong>
-                        <ul class="list-disc list-inside mt-2 space-y-1">
-                            <li><strong>Digest Mode:</strong> Combine multiple notifications into daily or weekly summaries</li>
-                            <li><strong>Mute Options:</strong> Temporarily silence notifications from specific groups or users</li>
-                            <li><strong>Priority Filtering:</strong> Only receive notifications from high-priority sources</li>
-                            <li><strong>Keyword Alerts:</strong> Get notified only for content containing specific keywords</li>
-                            <li><strong>Time-Based Rules:</strong> Different notification settings for weekdays vs. weekends</li>
                         </ul><br />
 
                         <strong>Privacy and Security:</strong>
@@ -1114,17 +995,7 @@
                             <li><strong>Secure Delivery:</strong> All notifications are encrypted and securely transmitted</li>
                             <li><strong>No Data Sharing:</strong> Notification preferences are not shared with third parties</li>
                             <li><strong>Opt-Out Options:</strong> You can unsubscribe from non-essential notifications anytime</li>
-                            <li><strong>Consent-Based:</strong> SMS and push notifications require explicit permission</li>
                         </ul><br />
-
-                        <strong>Troubleshooting Notification Issues:</strong>
-                        <ul class="list-disc list-inside mt-2 space-y-1">
-                            <li><strong>Check Settings:</strong> Verify your notification preferences are correctly configured</li>
-                            <li><strong>Browser Permissions:</strong> Ensure browser allows notifications for the ICSIS site</li>
-                            <li><strong>Mobile Settings:</strong> Check device notification settings and app permissions</li>
-                            <li><strong>Email Filters:</strong> Add ICSIS email to your contacts to prevent spam filtering</li>
-                            <li><strong>Contact Support:</strong> Report persistent notification issues to the help desk</li>
-                        </ul>
                     </div>
                 </div>
 
@@ -1154,25 +1025,18 @@
                         <strong>Who Can View Member Information:</strong>
                         <ul class="list-disc list-inside mt-2 space-y-1">
                             <li><strong>Registered Users Only:</strong> Only verified, logged-in users can access the member directory</li>
-                            <li><strong>Role-Based Access:</strong> Different user types see different levels of information</li>
-                            <li><strong>Graduated Students:</strong> Alumni have limited access to current student information</li>
-                            <li><strong>Public Access:</strong> No member information is visible to non-registered visitors</li>
                         </ul><br />
 
                         <strong>Information Display Levels:</strong>
                         <ul class="list-disc list-inside mt-2 space-y-1">
                             <li><strong>Basic Profile:</strong> Name, role, grade/section (for students), profile picture</li>
                             <li><strong>Contact Information:</strong> Limited to school-related contact methods</li>
-                            <li><strong>Group Memberships:</strong> Shows groups the person belongs to (for connection purposes)</li>
-                            <li><strong>Activity Status:</strong> Indicates if the person is currently active in the system</li>
-                            <li><strong>Verification Badges:</strong> Shows if the profile has been verified by school administration</li>
                         </ul><br />
 
                         <strong>Privacy Protections in Place:</strong>
                         <ul class="list-disc list-inside mt-2 space-y-1">
                             <li><strong>Sensitive Data Hidden:</strong> Personal addresses, phone numbers, and other private information are not displayed</li>
                             <li><strong>Access Controls:</strong> Users can only message others through approved school channels</li>
-                            <li><strong>Reporting System:</strong> Easy reporting of inappropriate contact attempts</li>
                             <li><strong>Moderation Oversight:</strong> All interactions are monitored for appropriate conduct</li>
                             <li><strong>Data Minimization:</strong> Only necessary information is shared for community functionality</li>
                         </ul><br />
@@ -1195,21 +1059,9 @@
                             <li><strong>Inclusion:</strong> Ensures no one is left out of important communications</li>
                         </ul><br />
 
-                        <strong>Legal and Ethical Considerations:</strong>
-                        <ul class="list-disc list-inside mt-2 space-y-1">
-                            <li><strong>Data Protection Laws:</strong> Complies with Philippine data privacy regulations</li>
-                            <li><strong>Children's Privacy:</strong> Special protections for student information under 18</li>
-                            <li><strong>Consent-Based:</strong> All users agree to community visibility in terms of service</li>
-                            <li><strong>Regular Audits:</strong> Privacy practices are regularly reviewed and updated</li>
-                            <li><strong>Parental Controls:</strong> Parents can request limitations on their child's visibility</li>
-                        </ul><br />
-
                         <strong>Managing Your Visibility:</strong>
                         <ul class="list-disc list-inside mt-2 space-y-1">
                             <li><strong>Profile Settings:</strong> Control what information is displayed in your profile</li>
-                            <li><strong>Privacy Preferences:</strong> Choose who can see your contact information</li>
-                            <li><strong>Blocking Features:</strong> Block unwanted contact attempts</li>
-                            <li><strong>Report Concerns:</strong> Report any misuse of member information</li>
                         </ul><br />
 
                         <strong>Questions or Concerns:</strong> If you have specific concerns about member visibility or privacy, please contact the school administration or data protection officer for clarification and assistance.
@@ -1263,7 +1115,29 @@
                         <strong>Privacy & Security:</strong> All face detection happens locally in your browser. Images are only used for verification and are securely stored on our servers. No third-party services process your facial data.
                     </div>
                 </div>
-
+                <div class="bg-white rounded-lg shadow overflow-hidden">
+                    <button class="w-full text-left p-5 flex justify-between items-center faq-toggle">
+                        <span class="text-lg font-medium text-gray-800">18. What are the limitations of the ICSI System?</span>
+                        <svg class="w-5 h-5 text-gray-500 transition-transform transform rotate-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7" />
+                        </svg>
+                    </button>
+                    <div class="faq-content px-5 pb-5 text-gray-600 hidden">
+                        While ICSIS provides a comprehensive platform for school communication and management, it has some limitations to consider:
+                        <ul class="list-disc list-inside mt-2 space-y-1">
+                            <li><strong>Internet Dependency:</strong> The system requires a stable internet connection for access and functionality.</li>
+                            <li><strong>Device Requirements:</strong> Face detection during registration needs a device with a camera and a modern web browser (Chrome, Firefox, Safari, or Edge).</li>
+                            <li><strong>Browser Compatibility:</strong> Older browsers or those without camera support may not fully support all features like face detection.</li>
+                            <li><strong>AI Moderation Accuracy:</strong> The comment moderation system uses AI, which may occasionally flag appropriate content or miss inappropriate content.</li>
+                            <li><strong>Notification Delivery:</strong> Notifications depend on user settings, network conditions, and may not reach users if email/SMS services are unavailable.</li>
+                            <li><strong>Institution-Specific:</strong> The system is tailored for Irosin Central School and may require customization for other institutions.</li>
+                            <li><strong>User Verification Time:</strong> Account approvals and verifications may take time depending on administrative review.</li>
+                            <li><strong>No Offline Access:</strong> The platform does not support offline functionality.</li>
+                            <li><strong>Mobile Experience:</strong> While responsive, it's web-based and not a native mobile app, which may limit some advanced mobile features.</li>
+                            <li><strong>Data Retention:</strong> User data is subject to school policies and may be retained or deleted according to institutional guidelines.</li>
+                        </ul>
+                    </div>
+                </div>
             </div>
         </div>
     </section>
