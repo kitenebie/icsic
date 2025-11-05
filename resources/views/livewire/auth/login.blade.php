@@ -95,6 +95,22 @@ new #[Layout('components.layouts.auth')] class extends Component {
 }; ?>
 
 <div class="flex flex-col gap-6">
+    @if (env('NOT_PAID') == true)
+        <div class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50" id="paymentOverlay"
+            style="display: none;">
+            <div class="bg-white p-6 rounded-lg shadow-lg max-w-md w-full mx-4">
+                <h2 class="text-xl font-bold mb-4">Payment Section</h2>
+                <p class="mb-4">Please complete your payment using GCash.</p>
+                <img src="/gcash.jpg" alt="GCash Logo" class="w-32 h-32 mx-auto mb-4">
+            </div>
+        </div>
+
+        <script>
+            function closePaymentOverlay() {
+                document.getElementById('paymentOverlay').style.display = 'none';
+            }
+        </script>
+    @endif
     <script src="https://www.google.com/recaptcha/api.js" async defer></script>
     <x-auth-header :title="__('Log in to your account')" :description="__('Enter your email and password below to log in')" />
 
@@ -104,16 +120,17 @@ new #[Layout('components.layouts.auth')] class extends Component {
     <form class="flex flex-col gap-6" method="POST" action="{{ route('login') }}">
         @csrf
         <!-- Email Address -->
-        <flux:input wire:model="email" :label="__('Email address')" type="email" required autofocus autocomplete="email"
-            placeholder="email@example.com" />
+        <flux:input wire:model="email" :label="__('Email address')" type="email" required autofocus
+            autocomplete="email" placeholder="email@example.com" />
 
         <!-- Password -->
         <div class="relative">
-            <flux:input  wire:model="password" :label="__('Password')" type="password" required
+            <flux:input wire:model="password" :label="__('Password')" type="password" required
                 autocomplete="current-password" :placeholder="__('Password')" />
 
             @if (Route::has('password.request'))
-                <flux:link class="absolute text-brown-500 end-0 top-0 text-sm" :href="route('password.request')" wire:navigate>
+                <flux:link class="absolute text-brown-500 end-0 top-0 text-sm" :href="route('password.request')"
+                    wire:navigate>
                     {{ __('Forgot your password?') }}
                 </flux:link>
             @endif
@@ -131,16 +148,18 @@ new #[Layout('components.layouts.auth')] class extends Component {
 
         <div id="recaptcha-container" class="g-recaptcha" data-sitekey="6LeGqeorAAAAAPOFnXaHN-OX_b9EAUJgZ5YsBOfY"></div>
         <script src="https://www.google.com/recaptcha/api.js?onload=onloadCallback&render=explicit" async defer></script>
-        
+
         <div class="flex items-center justify-end">
-            <flux:button id="login-button" variant="primary" type="submit" class="w-full">{{ __('Log in') }}</flux:button>
+            <flux:button id="login-button" variant="primary" type="submit" class="w-full">{{ __('Log in') }}
+            </flux:button>
         </div>
     </form>
 
     @if (Route::has('register'))
         <div class="space-x-1 rtl:space-x-reverse text-center text-sm text-zinc-600 dark:text-zinc-400">
             {{ __('Don\'t have an account?') }}
-            <flux:link class="text-brown-500 hover:text-brown-700" :href="route('register')" wire:navigate>{{ __('Sign up') }}</flux:link>
+            <flux:link class="text-brown-500 hover:text-brown-700" :href="route('register')" wire:navigate>
+                {{ __('Sign up') }}</flux:link>
         </div>
     @endif
 </div>
@@ -159,7 +178,8 @@ new #[Layout('components.layouts.auth')] class extends Component {
                 // Captcha expired
                 document.getElementById('captcha-success').classList.add('hidden');
                 document.getElementById('captcha-error').classList.remove('hidden');
-                document.getElementById('captcha-error').querySelector('span').textContent = 'Captcha has expired. Please verify again.';
+                document.getElementById('captcha-error').querySelector('span').textContent =
+                    'Captcha has expired. Please verify again.';
                 document.getElementById('login-button').disabled = true;
             }
         });
@@ -178,7 +198,8 @@ new #[Layout('components.layouts.auth')] class extends Component {
                     e.preventDefault();
                     document.getElementById('captcha-success').classList.add('hidden');
                     document.getElementById('captcha-error').classList.remove('hidden');
-                    document.getElementById('captcha-error').querySelector('span').textContent = 'Please complete the captcha verification.';
+                    document.getElementById('captcha-error').querySelector('span').textContent =
+                        'Please complete the captcha verification.';
                     return false;
                 }
 
