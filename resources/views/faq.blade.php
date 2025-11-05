@@ -1290,8 +1290,6 @@
         </div>
     </section>
 
-    <x-modal />
-
     <script>
         document.querySelectorAll('.faq-toggle').forEach(button => {
             button.addEventListener('click', () => {
