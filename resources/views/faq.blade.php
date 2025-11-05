@@ -18,7 +18,7 @@
         }
     </style>
 </head>
-<body class="bg-gray-50">
+<body class="bg-cream-50">
     <!-- Header -->
     <header class="bg-brown-50 shadow-sm">
         <div class="max-w-6xl mx-auto px-4 py-4">
@@ -34,60 +34,7 @@
             </div>
         </div>
     </header>
-    
-    @if (request()->routeIs('faq'))
-        <script>
-            location.href = '/view-faq';
-        </script>
-    @endif
-    <script>
-        document.querySelectorAll('.faq-toggle').forEach(button => {
-            button.addEventListener('click', () => {
-                const content = button.nextElementSibling;
-                const icon = button.querySelector('svg');
-
-                const isOpen = !content.classList.contains('hidden');
-                document.querySelectorAll('.faq-content').forEach(c => c.classList.add('hidden'));
-                document.querySelectorAll('.faq-toggle svg').forEach(i => i.classList.remove('rotate-180'));
-
-                if (!isOpen) {
-                    content.classList.remove('hidden');
-                    icon.classList.add('rotate-180');
-                }
-            });
-        });
-    </script>
-</body>
-</html>
-            </div>
-
-            <!-- Navigation Links -->
-            <div class="mt-12 text-center">
-                <div class="flex flex-col sm:flex-row gap-4 justify-center items-center">
-                    <a href="{{ route('login') }}" class="inline-flex items-center px-6 py-3 bg-brown-600 text-brown-50 font-medium rounded-lg hover:bg-brown-700 transition duration-200">
-                        <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 16l-4-4m0 0l4-4m-4 4h14m-5 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h7a3 3 0 013 3v1"></path>
-                        </svg>
-                        Login to ICSIS
-                    </a>
-                    <a href="{{ route('register') }}" class="inline-flex items-center px-6 py-3 bg-green-600 text-brown-50 font-medium rounded-lg hover:bg-green-700 transition duration-200">
-                        <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18 9v3m0 0v3m0-3h3m-3 0h-3m-2-5a4 4 0 11-8 0 4 4 0 018 0zM3 20a6 6 0 0112 0v1H3v-1z"></path>
-                        </svg>
-                        Register Account
-                    </a>
-                    <a href="{{ route('about') }}" class="inline-flex items-center px-6 py-3 bg-gray-600 text-brown-50 font-medium rounded-lg hover:bg-gray-700 transition duration-200">
-                        <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
-                        </svg>
-                        About Us
-                    </a>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <section class="bg-brown-100 py-16">
+        <section class="bg-brown-100 py-16">
         <div class="max-w-4xl mx-auto px-4">
             <h2 class="text-4xl font-bold text-center text-gray-800 mb-12">Frequently Asked Questions</h2>
 
@@ -703,7 +650,299 @@
                             School?</span>
                         <svg class="w-5 h-5 text-gray-500 transition-transform transform rotate-0" fill="none"
                             stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" d="M19 9
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7" />
+                        </svg>
+                    </button>
+                    <div class="faq-content px-5 pb-5 text-gray-600 hidden">
+                        <strong>Comprehensive School Information Resources:</strong> Irosin Central School provides multiple channels for learning about our institution, history, programs, and community.<br /><br />
+
+                        <strong>ICSIS Platform Resources:</strong>
+                        <ul class="list-disc list-inside mt-2 space-y-1">
+                            <li><strong>About Us Section:</strong> Complete school history, mission, vision, and core values</li>
+                            <li><strong>News Feed:</strong> Current events, achievements, and school announcements</li>
+                            <li><strong>Team Directory:</strong> Meet our teachers, administrators, and support staff</li>
+                            <li><strong>Event Calendar:</strong> Upcoming school events, holidays, and important dates</li>
+                        </ul><br />
+
+                        <strong>Official School Website:</strong>
+                        <ul class="list-disc list-inside mt-2 space-y-1">
+                            <li><strong>Admission Information:</strong> Enrollment procedures, requirements, and deadlines</li>
+                            <li><strong>School Facilities:</strong> Campus tour, classrooms, laboratories, and amenities</li>
+                            <li><strong>Student Life:</strong> Clubs, sports, extracurricular activities, and student organizations</li>
+                            <li><strong>Parent Resources:</strong> PTA information, volunteer opportunities, and family engagement</li>
+                        </ul><br />
+
+                        <strong>Community and Social Media:</strong>
+                        <ul class="list-disc list-inside mt-2 space-y-1">
+                            <li><strong>Official Facebook Page:</strong> Daily updates, event announcements, and community interaction</li>
+                            <li><strong>Alumni Network:</strong> Connect with former students and stay updated on school developments</li>
+                        </ul><br />
+
+                        <strong>Direct Engagement Opportunities:</strong>
+                        <ul class="list-disc list-inside mt-2 space-y-1">
+                            <li><strong>Open House Events:</strong> Visit the campus, meet teachers, and experience school life</li>
+                            <li><strong>Parent-Teacher Conferences:</strong> Direct interaction with teachers and administrators</li>
+                            <li><strong>School Tours:</strong> Guided campus tours for prospective students and families</li>
+                            <li><strong>Community Meetings:</strong> PTA meetings and town hall sessions</li>
+                            <li><strong>Volunteer Programs:</strong> Hands-on involvement in school activities</li>
+                        </ul><br />
+
+                        <strong>Contact Information for More Details:</strong>
+                        <ul class="list-disc list-inside mt-2 space-y-1">
+                            <li><strong>Main Office:</strong> Call or visit for comprehensive information packages</li>
+                            <li><strong>Admissions Office:</strong> Specific questions about enrollment and programs</li>
+                            <li><strong>School Principal:</strong> Leadership vision and school direction</li>
+                            <li><strong>PTA President:</strong> Parent perspective and community involvement</li>
+                        </ul><br />
+
+                        <strong>Additional Resources:</strong>
+                        <ul class="list-disc list-inside mt-2 space-y-1">
+                            <li><strong>Local Government:</strong> Municipal education office for regional context</li>
+                            <li><strong>Department of Education:</strong> National education standards and policies</li>
+                            <li><strong>Educational Partners:</strong> Information about affiliated organizations and programs</li>
+                            <li><strong>Reference Materials:</strong> Books, articles, and research about the school's history</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- FAQ 14 -->
+                <div class="bg-cream-50 rounded-lg shadow overflow-hidden">
+                    <button class="w-full text-left p-5 flex justify-between items-center faq-toggle">
+                        <span class="text-lg font-medium text-gray-800">14. Can I update my profile information?</span>
+                        <svg class="w-5 h-5 text-gray-500 transition-transform transform rotate-0" fill="none"
+                            stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7" />
+                        </svg>
+                    </button>
+                    <div class="faq-content px-5 pb-5 text-gray-600 hidden">
+                        <strong>Yes! ICSIS allows users to maintain accurate and current profile information with some security restrictions.</strong><br /><br />
+
+                        <strong>Information You Can Update:</strong>
+                        <ul class="list-disc list-inside mt-2 space-y-1">
+                            <li><strong>Email Address:</strong> Primary contact email for verification email, OTP and password recovery</li>
+                            <li><strong>Profile Picture:</strong> Upload or update your profile photo (must meet verification standards)</li>
+                        </ul><br />
+
+                        <strong>Restricted Information (Cannot Be Changed Directly):</strong>
+                        <ul class="list-disc list-inside mt-2 space-y-1">
+                            <li><strong>Full Legal Name:</strong> To prevent identity confusion and maintain record accuracy</li>
+                            <li><strong>Contact Number:</strong> Primary phone number used for verification and emergency contact</li>
+                            <li><strong>User Role:</strong> Student, parent, teacher, or graduate status (managed by administrators)</li>
+                            <li><strong>Enrollment Status:</strong> Current school enrollment and grade level information</li>
+                        </ul><br />
+
+                        <strong>How to Update Your Profile:</strong>
+                        <ol class="list-decimal list-inside mt-2 space-y-2">
+                            <li><strong>Access Profile Settings:</strong> Click your profile in the top navigation</li>
+                            <li><strong>Make Changes:</strong> Update the allowed fields with your new information</li>
+                            <li><strong>Save Changes:</strong> Click "Save" or "Update Profile" to apply changes</li>
+                        </ol><br />
+
+                        <strong>Requesting Changes to Restricted Information:</strong>
+                        <ul class="list-disc list-inside mt-2 space-y-1">
+                            <li><strong>Formal Request Process:</strong> Submit a written request through the school's administration office</li>
+                            <li><strong>Required Documentation:</strong> Provide supporting documents (ID, court orders, marriage certificates, etc.)</li>
+                            <li><strong>Verification Process:</strong> Changes are reviewed and verified by school administrators</li>
+                            <li><strong>Processing Time:</strong> Requests typically take 3-5 business days to process</li>
+                            <li><strong>Notification:</strong> You'll be notified via email when changes are approved and applied</li>
+                        </ul><br />
+
+                        <strong>Profile Picture Guidelines:</strong>
+                        <ul class="list-disc list-inside mt-2 space-y-1">
+                            <li><strong>Clear Photo:</strong> Face must be clearly visible and well-lit</li>
+                            <li><strong>Appropriate Content:</strong> School-appropriate attire and background</li>
+                            <li><strong>File Format:</strong> JPG, PNG, or GIF formats accepted</li>
+                            <li><strong>Verification:</strong> Profile pictures may need to match ID verification photos</li>
+                        </ul><br />
+
+                        <strong>Privacy Considerations:</strong>
+                        <ul class="list-disc list-inside mt-2 space-y-1">
+                            <li><strong>Information Visibility:</strong> Choose what information is visible to other users</li>
+                            <li><strong>Activity Privacy:</strong> Control whether your posts and comments are publicly visible</li>
+                            <li><strong>Contact Permissions:</strong> Decide who can send you messages or friend requests</li>
+                        </ul><br />
+
+                        <strong>Important Notes:</strong>
+                        <ul class="list-disc list-inside mt-2 space-y-1">
+                            <li><strong>Regular Updates:</strong> Keep your contact information current for important communications</li>
+                            <li><strong>Accuracy Matters:</strong> Ensure all profile information is truthful and accurate</li>
+                            <li><strong>Security First:</strong> Never share sensitive information in public profile fields</li>
+                            <li><strong>Backup Contact:</strong> Consider adding a secondary email for account recovery</li>
+                        </ul><br />
+
+                        <strong>Need Help?</strong> If you encounter issues updating your profile or need to request changes to restricted information, contact the ICSIS Help Desk or school administration for assistance.
+                    </div>
+                </div>
+
+                <!-- FAQ 15 -->
+                <div class="bg-cream-50 rounded-lg shadow overflow-hidden">
+                    <button class="w-full text-left p-5 flex justify-between items-center faq-toggle">
+                        <span class="text-lg font-medium text-gray-800">15. Will I receive notifications for new
+                            updates?</span>
+                        <svg class="w-5 h-5 text-gray-500 transition-transform transform rotate-0" fill="none"
+                            stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7" />
+                        </svg>
+                    </button>
+                    <div class="faq-content px-5 pb-5 text-gray-600 hidden">
+                        <strong>Yes! ICSIS provides comprehensive notification system to keep you informed and engaged.</strong><br /><br />
+
+                        <strong>Types of Notifications You Receive:</strong>
+                        <ul class="list-disc list-inside mt-2 space-y-1">
+                            <li><strong>News Updates:</strong> New articles, school announcements, and important news posts</li>
+                        </ul><br />
+
+                        <strong>Privacy and Security:</strong>
+                        <ul class="list-disc list-inside mt-2 space-y-1">
+                            <li><strong>Secure Delivery:</strong> All notifications are encrypted and securely transmitted</li>
+                            <li><strong>No Data Sharing:</strong> Notification preferences are not shared with third parties</li>
+                            <li><strong>Opt-Out Options:</strong> You can unsubscribe from non-essential notifications anytime</li>
+                        </ul><br />
+                    </div>
+                </div>
+
+                <!-- FAQ 16 -->
+                <div class="bg-cream-50 rounded-lg shadow overflow-hidden">
+                    <button class="w-full text-left p-5 flex justify-between items-center faq-toggle">
+                        <span class="text-lg font-medium text-gray-800">16. Why are all members of the school displayed
+                            on the Irosin Central School Information System?</span>
+                        <svg class="w-5 h-5 text-gray-500 transition-transform transform rotate-0" fill="none"
+                            stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7" />
+                        </svg>
+                    </button>
+                    <div class="faq-content px-5 pb-5 text-gray-600 hidden">
+                        <strong>Community Transparency and Engagement:</strong> The member directory is a core feature designed to build a connected, supportive school community while maintaining appropriate privacy protections.<br /><br />
+
+                        <strong>Primary Purposes of Member Display:</strong>
+                        <ul class="list-disc list-inside mt-2 space-y-1">
+                            <li><strong>Community Building:</strong> Helps students, parents, teachers, and alumni connect and build relationships</li>
+                            <li><strong>Transparency:</strong> Demonstrates the school's commitment to openness and accountability</li>
+                            <li><strong>Record Accuracy:</strong> Ensures all community members are properly documented and verified</li>
+                            <li><strong>Communication Facilitation:</strong> Enables appropriate communication channels between stakeholders</li>
+                            <li><strong>Support Networks:</strong> Allows formation of peer support groups and mentorship opportunities</li>
+                            <li><strong>Event Coordination:</strong> Supports organization of school events and group activities</li>
+                        </ul><br />
+
+                        <strong>Who Can View Member Information:</strong>
+                        <ul class="list-disc list-inside mt-2 space-y-1">
+                            <li><strong>Registered Users Only:</strong> Only verified, logged-in users can access the member directory</li>
+                        </ul><br />
+
+                        <strong>Information Display Levels:</strong>
+                        <ul class="list-disc list-inside mt-2 space-y-1">
+                            <li><strong>Basic Profile:</strong> Name, role, grade/section (for students), profile picture</li>
+                            <li><strong>Contact Information:</strong> Limited to school-related contact methods</li>
+                        </ul><br />
+
+                        <strong>Privacy Protections in Place:</strong>
+                        <ul class="list-disc list-inside mt-2 space-y-1">
+                            <li><strong>Sensitive Data Hidden:</strong> Personal addresses, phone numbers, and other private information are not displayed</li>
+                            <li><strong>Access Controls:</strong> Users can only message others through approved school channels</li>
+                            <li><strong>Moderation Oversight:</strong> All interactions are monitored for appropriate conduct</li>
+                            <li><strong>Data Minimization:</strong> Only necessary information is shared for community functionality</li>
+                        </ul><br />
+
+                        <strong>Educational and Social Benefits:</strong>
+                        <ul class="list-disc list-inside mt-2 space-y-1">
+                            <li><strong>Peer Learning:</strong> Students can connect with others in similar classes or interests</li>
+                            <li><strong>Parent Networking:</strong> Parents can connect with other parents of children in the same grade</li>
+                            <li><strong>Teacher Collaboration:</strong> Educators can easily identify colleagues and collaborators</li>
+                            <li><strong>Alumni Connections:</strong> Graduates can maintain relationships with their alma mater</li>
+                            <li><strong>Mentorship Programs:</strong> Facilitates matching mentors with students who need guidance</li>
+                        </ul><br />
+
+                        <strong>School Community Advantages:</strong>
+                        <ul class="list-disc list-inside mt-2 space-y-1">
+                            <li><strong>Emergency Communications:</strong> Verified member list for urgent notifications</li>
+                            <li><strong>Event Planning:</strong> Accurate attendance tracking and communication</li>
+                            <li><strong>Resource Sharing:</strong> Easy identification of who needs or can provide assistance</li>
+                            <li><strong>Accountability:</strong> Clear record of all school community members</li>
+                            <li><strong>Inclusion:</strong> Ensures no one is left out of important communications</li>
+                        </ul><br />
+
+                        <strong>Managing Your Visibility:</strong>
+                        <ul class="list-disc list-inside mt-2 space-y-1">
+                            <li><strong>Profile Settings:</strong> Control what information is displayed in your profile</li>
+                        </ul><br />
+
+                        <strong>Questions or Concerns:</strong> If you have specific concerns about member visibility or privacy, please contact the school administration or data protection officer for clarification and assistance.
+                    </div>
+                </div>
+
+                <!-- FAQ 17 -->
+                <div class="bg-cream-50 rounded-lg shadow overflow-hidden">
+                    <button class="w-full text-left p-5 flex justify-between items-center faq-toggle">
+                        <span class="text-lg font-medium text-gray-800">17. What is the face detection feature during
+                            registration and how does it work?</span>
+                        <svg class="w-5 h-5 text-gray-500 transition-transform transform rotate-0" fill="none"
+                            stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7" />
+                        </svg>
+                    </button>
+                    <div class="faq-content px-5 pb-5 text-gray-600 hidden">
+                        <strong>Face Detection</strong> is an advanced security feature used during user registration to
+                        capture and verify profile pictures. Here's how it works:<br><br>
+
+                        <strong>Process:</strong>
+                        <ul class="list-disc list-inside mt-2 space-y-1">
+                            <li><strong>Camera Access:</strong> Users grant camera permission to start the process</li>
+                            <li><strong>Liveness Detection:</strong> The system performs three validation steps:
+                                <ul class="list-disc list-inside ml-6 mt-1 space-y-1">
+                                    <li>👤 <strong>Face Verification:</strong> Users must keep only one face in view</li>
+                                    <li>😊 <strong>Smile Detection:</strong> Users must smile at the camera</li>
+                                    <li>👁️ <strong>Blink Detection:</strong> Users must blink their eyes</li>
+                                </ul>
+                            </li>
+                            <li><strong>Photo Capture:</strong> After successful validation, a profile picture is automatically captured</li>
+                            <li><strong>ID Verification:</strong> The captured photo is compared with uploaded ID images to ensure they match</li>
+                        </ul><br>
+
+                        <strong>Why Face Detection?</strong>
+                        <ul class="list-disc list-inside mt-2 space-y-1">
+                            <li>🔒 <strong>Security:</strong> Prevents fake accounts and ensures real user registration</li>
+                            <li>🎯 <strong>Verification:</strong> Confirms the person registering matches their ID documents</li>
+                            <li>🎤 <strong>Accessibility:</strong> Provides audio guidance throughout the process</li>
+                            <li>📱 <strong>User-Friendly:</strong> Works on modern browsers with camera support</li>
+                        </ul><br>
+
+                        <strong>Technical Requirements:</strong>
+                        <ul class="list-disc list-inside mt-1 space-y-1">
+                            <li>Modern web browser (Chrome, Firefox, Safari, Edge)</li>
+                            <li>Camera permission must be granted</li>
+                            <li>HTTPS connection required for security</li>
+                            <li>Stable internet connection for face detection models</li>
+                        </ul><br>
+
+                        <strong>Privacy & Security:</strong> All face detection happens locally in your browser. Images are only used for verification and are securely stored on our servers. No third-party services process your facial data.
+                    </div>
+                </div>
+                <div class="bg-white rounded-lg shadow overflow-hidden">
+                    <button class="w-full text-left p-5 flex justify-between items-center faq-toggle">
+                        <span class="text-lg font-medium text-gray-800">18. What are the limitations of the ICSI System?</span>
+                        <svg class="w-5 h-5 text-gray-500 transition-transform transform rotate-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7" />
+                        </svg>
+                    </button>
+                    <div class="faq-content px-5 pb-5 text-gray-600 hidden">
+                        While ICSIS provides a comprehensive platform for school communication and management, it has some limitations to consider:
+                        <ul class="list-disc list-inside mt-2 space-y-1">
+                            <li><strong>Internet Dependency:</strong> The system requires a stable internet connection for access and functionality.</li>
+                            <li><strong>Device Requirements:</strong> Face detection during registration needs a device with a camera and a modern web browser (Chrome, Firefox, Safari, or Edge).</li>
+                            <li><strong>Browser Compatibility:</strong> Older browsers or those without camera support may not fully support all features like face detection.</li>
+                            <li><strong>AI Moderation Accuracy:</strong> The comment moderation system uses AI, which may occasionally flag appropriate content or miss inappropriate content.</li>
+                            <li><strong>Notification Delivery:</strong> Notifications depend on user settings, network conditions, and may not reach users if email/SMS services are unavailable.</li>
+                            <li><strong>Institution-Specific:</strong> The system is tailored for Irosin Central School and may require customization for other institutions.</li>
+                            <li><strong>User Verification Time:</strong> Account approvals and verifications may take time depending on administrative review.</li>
+                            <li><strong>No Offline Access:</strong> The platform does not support offline functionality.</li>
+                            <li><strong>Mobile Experience:</strong> While responsive, it's web-based and not a native mobile app, which may limit some advanced mobile features.</li>
+                            <li><strong>Data Retention:</strong> User data is subject to school policies and may be retained or deleted according to institutional guidelines.</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
 
     <section class="bg-cream-50 py-16">
         <div class="max-w-4xl mx-auto px-4">
@@ -1050,3 +1289,47 @@
             </div>
         </div>
     </section>
+
+    <x-modal />
+
+    <script>
+        document.querySelectorAll('.faq-toggle').forEach(button => {
+            button.addEventListener('click', () => {
+                const content = button.nextElementSibling;
+                const icon = button.querySelector('svg');
+
+                const isOpen = !content.classList.contains('hidden');
+                document.querySelectorAll('.faq-content').forEach(c => c.classList.add('hidden'));
+                document.querySelectorAll('.faq-toggle svg').forEach(i => i.classList.remove('rotate-180'));
+
+                if (!isOpen) {
+                    content.classList.remove('hidden');
+                    icon.classList.add('rotate-180');
+                }
+            });
+        });
+    </script>
+    @if (request()->routeIs('faq'))
+        <script>
+            location.href = '/view-faq';
+        </script>
+    @endif
+    <script>
+        document.querySelectorAll('.faq-toggle').forEach(button => {
+            button.addEventListener('click', () => {
+                const content = button.nextElementSibling;
+                const icon = button.querySelector('svg');
+
+                const isOpen = !content.classList.contains('hidden');
+                document.querySelectorAll('.faq-content').forEach(c => c.classList.add('hidden'));
+                document.querySelectorAll('.faq-toggle svg').forEach(i => i.classList.remove('rotate-180'));
+
+                if (!isOpen) {
+                    content.classList.remove('hidden');
+                    icon.classList.add('rotate-180');
+                }
+            });
+        });
+    </script>
+</body>
+</html>
