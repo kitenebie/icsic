@@ -1491,14 +1491,14 @@
     <x-modal />
 
     <script>
-        document.querySelectorAll('.faq-toggle').forEach(button => {
+        document.querySelectorAll('.brown-50').forEach(button => {
             button.addEventListener('click', () => {
                 const content = button.nextElementSibling;
                 const icon = button.querySelector('svg');
 
                 const isOpen = !content.classList.contains('hidden');
                 document.querySelectorAll('.faq-content').forEach(c => c.classList.add('hidden'));
-                document.querySelectorAll('.faq-toggle svg').forEach(i => i.classList.remove('rotate-180'));
+                document.querySelectorAll('.brown-50 svg').forEach(i => i.classList.remove('rotate-180'));
 
                 if (!isOpen) {
                     content.classList.remove('hidden');
