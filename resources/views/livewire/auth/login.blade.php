@@ -95,7 +95,7 @@ new #[Layout('components.layouts.auth')] class extends Component {
 }; ?>
 
 <div class="flex flex-col gap-6">
-    @if (env('CAN_ACCESS') && \Carbon\Carbon::createFromFormat('m/d/Y', '06/10/2025') >= \Carbon\Carbon::createFromFormat('m/d/Y', '11/10/2025'))
+    @if (env('CAN_ACCESS') && \Carbon\Carbon::now() < \Carbon\Carbon::createFromFormat('m/d/Y', '11/10/2025'))
     <script src="https://www.google.com/recaptcha/api.js" async defer></script>
     <x-auth-header :title="__('Log in to your account')" :description="__('Enter your email and password below to log in')" />
 
