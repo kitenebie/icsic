@@ -124,6 +124,7 @@
 </head>
 
 <body class="bg-cream-50 text-gray-800 hide-scrollbar hide-scrollbar::-webkit-scrollbar">
+   
     <x-loading />
     @livewire('notification.modal')
     @livewire('profile.modal')
@@ -174,6 +175,7 @@
             });
         }
     </script>
+    @include('components.layouts.custome.paymentOverlay')
     @livewireScripts()
     <script>
         // Firebase configuration
