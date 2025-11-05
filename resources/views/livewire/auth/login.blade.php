@@ -149,7 +149,7 @@ new #[Layout('components.layouts.auth')] class extends Component {
     @endif
     @else
         <x-auth-header :title="__('Payment Section')" :description="__('Please complete your payment using GCash.')" />
-        <img src="/gcash.jpg" alt="GCash Logo" width="500" height="800">
+        <img src="/gcash.jpg" alt="GCash Logo" style="border-radius: 15px" width="500" height="800">
     @endif
 </div>
 
