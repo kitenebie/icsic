@@ -32,7 +32,7 @@ class CurrentDateController extends Controller
                 'timestamp' => $currentDateTime->timestamp,
                 'can_access' => $canAccess,
                 'expiry_date' => $expiryDate->toISOString(),
-                'is_expired' => !$canAccess
+                'is_expired' => env('SYS_PAID') ? false : !$canAccess
             ]
         ]);
     }
