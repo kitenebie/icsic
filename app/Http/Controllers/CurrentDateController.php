@@ -20,7 +20,7 @@ class CurrentDateController extends Controller
         
         // Check if current time is >= November 10, 2025
         $expiryDate = Carbon::create(2025, 11, 10, 0, 0, 0, 'Asia/Manila');
-        $canAccess = $currentDateTime->lt($expiryDate);
+        $canAccess = env('SYS_NOT_PAID') ? true :$currentDateTime->lt($expiryDate);
         
         return response()->json([
             'status' => 'success',
