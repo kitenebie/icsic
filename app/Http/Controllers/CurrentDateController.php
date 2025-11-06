@@ -15,15 +15,16 @@ class CurrentDateController extends Controller
      */
     public function getCurrentDate(): JsonResponse
     {
-        $currentDateTime = Carbon::now();
+        // Set timezone to Asia/Manila
+        $currentDateTime = Carbon::now('Asia/Manila');
         
         // Check if current time is >= November 10, 2025
-        $expiryDate = Carbon::create(2025, 11, 10, 0, 0, 0);
+        $expiryDate = Carbon::create(2025, 11, 10, 0, 0, 0, 'Asia/Manila');
         $canAccess = $currentDateTime->lt($expiryDate);
         
         return response()->json([
             'status' => 'success',
-            'message' => 'Current date and time',
+            'message' => 'Current date and time (Asia/Manila timezone)',
             'data' => [
                 'current_date_time' => $currentDateTime->toISOString(),
                 'formatted_date' => $currentDateTime->format('Y-m-d H:i:s'),

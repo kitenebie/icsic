@@ -88,7 +88,7 @@ Route::get('/fonts/instrument-sans.css', function () {
         ->header('Cross-Origin-Resource-Policy', 'same-origin'); // makes COEP happy
 });
 
-
+// API routes that don't require authentication
 require __DIR__ . '/app/api.php';
 
 
