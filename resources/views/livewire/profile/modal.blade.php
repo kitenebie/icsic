@@ -54,13 +54,13 @@
                 <div>
                     <label class="block text-sm font-medium text-gray-700 mb-2">First Name</label>
                     <input readonly wire:model="first_name" type="text" placeholder="Enter first name"
-                           class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-colors @error('first_name') border-red-500 @enderror" />
+                           class="w-full px-4 py-3 border bg-gray-50 border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-colors @error('first_name') border-red-500 @enderror" />
                     @error('first_name') <span class="text-red-600 text-sm mt-1 block">{{ $message }}</span> @enderror
                 </div>
                 <div>
                     <label class="block text-sm font-medium text-gray-700 mb-2">Middle Name</label>
                     <input readonly wire:model="middle_name" type="text" placeholder="Enter middle name"
-                           class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-colors" />
+                           class="w-full px-4 py-3 border bg-gray-50 border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-colors" />
                 </div>
             </div>
 
@@ -68,13 +68,13 @@
                 <div>
                     <label class="block text-sm font-medium text-gray-700 mb-2">Last Name</label>
                     <input readonly wire:model="last_name" type="text" placeholder="Enter last name"
-                           class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-colors @error('last_name') border-red-500 @enderror" />
+                           class="w-full px-4 py-3 border bg-gray-50 border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-colors @error('last_name') border-red-500 @enderror" />
                     @error('last_name') <span class="text-red-600 text-sm mt-1 block">{{ $message }}</span> @enderror
                 </div>
                 <div>
                     <label class="block text-sm font-medium text-gray-700 mb-2">Extension Name</label>
                     <input readonly wire:model="extension_name" type="text" placeholder="Enter extension name"
-                           class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-colors" />
+                           class="w-full px-4 py-3 border bg-gray-50 border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-colors" />
                 </div>
             </div>
 
@@ -82,7 +82,7 @@
             <div>
                 <label class="block text-sm font-medium text-gray-700 mb-2">Email Address</label>
                 <input wire:model="email" type="email" placeholder="Enter email address"
-                       class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-colors @error('email') border-red-500 @enderror" />
+                       class="w-full px-4 py-3 border bg-gray-50 border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-colors @error('email') border-red-500 @enderror" />
                 @error('email') <span class="text-red-600 text-sm mt-1 block">{{ $message }}</span> @enderror
             </div>
 
@@ -91,13 +91,13 @@
                 <div>
                     <label class="block text-sm font-medium text-gray-700 mb-2">New Password</label>
                     <input wire:model="password" type="password" placeholder="Enter new password"
-                           class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-colors @error('password') border-red-500 @enderror" />
+                           class="w-full px-4 py-3 border bg-gray-50 border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-colors @error('password') border-red-500 @enderror" />
                     @error('password') <span class="text-red-600 text-sm mt-1 block">{{ $message }}</span> @enderror
                 </div>
                 <div>
                     <label class="block text-sm font-medium text-gray-700 mb-2">Confirm Password</label>
                     <input wire:model="confirm_password" type="password" placeholder="Confirm new password"
-                           class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-colors @error('confirm_password') border-red-500 @enderror" />
+                           class="w-full px-4 py-3 border bg-gray-50 border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-colors @error('confirm_password') border-red-500 @enderror" />
                     @error('confirm_password') <span class="text-red-600 text-sm mt-1 block">{{ $message }}</span> @enderror
                 </div>
             </div>
