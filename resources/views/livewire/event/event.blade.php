@@ -13,7 +13,7 @@
                                 </path>
                             </svg>
                         </div>
-                        <h1 class="text-2xl sm:hidden font-bold text-gray-900">School Calendar</h1>
+                        <h1 class="text-2xl hidden lg:flex  font-bold text-gray-900">School Calendar</h1>
                     </div>
                     <div class="flex items-center space-x-2">
                         <button id="prev"
