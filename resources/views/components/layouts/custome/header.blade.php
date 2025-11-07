@@ -266,9 +266,9 @@
         }
         @endauth
     </script>
+    <script>
+        document.documentElement.classList.remove('dark');
+    </script>
 </body>
-@php
-
-@endphp
 
 </html>
