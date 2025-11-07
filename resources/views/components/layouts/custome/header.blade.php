@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="{{ str_replace('_', '-', app()->getLocale()) }}" x-data="{ darkMode: $persist(false) }" :class="{ 'dark': darkMode }">
+<html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
 
 <head>
     <meta charset="utf-8">
@@ -117,6 +117,10 @@
             border-radius: 10px;
         }
     </style>
+    <script>
+        // Force light mode before FluxAppearance initializes
+        localStorage.setItem('theme', 'light');
+    </script>
     @yield('meta')
     @fluxAppearance
     @livewireStyles()
@@ -266,10 +270,13 @@
         }
         @endauth
     </script>
+
     <script>
         window.addEventListener('DOMContentLoaded', () => {
+            // Tell Flux to use light mode
             document.documentElement.classList.remove('dark');
-            localStorage.removeItem('theme'); // optional: remove saved dark theme
+            localStorage.setItem('theme', 'light');
+            document.documentElement.dataset.theme = 'light';
         });
     </script>
 
