@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="{{ str_replace('_', '-', app()->getLocale()) }}" class="light">
+<html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
 
 <head>
     <meta charset="utf-8">
@@ -121,11 +121,6 @@
     @fluxAppearance
     @livewireStyles()
     <link rel="stylesheet" href="/css/custome.css">
-    <script>
-        tailwind.config = {
-            darkMode: false
-        }
-    </script>
 </head>
 
 <body class="bg-cream-50 text-gray-800 hide-scrollbar hide-scrollbar::-webkit-scrollbar">
@@ -272,8 +267,12 @@
         @endauth
     </script>
     <script>
-        document.documentElement.classList.remove('dark');
+        window.addEventListener('DOMContentLoaded', () => {
+            document.documentElement.classList.remove('dark');
+            localStorage.removeItem('theme'); // optional: remove saved dark theme
+        });
     </script>
+
 </body>
 
 </html>
