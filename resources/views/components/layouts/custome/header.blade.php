@@ -117,9 +117,9 @@
             border-radius: 10px;
         }
     </style>
-    {{-- @yield('meta')
+    @yield('meta')
     @fluxAppearance
-    @livewireStyles() --}}
+    @livewireStyles()
     <link rel="stylesheet" href="/css/custome.css">
 </head>
 
