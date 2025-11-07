@@ -1,7 +1,7 @@
 <div class="relative w-full bg-brown-50">
     <div class="facebook-newsfeed bg-brown-50">
         <!-- News Feed Posts -->
-        <div class="posts-container bg-brown-50">
+        <div class="posts-container bg-brown-50 text-gray-50">
             @forelse ($announcements as $announcement)
                 <article id="announcement-{{ $announcement->id }}" class="facebook-post mt-4 bg-cream-50">
                     @section('meta')
