@@ -121,6 +121,11 @@
     @fluxAppearance
     @livewireStyles()
     <link rel="stylesheet" href="/css/custome.css">
+    <script>
+        tailwind.config = {
+            darkMode: false
+        }
+    </script>
 </head>
 
 <body class="bg-cream-50 text-gray-800 hide-scrollbar hide-scrollbar::-webkit-scrollbar">
