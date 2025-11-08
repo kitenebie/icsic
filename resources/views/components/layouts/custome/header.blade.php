@@ -14,16 +14,8 @@
     <script src="/build/assets/app.js"></script>
     <x-script.app />
     <style>
-        :root,
-        html.light,
-        [data-theme="light"] {
-            color-scheme: light !important;
-        }
-
         .dark {
-            --tw-bg-opacity: 1;
-            background-color: rgb(255 255 255 / var(--tw-bg-opacity));
-            color: black !important;
+            color-scheme: light !important;
         }
 
         body {
