@@ -277,6 +277,8 @@
             document.documentElement.classList.remove('dark');
             localStorage.setItem('theme', 'light');
             document.documentElement.dataset.theme = 'light';
+            document.documentElement.classList.remove('dark');
+            document.documentElement.classList.add('dark');
         });
     </script>
 
