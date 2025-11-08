@@ -121,10 +121,6 @@
             border-radius: 10px;
         }
     </style>
-    <script>
-        // Force light mode before FluxAppearance initializes
-        localStorage.setItem('theme', 'light');
-    </script>
     @yield('meta')
     @fluxAppearance
     @livewireStyles()
@@ -274,17 +270,11 @@
         }
         @endauth
     </script>
-
-    <script>
-        window.addEventListener('DOMContentLoaded', () => {
-            // Tell Flux to use light mode
-            document.documentElement.classList.remove('dark');
-            localStorage.setItem('theme', 'light');
-            document.documentElement.dataset.theme = 'light';
-            document.documentElement.classList.remove('dark');
-            document.documentElement.classList.add('dark');
-        });
-    </script>
+<script>
+    // Force light theme
+    window.localStorage.setItem('flux.appearance', 'light');
+    window.Flux.applyAppearance('light');
+</script>
 
 </body>
 
