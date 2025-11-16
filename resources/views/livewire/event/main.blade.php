@@ -305,13 +305,13 @@
                             "Educational Field Trips" => "#b37b5d", // brown-400
                             "Intramurals" => "#ffd18f", // cream-400
                             "Sports Fest" => "#d1aa90", // brown-300
-                            "Tryouts and Practice Sessions" => "#ffe2b9", // cream-300
-                            "Cheerleading Competitions" => "#e7cfc0", // brown-200
-                            "P.E. Demonstrations" => "#ffefdb", // cream-200
-                            "Foundation Day" => "#f5e8e1", // brown-100
-                            "Linggo ng Wika" => "#fff7ed", // cream-100
-                            "Buwan ng Sining" => "#F7D7CAFF", // brown-50
-                            "Christmas Program" => "#FAE7CBFF", // cream-50
+                            "Tryouts and Practice Sessions" => "#A07A46FF", // cream-300
+                            "Cheerleading Competitions" => "#75523CFF", // brown-200
+                            "P.E. Demonstrations" => "#9B7C57FF", // cream-200
+                            "Foundation Day" => "#B87856FF", // brown-100
+                            "Linggo ng Wika" => "#B38B5CFF", // cream-100
+                            "Buwan ng Sining" => "#A76C55FF", // brown-50
+                            "Christmas Program" => "#8A704AFF", // cream-50
                             "School Play or Musical" => "#965737", // brown-500
                             "Art Exhibits" => "#ffbf65", // cream-500
                             "Cultural Shows" => "#7c4328", // brown-600
@@ -325,13 +325,13 @@
                             "Nutrition Month" => "#b37b5d", // brown-400
                             "Blood Donation Drives" => "#ffd18f", // cream-400
                             "Tree Planting" => "#d1aa90", // brown-300
-                            "Community Clean-Up Drives" => "#ffe2b9", // cream-300
-                            "Charity Events" => "#e7cfc0", // brown-200
-                            "School Caravan" => "#ffefdb", // cream-200
-                            "Brigada Eskwela" => "#f5e8e1", // brown-100
-                            "General Assembly" => "#fff7ed", // cream-100
-                            "Faculty Development" => "#fdf8f6", // brown-50
-                            "Student/Parent Orientation" => "#fffdfa", // cream-50
+                            "Community Clean-Up Drives" => "#816A4BFF", // cream-300
+                            "Charity Events" => "#8B634AFF", // brown-200
+                            "School Caravan" => "#B38349FF", // cream-200
+                            "Brigada Eskwela" => "#A8603AFF", // brown-100
+                            "General Assembly" => "#CA8E44FF", // cream-100
+                            "Faculty Development" => "#B86443FF", // brown-50
+                            "Student/Parent Orientation" => "#B68844FF", // cream-50
                             "Enrollment Days" => "#965737", // brown-500
                             "Accreditation Visits" => "#ffbf65", // cream-500
                             "Awarding Ceremonies" => "#7c4328", // brown-600
@@ -340,7 +340,7 @@
                             "Inter-School Competitions" => "#b8853e", // cream-700
                             "Other" => "#965737" // brown-500 as default
                         ];
-                        return $colors[$category] ?? '#4285f4';
+                        return $colors[$category] ?? '#965737';
                     }
 
                     // Track which multi-day events have been rendered to avoid duplicates

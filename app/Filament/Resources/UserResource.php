@@ -122,9 +122,6 @@ class UserResource extends Resource
                         'admin' => 'Admin',
                         'staff' => 'Staff',
                         'teacher' => 'Teacher',
-                        'student' => 'Student',
-                        'parent' => 'Parent',
-                        'graduate' => 'Graduate',
                         'pending' => 'Pending',
                         'rejected' => 'Reject'
                     ])
@@ -288,7 +285,6 @@ class UserResource extends Resource
                         'teacher' => 'Teacher',
                         'parent' => 'Parent',
                         'graduate' => 'Graduate',
-                        'pending' => 'Pending',
                         'rejected' => 'Rejected'
                     ])
                     ->placeholder('All Roles')
