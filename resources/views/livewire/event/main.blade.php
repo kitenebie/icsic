@@ -310,8 +310,8 @@
                             "P.E. Demonstrations" => "#ffefdb", // cream-200
                             "Foundation Day" => "#f5e8e1", // brown-100
                             "Linggo ng Wika" => "#fff7ed", // cream-100
-                            "Buwan ng Sining" => "#fdf8f6", // brown-50
-                            "Christmas Program" => "#fffdfa", // cream-50
+                            "Buwan ng Sining" => "#F7D7CAFF", // brown-50
+                            "Christmas Program" => "#FAE7CBFF", // cream-50
                             "School Play or Musical" => "#965737", // brown-500
                             "Art Exhibits" => "#ffbf65", // cream-500
                             "Cultural Shows" => "#7c4328", // brown-600
