@@ -21,6 +21,11 @@ class NavCategory extends Component
         }
         return array_unique($topics);
     }
+
+    public function filterByCategory($category)
+    {
+        $this->dispatch('categorySelected', $category);
+    }
     public function render()
     {
         return view('livewire.news.nav-category');

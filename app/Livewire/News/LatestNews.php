@@ -10,6 +10,15 @@ use Illuminate\Support\Str;
 
 class LatestNews extends Component
 {
+    public $selectedCategory = null;
+
+    protected $listeners = ['categorySelected' => 'setCategory'];
+
+    public function setCategory($category)
+    {
+        $this->selectedCategory = $category;
+    }
+
     public $categories = [
         "School Announcements",
         "Teacher Updates",
@@ -69,9 +78,13 @@ class LatestNews extends Component
     }
     public function render()
     {
-        $latestNews = NewsDB::orderByDesc('id')
-            ->limit(9)
-            ->get();
+        $query = NewsDB::orderByDesc('id');
+
+        if ($this->selectedCategory && $this->selectedCategory !== 'All') {
+            $query->where('relevant_topic', 'like', '%' . $this->selectedCategory . '%');
+        }
+
+        $latestNews = $query->limit(9)->get();
 
         // Get trending topics based on most viewed/read articles in the last 7 days
         $trendingTopics = NewsDB::where('created_at', '>=', now()->subDays(7))
