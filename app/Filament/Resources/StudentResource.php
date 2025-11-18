@@ -774,12 +774,14 @@ class StudentResource extends Resource
                             ->icon('heroicon-o-document-text')
                             ->iconColor('success')
                             ->send();
+                            return;
                         }catch(\Exception $e){
                             Notification::make()
                             ->title('Error updating record: ' . $e->getMessage())
                             ->icon('heroicon-o-document-text')
                             ->iconColor('danger')
                             ->send();
+                            return;
                         }
                     })
             ], position: ActionsPosition::BeforeColumns)
