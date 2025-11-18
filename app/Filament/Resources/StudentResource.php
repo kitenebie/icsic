@@ -736,7 +736,7 @@ class StudentResource extends Resource
                             if ($studentModel->guardian_email !== $data['guardian_email']) {
                                 if (Student::where('guardian_email', $data['email'])->exists() || User::where('email', $data['guardian_email'])->exists()) {
                                     Notification::make()
-                                        ->title('Guardian Email is already Exist')
+                                        ->title('Guardian Email is cannot be used either by Student or User')
                                         ->icon('heroicon-o-document-text')
                                         ->iconColor('warning')
                                         ->send();
