@@ -724,6 +724,26 @@ class StudentResource extends Resource
                         // Update the student data
                         // dd($data);
                         try{
+                        if($studentModel->email !== $data['email']){
+                            if (User::where('email', $data['email'])->exists() || Student::where('email', $data['email'])->exists()) {
+                                Notification::make()
+                                    ->title('Email is already Exist')
+                                    ->icon('heroicon-o-document-text')
+                                    ->iconColor('warning')
+                                    ->send();
+                                return;
+                            }
+                        }
+                        if($studentModel->lrn !== $data['lrn']){
+                            if (Student::where('lrn', $data['lrn'])->exists() || User::where('lrn', $data['lrn'])->exists()) {
+                                Notification::make()
+                                    ->title('LRN is already Exist')
+                                    ->icon('heroicon-o-document-text')
+                                    ->iconColor('warning')
+                                    ->send();
+                                return;
+                            }
+                        }
                         $studentModel->update([
                             'profile' => $data['profile'],
                             'lrn' => $data['lrn'],
