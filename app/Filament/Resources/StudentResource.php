@@ -537,7 +537,6 @@ class StudentResource extends Resource
                                     ->prefixIcon('heroicon-m-user-circle')
                                     ->columnSpan(3)
                                     ->required(true)
-                                    ->readOnly() // Disable if LRN should not be edited
                             ])
                             ->columns(4),
 
