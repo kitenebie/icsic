@@ -708,6 +708,7 @@ class StudentResource extends Resource
                         'extension_name' => $record->extension_name,
                         'birthday' => $record->birthday,
                         'gender' => $record->gender,
+                        'contact' => $record->contact,
                         'permanent_address' => $record->permanent_address,
                         'email' => $record->user_email,
                         'guardian_name' => $record->guardian_name,
