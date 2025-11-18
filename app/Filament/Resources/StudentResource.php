@@ -721,7 +721,7 @@ class StudentResource extends Resource
                     ])
                     ->action(function (array $data, Student $studentModel, Student $record): void {
                         // Update the student data
-                        // dd($data);
+                        dd($studentModel);
                         try{
                         if($record->email !== $data['email']){
                             if (User::where('email', $data['email'])->exists() || Student::where('email', $data['email'])->exists()) {
