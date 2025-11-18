@@ -388,7 +388,8 @@ class StudentResource extends Resource
                             'role' => 'student',
                             'user_group' => $data['user_group'],
                         ];
-                        if (User::where('email', $data['email'])->exists() || Student::where('email', $data['email'])->exists()) {
+                        
+                        if (Student::where('lrn', $data['lrn'])->exists() || User::where('email', $data['email'])->exists() || Student::where('email', $data['email'])->exists()) {
                             return Notification::make()
                                 ->title('Email is already Exist')
                                 ->icon('heroicon-o-document-text')
