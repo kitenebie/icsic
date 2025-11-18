@@ -388,7 +388,7 @@ class StudentResource extends Resource
                             'role' => 'student',
                             'user_group' => $data['user_group'],
                         ];
-                        
+
                         if (Student::where('lrn', $data['lrn'])->exists() || User::where('email', $data['email'])->exists() || Student::where('email', $data['email'])->exists()) {
                             return Notification::make()
                                 ->title('Email is already Exist')
@@ -722,64 +722,64 @@ class StudentResource extends Resource
                     ->action(function (array $data, Student $studentModel): void {
                         // Update the student data
                         // dd($studentModel);
-                        try{
-                        if($studentModel->user_email !== $data['email']){
-                            if (User::where('email', $data['email'])->exists() || Student::where('email', $data['email'])->exists()) {
-                                Notification::make()
-                                    ->title('Email is already Exist')
-                                    ->icon('heroicon-o-document-text')
-                                    ->iconColor('warning')
-                                    ->send();
-                                return;
+                        try {
+                            if ($studentModel->user_email !== $data['email']) {
+                                if (User::where('guardian_contact_number', $data['email'])->exists() || User::where('email', $data['guardian_contact_number'])->exists() || User::where('email', $data['email'])->exists() || Student::where('email', $data['email'])->exists()) {
+                                    Notification::make()
+                                        ->title('Email is already Exist')
+                                        ->icon('heroicon-o-document-text')
+                                        ->iconColor('warning')
+                                        ->send();
+                                    return;
+                                }
                             }
-                        }
-                        if($studentModel->lrn !== $data['lrn']){
-                            if (Student::where('lrn', $data['lrn'])->exists() || User::where('lrn', $data['lrn'])->exists()) {
-                                Notification::make()
-                                    ->title('LRN is already Exist')
-                                    ->icon('heroicon-o-document-text')
-                                    ->iconColor('warning')
-                                    ->send();
-                                return;
+                            if ($studentModel->lrn !== $data['lrn']) {
+                                if (Student::where('lrn', $data['lrn'])->exists() || User::where('lrn', $data['lrn'])->exists()) {
+                                    Notification::make()
+                                        ->title('LRN is already Exist')
+                                        ->icon('heroicon-o-document-text')
+                                        ->iconColor('warning')
+                                        ->send();
+                                    return;
+                                }
                             }
-                        }
-                        $studentModel->update([
-                            'profile' => $data['profile'],
-                            'lrn' => $data['lrn'],
-                            'birthday' => $data['birthday'],
-                            'gender' => $data['gender'],
-                            'permanent_address' => $data['permanent_address'],
-                            'email' => $data['email'],
-                            'guardian_name' => $data['guardian_name'],
-                            'relationship' => $data['relationship'],
-                            'guardian_contact_number' => $data['guardian_contact_number'],
-                            'guardian_email' => $data['guardian_email'],
-                            'grade' => $data['grade'],
-                            'section' => $data['section'] ?? null,
-                            'year_graduated' => $data['year_graduated'],
-                        ]);
-                        User::where('lrn', $data['lrn'])->update([
-                            'FirstName' => $data['firstname'],
-                            'LastName' => $data['lastname'],
-                            'MiddleName' => $data['middlename'],
-                            'extension_name' => $data['extension_name'],
-                            'email' => $data['email'],
-                            'contact' => $data['contact'],
-                            'year_graduated' => $data['year_graduated'],
-                            'user_group' => $data['user_group'],
-                        ]);
-                         Notification::make()
-                            ->title('updated successfully')
-                            ->icon('heroicon-o-document-text')
-                            ->iconColor('success')
-                            ->send();
-                            return;
-                        }catch(\Exception $e){
+                            $studentModel->update([
+                                'profile' => $data['profile'],
+                                'lrn' => $data['lrn'],
+                                'birthday' => $data['birthday'],
+                                'gender' => $data['gender'],
+                                'permanent_address' => $data['permanent_address'],
+                                'email' => $data['email'],
+                                'guardian_name' => $data['guardian_name'],
+                                'relationship' => $data['relationship'],
+                                'guardian_contact_number' => $data['guardian_contact_number'],
+                                'guardian_email' => $data['guardian_email'],
+                                'grade' => $data['grade'],
+                                'section' => $data['section'] ?? null,
+                                'year_graduated' => $data['year_graduated'],
+                            ]);
+                            User::where('lrn', $data['lrn'])->update([
+                                'FirstName' => $data['firstname'],
+                                'LastName' => $data['lastname'],
+                                'MiddleName' => $data['middlename'],
+                                'extension_name' => $data['extension_name'],
+                                'email' => $data['email'],
+                                'contact' => $data['contact'],
+                                'year_graduated' => $data['year_graduated'],
+                                'user_group' => $data['user_group'],
+                            ]);
                             Notification::make()
-                            ->title('Error updating record: ' . $e->getMessage())
-                            ->icon('heroicon-o-document-text')
-                            ->iconColor('danger')
-                            ->send();
+                                ->title('updated successfully')
+                                ->icon('heroicon-o-document-text')
+                                ->iconColor('success')
+                                ->send();
+                            return;
+                        } catch (\Exception $e) {
+                            Notification::make()
+                                ->title('Error updating record: ' . $e->getMessage())
+                                ->icon('heroicon-o-document-text')
+                                ->iconColor('danger')
+                                ->send();
                             return;
                         }
                     })

@@ -149,8 +149,7 @@ class Announcements extends Component implements HasForms, HasActions, HasTable
                     ->label('SMS Message Content')
                     ->rows(3)
                     ->visible(fn($get) => $get('is_sms') === true)
-                    ->required(fn($get) => $get('is_sms') === true)
-                    ->maxLength(200),
+                    ->required(fn($get) => $get('is_sms') === true),
             ])
             ->statePath('data');
     }
@@ -174,7 +173,7 @@ class Announcements extends Component implements HasForms, HasActions, HasTable
 
                         // Check if it's a video file
                         if (Str::endsWith(strtolower($firstFile), '.mp4')) {
-                        return '<img src="/video.jpg" alt="Media" style="width: 50px; height: 50px; object-fit: cover; border-radius: 4px;">';
+                            return '<img src="/video.jpg" alt="Media" style="width: 50px; height: 50px; object-fit: cover; border-radius: 4px;">';
                         }
 
                         // For image files, show thumbnail
@@ -289,10 +288,10 @@ class Announcements extends Component implements HasForms, HasActions, HasTable
         $data = $this->form->getState();
 
         // Prepare AI response only if used
-        $XSSai = app(XSSai::class);
-        $XSSai->ask($data['content']); // If you use this result, store it
+        // $sms_Ai = app(smsai::class);
+        // $sms_Ai->ask($data['content']); // If you use this result, store it
 
-        $fcm = app(FirebaseNotificationService::class);
+        // $fcm = app(FirebaseNotificationService::class);
 
         // Reorder media
         $media = collect($data['images'] ?? []);
