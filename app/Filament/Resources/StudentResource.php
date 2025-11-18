@@ -609,7 +609,6 @@ class StudentResource extends Resource
 
                                 TextInput::make('email')
                                     ->email()
-                                    ->unique()
                                     ->label('Email')
                                     ->prefixIcon('heroicon-m-envelope')
                                     ->required(true),
