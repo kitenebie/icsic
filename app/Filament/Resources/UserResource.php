@@ -108,6 +108,7 @@ class UserResource extends Resource
                     ->placeholder('Enter contact number'),
                 TextInput::make('email')
                     ->required()
+                    ->unique(ignoreRecord: true)
                     ->email()
                     ->maxLength(255)
                     ->columnSpanFull()
