@@ -719,16 +719,16 @@ class StudentResource extends Resource
                         'year_graduated' => $record->year_graduated,
                         'user_group' => $record->user_group,
                     ])
-                    ->action(function (array $data, Student $studentModel): void {
+                    ->action(function (array $data, Student $studentModel, Student $record): void {
                         // Update the student data
                         // dd($data);
                         try{
-                        if($studentModel->email !== $data['email']){
+                        if($record->email !== $data['email']){
                             if (User::where('email', $data['email'])->exists() || Student::where('email', $data['email'])->exists()) {
                                 Notification::make()
                                     ->title('Email is already Exist')
                                     ->icon('heroicon-o-document-text')
-                                    ->body('Current Email: '.$studentModel->email . ' - New Email: '.$data['email'])
+                                    ->body('Current Email: '.$record->email . ' - New Email: '.$data['email'])
                                     ->iconColor('warning')
                                     ->send();
                                 return;
