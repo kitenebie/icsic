@@ -728,6 +728,7 @@ class StudentResource extends Resource
                                 Notification::make()
                                     ->title('Email is already Exist')
                                     ->icon('heroicon-o-document-text')
+                                    ->body('Current Email: '.$studentModel->email . ' - New Email: '.$data['email'])
                                     ->iconColor('warning')
                                     ->send();
                                 return;
