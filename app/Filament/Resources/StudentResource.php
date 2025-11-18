@@ -723,6 +723,7 @@ class StudentResource extends Resource
                     ->action(function (array $data, Student $studentModel): void {
                         // Update the student data
                         // dd($data);
+                        try{
                         $studentModel->update([
                             'profile' => $data['profile'],
                             'lrn' => $data['lrn'],
@@ -753,6 +754,13 @@ class StudentResource extends Resource
                             ->icon('heroicon-o-document-text')
                             ->iconColor('success')
                             ->send();
+                        }catch(\Exception $e){
+                            Notification::make()
+                            ->title('Error updating record: ' . $e->getMessage())
+                            ->icon('heroicon-o-document-text')
+                            ->iconColor('danger')
+                            ->send();
+                        }
                     })
             ], position: ActionsPosition::BeforeColumns)
             ->bulkActions([
