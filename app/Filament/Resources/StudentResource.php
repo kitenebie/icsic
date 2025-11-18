@@ -388,6 +388,13 @@ class StudentResource extends Resource
                             'role' => 'student',
                             'user_group' => $data['user_group'],
                         ];
+                        if (User::where('email', $data['email'])->exists() || Student::where('email', $data['email'])->exists()) {
+                            return Notification::make()
+                                ->title('Email is already Exist')
+                                ->icon('heroicon-o-document-text')
+                                ->iconColor('warning')
+                                ->send();
+                        }
                         User::create($user_model);
                         Student::create($student_data);
                         return Notification::make()
@@ -602,6 +609,7 @@ class StudentResource extends Resource
 
                                 TextInput::make('email')
                                     ->email()
+                                    ->unique()
                                     ->label('Email')
                                     ->prefixIcon('heroicon-m-envelope')
                                     ->required(true),
