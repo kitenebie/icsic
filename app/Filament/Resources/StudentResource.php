@@ -724,7 +724,7 @@ class StudentResource extends Resource
                         // dd($studentModel);
                         try {
                             if ($studentModel->user_email !== $data['email']) {
-                                if (User::where('guardian_contact_number', $data['email'])->exists() || User::where('email', $data['guardian_contact_number'])->exists() || User::where('email', $data['email'])->exists() || Student::where('email', $data['email'])->exists()) {
+                                if (Student::where('guardian_contact_number', $data['email'])->exists() || User::where('email', $data['guardian_contact_number'])->exists() || User::where('email', $data['email'])->exists() || Student::where('email', $data['email'])->exists()) {
                                     Notification::make()
                                         ->title('Email is already Exist')
                                         ->icon('heroicon-o-document-text')
