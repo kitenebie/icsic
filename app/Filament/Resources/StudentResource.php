@@ -723,7 +723,7 @@ class StudentResource extends Resource
                         // Update the student data
                         // dd($studentModel);
                         try {
-                            if ($studentModel->user_email !== $data['email']) {
+                            if ($studentModel->user_email !== $data['email'] || $studentModel->guardian_contact_number !== $data['email']) {
                                 if (Student::where('guardian_contact_number', $data['email'])->exists() || User::where('email', $data['guardian_contact_number'])->exists() || User::where('email', $data['email'])->exists() || Student::where('email', $data['email'])->exists()) {
                                     Notification::make()
                                         ->title('Email is already Exist')
