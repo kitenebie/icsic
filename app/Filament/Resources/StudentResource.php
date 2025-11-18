@@ -733,16 +733,16 @@ class StudentResource extends Resource
                                     return;
                                 }
                             }
-                            // if ($studentModel->guardian_email !== $data['guardian_email']) {
-                            //     if (Student::where('guardian_email', $data['email'])->exists() || User::where('email', $data['guardian_email'])->exists()) {
-                            //         Notification::make()
-                            //             ->title('Guardian Email is already Exist')
-                            //             ->icon('heroicon-o-document-text')
-                            //             ->iconColor('warning')
-                            //             ->send();
-                            //         return;
-                            //     }
-                            // }
+                            if ($studentModel->guardian_email !== $data['guardian_email']) {
+                                if (Student::where('guardian_email', $data['email'])->exists() || User::where('email', $data['guardian_email'])->exists()) {
+                                    Notification::make()
+                                        ->title('Guardian Email is already Exist')
+                                        ->icon('heroicon-o-document-text')
+                                        ->iconColor('warning')
+                                        ->send();
+                                    return;
+                                }
+                            }
                             if ($studentModel->lrn !== $data['lrn']) {
                                 if (Student::where('lrn', $data['lrn'])->exists() || User::where('lrn', $data['lrn'])->exists()) {
                                     Notification::make()
