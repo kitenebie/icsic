@@ -452,7 +452,7 @@ class StudentResource extends Resource
                 TextColumn::make('gender')->label('Gender')->sortable(),
 
                 TextColumn::make('grade')->label('Grade')->sortable()->toggleable()->searchable(query: function (Builder $query, string $search): Builder {
-                    return $query->orWhere('students.grade', 'like', "%{$search}%");
+                    return $query->orWhere('students.grade', 'like', "%{$search}");
                 }),
                 TextColumn::make('section')->label('Section')->sortable()->toggleable(),
 
