@@ -156,10 +156,7 @@ class Announcements extends Component implements HasForms, HasActions, HasTable
                         {
                         $set('sms_message', $content);
                         Notification::make()
-                            ->title($state ? 'SMS Notifications Enabled' : 'SMS Notifications Disabled')
-                            ->body($state
-                                ? 'You’ll now receive updates via SMS.'
-                                : 'SMS alerts have been turned off.')
+                            ->title('Successfully Generaated SMS Content')
                             ->success()
                             ->send();
                         }
