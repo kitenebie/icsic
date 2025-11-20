@@ -19,9 +19,6 @@ use Filament\Forms\Components\FileUpload;
 use Filament\Forms\Components\Actions\Action;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Columns\ImageColumn;
-use Filament\Tables\Filters\TextFilter;
-use Filament\Tables\Filters\Filter;
-use Filament\Tables\Filters\DateFilter;
 use Illuminate\Database\Eloquent\Builder;
 use Filament\Actions;
 use Filament\Support\Enums\MaxWidth;
@@ -512,7 +509,13 @@ class StudentResource extends Resource
                         'Grade 5' => 'Grade 5',
                         'Grade 6' => 'Grade 6',
                     ])
-                    ->label('Grade'),
+                    ->label('Grade')
+                    ->query(function (Builder $query, array $data): Builder {
+                        return $query->when(
+                            $data['value'],
+                            fn (Builder $query, $value): Builder => $query->where('students.grade', $value),
+                        );
+                    }),
 
                 Tables\Filters\SelectFilter::make('year_graduated')
                     ->options(
@@ -524,80 +527,6 @@ class StudentResource extends Resource
                     )
                     ->label('Year Graduated')
                     ->searchable(),
-
-                Tables\Filters\SelectFilter::make('guardian_name')
-                    ->options(
-                        fn() => Student::query()
-                            ->whereNotNull('guardian_name')
-                            ->distinct()
-                            ->pluck('guardian_name', 'guardian_name')
-                            ->toArray()
-                    )
-                    ->label('Guardian Name')
-                    ->searchable(),
-
-                Tables\Filters\SelectFilter::make('guardian_contact_number')
-                    ->options(
-                        fn() => Student::query()
-                            ->whereNotNull('guardian_contact_number')
-                            ->distinct()
-                            ->pluck('guardian_contact_number', 'guardian_contact_number')
-                            ->toArray()
-                    )
-                    ->label('Guardian Contact')
-                    ->searchable(),
-
-                Tables\Filters\SelectFilter::make('guardian_email')
-                    ->options(
-                        fn() => Student::query()
-                            ->whereNotNull('guardian_email')
-                            ->distinct()
-                            ->pluck('guardian_email', 'guardian_email')
-                            ->toArray()
-                    )
-                    ->label('Guardian Email')
-                    ->searchable(),
-
-                Tables\Filters\TextFilter::make('permanent_address')
-                    ->label('Permanent Address'),
-
-                Tables\Filters\SelectFilter::make('contact')
-                    ->options(
-                        fn() => User::query()
-                            ->whereNotNull('contact')
-                            ->distinct()
-                            ->pluck('contact', 'contact')
-                            ->toArray()
-                    )
-                    ->label('Contact Number')
-                    ->searchable(),
-
-                Tables\Filters\Filter::make('age')
-                    ->form([
-                        Select::make('age_range')
-                            ->options([
-                                '5-10' => '5-10',
-                                '11-15' => '11-15',
-                                '16-20' => '16-20',
-                                '21-25' => '21-25',
-                                '26-30' => '26-30',
-                            ])
-                            ->label('Age Range'),
-                    ])
-                    ->query(function (Builder $query, array $data): Builder {
-                        if ($data['age_range']) {
-                            [$min, $max] = explode('-', $data['age_range']);
-                            $currentDate = now();
-                            $minDate = $currentDate->copy()->subYears($max);
-                            $maxDate = $currentDate->copy()->subYears($min - 1);
-                            return $query->whereBetween('students.birthday', [$minDate, $maxDate]);
-                        }
-                        return $query;
-                    })
-                    ->label('Age'),
-
-                Tables\Filters\DateFilter::make('birthday')
-                    ->label('Birthday'),
             ])
             ->actions([
                 // The Edit Action
