@@ -19,9 +19,9 @@ class smsai
     public function ask(string $comment): ?string
     {
         $prompt = <<<EOT
-                Generate a professional SMS for this content:
+                Generate a summary this content:
                 "$comment"
-                Only return the SMS.
+                Only return the summary.
             EOT;
 
 
