@@ -17,31 +17,39 @@ class smsai
         $this->model = AiModel::first()->model;
     }
 
-    public function ask(string $comment): ?string
-    {
-        $prompt = <<<EOT
-                Summarize the following SMS content into a concise, professional summary suitable for an SMS response. Focus on capturing key details while ensuring brevity (aim for under 160 characters). Preserve abbreviations where they enhance conciseness, handle emojis appropriately (e.g., retain or describe if necessary), and maintain the original language for multilingual inputs.
+public function ask(string $comment): ?string
+{
+    $prompt = <<<EOT
+Summarize the following SMS content into a concise, professional SMS under 160 characters. Preserve abbreviations. Return only the summary.
 
-                Content: "$comment"
+Content: "$comment"
+EOT;
 
-                Return only the summarized SMS text.
-            EOT;
+    Log::info('SMS AI Input: ' . $comment);
 
-        Log::info('SMS AI Input: ' . $comment);
+    $response = Http::withHeaders([
+        'Authorization' => 'Bearer ' . $this->apiKey,
+        'Content-Type' => 'application/json',
+        'HTTP-Referer' => url('/'),
+        'X-Title' => 'SMS Summarizer',
+    ])->post($this->apiUrl, [
+        'model' => $this->model,
+        'messages' => [
+            ['role' => 'user', 'content' => $prompt],
+        ],
+    ]);
 
-        $response = Http::withHeaders([
-            'Content-Type'  => 'application/json',
-            'Authorization' => 'Bearer ' . $this->apiKey,
-        ])->post($this->apiUrl, [
-            'model' => $this->model,
-            'messages' => [
-                ['role' => 'user', 'content' => $prompt],
-            ],
-        ]);
-        dd($response->json());
-        $content = trim($response->json('choices.0.message.content')) ?? 'No response from AI.';
-        Log::info('SMS AI Output: ' . $content);
-
-        return $content;
+    if ($response->failed()) {
+        Log::error('SMS AI Error: ' . $response->body());
+        return 'AI processing error.';
     }
+    dd($response->json());
+
+    $content = trim($response->json('choices.0.message.content') ?? 'No response.');
+
+    Log::info('SMS AI Output: ' . $content);
+
+    return $content;
+}
+
 }
