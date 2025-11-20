@@ -144,6 +144,15 @@ class Announcements extends Component implements HasForms, HasActions, HasTable
                 Checkbox::make('is_sms')
                     ->label(fn($state): string => $state ? 'SMS is Enabled' : 'Enable SMS Notification')
                     ->reactive()
+                    ->afterStateUpdated(function ($state) {
+                        Notification::make()
+                            ->title($state ? 'SMS Notifications Enabled' : 'SMS Notifications Disabled')
+                            ->body($state
+                                ? 'You’ll now receive updates via SMS.'
+                                : 'SMS alerts have been turned off.')
+                            ->success()
+                            ->send();
+                    })
                     ->live(),
                 Textarea::make('sms_message')
                     ->label('SMS Message Content')
