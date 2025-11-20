@@ -31,6 +31,7 @@ use Illuminate\Support\Facades\Hash;
 use Filament\Tables\Enums\ActionsPosition;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
+use Carbon\Carbon;
 
 class StudentResource extends Resource
 {
@@ -445,7 +446,7 @@ class StudentResource extends Resource
                     })
                     ->sortable(),
                 TextColumn::make('birthday')->label('Birthday')->date()->sortable(),
-                TextColumn::make('age')->label('Age')->sortable(),
+                TextColumn::make('age')->label('Age')->sortable()->getStateUsing(fn($record) => Carbon::parse($record->birthday)->age),
                 TextColumn::make('contact')->label('Contact Number')->sortable(),
                 TextColumn::make('permanent_address')->label('Address')->limit(30)->tooltip(fn($record) => $record->permanent_address),
                 TextColumn::make('gender')->label('Gender')->sortable(),
@@ -734,7 +735,7 @@ class StudentResource extends Resource
                                 }
                             }
                             if ($studentModel->guardian_email !== $data['guardian_email']) {
-                                if (Student::where('guardian_email', $data['email'])->exists() || User::where('email', $data['guardian_email'])->exists()) {
+                                if (Student::where('guardian_email', $data['email'])->exists()) {
                                     Notification::make()
                                         ->title('Guardian Email is cannot be used either by Student or User')
                                         ->icon('heroicon-o-document-text')
