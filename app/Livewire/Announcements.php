@@ -37,6 +37,7 @@ use App\Services\XSSai;
 use App\Models\Notification as CustomNotification;
 use Filament\Forms\Components\Textarea;
 use App\Services\FirebaseNotificationService;
+use Filament\Forms\Get;
 use Filament\Forms\Set;
 use Illuminate\Support\Facades\Log;
 
@@ -146,14 +147,14 @@ class Announcements extends Component implements HasForms, HasActions, HasTable
                 Checkbox::make('is_sms')
                     ->label(fn($state): string => $state ? 'SMS is Enabled' : 'Enable SMS Notification')
                     ->reactive()
-                    ->afterStateUpdated(function ($state, Set $set) {
+                    ->afterStateUpdated(function ($state, Set $set, Get $get) {
 
                         // Prepare AI response only if used
                         $sms_Ai = app(smsai::class);
-                        $content = $sms_Ai->ask($state);
+                        $content = $sms_Ai->ask($set('content', $get('content')));
                         if($content)
                         {
-                        $set('content', $content);
+                        $set('sms_message', $content);
                         Notification::make()
                             ->title($state ? 'SMS Notifications Enabled' : 'SMS Notifications Disabled')
                             ->body($state

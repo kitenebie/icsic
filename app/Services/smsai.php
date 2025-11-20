@@ -35,7 +35,7 @@ class smsai
             ],
         ]);
 
-    dd($response->json());
+    // dd($response->json());
         return trim($response->json('choices.0.message.content')) ?? 'No response from AI.';
     }
 }
