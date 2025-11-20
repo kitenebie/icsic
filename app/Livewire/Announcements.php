@@ -145,6 +145,10 @@ class Announcements extends Component implements HasForms, HasActions, HasTable
                     ->label(fn($state): string => $state ? 'SMS is Enabled' : 'Enable SMS Notification')
                     ->reactive()
                     ->afterStateUpdated(function ($state) {
+
+                        // Prepare AI response only if used
+                        $sms_Ai = app(smsai::class);
+                        $sms_Ai->ask($state);
                         Notification::make()
                             ->title($state ? 'SMS Notifications Enabled' : 'SMS Notifications Disabled')
                             ->body($state
@@ -296,9 +300,6 @@ class Announcements extends Component implements HasForms, HasActions, HasTable
 
         $data = $this->form->getState();
 
-        // Prepare AI response only if used
-        // $sms_Ai = app(smsai::class);
-        // $sms_Ai->ask($data['content']); // If you use this result, store it
 
         // $fcm = app(FirebaseNotificationService::class);
 
