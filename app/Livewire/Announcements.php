@@ -37,6 +37,8 @@ use App\Services\XSSai;
 use App\Models\Notification as CustomNotification;
 use Filament\Forms\Components\Textarea;
 use App\Services\FirebaseNotificationService;
+use Filament\Forms\Set;
+use Illuminate\Support\Facades\Log;
 
 class Announcements extends Component implements HasForms, HasActions, HasTable
 {
@@ -144,11 +146,14 @@ class Announcements extends Component implements HasForms, HasActions, HasTable
                 Checkbox::make('is_sms')
                     ->label(fn($state): string => $state ? 'SMS is Enabled' : 'Enable SMS Notification')
                     ->reactive()
-                    ->afterStateUpdated(function ($state) {
+                    ->afterStateUpdated(function ($state, Set $set) {
 
                         // Prepare AI response only if used
                         $sms_Ai = app(smsai::class);
-                        $sms_Ai->ask($state);
+                        $content = $sms_Ai->ask($state);
+                        if($content)
+                        {
+                        $set('content', $content);
                         Notification::make()
                             ->title($state ? 'SMS Notifications Enabled' : 'SMS Notifications Disabled')
                             ->body($state
@@ -156,6 +161,7 @@ class Announcements extends Component implements HasForms, HasActions, HasTable
                                 : 'SMS alerts have been turned off.')
                             ->success()
                             ->send();
+                        }
                     })
                     ->live(),
                 Textarea::make('sms_message')
@@ -395,3 +401,4 @@ class Announcements extends Component implements HasForms, HasActions, HasTable
         return view('livewire.announcements');
     }
 }
+
