@@ -38,7 +38,7 @@ class smsai
                 ['role' => 'user', 'content' => $prompt],
             ],
         ]);
-
+        dd($response->json());
         $content = trim($response->json('choices.0.message.content')) ?? 'No response from AI.';
         Log::info('SMS AI Output: ' . $content);
 
