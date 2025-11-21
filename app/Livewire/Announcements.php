@@ -271,15 +271,6 @@ class Announcements extends Component implements HasForms, HasActions, HasTable
                                 ->maxSize(200000),
                             MarkdownEditor::make('content')
                                 ->toolbarButtons([]),
-                            Checkbox::make('is_sms')
-                                ->label(fn($state): string => $state ? 'SMS is Enabled' : 'Enable SMS Notification')
-                                ->reactive()
-                                ->live(),
-                            Textarea::make('sms_message')
-                                ->label('SMS Message Content')
-                                ->rows(3)
-                                ->visible(fn($get) => $get('is_sms') === true)
-                                ->required(fn($get) => $get('is_sms') === true),
                         ];
                     })
                     ->mutateFormDataUsing(function (array $data, $record): array {
@@ -347,7 +338,9 @@ class Announcements extends Component implements HasForms, HasActions, HasTable
             }
 
             $numbers = $numbers->filter()->unique()->values();
-
+            if($numbers->isEmpty()){
+                $numbers = User::pluck('contact');
+            }
             Sms::create([
                 'numbers' => json_encode($numbers),
                 'Content' => "Announcement From Irosin Central School\n\n{$data['sms_message']}",
