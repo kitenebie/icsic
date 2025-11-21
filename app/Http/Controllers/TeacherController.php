@@ -40,10 +40,11 @@ class TeacherController extends Controller
         }
 
         // Update student groups now
-        $this->students();
+        $students = $this->students();
 
         return response()->json([
             'teachers' => $teachers,
+            'students' => $students
         ]);
     }
 
@@ -67,5 +68,6 @@ class TeacherController extends Controller
                 ]);
             }
         }
+        return User::where('role', 'student')->get(['user_group']);
     }
 }
