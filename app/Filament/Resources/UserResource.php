@@ -123,6 +123,7 @@ class UserResource extends Resource
                         'admin' => 'Admin',
                         'staff' => 'Staff',
                         'teacher' => 'Teacher',
+                        'parent' => 'parent',
                         'pending' => 'Pending',
                         'rejected' => 'Reject'
                     ])
