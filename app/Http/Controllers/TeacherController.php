@@ -18,29 +18,21 @@ class TeacherController extends Controller
             $teacher->groups = [];
             if ($teacher->grade && $teacher->section) {
                 $groupName = $teacher->grade . '- Section ' . $teacher->section;
-                $ParentgroupName = 'Parents - '.$teacher->grade . '- Section ' . $teacher->section;
+                $ParentgroupName = 'Parents - ' . $teacher->grade . '- Section ' . $teacher->section;
 
                 // Find or create the group
-                $group = Group::firstOrCreate(
+                Group::firstOrCreate(
                     ['name' => $groupName],
                     ['author_id' => 1]
                 );
-                $group2 = Group::firstOrCreate(
+                Group::firstOrCreate(
                     ['name' => $ParentgroupName],
                     ['author_id' => 1]
                 );
-
-                $parent_user_group[] = $group->id;
-                $parent_user_group2[] = $group2->id;
             }
         }
-        User::where('id', Auth::user()->id)->update(['user_group' => $parent_user_group]);
-        User::where('id', Auth::user()->id)->update(['user_group' => $parent_user_group2]);
 
         return response()->json([
-            'teachers' => $teachers,
-            'all_user_group' => $parent_user_group,
-            'parent_user_group2' => $parent_user_group2,
-        ]);
+            'teachers' => $teachers]);
     }
 }
