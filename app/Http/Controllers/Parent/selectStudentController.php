@@ -24,8 +24,8 @@ class selectStudentController extends Controller
             $studentInfo = Student::where('lrn', $child->lrn)->first();
 
             if ($studentInfo) {
-                $groupName = $studentInfo->grade . '- Section ' . $studentInfo->section;
-                $ParentgroupName = 'Parents - '.$studentInfo->grade . '- Section ' . $studentInfo->section;
+                $groupName = $studentInfo->grade . ($studentInfo->section ?? '- Section ' . $studentInfo->section);
+                $ParentgroupName = 'Parents - '.$studentInfo->grade . ($studentInfo->section ?? '- Section ' . $studentInfo->section);
 
                 // Find or create the group
                 $group = Group::firstOrCreate(

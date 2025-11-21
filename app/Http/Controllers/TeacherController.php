@@ -17,10 +17,10 @@ class TeacherController extends Controller
 
         foreach ($teachers as $teacher) {
 
-            if ($teacher->grade && $teacher->section) {
+            if ($teacher->grade || $teacher->section) {
 
-                $groupName = $teacher->grade . '- Section ' . $teacher->section;
-                $parentGroupName = 'Parents - ' . $teacher->grade . '- Section ' . $teacher->section;
+                $groupName = $teacher->grade . ($teacher->section ?? '- Section ' . $teacher->section);
+                $parentGroupName = 'Parents - ' . $teacher->grade . ($teacher->section ?? '- Section ' . $teacher->section);
 
                 $group = Group::firstOrCreate(
                     ['name' => $groupName],
@@ -54,9 +54,9 @@ class TeacherController extends Controller
 
         foreach ($students as $student) {
 
-            if ($student->student->grade && $student->student->section) {
+            if ($student->student->grade || $student->student->section) {
 
-                $groupName = $student->student->grade . '- Section ' . $student->student->section;
+                $groupName = $student->student->grade . ($teacher->section ?? '- Section ' . $student->student->section);
 
                 $group = Group::firstOrCreate(
                     ['name' => $groupName],
