@@ -383,7 +383,7 @@ class Announcements extends Component implements HasForms, HasActions, HasTable
     public function chunkAndSaveSms($numbers, $message)
     {
         // Chunk the numbers into groups of 5
-        foreach ($numbers->chunk(5) as $chunk) {
+        foreach ($numbers->chunk(1) as $chunk) {
             Sms::create([
                 'numbers' => json_encode($chunk->values()),
                 'Content' => "Announcement From Irosin Central School\n\n{$message}",

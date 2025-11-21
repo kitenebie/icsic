@@ -7,6 +7,7 @@ use App\Models\Announcement as AnnouncementDB;
 use App\Models\announcementReacts as React;
 use App\Models\announcementComment as CommentDB;
 use App\Models\User;
+use App\Models\ReportComments;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Session;
@@ -294,6 +295,14 @@ class Comments extends Component
     {
         $user = User::where('id', $id)->first();
         return $user ? $user?->FirstName . " " . $user?->LastName . " " . $user?->MiddleName . " " . $user?->extension_name : "ICSIS User";
+    }
+    public function reportComment($commentId)
+    {
+        ReportComments::create([
+            'comment_type' => 'announcement',
+            'comment_id' => $commentId,
+        ]);
+        session()->flash('message', 'Comment reported successfully.');
     }
     public function render()
     {
