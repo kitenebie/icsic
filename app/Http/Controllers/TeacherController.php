@@ -66,9 +66,6 @@ public function index()
 
                 $student->groups = [$group->id];
             }
-
-            // Attach students in JSON
-            $teacher->students = $students;
         }
 
         $teacher->groups = $teacherGroups;
