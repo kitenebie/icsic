@@ -2,18 +2,16 @@
 
 namespace App\Services;
 
-use App\Models\AiModel;
 use Illuminate\Support\Facades\Http;
 
 class OpenRouterService
 {
     protected string $apiUrl = 'https://openrouter.ai/api/v1/chat/completions';
-    protected string $apiKey, $model;
+    protected string $apiKey;
 
     public function __construct()
     {
         $this->apiKey = config('services.openrouter.key');
-        $this->model = AiModel::first()->model;
     }
 
     public function ask(string $comment): ?string
@@ -22,14 +20,25 @@ class OpenRouterService
             'Content-Type' => 'application/json',
             'Authorization' => 'Bearer ' . $this->apiKey,
         ])->post($this->apiUrl, [
-            'model' => $this->model,
+            'model' => 'deepseek/deepseek-r1-0528:free',
             'messages' => [
                 ['role' => 'user', 'content' => <<<EOT
-You are an offensive language detector. Check the comment for rude, offensive, or toxic words in any language. If found, reply 'yes' followed by the words in order. If not, reply 'no'. Consider slurs, insults, altered spellings, obfuscations, repeated characters, and insulting emojis/symbols.
-If offensive words exist, reply exactly: yes *word1* *word2* ...
-USER COMMENT: "$comment"
-EOT
-                ],
+                    I will give you a comment. Your task is to analyze whether it contains rude or offensive language in **any language** (English, Tagalog, etc.).
+
+                    If there are any offensive words, reply exactly with "yes" followed by the list of those words highlighted with asterisks.  
+                    If there are no offensive words, reply exactly with "no".
+                    ⚠️ Consider cases like:
+                    - Words intentionally altered (e.g. "bvbv" for "bubu", "obob" for "bobo")
+                    - Abbreviations or phonetic spellings (e.g. "tnga" for "tanga")
+                    - Toxic meanings even if words appear harmless in isolation
+
+                    Format example:
+                    yes: *word1*, *word2*
+                    or
+                    no
+
+                    Comment: "$comment"
+                EOT],
             ],
         ]);
 
