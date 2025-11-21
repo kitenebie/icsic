@@ -103,7 +103,7 @@ class UserResource extends Resource
                     ->placeholder('Enter ext name'),
                 TextInput::make('contact')
                     ->required()
-                    ->maxLength(255)
+                    ->maxLength(11)
                     ->columnSpanFull()
                     ->placeholder('Enter contact number'),
                 TextInput::make('email')
@@ -130,7 +130,7 @@ class UserResource extends Resource
                     ->default('student')
                     ->required()
                     ->afterStateUpdated(function (Set $set) {
-                            $set('rejection_reason', ' ');
+                        $set('rejection_reason', ' ');
                     })
                     ->columnSpanFull()
                     ->placeholder('Select user role')
@@ -234,7 +234,8 @@ class UserResource extends Resource
                 TextColumn::make('FirstName'),
                 TextColumn::make('MiddleName'),
                 TextColumn::make('extension_name'),
-                TextColumn::make('contact'),
+                TextColumn::make('contact')
+                    ->limit(11),
                 TextColumn::make('grade'),
                 TextColumn::make('section'),
                 TextColumn::make('contact'),

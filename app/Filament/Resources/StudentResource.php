@@ -600,6 +600,7 @@ class StudentResource extends Resource
                                 TextInput::make('contact')
                                     ->label('Contact Number')
                                     ->prefixIcon('heroicon-m-phone')
+                                    ->maxLength(11)
                                     ->tel()
                                     ->telRegex('/^[+]*[(]{0,1}[0-9]{1,4}[)]{0,1}[-\s\.\/0-9]*$/')
                                     ->prefixIcon('heroicon-m-chat-bubble-left-ellipsis')->required(true),
