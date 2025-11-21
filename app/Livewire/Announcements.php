@@ -328,10 +328,10 @@ class Announcements extends Component implements HasForms, HasActions, HasTable
 
             if ($isPublic) {
                 $numbers = User::pluck('contact');
-                dd('isPublic', $numbers);
+                // dd('isPublic', $numbers);
             }
             if (!empty($users)) {
-                dd('users', $users);
+                // dd('users', $users);
                 $numbers = User::whereIn('id', $users)->pluck('contact');
             }
 
@@ -343,7 +343,7 @@ class Announcements extends Component implements HasForms, HasActions, HasTable
                 })->pluck('contact');
 
                 // Debug
-                dd('groups', $groupContacts, $groups);
+                // dd('groups', $groupContacts, $groups);
 
                 $numbers = $numbers->merge($groupContacts);
             }
