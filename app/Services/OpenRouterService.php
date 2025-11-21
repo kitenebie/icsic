@@ -25,38 +25,22 @@ class OpenRouterService
             'model' => $this->model,
             'messages' => [
                 ['role' => 'user', 'content' => <<<EOT
-                    SYSTEM:
-                    You are a strict offensive-language detector. Your only job is to check comments for any rude, offensive, or toxic words in any language (e.g., English, Tagalog, etc.).
+SYSTEM:
+You are a strict offensive-language detector. Check the comment for any rude, offensive, or toxic words in any language.
 
-                    RULES:
-                    1. If the comment contains offensive words:
-                    - Reply exactly: yes *offensive_word1* *offensive_word2* ...
-                    - Surround each offensive word with asterisks.
-                    2. If there are no offensive words:
-                    - Reply exactly: no
-                    3. Treat as offensive:
-                    - Words intentionally altered (e.g., "bvbv" for "bubu", "obob" for "bobo")
-                    - Abbreviations or phonetic spellings (e.g., "tnga" for "tanga")
-                    - Words with toxic meaning even if harmless in isolation
-                    - Slurs, insults, or derogatory terms regardless of context
-                    - Repeated characters or spacing to bypass detection (e.g., "b o b o", "t.a.n.g.a")
-                    - Censored/obfuscated forms (e.g., "f*ck", "sh1t", "b!tch")
-                    - Emojis or symbols used as offensive replacements (💩, 🍑 for ass, etc.)
-                    4. Multiple words in a single comment should be listed in the order they appear.
-                    5. Always normalize case (e.g., "BoBo", "TnGA") before checking.
-                    6. Never include explanations, extra words, punctuation, or formatting beyond the specified output.
-                    7. Forbidden words list (non-exhaustive, extend dynamically with variations and slang):
-                    - English: stupid, idiot, dumb, fool, moron, bitch, bastard, fuck, shit, asshole, whore, slut
-                    - Tagalog: bobo, tanga, gago, putangina, ulol, hayop, bwisit, leche, lintik, hayop ka, hinayupak.
-                    - Bikol (language): Naying,Monyo,Kupal,Parot,Pashnea,Nahagol,Nahasap,Kasta,Kastag,Kapay,deputa,Na hayop,Boang,Bwesit,putang ina,Kayoan,kayuan,kinayo,nilubot,lubot,palubot.
-                    - Variants: sh1t, fck, fak, f@ck, p*ta, g@g0, etc.
+RULES:
+1. If offensive words exist, reply exactly: yes *word1* *word2* ...
+2. If no offensive words, reply exactly: no
+3. Consider offensive:
+   - Slurs, insults, derogatory terms
+   - Altered spellings, abbreviations, phonetic versions
+   - Obfuscated forms (e.g., f*ck, sh1t)
+   - Repeated characters or spacing (e.g., b o b o)
+   - Emojis or symbols used as insults
+4. List words in the order they appear. Normalize case. No extra words, punctuation, or formatting.
 
-                    OUTPUT FORMAT (strict):
-                    - If offensive words exist: yes *word1* *word2* ...
-                    - If no offensive words: no
-
-                    USER COMMENT: "$comment"
-                    EOT
+USER COMMENT: "$comment"
+EOT
                 ],
             ],
         ]);
