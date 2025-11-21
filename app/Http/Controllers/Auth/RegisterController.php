@@ -24,8 +24,8 @@ class RegisterController extends Controller
                 'extension_name'  => ['nullable', 'string', 'max:255'],
                 'contact'         => ['nullable','digits:11'],
                 'email'           => ['required', 'string', 'lowercase', 'email', 'max:255', 'unique:' . User::class],
-                'front_id'        => ['nullable', 'image', 'mimes:jpeg,png,jpg,gif', 'max:2048'],
-                'back_id'         => ['nullable', 'image', 'mimes:jpeg,png,jpg,gif', 'max:2048'],
+                'front_id'        => ['required', 'image', 'mimes:jpeg,png,jpg,gif', 'max:2048'],
+                'back_id'         => ['required', 'image', 'mimes:jpeg,png,jpg,gif', 'max:2048'],
                 'profile_image_data' => ['nullable', 'string'],
                 'profile_picture' => ['nullable', 'string'],
             ]);
