@@ -329,17 +329,25 @@ class Announcements extends Component implements HasForms, HasActions, HasTable
             if ($isPublic) {
                 $numbers = User::pluck('contact');
                 dd('isPublic', $numbers);
-            } 
+            }
             if (!empty($users)) {
                 dd('users', $users);
                 $numbers = User::whereIn('id', $users)->pluck('contact');
             }
 
             if (!empty($groups)) {
-                $groupContacts = User::whereIn('user_group', $groups)->pluck('contact');
+                $groupContacts = User::where(function ($q) use ($groups) {
+                    foreach ($groups as $g) {
+                        $q->orWhereJsonContains('user_group', (int) $g);
+                    }
+                })->pluck('contact');
+
+                // Debug
                 dd('groups', $groupContacts, $groups);
+
                 $numbers = $numbers->merge($groupContacts);
             }
+
 
             $numbers = $numbers->filter()->unique()->values();
 
