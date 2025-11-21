@@ -6,6 +6,7 @@ use Livewire\Component;
 use App\Models\NewsPage as NewsDB;
 use App\Models\newsComment as NewsCommentModel;
 use App\Models\User;
+use App\Models\ReportComments;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
@@ -169,6 +170,14 @@ class View extends Component
         $this->comment_type = $type;
         $this->mentionedUser = $this->user_name($userComment);
         $this->ReplycommentInput = "Reply to: @" . $this->mentionedUser  . " - " . $comment;
+    }
+    public function reportComment($commentId)
+    {
+        ReportComments::create([
+            'comment_type' => 'news',
+            'comment_id' => $commentId,
+        ]);
+        session()->flash('message', 'Comment reported successfully.');
     }
     public function render()
     {
