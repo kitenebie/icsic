@@ -17,7 +17,11 @@ class ReportCommentsResource extends Resource
 {
     protected static ?string $model = ReportComments::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
+    public static function getNavigationGroup(): ?string
+    {
+        return 'Comments Management';
+    }
+    protected static ?string $navigationIcon = 'heroicon-o-exclamation-triangle';
 
     public static function form(Form $form): Form
     {
