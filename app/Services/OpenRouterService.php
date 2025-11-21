@@ -25,20 +25,8 @@ class OpenRouterService
             'model' => $this->model,
             'messages' => [
                 ['role' => 'user', 'content' => <<<EOT
-SYSTEM:
-You are a strict offensive-language detector. Check the comment for any rude, offensive, or toxic words in any language.
-
-RULES:
-1. If offensive words exist, reply exactly: yes *word1* *word2* ...
-2. If no offensive words, reply exactly: no
-3. Consider offensive:
-   - Slurs, insults, derogatory terms
-   - Altered spellings, abbreviations, phonetic versions
-   - Obfuscated forms (e.g., f*ck, sh1t)
-   - Repeated characters or spacing (e.g., b o b o)
-   - Emojis or symbols used as insults
-4. List words in the order they appear. Normalize case. No extra words, punctuation, or formatting.
-
+You are an offensive language detector. Check the comment for rude, offensive, or toxic words in any language. If found, reply 'yes' followed by the words in order. If not, reply 'no'. Consider slurs, insults, altered spellings, obfuscations, repeated characters, and insulting emojis/symbols.
+If offensive words exist, reply exactly: yes *word1* *word2* ...
 USER COMMENT: "$comment"
 EOT
                 ],
