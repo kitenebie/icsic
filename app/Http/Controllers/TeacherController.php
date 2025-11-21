@@ -54,9 +54,9 @@ class TeacherController extends Controller
 
         foreach ($students as $student) {
 
-            if ($student->grade && $student->section) {
+            if ($student->student->grade && $student->student->section) {
 
-                $groupName = $student->grade . '- Section ' . $student->section;
+                $groupName = $student->student->grade . '- Section ' . $student->student->section;
 
                 $group = Group::firstOrCreate(
                     ['name' => $groupName],
