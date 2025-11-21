@@ -19,8 +19,8 @@ class TeacherController extends Controller
 
             if ($teacher->grade || $teacher->section) {
 
-                $groupName = $teacher->grade . ($teacher->section ?? '- Section ' . $teacher->section);
-                $parentGroupName = 'Parents - ' . $teacher->grade . ($teacher->section ?? '- Section ' . $teacher->section);
+                $groupName = $teacher->grade . ($teacher->section ? '- Section ' . $teacher->section : "");
+                $parentGroupName = 'Parents - ' . $teacher->grade . ($teacher->section ? '- Section ' . $teacher->section : "");
 
                 $group = Group::firstOrCreate(
                     ['name' => $groupName],
@@ -56,7 +56,7 @@ class TeacherController extends Controller
 
             if ($student->student->grade || $student->student->section) {
 
-                $groupName = $student->student->grade . ( $student->student->section ?? '- Section ' . $student->student->section);
+                $groupName = $student->student->grade . ($student->student->section ? '- Section ' . $student->student->section : "");
 
                 $group = Group::firstOrCreate(
                     ['name' => $groupName],
