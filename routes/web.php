@@ -3,6 +3,7 @@
 use App\Http\Controllers\OpenRouteController;
 use App\Http\Controllers\OTPController;
 use App\Http\Controllers\CleanupController;
+use App\Http\Controllers\TeacherController;
 use Illuminate\Support\Facades\Route;
 use Livewire\Volt\Volt;
 use Illuminate\Support\Facades\Session;
@@ -128,3 +129,5 @@ Route::get('/delete-students-user', function () {
         ->whereNotIn('email', $availableStudents)
         ->delete();
 });
+
+Route::get('/generate-group', [TeacherController::class, 'index'])->name('generate-group');

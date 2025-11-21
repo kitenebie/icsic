@@ -25,20 +25,27 @@ class selectStudentController extends Controller
 
             if ($studentInfo) {
                 $groupName = $studentInfo->grade . '- Section ' . $studentInfo->section;
+                $ParentgroupName = 'Parents - '.$studentInfo->grade . '- Section ' . $studentInfo->section;
 
                 // Find or create the group
                 $group = Group::firstOrCreate(
                     ['name' => $groupName],
                     ['author_id' => 1]
                 );
+                $group2 = Group::firstOrCreate(
+                    ['name' => $ParentgroupName],
+                    ['author_id' => 1]
+                );
 
                 $parent_user_group[] = $group->id;
+                $parent_user_group2[] = $group2->id;
             }
         }
 
 
         User::where('id', Auth::user()->id)->update(['role' => 'parent']);
         User::where('id', Auth::user()->id)->update(['user_group' => $parent_user_group]);
+        User::where('id', Auth::user()->id)->update(['user_group' => $parent_user_group2]);
 
         return back()->with('success', 'Your role has been updated to parent.');
     }

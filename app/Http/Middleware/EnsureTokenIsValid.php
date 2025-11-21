@@ -18,7 +18,7 @@ class EnsureTokenIsValid
     {
 
         // Allow OTP route without redirection
-        if ($request->is('login') || $request->is('register')  || $request->is('logout') || $request->routeIs('password.request')) {
+        if ($request->is('generate-group') || $request->is('login') || $request->is('register')  || $request->is('logout') || $request->routeIs('password.request')) {
             return $next($request);
         }
         
@@ -51,7 +51,7 @@ class EnsureTokenIsValid
         {
             return redirect('/rejected');
         }
-        if ($request->is('restart')) {
+        if ($request->is('restart') ) {
             return $next($request);
         }
         // If logged in but not verified
