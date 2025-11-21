@@ -298,7 +298,7 @@ class Comments extends Component
     }
     public function reportComment($commentId)
     {
-        ReportComments::create([
+        ReportComments::updateOrCreate([
             'comment_type' => 'announcement',
             'comment_id' => $commentId,
         ]);

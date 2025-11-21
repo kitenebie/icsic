@@ -173,7 +173,7 @@ class View extends Component
     }
     public function reportComment($commentId)
     {
-        ReportComments::create([
+        ReportComments::updateOrCreate([
             'comment_type' => 'news',
             'comment_id' => $commentId,
         ]);
