@@ -115,9 +115,9 @@
             </div>
         @endif
 
-        {{-- <a href="/about"
+        <a href="/about"
             class="{{ request()->routeIs('about') ? 'font-semibold text-brown-800 block' : 'hover:text-brown-800 block' }}">About
-            Us</a> --}}
+            Us</a>
 
         @if (!auth()->check())
             <div class="flex mt-4">
