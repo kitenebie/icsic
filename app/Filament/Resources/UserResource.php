@@ -176,17 +176,20 @@ class UserResource extends Resource
                     ->placeholder('Select user Status'),
                 FileUpload::make('front_id')
                     ->label('Front ID')
+                    ->required()
                     ->image()
                     ->directory('ids')
                     ->columnSpanFull(),
                 FileUpload::make('back_id')
                     ->label('Back ID')
+                    ->required()
                     ->image()
                     ->directory('ids')
                     ->columnSpanFull(),
                 FileUpload::make('profile_picture')
                     ->label('Profile Image')
                     ->image()
+                    ->required()
                     ->directory('profiles')
                     ->columnSpanFull(),
                 Select::make('user_group')

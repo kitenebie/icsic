@@ -255,7 +255,7 @@ class StudentResource extends Resource
                                 TextInput::make('email')->email()
                                     ->label('Email')->unique()
                                     ->prefixIcon('heroicon-m-envelope')
-                                    ->required(false),
+                                    ->required(true),
                             ])
                             ->columns([
                                 'sm' => 1,
@@ -285,7 +285,7 @@ class StudentResource extends Resource
 
                                 TextInput::make('guardian_email')->email()
                                     ->label('Guardian’s Email Address')
-                                    ->prefixIcon('heroicon-m-envelope')->required(false),
+                                    ->prefixIcon('heroicon-m-envelope')->required(true),
                             ])
                             ->columns([
                                 'sm' => 1,
@@ -560,7 +560,7 @@ class StudentResource extends Resource
                                     ->directory('students/profiles')
                                     ->preserveFilenames()
                                     ->columnSpanFull()
-                                    ->required(false),
+                                    ->required(true),
 
                                 TextInput::make('lastname')
                                     ->label('Last Name')
@@ -650,7 +650,7 @@ class StudentResource extends Resource
                                     ->email()
                                     ->label('Guardian’s Email Address')
                                     ->prefixIcon('heroicon-m-envelope')
-                                    ->required(false),
+                                    ->required(true),
                             ])
                             ->columns(4),
 
