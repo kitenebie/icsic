@@ -152,13 +152,12 @@ class Announcements extends Component implements HasForms, HasActions, HasTable
                         // Prepare AI response only if used
                         $sms_Ai = app(smsai::class);
                         $content = $sms_Ai->ask($set('content', $get('content')));
-                        if($content)
-                        {
-                        $set('sms_message', $content);
-                        Notification::make()
-                            ->title('Successfully Generaated SMS Content')
-                            ->success()
-                            ->send();
+                        if ($content) {
+                            $set('sms_message', $content);
+                            Notification::make()
+                                ->title('Successfully Generaated SMS Content')
+                                ->success()
+                                ->send();
                         }
                     })
                     ->live(),
@@ -324,6 +323,7 @@ class Announcements extends Component implements HasForms, HasActions, HasTable
 
         // Fetch SMS numbers only when needed
         if (!empty($data['is_sms']) && !empty($data['sms_message'])) {
+
             $numbers = collect();
 
             if ($isPublic) {
@@ -338,15 +338,15 @@ class Announcements extends Component implements HasForms, HasActions, HasTable
             }
 
             $numbers = $numbers->filter()->unique()->values();
-            if($numbers->isEmpty()){
+
+            if ($numbers->isEmpty()) {
                 $numbers = User::pluck('contact');
             }
-            Sms::create([
-                'numbers' => json_encode($numbers),
-                'Content' => "Announcement From Irosin Central School\n\n{$data['sms_message']}",
-                'status' => 'created',
-            ]);
+
+            // Call chunking function
+            $this->chunkAndSaveSms($numbers, $data['sms_message']);
         }
+
 
         // Cache user to reduce repeat calls
         $auth = Auth::user();
@@ -380,6 +380,17 @@ class Announcements extends Component implements HasForms, HasActions, HasTable
     }
 
 
+    public function chunkAndSaveSms($numbers, $message)
+    {
+        // Chunk the numbers into groups of 5
+        foreach ($numbers->chunk(5) as $chunk) {
+            Sms::create([
+                'numbers' => json_encode($chunk->values()),
+                'Content' => "Announcement From Irosin Central School\n\n{$message}",
+                'status' => 'created',
+            ]);
+        }
+    }
 
     public function readMore($id)
     {
@@ -392,4 +403,3 @@ class Announcements extends Component implements HasForms, HasActions, HasTable
         return view('livewire.announcements');
     }
 }
-
