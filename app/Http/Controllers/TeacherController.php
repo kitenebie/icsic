@@ -5,23 +5,24 @@ namespace App\Http\Controllers;
 use App\Models\Group;
 use App\Models\User;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
 
 class TeacherController extends Controller
 {
     public function index()
     {
         $teachers = User::where('role', 'teacher')
-            ->select('id', 'grade', 'section')
+            ->select('id', 'grade', 'section', 'user_group', 'updated_at')
             ->get();
 
         foreach ($teachers as $teacher) {
 
             if ($teacher->grade && $teacher->section) {
 
-                $groupName = $teacher->grade . '- Section ' . $teacher->section;
-                $parentGroupName = 'Parents - ' . $teacher->grade . '- Section ' . $teacher->section;
+                // 💯 Normalize names
+                $groupName = $this->formatGroupName($teacher->grade, $teacher->section);
+                $parentGroupName = 'Parents - ' . $groupName;
 
+                // Create or fetch groups
                 $group = Group::firstOrCreate(
                     ['name' => $groupName],
                     ['author_id' => 1]
@@ -32,20 +33,33 @@ class TeacherController extends Controller
                     ['author_id' => 1]
                 );
 
-                // Teacher groups
+                // Assign teacher groups
                 $teacher->update([
                     'user_group' => [$group->id, $group2->id]
                 ]);
             }
         }
 
-        // Update student groups now
+        // Assign students to groups
         $students = $this->students();
 
         return response()->json([
             'teachers' => $teachers,
             'students' => $students
         ]);
+    }
+
+    // 🔧 Normalizes grade + section to match EXACT format
+    private function formatGroupName($grade, $section)
+    {
+        $grade = trim($grade);
+
+        // Normalize students like teachers ("6" → "Grade 6")
+        if (!str_contains($grade, 'Grade')) {
+            $grade = 'Grade ' . $grade;
+        }
+
+        return $grade . '- Section ' . trim($section);
     }
 
     public function students()
@@ -56,18 +70,21 @@ class TeacherController extends Controller
 
             if ($student->grade && $student->section) {
 
-                $groupName = $student->grade . '- Section ' . $student->section;
+                // Same formatting used for teachers
+                $groupName = $this->formatGroupName($student->grade, $student->section);
 
                 $group = Group::firstOrCreate(
                     ['name' => $groupName],
                     ['author_id' => 1]
                 );
 
+                // Assign student to the group
                 $student->update([
                     'user_group' => [$group->id]
                 ]);
             }
         }
+
         return User::where('role', 'student')->get(['user_group']);
     }
 }
