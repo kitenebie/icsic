@@ -166,6 +166,11 @@
                                     class="text-brown-500 font-semibold hover:underline focus:outline-none">
                                     Reply
                                 </a>
+                                <a role="button" href="#report"
+                                    wire:click='reportComment({{ $main_comment->id }})'
+                                    class="text-red-500 font-semibold hover:underline focus:outline-none">
+                                    Report
+                                </a>
                             </div>
 
                             <!-- Reply -->
@@ -194,6 +199,11 @@
                                             wire:click='reply("{{ $reply->commentatorId }}", "reply", "{{ $main_comment->id }}", "{{ $reply->id }}")'
                                             class="text-brown-500 font-semibold hover:underline focus:outline-none">
                                             Reply
+                                        </a>
+                                        <a role="button" href="#report"
+                                            wire:click='reportComment({{ $reply->id }})'
+                                            class="text-red-500 font-semibold hover:underline focus:outline-none">
+                                            Report
                                         </a>
                                     </div>
 
