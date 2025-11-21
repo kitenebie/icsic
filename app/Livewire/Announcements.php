@@ -142,7 +142,7 @@ class Announcements extends Component implements HasForms, HasActions, HasTable
                     ->minFiles(0)
                     ->maxFiles(15)
                     ->maxSize(200000),
-                MarkdownEditor::make('content')
+                MarkdownEditor::make('content')->required()
                     ->toolbarButtons([]),
                 Checkbox::make('is_sms')
                     ->label(fn($state): string => $state ? 'SMS is Enabled' : 'Enable SMS Notification')
