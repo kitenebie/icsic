@@ -74,7 +74,7 @@ class AnnouncementCommentResource extends Resource
                     ->limit(50)
                     ->tooltip(function (Tables\Columns\TextColumn $column): ?string {
                         $state = $column->getState();
-                        if (strlen($state) <= $column->getLimit()) {
+                        if (strlen($state) <= 50) {
                             return null;
                         }
                         return $state;
