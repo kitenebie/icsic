@@ -215,10 +215,10 @@ new #[Layout('components.layouts.auth')] class extends Component {}; ?>
         </div>
     </div>
         <!-- First Name -->
-        <flux:input name="FirstName" :label="__('First Name') . '<span class=\"text-red-500\">*</span>'" type="text" required autofocus
+        <flux:input name="FirstName" :label="__('First Name *')" type="text" required autofocus
             autocomplete="FirstName" :placeholder="__('First name')" />
         <!-- Last Name -->
-        <flux:input name="LastName" :label="__('Last Name')" type="text" required autocomplete="LastName"
+        <flux:input name="LastName" :label="__('Last Name *')" type="text" required autocomplete="LastName"
             :placeholder="__('Last name')" />
         <!-- Last Name -->
         <flux:input name="MiddleName" :label="__('Middle Name')" type="text" autocomplete="MiddleName"
@@ -227,10 +227,10 @@ new #[Layout('components.layouts.auth')] class extends Component {}; ?>
         <flux:input name="extension_name" :label="__('Ext Name')" type="text" autocomplete="extension_name"
             :placeholder="__('Ext name')" />
         <!-- conact -->
-        <flux:input name="contact" :label="__('Contact Number') . '<span class=\"text-red-500\">*</span>'" type="number" autocomplete="contact"
+        <flux:input name="contact" :label="__('Contact Number *')" type="number" autocomplete="contact"
             :placeholder="__('Contact Number')" />
         <!-- Email Address -->
-        <flux:input name="email" :label="__('Email address') . '<span class=\"text-red-500\">*</span>'" type="email" required autocomplete="email"
+        <flux:input name="email" :label="__('Email address *')" type="email" required autocomplete="email"
             placeholder="email@example.com" />
 
         <!-- Front ID -->
