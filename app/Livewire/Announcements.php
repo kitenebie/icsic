@@ -337,7 +337,7 @@ class Announcements extends Component implements HasForms, HasActions, HasTable
 
             if (!empty($groups)) {
                 $groupContacts = User::whereIn('user_group', $groups)->pluck('contact');
-                dd('groups', $groupContacts);
+                dd('groups', $groupContacts, $groups);
                 $numbers = $numbers->merge($groupContacts);
             }
 
