@@ -63,12 +63,27 @@ class TeacherController extends Controller
                     ['name' => $groupName],
                     ['author_id' => 1]
                 );
-
                 $student->update([
                     'user_group' => [$group->id]
                 ]);
             }
         }
-        return User::where('role', 'student')->get(['grade', 'section','user_group']);
+
+        $alumni = User::whereNotNull('year_graduated')->get();
+
+        foreach ($alumni as $alum) {
+            $groupName = 'Alumni ' . $alum->year_graduated;
+            $group = Group::firstOrCreate(
+                ['name' => $groupName],
+                ['author_id' => 1]
+            );
+            $currentGroups = $alum->user_group ?? [];
+            if (!in_array($group->id, $currentGroups)) {
+                $currentGroups[] = $group->id;
+                $alum->update(['user_group' => $currentGroups]);
+            }
+        }
+
+        return User::where('role', 'student')->get(['grade', 'section', 'user_group']);
     }
 }
