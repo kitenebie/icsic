@@ -38,7 +38,7 @@
 <body class="bg-cream-50 min-h-screen flex items-center justify-center px-4 py-6">
   <div class="w-full max-w-sm sm:max-w-md bg-cream-100 rounded-2xl shadow-lg p-6">
     <h1 class="text-2xl font-semibold text-brown-900 mb-2">Verify your account</h1>
-    <p class="text-sm text-brown-600 mb-6">Enter the 4-digit code we sent. Check your phone or email.</p>
+    <p class="text-sm text-brown-600 mb-6">Enter the 4-digit code we sent. Check your phone.</p>
 
     <div class="flex flex-wrap justify-center gap-3 mb-4" id="otp-fields"></div>
 
