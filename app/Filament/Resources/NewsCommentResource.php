@@ -71,6 +71,7 @@ class NewsCommentResource extends Resource
                         'reply' => 'warning',
                     }),
                 Tables\Columns\TextColumn::make('comment')
+                    ->formatStateUsing(fn ($state) => strip_tags($state))
                     ->limit(50)
                     ->tooltip(function (Tables\Columns\TextColumn $column): ?string {
                         $state = $column->getState();
@@ -96,7 +97,7 @@ class NewsCommentResource extends Resource
                 //
             ])
             ->actions([
-                Tables\Actions\EditAction::make(),
+                // Tables\Actions\EditAction::make(),
                 Tables\Actions\DeleteAction::make(),
             ])
             ->bulkActions([
@@ -117,8 +118,8 @@ class NewsCommentResource extends Resource
     {
         return [
             'index' => Pages\ListNewsComments::route('/'),
-            'create' => Pages\CreateNewsComment::route('/create'),
-            'edit' => Pages\EditNewsComment::route('/{record}/edit'),
+            // 'create' => Pages\CreateNewsComment::route('/create'),
+            // 'edit' => Pages\EditNewsComment::route('/{record}/edit'),
         ];
     }
 }
