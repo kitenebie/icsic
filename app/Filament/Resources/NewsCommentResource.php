@@ -5,6 +5,7 @@ namespace App\Filament\Resources;
 use App\Filament\Resources\NewsCommentResource\Pages;
 use App\Filament\Resources\NewsCommentResource\RelationManagers;
 use App\Models\newsComment;
+use Filament\Facades\Filament;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
@@ -22,6 +23,11 @@ class NewsCommentResource extends Resource
     public static function getNavigationGroup(): ?string
     {
         return 'Comments Management';
+    }
+
+    public static function canViewNavigation(): bool
+    {
+        return Filament::auth()->user()->role === 'admin';
     }
 
     public static function form(Form $form): Form

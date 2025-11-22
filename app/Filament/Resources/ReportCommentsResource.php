@@ -5,6 +5,7 @@ namespace App\Filament\Resources;
 use App\Filament\Resources\ReportCommentsResource\Pages;
 use App\Filament\Resources\ReportCommentsResource\RelationManagers;
 use App\Models\ReportComments;
+use Filament\Facades\Filament;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
@@ -21,6 +22,12 @@ class ReportCommentsResource extends Resource
     {
         return 'Comments Management';
     }
+
+    public static function canViewNavigation(): bool
+    {
+        return Filament::auth()->user()->role === 'admin';
+    }
+
     protected static ?string $navigationIcon = 'heroicon-o-exclamation-triangle';
 
     public static function form(Form $form): Form
