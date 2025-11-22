@@ -28,10 +28,10 @@ class NewsCommentResource extends Resource
     {
         return $form
             ->schema([
-                // Forms\Components\Select::make('post_id')
-                    // ->relationship('news', 'title')
-                    // ->required()
-                    // ->searchable(),
+                Forms\Components\Select::make('post_id')
+                    ->relationship('news', 'title')
+                    ->required()
+                    ->searchable(),
                 Forms\Components\Select::make('commentatorId')
                     ->relationship('commentator', 'email')
                     ->required()
@@ -56,10 +56,10 @@ class NewsCommentResource extends Resource
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('news.title')
-                    ->label('News')
-                    ->sortable()
-                    ->searchable(),
+                // Tables\Columns\TextColumn::make('news.title')
+                //     ->label('News')
+                //     ->sortable()
+                //     ->searchable(),
                 Tables\Columns\TextColumn::make('commentator.email')
                     ->label('Commentator')
                     ->sortable()
@@ -72,7 +72,7 @@ class NewsCommentResource extends Resource
                     }),
                 Tables\Columns\TextColumn::make('comment')
                     ->formatStateUsing(function ($state, $record) {
-                        return '<strong class="text-green-600">' . $record->id . '</strong> <span>' . strip_tags($state) . '</span>';
+                        return strip_tags($state);
                     })
                     ->limit(50)
                     ->tooltip(function (Tables\Columns\TextColumn $column): ?string {

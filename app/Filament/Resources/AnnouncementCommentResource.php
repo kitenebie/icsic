@@ -56,10 +56,10 @@ class AnnouncementCommentResource extends Resource
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('announcement.title')
-                    ->label('Announcement')
-                    ->sortable()
-                    ->searchable(),
+                // Tables\Columns\TextColumn::make('announcement.title')
+                //     ->label('Announcement')
+                //     ->sortable()
+                //     ->searchable(),
                 Tables\Columns\TextColumn::make('commentator.email')
                     ->label('Commentator')
                     ->sortable()
