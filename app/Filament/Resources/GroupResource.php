@@ -85,9 +85,7 @@ class GroupResource extends Resource
                 Tables\Actions\DeleteAction::make(),
             ])
             ->bulkActions([
-                Tables\Actions\BulkActionGroup::make([
-                    Tables\Actions\DeleteBulkAction::make(),
-                ]),
+                    Tables\Actions\DeleteBulkAction::make()->label('Delete Selected Groups'),
             ])
             ->defaultSort('created_at', 'desc')
             ->searchable();

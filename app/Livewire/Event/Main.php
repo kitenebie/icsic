@@ -840,7 +840,7 @@ class Main extends Component implements HasForms, HasActions
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
-                    Tables\Actions\DeleteBulkAction::make(),
+                    Tables\Actions\DeleteBulkAction::make()->label('Delete Selected Events'),
                 ]),
             ]);
     }

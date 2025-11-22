@@ -109,7 +109,7 @@ class ReportCommentsResource extends Resource
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
-                    Tables\Actions\DeleteBulkAction::make(),
+                    Tables\Actions\DeleteBulkAction::make()->label('Remove Selected Reports'),
                 ])->label('Invalidate Comments'),
             ]);
     }

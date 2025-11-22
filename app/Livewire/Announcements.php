@@ -282,7 +282,7 @@ class Announcements extends Component implements HasForms, HasActions, HasTable
                 Tables\Actions\DeleteAction::make(),
             ])
             ->bulkActions([
-                Tables\Actions\DeleteBulkAction::make(),
+                Tables\Actions\DeleteBulkAction::make()->label('Delete Selected Announcements'),
             ]);
     }
 

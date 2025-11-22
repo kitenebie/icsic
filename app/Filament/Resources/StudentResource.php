@@ -806,7 +806,7 @@ class StudentResource extends Resource
             ], position: ActionsPosition::BeforeColumns)
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
-                    Tables\Actions\DeleteBulkAction::make(),
+                    Tables\Actions\DeleteBulkAction::make()->label('Delete Selected Students'),
 
                     Tables\Actions\BulkAction::make('assignGroups')
                         ->label('Assign Groups')

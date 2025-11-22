@@ -330,7 +330,7 @@ class News extends Component implements HasForms, HasTable
                 Tables\Actions\DeleteAction::make(),
             ], position: ActionsPosition::BeforeColumns)
             ->bulkActions([
-                Tables\Actions\DeleteBulkAction::make(),
+                Tables\Actions\DeleteBulkAction::make()->label('Delete Selected News'),
             ]);
     }
 

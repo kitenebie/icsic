@@ -331,7 +331,7 @@ class UserResource extends Resource
             )
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
-                    Tables\Actions\DeleteBulkAction::make(),
+                    Tables\Actions\DeleteBulkAction::make()->label('Delete Selected Users'),
 
                     Tables\Actions\BulkAction::make('assignGroups')
                         ->label('Assign Groups')
@@ -353,7 +353,7 @@ class UserResource extends Resource
                         ->deselectRecordsAfterCompletion()
                         ->requiresConfirmation()
                         ->modalHeading('Assign Groups to Selected Users'),
-                ]),
+                ])->label('Manage Selected Users'),
             ]);
     }
 

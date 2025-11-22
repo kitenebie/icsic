@@ -86,19 +86,23 @@ class DocumentRequestResource extends Resource
             ->actions([
                 Tables\Actions\Action::make('upload_file')
                     ->label(fn($record) => $record->document_type ? 'Upload File' : 'Re Upload File')
-                    ->icon(function($record) { if($record->status == 'rejected'){
-                        return 'heroicon-o-x-mark';
-                    }else{
-                        return 'heroicon-o-arrow-up-tray';
-                    }})
+                    ->icon(function ($record) {
+                        if ($record->status == 'rejected') {
+                            return 'heroicon-o-x-mark';
+                        } else {
+                            return 'heroicon-o-arrow-up-tray';
+                        }
+                    })
                     ->outlined(fn($record) => $record->status === 'rejected')
                     ->button()
                     ->disabled(fn($record) => $record->status === 'rejected')
-                    ->color(function($record) { if($record->status == 'rejected'){
-                        return 'warning';
-                    }else{
-                        return 'info';
-                    }})
+                    ->color(function ($record) {
+                        if ($record->status == 'rejected') {
+                            return 'warning';
+                        } else {
+                            return 'info';
+                        }
+                    })
                     ->extraAttributes(fn($record) => $record->status !== 'pending' ? ['class' => 'w-full'] : [])
                     ->form([
                         FileUpload::make('document_file')
@@ -161,9 +165,7 @@ class DocumentRequestResource extends Resource
                     }),
             ], position: ActionsPosition::BeforeColumns)
             ->bulkActions([
-                Tables\Actions\BulkActionGroup::make([
-                    Tables\Actions\DeleteBulkAction::make(),
-                ]),
+                Tables\Actions\DeleteBulkAction::make()->label('Delete Selected Requests'),
             ]);
     }
 
