@@ -79,10 +79,10 @@ class AnnouncementCommentResource extends Resource
                         }
                         return $state;
                     }),
-                Tables\Columns\TextColumn::make('parent.comment')
-                    ->label('Reply To')
-                    ->limit(30)
-                    ->placeholder('N/A'),
+                // Tables\Columns\TextColumn::make('parent.comment')
+                //     ->label('Reply To')
+                //     ->limit(30)
+                //     ->placeholder('N/A'),
                 Tables\Columns\TextColumn::make('created_at')
                     ->dateTime()
                     ->sortable()
