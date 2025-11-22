@@ -32,6 +32,7 @@ use Filament\Forms\Components\RichEditor;
 use Filament\Forms\Set;
 
 
+use Illuminate\Support\Facades\Http;
 
 class UserResource extends Resource
 {
@@ -213,6 +214,34 @@ class UserResource extends Resource
     public static function table(Table $table): Table
     {
         return $table
+            ->headerActions([
+                //add button for generate group
+                Tables\Actions\Action::make('GenerateUserGroups')
+                    ->label('Generate Users Group')
+                    ->icon('heroicon-o-users')
+                    ->color('primary')
+                    ->outlined()
+                    ->action(function () {
+                        // Call the external URL
+                        $response = Http::get('https://irosincentralschool.com/generate-group');
+
+                        // You can check status, body, etc.
+                        if ($response->successful()) {
+                            // Example: return a Filament notification with the response body
+                            Notification::make()
+                                ->title('User groups generated!')
+                                ->body('Successfully generated users group.')
+                                ->success()
+                                ->send();
+                        } else {
+                            Notification::make()
+                                ->title('Failed to generate user groups')
+                                ->body('Status: ' . $response->status())
+                                ->danger()
+                                ->send();
+                        }
+                    }),
+            ])
             ->query(User::query()->whereNot('role', 'student'))
             ->deferLoading()
             ->poll(interval: '5s')

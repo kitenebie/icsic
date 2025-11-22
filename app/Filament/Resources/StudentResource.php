@@ -117,7 +117,7 @@ class StudentResource extends Resource
             ->headerActions([
                 //add button for generate group
                 Tables\Actions\Action::make('GenerateUserGroups')
-                    ->label('Generate Students Groups')
+                    ->label('Generate Students Group')
                     ->icon('heroicon-o-users')
                     ->color('primary')
                     ->outlined()
@@ -130,7 +130,7 @@ class StudentResource extends Resource
                             // Example: return a Filament notification with the response body
                             Notification::make()
                                 ->title('User groups generated!')
-                                ->body($response->body())
+                                ->body('Successfully generated students group.')
                                 ->success()
                                 ->send();
                         } else {
