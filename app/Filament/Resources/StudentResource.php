@@ -488,7 +488,7 @@ class StudentResource extends Resource
                 TextColumn::make('relationship')->label('Relation')->toggleable(),
                 TextColumn::make('guardian_contact_number')->label('Contact')->toggleable(),
                 TextColumn::make('guardian_email')->label('Email')->toggleable(),
-                TextColumn::make('year_graduated')->label('Graduated')->toggleable(),
+                // TextColumn::make('year_graduated')->label('Graduated')->toggleable(),
                 TextColumn::make('user_group')
                     ->label('Groups')
                     ->getStateUsing(function ($record) {
