@@ -1,26 +1,26 @@
 <?php
 
 namespace App\Services;
-
+use App\Models\AiModel;
 use Illuminate\Support\Facades\Http;
 
 class OpenRouterService
 {
     protected string $apiUrl = 'https://openrouter.ai/api/v1/chat/completions';
-    protected string $apiKey;
+    protected string $apiKey, $model;
 
     public function __construct()
     {
         $this->apiKey = config('services.openrouter.key');
+        $this->model = AiModel::first()->model;
     }
-
     public function ask(string $comment): ?string
     {
         $response = Http::withHeaders([
             'Content-Type' => 'application/json',
             'Authorization' => 'Bearer ' . $this->apiKey,
         ])->post($this->apiUrl, [
-            'model' => 'deepseek/deepseek-r1-0528:free',
+            'model' => $this->model,
             'messages' => [
                 ['role' => 'user', 'content' => <<<EOT
                     I will give you a comment. Your task is to analyze whether it contains rude or offensive language in **any language** (English, Tagalog, etc.).

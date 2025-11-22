@@ -34,9 +34,26 @@ class ReportCommentsResource extends Resource
     public static function table(Table $table): Table
     {
         return $table
+            ->modifyQueryUsing(fn (Builder $query) => $query->with('user'))
             ->columns([
-                Tables\Columns\TextColumn::make('comment_type'),
-                Tables\Columns\TextColumn::make('comment_id'),
+                Tables\Columns\TextColumn::make('user.FirstName')
+                    ->label('Reported By')
+                    ->formatStateUsing(fn ($state, $record) => $record->user ? $record->user->FirstName . ' ' . $record->user->LastName : 'Unknown'),
+                Tables\Columns\TextColumn::make('comment_type')
+                    ->label('Type')
+                    ->badge(),
+                Tables\Columns\TextColumn::make('comment_content')
+                    ->label('Comment Content')
+                    ->state(function ($record) {
+                        return $record->getCommentContent();
+                    })
+                    ->limit(50)
+                    ->tooltip(function ($record) {
+                        return $record->getCommentContent();
+                    }),
+                Tables\Columns\TextColumn::make('created_at')
+                    ->label('Reported At')
+                    ->dateTime(),
             ])
             ->filters([
                 //
