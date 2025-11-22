@@ -29,6 +29,8 @@ class allUsers extends BaseWidget
         $teacherCount = User::where('role', 'teacher')->count();
         $studentCount = User::where('role', 'student')->count();
         $rejectedCount = User::where('role', 'rejected')->count();
+        $StaffCount = User::where('role', 'staff')->count();
+        $GradCount = User::where('role', 'staff')->count();
 
         return [
             Stat::make('Number of Pending', number_format($pendingCount))
@@ -41,18 +43,27 @@ class allUsers extends BaseWidget
                 ->descriptionIcon('heroicon-m-shield-check')
                 ->color('danger'),
 
+            Stat::make('Number of Teachers', number_format($teacherCount))
+                ->description('Teachers accounts')
+                ->descriptionIcon('heroicon-m-academic-cap')
+                ->color('info'),
+            Stat::make('Number of Sraff', number_format($teacherCount))
+                ->description('Staff accounts')
+                ->descriptionIcon('heroicon-m-user-group')
+                ->color('info'),
+
             Stat::make('Number of Parents', number_format($parentCount))
                 ->description('Parent accounts')
                 ->descriptionIcon('heroicon-m-user-group')
                 ->color('success'),
 
-            Stat::make('Number of Teachers', number_format($teacherCount))
-                ->description('Teaching staff')
-                ->descriptionIcon('heroicon-m-academic-cap')
-                ->color('info'),
-
             Stat::make('Number of Students', number_format($studentCount))
                 ->description('Student accounts')
+                ->descriptionIcon('heroicon-m-users')
+                ->color('primary'),
+
+            Stat::make('Number of Alumni', number_format($GradCount))
+                ->description('Alumni accounts')
                 ->descriptionIcon('heroicon-m-users')
                 ->color('primary'),
 
