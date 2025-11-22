@@ -82,10 +82,10 @@ class NewsCommentResource extends Resource
                         }
                         return strip_tags($state);
                     }),
-                Tables\Columns\TextColumn::make('parent.comment')
-                    ->label('Reply To')
-                    ->limit(30)
-                    ->placeholder('N/A'),
+                // Tables\Columns\TextColumn::make('parent.comment')
+                //     ->label('Reply To')
+                //     ->limit(30)
+                //     ->placeholder('N/A'),
                 Tables\Columns\TextColumn::make('created_at')
                     ->dateTime()
                     ->sortable()
