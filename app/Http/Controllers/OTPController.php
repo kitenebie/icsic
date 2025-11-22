@@ -79,7 +79,7 @@ class OTPController extends Controller
 
 
         // Send the email
-        Mail::to(Auth::user()->email)->send(new OtpMail($otp));
+        // Mail::to(Auth::user()->email)->send(new OtpMail($otp));
 
         return view('otp')->with('countdown', now()->addMinutes(5)->timestamp);
     }
