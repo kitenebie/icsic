@@ -208,6 +208,7 @@ class UserResource extends Resource
                     ->visible(fn(callable $get) => $get('role') === 'rejected')
                     ->required(fn(callable $get) => $get('role') === 'rejected')
                     ->placeholder('Enter the reason for rejection'),
+                TextInput::make('year_graduated'),
             ]);
     }
 
