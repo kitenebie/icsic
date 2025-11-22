@@ -125,6 +125,7 @@ class UserResource extends Resource
                         'staff' => 'Staff',
                         'teacher' => 'Teacher',
                         'parent' => 'parent',
+                        'graduate' => 'Graduate',
                         'pending' => 'Pending',
                         'rejected' => 'Reject'
                     ])
