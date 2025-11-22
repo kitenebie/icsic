@@ -44,10 +44,16 @@
                                          wire:click="replay_comment({{ $main_comment->id }}, {{ $main_comment->post_id }}, {{ $main_comment->commentatorId }})">
                                          Reply
                                      </button>
-                                     <button class="report-button"
-                                         wire:click="reportComment({{ $main_comment->id }})">
-                                         Report
-                                     </button>
+                                     @if($this->hasUserReported($main_comment->id))
+                                         <span class="text-gray-500 font-semibold">
+                                             Reported
+                                         </span>
+                                     @else
+                                         <button class="report-button"
+                                             wire:click="reportComment({{ $main_comment->id }})">
+                                             Report
+                                         </button>
+                                     @endif
                                  @endif
                             </div>
 
@@ -86,10 +92,16 @@
                                              wire:click="replay_comment({{ $main_comment->id }}, {{ $reply_comment->post_id }}, {{ $reply_comment->commentatorId }})">
                                              Reply
                                          </button>
-                                         <button class="report-button"
-                                             wire:click="reportComment({{ $reply_comment->id }})">
-                                             Report
-                                         </button>
+                                         @if($this->hasUserReported($reply_comment->id))
+                                             <span class="text-gray-500 font-semibold">
+                                                 Reported
+                                             </span>
+                                         @else
+                                             <button class="report-button"
+                                                 wire:click="reportComment({{ $reply_comment->id }})">
+                                                 Report
+                                             </button>
+                                         @endif
                                      @endif
                                 </div>
 
