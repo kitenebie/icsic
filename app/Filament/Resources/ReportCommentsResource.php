@@ -118,8 +118,8 @@ class ReportCommentsResource extends Resource
     {
         return [
             'index' => Pages\ListReportComments::route('/'),
-            'create' => Pages\CreateReportComments::route('/create'),
-            'edit' => Pages\EditReportComments::route('/{record}/edit'),
+            // 'create' => Pages\CreateReportComments::route('/create'),
+            // 'edit' => Pages\EditReportComments::route('/{record}/edit'),
         ];
     }
 }
