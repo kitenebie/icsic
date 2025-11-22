@@ -109,11 +109,11 @@ class alluStudentsChart extends ChartWidget
         if ($currentUser && $currentUser->role === 'teacher') {
             $query->where('grade', $currentUser->grade)
                   ->where('section', $currentUser->section);
-            $totalUsers = $query->count();
+            $totalUsers = $query->count() - 2 ;
             return "Total users in Grade {$currentUser->grade}, Section {$currentUser->section}: {$totalUsers} | Updated: " . now()->format('M d, Y H:i');
         }
 
-        $totalUsers = $query->count();
+        $totalUsers = $query->count() - 2;
         return "Total users: {$totalUsers} | Updated: " . now()->format('M d, Y H:i');
     }
 
