@@ -29,24 +29,26 @@ class alluStudentsChart extends ChartWidget
         }
 
         // Get dynamic counts from database with filtering
-        $pendingCount = (clone $query)->where('status', 'pending')->count();
+        $pendingCount = (clone $query)->where('role', 'pending')->count();
         $adminCount = (clone $query)->where('role', 'admin')->count();
         $parentCount = (clone $query)->where('role', 'parent')->count();
         $teacherCount = (clone $query)->where('role', 'teacher')->count();
         $studentCount = (clone $query)->where('role', 'student')->count();
-        $rejectedCount = (clone $query)->where('status', 'rejected')->count();
+        $staff = (clone $query)->where('role', 'staff')->count();
+        $rejectedCount = (clone $query)->where('role', 'rejected')->count();
 
         return [
             'datasets' => [
                 [
                     'label' => 'User Count',
-                    'data' => [$pendingCount, $adminCount, $parentCount, $teacherCount, $studentCount, $rejectedCount],
+                    'data' => [$pendingCount, $adminCount, $parentCount, $teacherCount, $staff, $studentCount, $rejectedCount],
                     'backgroundColor' => [
                         '#f59e0b', // Pending - amber
                         '#dc2626', // Admin - red
                         '#22c55e', // Parents - green
                         '#06b6d4', // Teachers - cyan
-                        '#3b82f6', // Students - blue
+                        '#063DD4FF', // Teachers - cyan
+                        '#B23BF6FF', // Students - blue
                         '#6b7280', // Rejected - gray
                     ],
                     'borderColor' => '#1f2937', // Consistent dark border
@@ -58,6 +60,7 @@ class alluStudentsChart extends ChartWidget
                 'Admin',
                 'Parents',
                 'Teachers',
+                'Staff',
                 'Students',
                 'Rejected',
             ],
