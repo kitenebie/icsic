@@ -34,6 +34,7 @@ class alluStudentsChart extends ChartWidget
         $parentCount = (clone $query)->where('role', 'parent')->count();
         $teacherCount = (clone $query)->where('role', 'teacher')->count();
         $studentCount = (clone $query)->where('role', 'student')->count();
+        $gradCount = (clone $query)->where('role', 'graduate')->count();
         $staff = (clone $query)->where('role', 'staff')->count();
         $rejectedCount = (clone $query)->where('role', 'rejected')->count();
 
@@ -41,7 +42,7 @@ class alluStudentsChart extends ChartWidget
             'datasets' => [
                 [
                     'label' => 'User Count',
-                    'data' => [$pendingCount, $adminCount, $parentCount, $teacherCount, $staff, $studentCount, $rejectedCount],
+                    'data' => [$pendingCount, $adminCount, $parentCount, $teacherCount, $staff, $studentCount, $gradCount, $rejectedCount],
                     'backgroundColor' => [
                         '#f59e0b', // Pending - amber
                         '#dc2626', // Admin - red
@@ -49,6 +50,7 @@ class alluStudentsChart extends ChartWidget
                         '#06b6d4', // Teachers - cyan
                         '#063DD4FF', // Teachers - cyan
                         '#B23BF6FF', // Students - blue
+                        '#F63B83FF', // Students - blue
                         '#6b7280', // Rejected - gray
                     ],
                     'borderColor' => '#1f2937', // Consistent dark border
@@ -62,6 +64,7 @@ class alluStudentsChart extends ChartWidget
                 'Teachers',
                 'Staff',
                 'Students',
+                'Graduates',
                 'Rejected',
             ],
         ];
@@ -109,11 +112,11 @@ class alluStudentsChart extends ChartWidget
         if ($currentUser && $currentUser->role === 'teacher') {
             $query->where('grade', $currentUser->grade)
                   ->where('section', $currentUser->section);
-            $totalUsers = $query->count() - 2 ;
+            $totalUsers = $query->count();
             return "Total users in Grade {$currentUser->grade}, Section {$currentUser->section}: {$totalUsers} | Updated: " . now()->format('M d, Y H:i');
         }
 
-        $totalUsers = $query->count() - 2;
+        $totalUsers = $query->count();
         return "Total users: {$totalUsers} | Updated: " . now()->format('M d, Y H:i');
     }
 
