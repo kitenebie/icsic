@@ -23,12 +23,12 @@ class allUsers extends BaseWidget
         }
 
         // Get dynamic counts from database with filtering
-        $pendingCount = User::where('status', 'pending')->count();
+        $pendingCount = User::where('role', 'pending')->count();
         $adminCount = User::where('role', 'admin')->count();
         $parentCount = User::where('role', 'parent')->count();
         $teacherCount = User::where('role', 'teacher')->count();
         $studentCount = User::where('role', 'student')->count();
-        $rejectedCount = User::where('status', 'rejected')->count();
+        $rejectedCount = User::where('role', 'rejected')->count();
 
         return [
             Stat::make('Number of Pending', number_format($pendingCount))
