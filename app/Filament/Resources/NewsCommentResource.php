@@ -28,10 +28,10 @@ class NewsCommentResource extends Resource
     {
         return $form
             ->schema([
-                Forms\Components\Select::make('post_id')
-                    ->relationship('news', 'title')
-                    ->required()
-                    ->searchable(),
+                // Forms\Components\Select::make('post_id')
+                    // ->relationship('news', 'title')
+                    // ->required()
+                    // ->searchable(),
                 Forms\Components\Select::make('commentatorId')
                     ->relationship('commentator', 'email')
                     ->required()
@@ -71,14 +71,16 @@ class NewsCommentResource extends Resource
                         'reply' => 'warning',
                     }),
                 Tables\Columns\TextColumn::make('comment')
-                    ->formatStateUsing(fn ($state) => strip_tags($state))
+                    ->formatStateUsing(function ($state, $record) {
+                        return '<strong class="text-green-600">' . $record->id . '</strong> <span>' . strip_tags($state) . '</span>';
+                    })
                     ->limit(50)
                     ->tooltip(function (Tables\Columns\TextColumn $column): ?string {
                         $state = $column->getState();
-                        if (strlen($state) <= 50) {
+                        if (strlen(strip_tags($state)) <= 50) {
                             return null;
                         }
-                        return $state;
+                        return strip_tags($state);
                     }),
                 Tables\Columns\TextColumn::make('parent.comment')
                     ->label('Reply To')

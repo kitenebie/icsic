@@ -28,10 +28,10 @@ class AnnouncementCommentResource extends Resource
     {
         return $form
             ->schema([
-                Forms\Components\Select::make('post_id')
-                    ->relationship('announcement', 'title')
-                    ->required()
-                    ->searchable(),
+                // Forms\Components\Select::make('post_id')
+                //     ->relationship('announcement', 'title')
+                //     ->required()
+                //     ->searchable(),
                 Forms\Components\Select::make('commentatorId')
                     ->relationship('commentator', 'email')
                     ->required()
