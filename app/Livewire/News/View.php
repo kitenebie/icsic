@@ -9,6 +9,7 @@ use App\Models\User;
 use App\Models\ReportComments;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Str;
 use App\Services\OpenRouterService;
 use App\Models\NewsView;
@@ -173,11 +174,39 @@ class View extends Component
     }
     public function reportComment($commentId)
     {
-        ReportComments::updateOrCreate([
-            'comment_type' => 'news',
-            'comment_id' => $commentId,
-        ]);
-        session()->flash('message', 'Comment reported successfully.');
+        Log::info('ReportComment called', ['commentId' => $commentId, 'userId' => Auth::id()]);
+
+        $existingReport = ReportComments::where('comment_type', 'news')
+            ->where('comment_id', $commentId)
+            ->where('user_id', Auth::id())
+            ->first();
+
+        Log::info('Existing report check', ['existingReport' => $existingReport ? 'found' : 'not found']);
+
+        if (!$existingReport) {
+            ReportComments::create([
+                'comment_type' => 'news',
+                'comment_id' => $commentId,
+                'user_id' => Auth::id(),
+            ]);
+            Log::info('Report created successfully');
+            session()->flash('message', 'Comment reported successfully.');
+        } else {
+            Log::info('Report already exists');
+            session()->flash('message', 'You have already reported this comment.');
+        }
+    }
+
+    public function hasUserReported($commentId)
+    {
+        if (!Auth::check()) {
+            return false;
+        }
+
+        return ReportComments::where('comment_type', 'news')
+            ->where('comment_id', $commentId)
+            ->where('user_id', Auth::id())
+            ->exists();
     }
     public function render()
     {

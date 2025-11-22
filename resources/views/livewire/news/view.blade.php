@@ -166,11 +166,17 @@
                                     class="text-brown-500 font-semibold hover:underline focus:outline-none">
                                     Reply
                                 </a>
-                                <a role="button" href="#report"
-                                    wire:click='reportComment({{ $main_comment->id }})'
-                                    class="text-red-500 font-semibold hover:underline focus:outline-none">
-                                    Report
-                                </a>
+                                @if($this->hasUserReported($main_comment->id))
+                                    <span class="text-gray-500 font-semibold">
+                                        Reported
+                                    </span>
+                                @else
+                                    <a role="button" href="#report"
+                                        wire:click='reportComment({{ $main_comment->id }})'
+                                        class="text-red-500 font-semibold hover:underline focus:outline-none">
+                                        Report
+                                    </a>
+                                @endif
                             </div>
 
                             <!-- Reply -->
@@ -200,11 +206,17 @@
                                             class="text-brown-500 font-semibold hover:underline focus:outline-none">
                                             Reply
                                         </a>
-                                        <a role="button" href="#report"
-                                            wire:click='reportComment({{ $reply->id }})'
-                                            class="text-red-500 font-semibold hover:underline focus:outline-none">
-                                            Report
-                                        </a>
+                                        @if($this->hasUserReported($reply->id))
+                                            <span class="text-gray-500 font-semibold">
+                                                Reported
+                                            </span>
+                                        @else
+                                            <a role="button" href="#report"
+                                                wire:click='reportComment({{ $reply->id }})'
+                                                class="text-red-500 font-semibold hover:underline focus:outline-none">
+                                                Report
+                                            </a>
+                                        @endif
                                     </div>
 
                                 </article>
