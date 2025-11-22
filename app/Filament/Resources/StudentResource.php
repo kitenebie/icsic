@@ -841,7 +841,7 @@ class StudentResource extends Resource
                         ->deselectRecordsAfterCompletion()
                         ->requiresConfirmation()
                         ->modalHeading('Assign Groups to Selected Students'),
-                ]),
+                ])->label('Manage User/Groups'),
             ]);
     }
 
