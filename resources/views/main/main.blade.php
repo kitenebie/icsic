@@ -22,7 +22,7 @@
                 @if (!auth()->check())
                     <div class="mt-6 flex space-x-3">
                         <a href="/register"
-                            class="bg-brown-500 text-white text-lg sm:text-sm font-semibold px-4 py-2 rounded-md hover:bg-brown-700">
+                            class="bg-brown-500 text-white text-lg px-4 py-8 sm:text-sm font-semibold sm:px-4 sm:py-2 rounded-md hover:bg-brown-700">
                             Create an account
                         </a>
                         <a href="{{ route('faq') }}"
