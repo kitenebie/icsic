@@ -36,10 +36,12 @@
             @empty
             @endforelse
         </div>
-        <div class="mt-8 flex justify-center">
-            <a href="/news"
-                class="bg-brown-500 text-white text-xs sm:text-sm font-semibold px-4 py-2 rounded-md hover:bg-brown-700">
-                View All News
-            </a>
-        </div>
+        @if (auth()->check() && auth()->user()->role != 'pending')
+            <div class="mt-8 flex justify-center">
+                <a href="/news"
+                    class="bg-brown-500 text-white text-xs sm:text-sm font-semibold px-4 py-2 rounded-md hover:bg-brown-700">
+                    View All News
+                </a>
+            </div>
+        @endif
     </section>

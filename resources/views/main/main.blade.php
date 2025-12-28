@@ -22,12 +22,12 @@
                 @if (!auth()->check())
                     <div class="mt-6 flex space-x-3">
                         <a href="/"
-                            class="bg-white text-green-800 font-bold text-xs sm:text-sm px-4 py-2 rounded-md hover:bg-gray-100">
+                            class="bg-brown-500 text-white text-xs sm:text-md font-semibold px-4 py-2 rounded-md hover:bg-brown-700">
                             Create an account
                         </a>
-                        <a href="#"
-                            class="border border-white text-white font-semibold text-xs sm:text-sm px-4 py-2 rounded-md hover:bg-white hover:text-green-700 transition">
-                            Learn More
+                        <a href="{{ route('faq') }}"
+                            class="border border-white text-white font-semibold text-xs md:text-md px-4 py-2 rounded-md hover:bg-brown-500 hover:text-white transition">
+                            Frequently Asked Questions
                         </a>
                     </div>
                 @endif
