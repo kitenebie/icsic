@@ -151,7 +151,7 @@
     </style>
 
 
-    @if (auth()->user()->role == 'pending')
+    @if (auth()->user() && auth()->user()->role == 'pending')
         @livewire('user-role.modal-graduates')
         @livewire('user-role.modal-parent')
         @livewire('user-role.modal')
