@@ -31,12 +31,12 @@ Route::get('/waiting', function () {
 
 Route::view('/faq', 'faq')->name('faq');
 Route::view('/view-faq', 'faq')->name('view-faq');
+Route::get('/', function () {
+    return view('main.main');
+})->name('home');
 
 Route::middleware([EnsureTokenIsValid::class])->group(function () {
     Route::get('/restart', [CleanupController::class, 'restart'])->name('restart');
-    Route::get('/', function () {
-        return view('main.main');
-    })->name('home');
     Route::get('/gallery', function () {
         return view('galeries');
     })->name('gallery');
