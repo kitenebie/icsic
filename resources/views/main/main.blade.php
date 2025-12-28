@@ -27,7 +27,7 @@
                         </a>
                         <a href="{{ route('faq') }}"
                             class="bg-brown-500 text-white text-sm px-4 py-2 lg:text-lg font-semibold lg:px-4 lg:py-4 rounded-md hover:bg-brown-700">
-                            Frequently Asked Questions
+                            About Us
                         </a>
                     </div>
                 @endif
