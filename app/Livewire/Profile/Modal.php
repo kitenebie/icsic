@@ -23,12 +23,14 @@ class Modal extends Component
 
     public function mount()
     {
-        $user = Auth::user();
-        $this->first_name = $user->FirstName;
-        $this->middle_name = $user->MiddleName;
-        $this->last_name = $user->LastName;
-        $this->extension_name = $user->extension_name;
-        $this->email = $user->email;
+        if (Auth::check()) {
+            $user = Auth::user();
+            $this->first_name = $user->FirstName;
+            $this->middle_name = $user->MiddleName;
+            $this->last_name = $user->LastName;
+            $this->extension_name = $user->extension_name;
+            $this->email = $user->email;
+        }
     }
 
     public function updatedProfile()
