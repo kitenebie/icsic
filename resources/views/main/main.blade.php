@@ -3,10 +3,10 @@
         style="background-image: url('/home.png'); min-height: 600px;">
 
         <!-- Dark overlay -->
-        <div class="absolute inset-0 bg-black/40"></div>
+        <div class="absolute inset-0 bg-black/60"></div>
 
         <!-- Bottom fade -->
-        <div class="absolute inset-x-0 bottom-0 h-48 bg-gradient-to-t from-black/50 to-transparent"></div>
+        <div class="absolute inset-x-0 bottom-0 h-48 bg-gradient-to-t from-black/60 to-transparent"></div>
 
         <div
             class="relative max-w-7xl mx-auto flex flex-col-reverse md:flex-row items-center justify-between gap-10 md:gap-20">
@@ -22,11 +22,11 @@
                 @if (!auth()->check())
                     <div class="mt-6 flex space-x-3">
                         <a href="/register"
-                            class="bg-brown-500 text-white text-lg px-4 py-8 sm:text-sm font-semibold sm:px-4 sm:py-2 rounded-md hover:bg-brown-700">
+                            class="bg-brown-500 text-white text-lg px-4 py-12 sm:text-sm font-semibold sm:px-4 sm:py-2 rounded-md hover:bg-brown-700">
                             Create an account
                         </a>
                         <a href="{{ route('faq') }}"
-                            class="bg-brown-500 text-white text-lg sm:text-sm font-semibold px-4 py-2 rounded-md hover:bg-brown-700">
+                            class="bg-brown-500 text-white text-lg px-4 py-12 sm:text-sm font-semibold sm:px-4 sm:py-2 rounded-md hover:bg-brown-700">
                             Frequently Asked Questions
                         </a>
                     </div>
