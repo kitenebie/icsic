@@ -129,10 +129,12 @@
 
 <body class="bg-cream-50 text-gray-800 hide-scrollbar hide-scrollbar::-webkit-scrollbar">
     <x-loading />
-    @livewire('notification.modal')
-    @livewire('profile.modal')
-    @include('partials.navbar')
-    @livewire('modal.group-member')
+    @if (auth()->user())
+        @livewire('notification.modal')
+        @livewire('profile.modal')
+        @include('partials.navbar')
+        @livewire('modal.group-member')
+    @endif
     {{ $slot }}
     @fluxScripts()
     <style>
@@ -270,11 +272,11 @@
         }
         @endauth
     </script>
-<script>
-    // Force light theme
-    window.localStorage.setItem('flux.appearance', 'light');
-    window.Flux.applyAppearance('light');
-</script>
+    <script>
+        // Force light theme
+        window.localStorage.setItem('flux.appearance', 'light');
+        window.Flux.applyAppearance('light');
+    </script>
 
 </body>
 
