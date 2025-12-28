@@ -104,6 +104,7 @@ class UserResource extends Resource
                     ->placeholder('Enter ext name'),
                 TextInput::make('contact')
                     ->required()
+                    ->numeric()
                     ->maxLength(11)
                     ->columnSpanFull()
                     ->placeholder('Enter contact number'),
@@ -120,15 +121,29 @@ class UserResource extends Resource
                     ->password()
                     ->maxLength(255),
                 Select::make('role')
-                    ->options([
-                        'admin' => 'Admin',
-                        'staff' => 'Staff',
-                        'teacher' => 'Teacher',
-                        'parent' => 'parent',
-                        'graduate' => 'Graduate',
-                        'pending' => 'Pending',
-                        'rejected' => 'Reject'
-                    ])
+                    ->options(function (?User $record = null) {
+                        // In edit form, only show 'rejected' option
+                        if ($record && $record->exists) {
+                            return [
+                            'admin' => 'Admin',
+                            'staff' => 'Staff',
+                            'teacher' => 'Teacher',
+                            'parent' => 'parent',
+                            'graduate' => 'Graduate',
+                            'pending' => 'Pending',
+                            'rejected' => 'Reject'];
+                        }
+                        
+                        // In create form, show all options
+                        return [
+                            'admin' => 'Admin',
+                            'staff' => 'Staff',
+                            'teacher' => 'Teacher',
+                            'parent' => 'parent',
+                            'graduate' => 'Graduate',
+                            'pending' => 'Pending',
+                        ];
+                    })
                     ->default('student')
                     ->required()
                     ->afterStateUpdated(function (Set $set) {

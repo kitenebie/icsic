@@ -1,4 +1,7 @@
 <!-- Modal 2a: Graduate -->
+@php
+use Carbon\Carbon;
+@endphp
 <div id="graduateModal"
     class="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50 opacity-0 pointer-events-none transition-opacity duration-300">
     <form id="graduateForm"
@@ -9,10 +12,9 @@
         <h2 class="text-xl font-semibold mb-4">Select Graduation Year <span class="text-red-500">*</span></h2>
         <select required class="w-full hover:border-2 hover:border-blue-400 border rounded px-4 py-2 mb-4">
             <option value="">Choose a year</option>
-            <option>2025</option>
-            <option>2024</option>
-            <option>2023</option>
-            <option>2022</option>
+            @for($year = Carbon::now()->year; $year >= 1970; $year--)
+                <option>{{ $year }}</option>
+            @endfor
         </select>
         <div class="flex justify-between">
             <button onclick="reloadPage()" type="button"
