@@ -17,7 +17,8 @@
                                 {{ \Carbon\Carbon::parse($event->event_date)->format('M') }}
                             </div>
                         </div>
-                        <div class="bg-cream-700 text-brown-100 text-xs rounded-full px-3 py-1 font-semibold self-start">
+                        <div
+                            class="bg-cream-700 text-brown-100 text-xs rounded-full px-3 py-1 font-semibold self-start">
                             {{ $event->event_category }}
                         </div>
                     </div>
@@ -37,10 +38,12 @@
             @empty
             @endforelse
         </div>
-        <div class="mt-8 flex justify-center">
-            <a href="/events"
-                class="bg-brown-500 text-white text-xs sm:text-sm font-semibold px-4 py-2 rounded-md hover:bg-brown-700">
-                View All Events
-        </a>
-        </div>
+        @if (auth()->check() && auth()->user()->role != 'pending')
+            <div class="mt-8 flex justify-center">
+                <a href="/events"
+                    class="bg-brown-500 text-white text-xs sm:text-sm font-semibold px-4 py-2 rounded-md hover:bg-brown-700">
+                    View All Events
+                </a>
+            </div>
+        @endif
     </section>
