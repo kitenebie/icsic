@@ -23,7 +23,7 @@
                     <div class="mt-6 flex space-x-3">
                         <a href="/register"
                             class="bg-brown-500 text-white text-sm px-4 py-2 lg:text-lg font-semibold lg:px-4 lg:py-12 rounded-md hover:bg-brown-700">
-                            Create an account
+                            Register
                         </a>
                         <a href="{{ route('faq') }}"
                             class="bg-brown-500 text-white text-sm px-4 py-2 lg:text-lg font-semibold lg:px-4 lg:py-2 rounded-md hover:bg-brown-700">
