@@ -156,9 +156,11 @@
         @livewire('user-role.modal-parent')
         @livewire('user-role.modal')
     @endif
-    @livewire('request.form')
-    @livewire('request.select-student')
-    @livewire('request.status-request')
+    @if (auth()->user())
+        @livewire('request.form')
+        @livewire('request.select-student')
+        @livewire('request.status-request')
+    @endif
     @if (session('success'))
         @livewire('modal.welcome')
     @endif
